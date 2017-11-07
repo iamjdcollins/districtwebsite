@@ -25,8 +25,6 @@ SECRET_KEY = os.environ['WWW_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.slcschools.org','www-test.slcschools.org','www-dev.slcschools.org','www2.slcschools.org']
-
 AUTH_USER_MODEL = 'objects.User'
 
 AUTHENTICATION_BACKENDS = (
