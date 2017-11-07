@@ -1,0 +1,4 @@
+-r base.txt
+
+django-debug-toolbar==1.8
+coverage==4.4.1

@@ -1,0 +1,208 @@
+{% extends "www_slcschools_org/contentrighttoc.html" %}
+{% load static mptt_tags %}
+
+{% block title %}
+  {{page.title}}
+{% endblock %}
+
+{% block precontent %}
+{% endblock %}
+
+{% block sidebar_first %}
+<div class="row ">
+  <div class="table-of-contents">
+    <h2>Contents:</h2>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+      {% if page.schooladministrators %}
+      <li><a href="#administration">Administration</a></li>
+      {% endif %}
+      {% if page.scc_url or page.links_resourcelink_node.all or page.documents_document_node.all %}
+      <li><a href="#resourcelinks">Resource Links</a></li>
+      {% endif %}
+      {% if page.boundary_map %}
+      <li><a href="#boundarymap">Boundary Map</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% block sidebar_second_mup %}
+{% endblock %}
+
+{% comment %}{% block breadcrumb %}
+<div class="row">
+  <nav class="slcschools-grey lighten-2">
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <a href="/" title="Home" class="breadcrumb">Home</a>
+        {% for item in BREADCRUMB %}
+        <a href="{{ item.url }}" title="{{ item.menu_title }}" class="breadcrumb">{{ item.menu_title }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </nav>
+</div>
+{% endblock %}{% endcomment %}
+
+{% block content %}
+{% if page.contentbanners %}
+<div class="card">
+  <div class="unslider slcschools-grey darken-1">
+    <ul class="slides">
+      {% for contentbanner in page.contentbanners %}
+      <li class="slide">
+        <img src="{{contentbanner.image_file.url}}" alt="{{contentbanner.alttext}}" />
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+<div class="card">
+  <div class="input-field mobile-table-of-contents hide-on-med-and-up">
+    <select id="toc" class="browser-default z-depth-1">
+      <option value="#!" disabled selected style="display:none;">Table of Contents</option>
+      <option value="#about">About</option>
+      <option value="#contact">Contact</option>
+      {% if page.schooladministrators %}
+      <option value="#administration">Administration</option>
+      {% endif %}
+      {% if page.scc_url or page.links_resourcelink_node.all or page.documents_document_node.all %}
+      <option value="#resourcelinks">Resource Links</option>
+      {% endif %}
+      {% if page.boundary_map %}
+      <option value="#boundarymap">Boundary Map</option>
+      {% endif %}
+    </select>
+    <label for="toc" class="outofview">Table of Contents</label>
+  </div>  
+  <div class="card-content">
+    <h1>{{page.title}}</h1>
+    <div class="row">
+      <div id="about" class="richtext scrollspy">
+        <div class="body">
+          {{page.body|safe}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="contact" class="scrollspy">
+        <h2>Contact</h2>
+        <div class="card primarycontact">
+          <div class="card-content">
+            <div class="collection">
+              <a href="{{page.building_location.google_place}}" class="collection-item">
+                <span class="title">Address</span>
+                <address class="schooladdress">
+                  <p class="streetaddress">{{page.building_location.street_address}} <br />
+                                           {{page.building_location.location_city}}, {{page.building_location.location_state}} {{page.building_location.location_zipcode}}
+                  </p>
+                </address>
+                <i class="material-icons secondary-content absolute-right small">&#xE55F;</i>
+              </a>
+              <a href="tel:+{{page.main_phone|slice:"0:1"}}-{{page.main_phone|slice:"1:4"}}-{{page.main_phone|slice:"4:7"}}-{{page.main_phone|slice:"7:11"}}" class="collection-item">
+                <span class="title">Phone</span>
+                <div class="schoolphone">{{page.main_phone|slice:"1:4"}}.{{page.main_phone|slice:"4:7"}}.{{page.main_phone|slice:"7:11"}}</div>
+                <i class="material-icons secondary-content absolute-right small">&#xE0CD;</i>
+              </a>
+              <a href="#" onclick="return false;" class="collection-item">
+                <span class="title">Fax</span>
+                <div class="schoolfax">{{page.main_fax|slice:"1:4"}}.{{page.main_fax|slice:"4:7"}}.{{page.main_fax|slice:"7:11"}}</div>
+                <i class="material-icons secondary-content absolute-right small">&#xE8AD;</i>
+              </a>
+              <a href="#" onclick="return false;" class="collection-item">
+                <span class="title">Enrollment</span>
+                <div class="schoolenrollment">
+                  <div class="chip">
+                    {% if page.openenrollmentstatus.title == 'Open' %}
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gA+Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1c2luZyBJSkcgSlBFRyB2NjIpLCBkZWZhdWx0IHF1YWxpdHkK/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8AAEQgAAQABAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8Anooorwz5o//Z" alt="Open Enrollment Icon Green"/>
+                    {% elif page.openenrollmentstatus.title == 'Closed' %}
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gA+Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1c2luZyBJSkcgSlBFRyB2NjIpLCBkZWZhdWx0IHF1YWxpdHkK/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8AAEQgAAQABAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8Aq0UUV8+fqB//2Q==" alt="Closed Enrollment Icon Red"/>
+                    {% endif %}{{page.openenrollmentstatus.title}}
+                  </div>
+                  <div class="chip">
+                    Enrollment: {{page.enrollment}}
+                  </div>
+                </div>
+                <i class="material-icons secondary-content absolute-right small">&#xE80C;</i>
+              </a>
+            </div>
+          </div>
+          <div class="card-action">
+            <a href="{{page.website_url}}">Visit Our Website</a>
+            <a href="#">Send Us A Message</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if page.schooladministrators %}
+    <div class="row">
+      <div id="administration" class="scrollspy contactcardlist">
+        <h2>Administration</h2>
+        {% for admin in page.schooladministrators %}
+        <div class="card horizontal">
+          <div class="card-image">
+            <img src="{% if admin.employee.users_userprofileimage_user.image %}/{{admin.employee.users_userprofileimage_user.image}}{% else %}/users/images/placeholder.jpg{% endif %}" alt="{% if admin.employee.users_userprofileimage_user.image %}{{admin.profileimage.alttext}}{% else %}User Profile Picture Not Available{% endif %}"/>
+          </div>
+          <div class="card-stacked">
+            <div class="card-content">
+              <span class="card-title contactcardname">{{ admin.employee.first_name }} {{ admin.employee.last_name }}</span>
+              <strong>{{ admin.admin_type }}</strong> <br />
+              {% if admin.phone %}
+              <a href="tel:+{{admin.phone|slice:"0:1"}}-{{admin.phone|slice:"1:4"}}-{{admin.phone|slice:"4:7"}}-{{admin.phone|slice:"7:11"}}">
+                <i class="material-icons tiny black-text">&#xE0CD;</i> {{admin.phone|slice:"1:4"}}.{{admin.phone|slice:"4:7"}}.{{admin.phone|slice:"7:11"}}
+              </a>
+              {% endif %}
+            </div>
+            <div class="card-action">
+              <a href="#">SEND ME A MESSAGE</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% if page.scc_url or page.links_resourcelink_node.all or page.documents_document_node.all %}
+    <div class="row">
+      <div id="resourcelinks" class="scrollspy">
+        <h2>Resource Links</h2>
+        <div class="collection">
+          {% if page.scc_url %}
+          <a href="{{ page.scc_url }}" title="School Community Council" class="collection-item">School Community Council <i class="material-icons right">&#xE157;</i></a>
+          {% endif %}
+          {% for resourcelink in page.links_resourcelink_node.all %}
+          <a href="{{ resourcelink.link_url }}" class="collection-item">{{ resourcelink.title }} <i class="material-icons right">&#xE157;</i></a>
+          {% endfor %}
+          {% for document in page.documents_document_node.all %}
+          <a href="#{{ document.pk }}" class="collection-item document-inline">{{ document.title }} <i class="material-icons right">&#xE157;</i></a>
+          <div id="{{ document.pk }}" class="hide">
+            <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
+            <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
+            {% for file in document.files_file_node.all %}
+              <a class="btn stretch" href="{{ file.file_file.url }}">
+                  <span class="sr-only">{{ file.title }}</span>
+                  <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
+                </a>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if page.boundary_map %}
+    <div class="row">
+      <div id="boundarymap" class="scrollspy">
+        <h2>Boundary Map</h2>
+        <iframe class="googlemap" width="850" height="500" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="{{ page.boundary_map }}"></iframe>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {{ block.super }}
+</div>
+{% endblock %}
