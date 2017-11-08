@@ -286,6 +286,8 @@ def imagesave(self, *args, **kwargs):
       self.parent = Node.objects.exclude(uuid=self.uuid).get(url=self.PARENT_URL)
     except Node.DoesNotExist:
       pass
+  # Related Node matches Parent
+  self.related_node = self.parent
   # Track URL Changes
   urlchanged = False
   parent_url = self.parent.url if self.parent else self.PARENT_URL
