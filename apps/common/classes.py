@@ -69,6 +69,10 @@ class UUIDLookupChannel(LookupChannel):
         #   else:
         #     uuid_to_id.append(id)
         # ids = uuid_to_id
+        idcount = 0
+        for id in ids:
+            ids[idcount] = str(id)
+            idcount += 1
         things = self.model.objects.in_bulk(ids)
         for thing in things:
           things[str(thing)] = things.pop(thing)

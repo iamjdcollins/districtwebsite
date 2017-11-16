@@ -15,7 +15,7 @@
     <ul>
       <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
-      {% if page.schooladministrators %}
+      {% if page.directoryentries_schooladministrator_node.all %}
       <li><a href="#administration">Administration</a></li>
       {% endif %}
       {% if page.scc_url or page.links_resourcelink_node.all or page.documents_document_node.all %}
@@ -67,7 +67,7 @@
       <option value="#!" disabled selected style="display:none;">Table of Contents</option>
       <option value="#about">About</option>
       <option value="#contact">Contact</option>
-      {% if page.schooladministrators %}
+      {% if page.directoryentries_schooladministrator_node.all %}
       <option value="#administration">Administration</option>
       {% endif %}
       {% if page.scc_url or page.links_resourcelink_node.all or page.documents_document_node.all %}
@@ -142,7 +142,7 @@
     <div class="row">
       <div id="administration" class="scrollspy contactcardlist">
         <h2>Administration</h2>
-        {% for admin in page.schooladministrators %}
+        {% for admin in page.directoryentries_schooladministrator_node.all %}
         <div class="card horizontal">
           <div class="card-image">
             <img src="{% if admin.employee.users_userprofileimage_user.image %}/{{admin.employee.users_userprofileimage_user.image}}{% else %}/users/images/placeholder.jpg{% endif %}" alt="{% if admin.employee.users_userprofileimage_user.image %}{{admin.profileimage.alttext}}{% else %}User Profile Picture Not Available{% endif %}"/>
