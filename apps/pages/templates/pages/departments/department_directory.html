@@ -54,7 +54,7 @@
               <td>
                 <a href="{{ department.building_location.google_place }}" target="_blank">
                   <i class="material-icons tiny black-text">&#xE55F;</i> {{ department.building_location.street_address }}<br>
-                  <i class="material-icons tiny blank black-text"></i> {{ department.building_location.city }}<br>
+                  <i class="material-icons tiny blank black-text"></i> {{ department.building_location.location_city }}, {{ department.building_location.location_state }} {{ department.building_location.location_zipcode }}<br>
                 </a>
               </td>
             </tr>
