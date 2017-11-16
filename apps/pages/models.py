@@ -80,6 +80,7 @@ class School(BasePage):
 class Department(BasePage):
 
     CONTENTBANNERS = True
+    STAFF = True
 
     title = models.CharField(max_length=200, unique=True, help_text='',db_index=True)
     body = RichTextField(null=True, blank=True, help_text='')

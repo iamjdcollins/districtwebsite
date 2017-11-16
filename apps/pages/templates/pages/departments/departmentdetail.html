@@ -19,7 +19,7 @@
       {%if page.building_location or page.main_phone or page.main_fax %}
       <li><a href="#contact">Contact</a></li>
       {% endif %}
-      {% if page.departments_departmentstaff_department.all or page.departments_departmentsubpagestaff_department.all%}
+      {% if page.directoryentries_staff_node.all or page.departments_departmentsubpagestaff_department.all%}
       <li><a href="#staff">Staff</a></li>
       {% endif %}
       {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
@@ -65,7 +65,7 @@
       {%if page.building_location or page.main_phone or page.main_fax %}
       <option value="#contact">Contact</option>
       {% endif %}
-      {% if page.departments_departmentstaff_department.all or page.departments_departmentsubpagestaff_department.all%}
+      {% if page.directoryentries_staff_node.all or page.departments_departmentsubpagestaff_department.all%}
       <option value="#staff">Staff</option>
       {% endif %}
       {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
@@ -130,33 +130,28 @@
       </div>
     </div>
     {% endif %}
-    {% if page.departments_departmentstaff_department.all or page.departments_departmentsubpagestaff_department.all%}
+    {% if page.directoryentries_staff_node.all or page.departments_departmentsubpagestaff_department.all%}
     <div class="row">
       <div id="staff" class="scrollspy contactcardlist">
         <h2>Staff</h2>
-        {% for staff in page.departments_departmentstaff_department.all %}
-        <div class="card horizontal">
-          <div class="card-image">
-            <img src="{% if staff.employee.users_userprofileimage_user.image %}/{{staff.employee.users_userprofileimage_user.image}}{% else %}/users/images/placeholder.jpg{% endif %}" />
-          </div>
-          <div class="card-stacked">
-            <div class="card-content">
-              <h5 class="contactcardname">{{ staff.employee.first_name }} {{ staff.employee.last_name }}</h5>
-              <strong>{{ staff.position }}</strong> <br />
-               {% if staff.main_phone %}
-               <a href="tel:+{{staff.main_phone|slice:"0:1"}}-{{staff.main_phone|slice:"1:4"}}-{{staff.main_phone|slice:"4:7"}}-{{staff.main_phone|slice:"7:11"}}">
-                <i class="material-icons tiny black-text">&#xE0CD;</i> {{staff.main_phone|slice:"1:4"}}.{{staff.main_phone|slice:"4:7"}}.{{staff.main_phone|slice:"7:11"}}
-               </a>
-               {% endif %}
-            </div>
-            <div class="card-action">
-              {% if staff.contact_form %}
-              <a href="#">SEND ME A MESSAGE</a>
-              {% endif %}
-            </div>
-          </div>
-        </div>
+        <table class="striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Job Title</th>
+              <th>Contact</th>
+            </tr>
+          </thead>
+          <tbody>
+        {% for staff in page.directoryentries_staff_node.all %}
+            <tr>
+              <td>{{ staff.employee.first_name }} {{ staff.employee.last_name }}</td>
+              <td>{{ staff.job_title }}</td>
+              <td><a href="#">SEND ME A MESSAGE</a></td>
+            </tr>
         {% endfor %}
+          </tbody>
+        </table>
         {% for staff in page.departments_departmentsubpagestaff_department.all %}
         <div class="card horizontal">
           <div class="card-image">

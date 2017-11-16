@@ -8,7 +8,7 @@ from apps.common.actions import trash_selected, restore_selected, publish_select
 from django.contrib.admin.actions import delete_selected
 from .models import Page, School, Department
 from apps.images.models import Thumbnail, ContentBanner
-from apps.directoryentries.models import SchoolAdministrator
+from apps.directoryentries.models import SchoolAdministrator, Staff
 from apps.links.models import ResourceLink
 from apps.documents.models import Document
 from apps.files.models import File
@@ -41,6 +41,16 @@ class SchoolAdministratorInline(admin.TabularInline):
   max_num = 5
 
   form = make_ajax_form(SchoolAdministrator, {'employee': 'employee'})
+
+class StaffInline(admin.TabularInline):
+  model = Staff
+  fk_name = 'parent'
+  fields = ('employee','job_title',)
+  extra = 0
+  min_num = 0
+  max_num = 50
+
+  form = make_ajax_form(Staff, {'employee': 'employee'})
 
 class ResourceLinkInline(admin.TabularInline):
   model = ResourceLink.related_nodes.through
@@ -156,7 +166,7 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
     super().save_model(request, obj, form, change)
 
 class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
-  inlines = [ContentBannerInline,ResourceLinkInline,DocumentInline,]
+  inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline,]
 
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
