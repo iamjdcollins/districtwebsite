@@ -9,7 +9,7 @@ from django.db.models import Prefetch
 from django.http import HttpResponse
 
 import apps.common.functions
-from .models import Page, School
+from .models import Page, School, Department
 from apps.taxonomy.models import Location, City, State, Zipcode
 from apps.images.models import Thumbnail
 
@@ -88,11 +88,11 @@ def schooldetail(request):
   result = Template( template.content ).render(context=RequestContext(request, {'page': page,'pageopts': pageopts,}))
   return HttpResponse(result)
 
-# def departments(request):
-#   page = get_object_or_404(Page, url=request.path)
-#   pageopts = page._meta
-#   departments = Department.objects.filter(deleted=0).filter(published=1).order_by('title')
-#   return render(request, 'pages/departments/department_directory.html', {'page': page,'pageopts': pageopts, 'departments': departments})
+def departments(request):
+  page = get_object_or_404(Page, url=request.path)
+  pageopts = page._meta
+  departments = Department.objects.filter(deleted=0).filter(published=1).order_by('title')
+  return render(request, 'pages/departments/department_directory.html', {'page': page,'pageopts': pageopts, 'departments': departments})
 
 # def directory(request):
 #   page = get_object_or_404(Page, url=request.path)
