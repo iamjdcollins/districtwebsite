@@ -94,6 +94,12 @@ def departments(request):
   departments = Department.objects.filter(deleted=0).filter(published=1).order_by('title')
   return render(request, 'pages/departments/department_directory.html', {'page': page,'pageopts': pageopts, 'departments': departments})
 
+def departmentdetail(request):
+    page = get_object_or_404(Department, url=request.path)
+    pageopts = page._meta
+    department_children = Department.objects.filter(parent__url=request.path)
+    return render(request, 'pages/departments/departmentdetail.html', {'page': page,'pageopts': pageopts,'department_children': department_children})
+
 # def directory(request):
 #   page = get_object_or_404(Page, url=request.path)
 #   pageopts = page._meta
