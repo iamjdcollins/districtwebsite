@@ -6,7 +6,7 @@ from ajax_select import make_ajax_form
 from apps.common.classes import DeletedListFilter, EditLinkToInlineObject
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
-from .models import Page, School
+from .models import Page, School, Department
 from apps.images.models import Thumbnail, ContentBanner
 from apps.directoryentries.models import SchoolAdministrator
 from apps.links.models import ResourceLink
@@ -136,6 +136,27 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
   inlines = [ThumbnailInline, ContentBannerInline,SchoolAdministratorInline,ResourceLinkInline,DocumentInline,]
+
+  def save_formset(self, request, form, formset, change):
+    instances = formset.save(commit=False)
+    for obj in formset.deleted_objects:
+      obj.delete()
+    for obj in formset.new_objects:
+      obj.create_user = request.user
+      obj.update_user = request.user
+      obj.save()
+    for obj in formset.changed_objects:
+      obj[0].update_user = request.user
+      obj[0].save()
+
+  def save_model(self, request, obj, form, change):
+    if getattr(obj, 'create_user', None) is None:
+      obj.create_user = request.user
+    obj.update_user = request.user
+    super().save_model(request, obj, form, change)
+
+class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
+  inlines = [ContentBannerInline,ResourceLinkInline,DocumentInline,]
 
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
@@ -295,5 +316,6 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 # Register your models here.
 admin.site.register(Page, PageAdmin)
 admin.site.register(School, SchoolAdmin)
+admin.site.register(Department, DepartmentAdmin)
 admin.site.register(ResourceLink,ResourceLinkAdmin)
 admin.site.register(Document,DocumentAdmin)
