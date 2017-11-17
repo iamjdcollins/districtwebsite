@@ -166,6 +166,10 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
     super().save_model(request, obj, form, change)
 
 class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+  def get_fields(self, request, obj=None):
+      return ('title','body','short_description','building_location','main_phone','main_fax','parent')
+
   inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline,]
 
   def save_formset(self, request, form, formset, change):
