@@ -61,6 +61,12 @@
         <a class="alphafilter" href="/directory/last-name-z/" title="Last Name Z">Z</a>
       </div>
     </div>
+    <form class="textfieldboxes" onsubmit="myFunction(); return false;">
+      <div class="input-field">
+        <input id="tableSearch" class="autocomplete" onchange="myFunction()" title="Filter People" type="text">
+        <label for="schoolsfilter" class="">Filter People</label>
+      </div>
+    </form>
     <div id="people" class="scrollspy">
       <div class="row">
         <table id="searchTable" class="striped highlight mobileblock">
@@ -69,8 +75,6 @@
               <th>Name</th>
               <th>Title</th>
               <th>Department</th>
-              <th>Location</th>
-              <th>Room</th>
               <th>Email</th>
             </tr>
           </thead>
@@ -78,8 +82,6 @@
             {% for person in people %}
             <tr>
               <td>{{ person.last_name  }}, {{ person.first_name }}</td>
-              <td></td>
-              <td></td>
               <td></td>
               <td></td>
               <td>{{ person.email }}</td>
@@ -103,16 +105,14 @@
 {% block pagescript %}
 {{ block.super }}
 <script>
-$('#searchTable').DataTable({
-  dom: '<"wrapper textfieldboxes"lfrtip>',
+directoryTable = $('#searchTable').DataTable({
+  dom: '<"wrapper textfieldboxes"lrtip>',
   paging: false,
   language: { lengthMenu: "", search: "", searchPlaceholder: "Filter People", paginate: { previous: '<i class="material-icons">&#xE5CB;</i>', next: '<i class="material-icons">&#xE5CC;</i>'},},
   columns: [
     { title: "Name", className: "name" },
     { title: "Title", className: "title" },
     { title: "Department", className: "department" },
-    { title: "Location", className: "location" },
-    { title: "Room", className: "room" },
     { title: "Email", className: "email" }
   ],
   renderer: {
@@ -120,5 +120,8 @@ $('#searchTable').DataTable({
   },
   responsive: true,
 });
+$('#tableSearch').keyup(function(){
+  directoryTable.search($(this).val()).draw() ;
+})
 </script>
 {% endblock %}

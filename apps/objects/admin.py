@@ -11,9 +11,9 @@ class NodeAdmin(MPTTModelAdmin):
   list_per_page = 100000
   def get_fields(self, request, obj=None):
     if obj:
-      return ('node_title', 'parent','url',)
+      return ('node_title', 'menu_item', 'menu_title', 'parent','url',)
     else:
-      return ('node_title', 'parent','url',)
+      return ('node_title', 'menu_item', 'menu_title', 'parent','url',)
 
   def get_readonly_fields(self, request, obj=None):
         if obj:

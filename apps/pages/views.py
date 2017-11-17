@@ -16,7 +16,7 @@ from apps.images.models import Thumbnail
 # from apps.schools.models import School
 # from apps.departments.models import Department
 # from apps.news.models import News, NewsYear
-#from apps.users.models import User
+from apps.users.models import Employee
 
 def home(request):
   page = get_object_or_404(Page, url='/home/')
@@ -100,17 +100,17 @@ def departmentdetail(request):
     department_children = Department.objects.filter(parent__url=request.path)
     return render(request, 'pages/departments/departmentdetail.html', {'page': page,'pageopts': pageopts,'department_children': department_children})
 
-# def directory(request):
-#   page = get_object_or_404(Page, url=request.path)
-#   pageopts = page._meta
-#   people = User.objects.filter(is_active=1).filter(is_staff=1).order_by('last_name')
-#   return render(request, 'pages/directory/directory.html', {'page': page,'pageopts': pageopts, 'people': people})
+def directory(request):
+    page = get_object_or_404(Page, url=request.path)
+    pageopts = page._meta
+    people = Employee.objects.filter(is_active=1).filter(is_staff=1).order_by('last_name')
+    return render(request, 'pages/directory/directory.html', {'page': page,'pageopts': pageopts, 'people': people})
 
-# def directory_letter(request, letter):
-#   page = get_object_or_404(Page, url=request.path)
-#   pageopts = page._meta
-#   people = User.objects.filter(is_active=1).filter(is_staff=1).filter(last_name__istartswith=letter).order_by('last_name')
-#   return render(request, 'pages/directory/directory_letter.html', {'page': page,'pageopts': pageopts, 'people': people})
+def directory_letter(request, letter):
+    page = get_object_or_404(Page, url=request.path)
+    pageopts = page._meta
+    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(last_name__istartswith=letter).order_by('last_name')
+    return render(request, 'pages/directory/directory_letter.html', {'page': page,'pageopts': pageopts, 'people': people})
 
 # def calendars(request):
 #   page = get_object_or_404(Page, url=request.path)
