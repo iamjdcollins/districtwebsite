@@ -18,7 +18,18 @@ def show_in_directory(item):
         return False
     return True
 
+def job_title_titlecase(item):
+    overwrite_titlecase = {
+    
+    }
+    if str(item.title).lower() == '[]':
+        return ''
+    if str(item.title).lower() in overwrite_titlecase:
+        return overwrite_titlecase[str(item.title).lower()]
+    return str(item.title).title()
+
 def importUser(item, account):
+  print('Importing: ' + str(item))
   obj, created = Employee.objects.get_or_create(uuid=uuid.UUID(str(item.objectGUID)), defaults={'email':'tempemail@slcschools.org','url':'/tempemail'})
   obj.username = str(item.userPrincipalName).lower()
   obj.first_name = item.givenName
@@ -27,6 +38,7 @@ def importUser(item, account):
     obj.email = str(item.mail).lower()
   else:
     obj.email = str(item.userPrincipalName).lower()
+  obj.job_title = job_title_titlecase(item)
   obj.is_staff = True
   obj.in_directory = show_in_directory(item)
   obj.deleted = False
