@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 import apps.common.functions
 import uuid
 from django.contrib.auth.models import AbstractUser
@@ -23,7 +24,7 @@ from django.contrib.auth.models import Group
 import apps.common.functions
 import uuid
 from django.contrib.auth import get_permission_codename
-from apps.objects.models import User
+from apps.objects.models import Node, User
 
 # def users_userprofileimage_image_upload_to(instance, filename):
 #   profile_shortname = apps.common.functions.urlclean_objname(str(instance.employee.email).split('@', 1)[0])
@@ -38,6 +39,9 @@ from apps.objects.models import User
 
 class Employee(User):
   PARENT_URL = '/accounts/employees/'
+
+  department = models.ForeignKey(Node, null=True, blank=True, on_delete=models.PROTECT, limit_choices_to=Q(content_type='school') | Q(content_type='department'),related_name='users_employee_department')
+  job_title =  models.CharField(max_length=200, null=True, blank=True, help_text='')
 
   employee_user_node = models.OneToOneField(User, db_column='employee_user_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 

@@ -82,8 +82,8 @@
             {% for person in people %}
             <tr>
               <td>{{ person.last_name  }}, {{ person.first_name }}</td>
-              <td></td>
-              <td></td>
+              <td>{% if person.job_title %}{{ person.job_title }}{% endif %}</td>
+              <td>{% if person.department %}<a href=\"{{ person.department.url }}\">{{ person.department.node_title }}</a>{% endif %}</td>
               <td>{{ person.email }}</td>
             </tr>
             {% endfor %}
