@@ -103,13 +103,13 @@ def departmentdetail(request):
 def directory(request):
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
-    people = Employee.objects.filter(is_active=1).filter(is_staff=1).order_by('last_name')
+    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).order_by('last_name')
     return render(request, 'pages/directory/directory.html', {'page': page,'pageopts': pageopts, 'people': people})
 
 def directory_letter(request, letter):
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
-    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(last_name__istartswith=letter).order_by('last_name')
+    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).filter(last_name__istartswith=letter).order_by('last_name')
     return render(request, 'pages/directory/directory_letter.html', {'page': page,'pageopts': pageopts, 'people': people})
 
 # def calendars(request):
