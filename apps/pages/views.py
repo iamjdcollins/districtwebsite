@@ -9,6 +9,7 @@ from django.db.models import Prefetch
 from django.http import HttpResponse
 
 import apps.common.functions
+from apps.objects.models import Node
 from .models import Page, School, Department
 from apps.taxonomy.models import Location, City, State, Zipcode
 from apps.images.models import Thumbnail
@@ -103,13 +104,13 @@ def departmentdetail(request):
 def directory(request):
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
-    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).order_by('last_name')
+    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).order_by('last_name').only('last_name','first_name','job_title','email','department').prefetch_related(Prefetch('department',queryset=Node.objects.only('node_title','url')))
     return render(request, 'pages/directory/directory.html', {'page': page,'pageopts': pageopts, 'people': people})
 
 def directory_letter(request, letter):
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
-    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).filter(last_name__istartswith=letter).order_by('last_name')
+    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).filter(last_name__istartswith=letter).order_by('last_name').only('last_name','first_name','job_title','email','department').prefetch_related(Prefetch('department',queryset=Node.objects.only('node_title','url')))
     return render(request, 'pages/directory/directory_letter.html', {'page': page,'pageopts': pageopts, 'people': people})
 
 # def calendars(request):
