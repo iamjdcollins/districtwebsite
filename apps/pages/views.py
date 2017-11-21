@@ -92,7 +92,7 @@ def schooldetail(request):
 def departments(request):
   page = get_object_or_404(Page, url=request.path)
   pageopts = page._meta
-  departments = Department.objects.filter(deleted=0).filter(published=1).order_by('title')
+  departments = Department.objects.filter(deleted=0).filter(published=1).order_by('title').only('title','building_location','url','main_phone','short_description').prefetch_related(Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))))
   return render(request, 'pages/departments/department_directory.html', {'page': page,'pageopts': pageopts, 'departments': departments})
 
 def departmentdetail(request):
