@@ -14,7 +14,7 @@ from apps.directoryentries.models import SchoolAdministrator
 # Create your models here.
 
 class Page(BasePage):
-  title = models.CharField(max_length=200, unique=True, help_text='',db_index=True)
+  title = models.CharField(max_length=200, help_text='',db_index=True)
   body = RichTextField(null=True, blank=True, help_text=PageHelp.body)
 
   page_page_node = models.OneToOneField(BasePage, db_column='page_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
