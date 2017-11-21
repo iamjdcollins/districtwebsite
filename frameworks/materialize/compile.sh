@@ -1,4 +1,5 @@
 #!/bin/bash
+PATH=$PATH:./node_modules/.bin/
 grunt sass:min
 grunt concat:dist
 grunt babel:dist
