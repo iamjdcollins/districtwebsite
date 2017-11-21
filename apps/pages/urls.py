@@ -21,6 +21,7 @@ urlpatterns = [
   url(r'^directory/$', views.directory, name='directory'),
   url(r'^directory/last-name-(?P<letter>[a-z])/$', views.directory_letter, name='directory_letter'),
   url(r'^calendars/$', views.calendars, name='calendars'),
+  url(r'^employees/$', views.employees, name='employees'),
   # url(r'^temp/$', views.temp, name='temp'),
 ]
 
