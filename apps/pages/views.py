@@ -113,7 +113,7 @@ def directory_letter(request, letter):
     people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).filter(last_name__istartswith=letter).order_by('last_name').only('last_name','first_name','job_title','email','department').prefetch_related(Prefetch('department',queryset=Node.objects.only('node_title','url')))
     return render(request, 'pages/directory/directory_letter.html', {'page': page,'pageopts': pageopts, 'people': people})
 
-# def calendars(request):
-#   page = get_object_or_404(Page, url=request.path)
-#   pageopts = page._meta
-#   return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+def calendars(request):
+    page = get_object_or_404(Page, url=request.path)
+    pageopts = page._meta
+    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
