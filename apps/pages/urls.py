@@ -8,7 +8,9 @@ Pages = Page.objects.filter(deleted=0).filter(published=1)
 urlpatterns = [
   url(r'^$', views.home, name='home'),
   url(r'^home/$', views.home, name='home'),
-  # url(r'^news/$', views.news, name='news'),
+  url(r'^news/$', views.news, name='news'),
+  url(r'^news/\d\d\d\d-\d\d\/$', views.NewsYearArchive, name='newsyeararchive'),
+  url(r'^news/\d\d\d\d-\d\d\/.*\/$', views.NewsArticleDetail, name='newsarticledetail'),
   url(r'^schools/$', views.schools, name='schools'),
   url(r'^schools/elementary-schools/$', views.elementaryschools, name='elementaryschools'),
   url(r'^schools/k-8-schools/$', views.k8schools, name='k8schools'),

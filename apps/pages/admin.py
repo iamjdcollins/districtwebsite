@@ -6,8 +6,8 @@ from ajax_select import make_ajax_form
 from apps.common.classes import DeletedListFilter, EditLinkToInlineObject
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
-from .models import Page, School, Department
-from apps.images.models import Thumbnail, ContentBanner
+from .models import Page, School, Department, News, NewsYear
+from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner
 from apps.directoryentries.models import SchoolAdministrator, Staff
 from apps.links.models import ResourceLink
 from apps.documents.models import Document
@@ -21,6 +21,14 @@ class ThumbnailInline(admin.TabularInline):
   fk_name = 'parent'
   fields = ('title','image_file','alttext',)
   extra = 0 
+  min_num = 0
+  max_num = 1
+
+class NewsThumbnailInline(admin.TabularInline):
+  model = NewsThumbnail
+  fk_name = 'parent'
+  fields = ('title','image_file','alttext',)
+  extra = 0
   min_num = 0
   max_num = 1
 
@@ -190,6 +198,56 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
 
+class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+  def get_fields(self, request, obj=None):
+      return ('title','pinned','summary','body','author_date')
+
+  inlines = [NewsThumbnailInline,ContentBannerInline,]
+
+  def save_formset(self, request, form, formset, change):
+    instances = formset.save(commit=False)
+    for obj in formset.deleted_objects:
+      obj.delete()
+    for obj in formset.new_objects:
+      obj.create_user = request.user
+      obj.update_user = request.user
+      obj.save()
+    for obj in formset.changed_objects:
+      obj[0].update_user = request.user
+      obj[0].save()
+
+  def save_model(self, request, obj, form, change):
+    if getattr(obj, 'create_user', None) is None:
+      obj.create_user = request.user
+    obj.update_user = request.user
+    super().save_model(request, obj, form, change)
+
+class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+  def get_fields(self, request, obj=None):
+      return ('title',)
+
+  inlines = []
+
+  def save_formset(self, request, form, formset, change):
+    instances = formset.save(commit=False)
+    for obj in formset.deleted_objects:
+      obj.delete()
+    for obj in formset.new_objects:
+      obj.create_user = request.user
+      obj.update_user = request.user
+      obj.save()
+    for obj in formset.changed_objects:
+      obj[0].update_user = request.user
+      obj[0].save()
+
+  def save_model(self, request, obj, form, change):
+    if getattr(obj, 'create_user', None) is None:
+      obj.create_user = request.user
+    obj.update_user = request.user
+    super().save_model(request, obj, form, change)
+
 class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
     if obj:
@@ -331,5 +389,7 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 admin.site.register(Page, PageAdmin)
 admin.site.register(School, SchoolAdmin)
 admin.site.register(Department, DepartmentAdmin)
+admin.site.register(News, NewsAdmin)
+admin.site.register(NewsYear, NewsYearAdmin)
 admin.site.register(ResourceLink,ResourceLinkAdmin)
 admin.site.register(Document,DocumentAdmin)

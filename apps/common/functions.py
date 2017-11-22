@@ -5,7 +5,7 @@ import uuid
 from django.conf import settings
 from django.contrib.auth import get_permission_codename
 from guardian.shortcuts import get_perms
-from apps.objects.models import Node
+from apps.objects.models import Node, User
 from django.core.cache import cache
 
 def findfileext_media(media):
@@ -200,6 +200,21 @@ def pagesave(self, *args, **kwargs):
   # Set UUID if None
   if self.uuid is None:
     self.uuid = uuid.uuid4()
+  if self._meta.model_name == 'news':
+    if self.author_date.month >= 7:
+      yearend = self.author_date.year + 1
+      yearstring = str(self.author_date.year) + '-' + str(self.author_date.year + 1)[2:]
+    else:
+      yearend=self.author_date.year
+      yearstring = str(self.author_date.year - 1) + '-' + str(self.author_date.year)[2:]
+    try:
+      newsyear = self.PARENT_TYPE.objects.get(yearend=yearend)
+    except self.PARENT_TYPE.DoesNotExist:
+      webmaster = User.objects.get(username='webmaster@slcschools.org')
+      parent = Node.objects.get(node_title='News', content_type='page')
+      newsyear = self.PARENT_TYPE(title=yearstring, yearend=yearend, parent=parent, create_user=webmaster, update_user=webmaster)
+      newsyear.save()
+    self.parent = Node.objects.get(url=newsyear.url)
   # Track URL Changes
   urlchanged = False
   parent_url = self.parent.url if self.parent else ''

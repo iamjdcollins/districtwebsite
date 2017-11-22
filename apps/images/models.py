@@ -28,6 +28,32 @@ class Thumbnail(Image):
   save = apps.common.functions.imagesave
   delete = apps.common.functions.modeltrash
 
+class NewsThumbnail(Image):
+
+  PARENT_URL = ''
+  URL_PREFIX = '/images/newsthumbnails/'
+
+  title = models.CharField(max_length=200, help_text='')
+  image_file = models.ImageField(max_length=2000, upload_to=apps.common.functions.image_upload_to, verbose_name='Image', help_text='')
+  alttext = models.CharField(max_length=200, verbose_name='Alternative Text', help_text='')
+  related_node = models.ForeignKey(Node, blank=True, null=True, related_name='images_newsthumbnail_node', editable=False)
+
+  newsthumbnail_image_node = models.OneToOneField(Image, db_column='newsthumbnail_image_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+  class Meta:
+    db_table = 'images_newsthumbnail'
+    get_latest_by = 'update_date'
+    permissions = (('trash_newsthumbnail', 'Can soft delete news thumbnail'),('restore_thumbnail', 'Can restore news thumbnail'))
+    verbose_name = 'News Thumbnail'
+    verbose_name_plural = 'News Thumbnails'
+    default_manager_name = 'objects'
+
+  def __str__(self):
+    return self.title
+
+  save = apps.common.functions.imagesave
+  delete = apps.common.functions.modeltrash
+
 class PageBanner(Image):
 
   PARENT_URL = ''

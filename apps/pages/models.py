@@ -10,6 +10,7 @@ from django.contrib.auth import get_permission_codename
 from apps.taxonomy.models import Location, SchoolType, OpenEnrollmentStatus
 from apps.images.models import Thumbnail, PageBanner, ContentBanner
 from apps.directoryentries.models import SchoolAdministrator
+from django.utils import timezone
 
 # Create your models here.
 
@@ -97,6 +98,47 @@ class Department(BasePage):
         permissions = (('trash_department', 'Can soft delete department'),('restore_department', 'Can restore department'))
         verbose_name = 'Department'
         verbose_name_plural = 'Departments'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.pagesave
+    delete = apps.common.functions.modeltrash
+
+class NewsYear(BasePage):
+    title = models.CharField(max_length=200, unique=True, help_text="",)
+    yearend = models.CharField(max_length=4, unique=True, help_text="", blank=True)
+
+    class Meta:
+        db_table = 'pages_newsyear'
+        get_latest_by = 'update_date'
+        permissions = (('trash_newsyear', 'Can soft delete newsyear'),('restore_newsyear', 'Can restore newsyear'))
+        verbose_name = 'News Year'
+        verbose_name_plural = 'News Years'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.pagesave
+    delete = apps.common.functions.modeltrash
+
+class News(BasePage):
+
+    PARENT_TYPE = NewsYear
+
+    title = models.CharField(max_length=200, unique=False, help_text="",)
+    body = RichTextField(null=True, blank=True, help_text="",)
+    summary = RichTextField(max_length=400, null=True, blank=True, help_text="",)
+    pinned = models.BooleanField(default=False,)
+    author_date = models.DateTimeField(default=timezone.now,)
+
+    class Meta:
+        db_table = 'pages_news'
+        get_latest_by = 'update_date'
+        permissions = (('trash_news', 'Can soft delete news'),('restore_news', 'Can restore news'))
+        verbose_name = 'News'
+        verbose_name_plural = 'News'
+        ordering = ['-author_date',]
 
     def __str__(self):
         return self.title
