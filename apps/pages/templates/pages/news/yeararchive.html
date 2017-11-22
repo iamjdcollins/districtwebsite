@@ -18,7 +18,7 @@
       {% endif %}
       {% for month in newsmonths %}
       {% if month.news %}
-      <li><a href="#{{ month.month|lower }}">{{ month.month }} ({{ month.news.count }})</a></li>
+      <li><a href="#{{ month.month|lower }}">{{ month.month }} ({{ month.news|length }})</a></li>
       {% endif %}
       {% endfor %}
       <li><a href="/news/">Other Years</a></li>

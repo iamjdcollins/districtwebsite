@@ -12,7 +12,7 @@ import apps.common.functions
 from apps.objects.models import Node
 from .models import Page, School, Department, News, NewsYear
 from apps.taxonomy.models import Location, City, State, Zipcode
-from apps.images.models import Thumbnail
+from apps.images.models import Thumbnail, NewsThumbnail
 
 # from apps.schools.models import School
 # from apps.departments.models import Department
@@ -22,7 +22,7 @@ from apps.users.models import Employee
 def home(request):
   page = get_object_or_404(Page, url='/home/')
   pageopts = page._meta
-  news = News.objects.all().filter(deleted=0).filter(published=1).order_by('-pinned','-author_date')[0:5]
+  news = News.objects.all().filter(deleted=0).filter(published=1).order_by('-pinned','-author_date').only('title','author_date','summary','url').prefetch_related(Prefetch('images_newsthumbnail_node', queryset = NewsThumbnail.objects.only('image_file','alttext','related_node_id')))[0:5]
   result = render(request, 'pages/home.html', {'page': page,'pageopts': pageopts,'news': news})
   return result
 
@@ -35,21 +35,60 @@ def news(request):
 def NewsYearArchive(request):
     page = NewsYear.objects.filter(url=request.path).first()
     pageopts = page._meta
-    news = News.objects.filter(parent__url=request.path).filter(deleted=0).filter(published=1)
+    news = News.objects.filter(parent__url=request.path).filter(deleted=0).filter(published=1).only('title','author_date','summary','url').prefetch_related(Prefetch('images_newsthumbnail_node', queryset = NewsThumbnail.objects.only('image_file','alttext','related_node_id')))
     newsmonths = [
-        {'month': 'June', 'news': News.objects.filter(author_date__month=6).filter(parent__url=request.path).filter(deleted=0).filter(published=1)},
-        {'month': 'May', 'news': News.objects.filter(author_date__month=5).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-        {'month': 'April', 'news': News.objects.filter(author_date__month=4).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-        {'month': 'March', 'news': News.objects.filter(author_date__month=3).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-        {'month': 'February', 'news': News.objects.filter(author_date__month=2).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-        {'month': 'January', 'news': News.objects.filter(author_date__month=1).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-        {'month': 'December', 'news': News.objects.filter(author_date__month=12).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-        {'month': 'November', 'news': News.objects.filter(author_date__month=11).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-        {'month': 'October', 'news': News.objects.filter(author_date__month=10).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-        {'month': 'September', 'news': News.objects.filter(author_date__month=9).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-        {'month': 'August', 'news': News.objects.filter(author_date__month=8).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-        {'month': 'July', 'news': News.objects.filter(author_date__month=7).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+        {'month': 'June', 'news': [],},
+        {'month': 'May', 'news': [],},
+        {'month': 'April', 'news': [],},
+        {'month': 'March', 'news': [],},
+        {'month': 'February', 'news': [],},
+        {'month': 'January', 'news': [],},
+        {'month': 'December', 'news': [],},
+        {'month': 'November', 'news': [],},
+        {'month': 'October', 'news': [],},
+        {'month': 'September', 'news': [],},
+        {'month': 'August', 'news': [],},
+        {'month': 'July', 'news': [],},
     ]
+    for item in news:
+        if item.author_date.month == 6:
+            newsmonths[0]['news'].append(item)
+        if item.author_date.month == 5:
+            newsmonths[1]['news'].append(item)
+        if item.author_date.month == 4:
+            newsmonths[2]['news'].append(item)
+        if item.author_date.month == 3:
+            newsmonths[3]['news'].append(item)
+        if item.author_date.month == 2:
+            newsmonths[4]['news'].append(item)
+        if item.author_date.month == 1:
+            newsmonths[5]['news'].append(item)
+        if item.author_date.month == 12:
+            newsmonths[6]['news'].append(item)
+        if item.author_date.month == 11:
+            newsmonths[7]['news'].append(item)
+        if item.author_date.month == 10:
+            newsmonths[8]['news'].append(item)
+        if item.author_date.month == 9:
+            newsmonths[9]['news'].append(item)
+        if item.author_date.month == 8:
+            newsmonths[10]['news'].append(item)
+        if item.author_date.month == 7:
+            newsmonths[11]['news'].append(item)
+    #newsmonths = [
+    #    {'month': 'June', 'news': News.objects.filter(author_date__month=6).filter(parent__url=request.path).filter(deleted=0).filter(published=1)},
+    #    {'month': 'May', 'news': News.objects.filter(author_date__month=5).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #    {'month': 'April', 'news': News.objects.filter(author_date__month=4).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #    {'month': 'March', 'news': News.objects.filter(author_date__month=3).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #    {'month': 'February', 'news': News.objects.filter(author_date__month=2).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #    {'month': 'January', 'news': News.objects.filter(author_date__month=1).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #    {'month': 'December', 'news': News.objects.filter(author_date__month=12).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #    {'month': 'November', 'news': News.objects.filter(author_date__month=11).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #    {'month': 'October', 'news': News.objects.filter(author_date__month=10).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #    {'month': 'September', 'news': News.objects.filter(author_date__month=9).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #    {'month': 'August', 'news': News.objects.filter(author_date__month=8).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #    {'month': 'July', 'news': News.objects.filter(author_date__month=7).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
+    #]
     return render(request, 'pages/news/yeararchive.html', {'page': page, 'pageopts': pageopts, 'news': news, 'newsmonths': newsmonths})
 
 def NewsArticleDetail(request):
