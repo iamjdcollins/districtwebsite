@@ -105,8 +105,12 @@ body {top:0 !important;}
     right: 50%;
     z-index: 1;
 }
-.modaal-iframe.modaal-wrapper .modal-title, .modaal-iframe.modaal-wrapper .modal-desc{
-    margin: 0px !important;
+.modaal-iframe.modaal-wrapper .modal-title, .modaal-iframe.modaal-wrapper .modal-desc {
+  margin: 0px !important;
+  padding: 0px;
+  height: 0px;
+  width: 0px;
+  color: transparent !important
 }
 .modaal-wrapper .modal-desc {
   margin: 0px -30px 0px -30px;
@@ -119,7 +123,8 @@ body {top:0 !important;}
   color: white;
   width: 30px;
   height: 30px;
-  background-color: transparent !important;
+  //background-color: transparent !important;
+  background: #002f4f !important;
   position: absolute;
   border-radius: unset;
 }
