@@ -87,8 +87,8 @@ class Department(BasePage):
     body = RichTextField(null=True, blank=True, help_text='')
     short_description = models.TextField(max_length=2000, verbose_name='Short Description', null=True, blank=True,)
     building_location = models.ForeignKey(Location, to_field='location_taxonomy_node', on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='pages_department_building_location')
-    main_phone = models.CharField(max_length=11, help_text='')
-    main_fax = models.CharField(max_length=11, help_text='')
+    main_phone = models.CharField(max_length=11, null=True, blank=True, help_text='')
+    main_fax = models.CharField(max_length=11, null=True, blank=True, help_text='')
 
     department_page_node = models.OneToOneField(BasePage, db_column='department_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
