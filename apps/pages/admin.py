@@ -1,3 +1,5 @@
+from django import forms
+from django.db.models import Q
 from django.contrib import admin
 from django.utils import timezone
 from guardian.admin import GuardedModelAdmin
@@ -12,6 +14,7 @@ from apps.directoryentries.models import SchoolAdministrator, Staff
 from apps.links.models import ResourceLink
 from apps.documents.models import Document
 from apps.files.models import File
+from apps.objects.models import Node
 
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
@@ -173,7 +176,19 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
 
+class DepartmentAdminForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DepartmentAdminForm, self).__init__(*args, **kwargs)
+        if self.instance:
+            self.fields['parent'].queryset = Node.objects.filter(deleted=0).filter(published=1).filter(Q(content_type='page', node_title='Departments') | Q(content_type='department'))
+
+    class Meta:
+        model = Department
+        fields = ['title','body','short_description','building_location','main_phone','main_fax','parent',]
+
 class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+  form = DepartmentAdminForm
 
   def get_fields(self, request, obj=None):
       return ('title','body','short_description','building_location','main_phone','main_fax','parent')
