@@ -2,12 +2,12 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from ajax_select import urls as ajax_select_urls
-import django_saml2_auth.views
+import apps.thirdparty.django_saml2_auth.django_saml2_auth.views
 from django.contrib.auth.views import logout
 
 urlpatterns = [
-url(r'^saml_login/', include('django_saml2_auth.urls')),
-url(r'^accounts/login/$', django_saml2_auth.views.signin),
+url(r'^saml_login/', include('apps.thirdparty.django_saml2_auth.django_saml2_auth.urls')),
+url(r'^accounts/login/$', apps.thirdparty.django_saml2_auth.django_saml2_auth.views.signin),
 url(r'^accounts/logout/$', logout,{'next_page': 'https://adfs.slcschools.org/adfs/ls/?wa=wsignout1.0&wreply=https://www2.slcschools.org/'})
 ]
 

@@ -25,6 +25,17 @@ SECRET_KEY = os.environ['WWW_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+#SAML
+SAML2_AUTH = {
+    'METADATA_AUTO_CONF_URL': 'https://adfs.slcschools.org/FederationMetadata/2007-06/FederationMetadata.xml',
+    'ATTRIBUTES_MAP': {  # Change Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
+        'email': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
+        'username': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn',
+        'first_name': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',
+        'last_name': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',
+    },
+}
+
 AUTH_USER_MODEL = 'objects.User'
 
 AUTHENTICATION_BACKENDS = (

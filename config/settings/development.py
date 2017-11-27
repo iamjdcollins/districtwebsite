@@ -2,6 +2,8 @@ from .base import *
 
 DEBUG = True
 
+SAML2_AUTH['ASSERTION_URL'] = 'https://www-dev.slcschools.org'
+
 ALLOWED_HOSTS = ['www-dev.slcschools.org',]
 
 # Required for Django Debug Toolbar
