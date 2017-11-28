@@ -103,6 +103,7 @@ class StaffInline(admin.TabularInline):
   model = Staff
   fk_name = 'parent'
   fields = ['employee','job_title',]
+  ordering = ['title',]
   extra = 0
   min_num = 0
   max_num = 50
