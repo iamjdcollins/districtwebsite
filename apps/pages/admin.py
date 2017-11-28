@@ -125,6 +125,7 @@ class ResourceLinkInline(admin.TabularInline):
   model = ResourceLink.related_nodes.through
   fk_name = 'node'
   fields = []
+  ordering = ['resourcelink__title',]
   extra = 0 
   min_num = 0
   max_num = 50
@@ -137,6 +138,7 @@ class DocumentInline(EditLinkToInlineObject, admin.TabularInline):
   fk_name = 'parent'
   readonly_fields = ('edit_link', )
   fields = ['title', 'edit_link', ]
+  ordering = ['title',]
   extra = 0 
   min_num = 0
   max_num = 50
