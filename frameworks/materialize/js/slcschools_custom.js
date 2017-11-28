@@ -444,4 +444,7 @@ $(document).ready(function(){
       });
     },
   });
+  if(window.location.hash){
+    $('[href=' + window.location.hash + ']').trigger('click')
+  }
 });
