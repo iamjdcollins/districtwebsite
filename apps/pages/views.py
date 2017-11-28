@@ -11,9 +11,12 @@ from django.http import HttpResponse
 import apps.common.functions
 from apps.objects.models import Node
 from .models import Page, School, Department, News, NewsYear
-from apps.taxonomy.models import Location, City, State, Zipcode
-from apps.images.models import Thumbnail, NewsThumbnail
-
+from apps.taxonomy.models import Location, City, State, Zipcode, Language
+from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner
+from apps.directoryentries.models import Staff
+from apps.links.models import ResourceLink
+from apps.documents.models import Document
+from apps.files.models import File
 # from apps.schools.models import School
 # from apps.departments.models import Department
 # from apps.news.models import News, NewsYear
@@ -161,9 +164,9 @@ def departments(request):
   return render(request, 'pages/departments/department_directory.html', {'page': page,'pageopts': pageopts, 'departments': departments})
 
 def departmentdetail(request):
-    page = get_object_or_404(Department, url=request.path)
+    page = get_object_or_404(Department.objects.filter(deleted=0).filter(published=1).only('title','body','building_location','main_phone','main_fax').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_contentbanner_node', queryset = ContentBanner.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')),Prefetch('directoryentries_staff_node',queryset=Staff.objects.filter(deleted=0).filter(published=1).only('employee','job_title','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('last_name','first_name','email')))),Prefetch('links_resourcelink_node',queryset=ResourceLink.objects.filter(deleted=0).filter(published=1).only('title','link_url','related_nodes')),Prefetch('documents_document_node',queryset=Document.objects.filter(deleted=0).filter(published=1).only('pk','title','related_node').prefetch_related(Prefetch('files_file_node',queryset=File.objects.filter(deleted=0).filter(published=1).only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title'))))))), url=request.path)
     pageopts = page._meta
-    department_children = Department.objects.filter(parent__url=request.path)
+    department_children = Department.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path).only('pk','title','short_description','main_phone','building_location','content_type','menu_title','url').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))))
     return render(request, 'pages/departments/departmentdetail.html', {'page': page,'pageopts': pageopts,'department_children': department_children})
 
 def directory(request):

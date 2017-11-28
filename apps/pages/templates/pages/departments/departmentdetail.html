@@ -255,19 +255,6 @@
               </td>
             </tr>
           </tbody>
-  {% comment %}        <thead>
-            <th>Parent Department / Program</th>
-            <th>Visit Department</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <a href="{{ page.parent.url }}" title="{{ page.parent.menu_title }}">{{ page.parent.menu_title }}</a>
-              </td>
-              <td>
-              </td>
-            </tr>
-          </tbody>{% endcomment %}
           {% endif %}
           {% if department_children %}
           <thead>
@@ -297,24 +284,6 @@
             {% endif %}
             {% endfor %}
           </tbody>
-          {% comment %}
-          <thead>
-            <th>Sub Department / Program</th>
-            <th>Visit Department</th>
-          </thead>
-          <tbody>
-            {% for child in department_children %}
-              {% if child.content_type == 'Department' %}
-              <tr>
-                <td>
-                  <a href="{{ child.url }}" title="{{ child.menu_title }}">{{ child.menu_title }}</a>
-                </td>
-                <td>
-                </td>
-              </tr>
-              {% endif %}
-            {% endfor %}
-          </tbody>{% endcomment %}
           {% endif %}
         </table>
       </div>
