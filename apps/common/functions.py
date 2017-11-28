@@ -49,6 +49,7 @@ def silentmove_media(oldpath, newpath):
     pass
 
 def has_add_permission(self, request, obj=None):
+  # Prevent showing the Save and Add Another Option
   if request.path.split('/')[-2:][0] == 'change':
     return False
   if request.user.has_perm(self.model._meta.app_label + '.' + get_permission_codename('add',self.model._meta)):
@@ -75,6 +76,7 @@ def has_delete_permission(self, request, obj=None):
   return False
 
 def has_add_permission_inline(self, request, obj=None):
+  # Allow if object is new
   if obj == None:
     return True
   if request.user.has_perm(self.model._meta.app_label + '.' + get_permission_codename('add',self.model._meta)):
@@ -100,7 +102,7 @@ def has_delete_permission_inline(self, request, obj=None):
   if request.user.has_perm(self.model._meta.app_label + '.' + get_permission_codename('trash',self.model._meta)):
     return True
   elif obj:
-    if get_permission_codename('trash',self.model._meta) in get_perms(request.user, obj):
+    if get_permission_codename('trash',obj._meta) in get_perms(request.user, obj):
       return True
   return False
 
@@ -559,6 +561,12 @@ def nodefindobject(node):
       return node.page.page
     if node.content_type == 'school':
       return node.page.school
+    if node.content_type == 'department':
+      return node.page.department
+    if node.content_type == 'newsyear':
+      return node.page.newsyear
+    if node.content_type == 'news':
+      return node.page.news
   if node.node_type == 'taxonomy':
     if node.content_type == 'location':
       return node.taxonomy.location

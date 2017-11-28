@@ -2,6 +2,7 @@ from django import forms
 from django.db.models import Q
 from django.contrib import admin
 from django.utils import timezone
+from django.contrib.auth import get_permission_codename
 from guardian.admin import GuardedModelAdmin
 from mptt.admin import MPTTModelAdmin
 from ajax_select import make_ajax_form
@@ -15,6 +16,7 @@ from apps.links.models import ResourceLink
 from apps.documents.models import Document
 from apps.files.models import File
 from apps.objects.models import Node
+import apps.common.functions
 
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
@@ -22,71 +24,151 @@ from django.core.urlresolvers import reverse
 class ThumbnailInline(admin.TabularInline):
   model = Thumbnail
   fk_name = 'parent'
-  fields = ('title','image_file','alttext',)
+  fields = ['title','image_file','alttext',]
   extra = 0 
   min_num = 0
   max_num = 1
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
 
 class NewsThumbnailInline(admin.TabularInline):
   model = NewsThumbnail
   fk_name = 'parent'
-  fields = ('title','image_file','alttext',)
+  fields = ['title','image_file','alttext',]
   extra = 0
   min_num = 0
   max_num = 1
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
 
 class ContentBannerInline(admin.TabularInline):
   model = ContentBanner
   fk_name = 'parent'
-  fields = ('title','image_file','alttext',)
+  fields = ['title','image_file','alttext',]
   extra = 0 
   min_num = 0
   max_num = 5
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
 
 class SchoolAdministratorInline(admin.TabularInline):
   model = SchoolAdministrator
   fk_name = 'parent'
-  fields = ('employee', 'schooladministratortype',)
+  fields = ['employee', 'schooladministratortype',]
   extra = 0 
   min_num = 0
   max_num = 5
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
 
   form = make_ajax_form(SchoolAdministrator, {'employee': 'employee'})
 
 class StaffInline(admin.TabularInline):
   model = Staff
   fk_name = 'parent'
-  fields = ('employee','job_title',)
+  fields = ['employee','job_title',]
   extra = 0
   min_num = 0
   max_num = 50
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
 
   form = make_ajax_form(Staff, {'employee': 'employee'})
 
 class ResourceLinkInline(admin.TabularInline):
   model = ResourceLink.related_nodes.through
   fk_name = 'node'
-  # fields = ('title','image_file','alttext',)
+  fields = []
   extra = 0 
   min_num = 0
   max_num = 50
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
 class DocumentInline(EditLinkToInlineObject, admin.TabularInline):
   model = Document
   fk_name = 'parent'
   readonly_fields = ('edit_link', )
-  fields = ('title', 'edit_link', )
+  fields = ['title', 'edit_link', ]
   extra = 0 
   min_num = 0
   max_num = 50
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
 
 class FileInline(admin.TabularInline):
   model = File
   fk_name = 'parent'
-  fields = ('file_file', 'file_language')
+  fields = ['file_file', 'file_language']
   extra = 0 
   min_num = 0
   max_num = 50
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
 
 class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
@@ -100,6 +182,20 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
             return ['url']
         else:
             return ['url']
+
+  inlines = []
+
+  def get_formsets_with_inlines(self, request, obj=None):
+      for inline in self.get_inline_instances(request, obj):
+          if not isinstance(inline,ResourceLinkInline):
+              # Remove delete fields is not superuser
+              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                  inline.fields.append('deleted')
+              else:
+                while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
+          yield inline.get_formset(request, obj), inline
 
   def get_list_display(self,request):
     if request.user.has_perm('pages.restore_page'):
@@ -158,6 +254,18 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
   inlines = [ThumbnailInline, ContentBannerInline,SchoolAdministratorInline,ResourceLinkInline,DocumentInline,]
 
+  def get_formsets_with_inlines(self, request, obj=None):
+      for inline in self.get_inline_instances(request, obj):
+          if not isinstance(inline,ResourceLinkInline):
+              # Remove delete fields is not superuser
+              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                  inline.fields.append('deleted')
+              else:
+                while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
+          yield inline.get_formset(request, obj), inline
+
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
     for obj in formset.deleted_objects:
@@ -195,6 +303,22 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline,]
 
+  def get_formsets_with_inlines(self, request, obj=None):
+      for inline in self.get_inline_instances(request, obj):
+          if not isinstance(inline,ResourceLinkInline):
+              # Remove delete fields is not superuser
+              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                  inline.fields.append('deleted')
+              else:
+                while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
+          yield inline.get_formset(request, obj), inline
+
+  has_change_permission = apps.common.functions.has_change_permission
+  has_add_permission = apps.common.functions.has_add_permission
+  has_delete_permission = apps.common.functions.has_delete_permission
+
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
     for obj in formset.deleted_objects:
@@ -220,6 +344,18 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   inlines = [NewsThumbnailInline,ContentBannerInline,]
 
+  def get_formsets_with_inlines(self, request, obj=None):
+      for inline in self.get_inline_instances(request, obj):
+          if not isinstance(inline,ResourceLinkInline):
+              # Remove delete fields is not superuser
+              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                  inline.fields.append('deleted')
+              else:
+                while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
+          yield inline.get_formset(request, obj), inline
+
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
     for obj in formset.deleted_objects:
@@ -244,6 +380,18 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
       return ('title',)
 
   inlines = []
+
+  def get_formsets_with_inlines(self, request, obj=None):
+      for inline in self.get_inline_instances(request, obj):
+          if not isinstance(inline,ResourceLinkInline):
+              # Remove delete fields is not superuser
+              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                  inline.fields.append('deleted')
+              else:
+                while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
+          yield inline.get_formset(request, obj), inline
 
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
@@ -275,6 +423,20 @@ class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
             return ['url']
         else:
             return ['url']
+
+  inlines = []
+
+  def get_formsets_with_inlines(self, request, obj=None):
+      for inline in self.get_inline_instances(request, obj):
+          if not isinstance(inline,ResourceLinkInline):
+              # Remove delete fields is not superuser
+              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                  inline.fields.append('deleted')
+              else:
+                while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
+          yield inline.get_formset(request, obj), inline
 
   def get_list_display(self,request):
     if request.user.has_perm('links.restore_resourcelink'):
@@ -333,6 +495,18 @@ class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
   
   inlines = [FileInline,]
+
+  def get_formsets_with_inlines(self, request, obj=None):
+      for inline in self.get_inline_instances(request, obj):
+          if not isinstance(inline,ResourceLinkInline):
+              # Remove delete fields is not superuser
+              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                  inline.fields.append('deleted')
+              else:
+                while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
+          yield inline.get_formset(request, obj), inline
 
   def get_fields(self, request, obj=None):
     if obj:
