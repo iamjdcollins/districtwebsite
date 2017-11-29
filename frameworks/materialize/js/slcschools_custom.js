@@ -237,6 +237,7 @@ function modaalAdminPageModify(){
 function modaalAdminPageLoad(){
   $('.modal-iframe-loading').css('display','block');
   $(".modaal-adminpage iframe").on('load', function(){
+    console.log('iframe loaded')
     if ( ! /.*\/(change)?(delete)?\/$/.test(this.contentWindow.location.pathname)){
         $("#editpagemodaal").modaal('close')
         location.reload()
@@ -400,7 +401,7 @@ $(document).ready(function(){
     type: 'iframe',
     fullscreen: 'true',
     custom_class: 'modaal-adminpage',
-    after_callback_delay: 300,
+    after_callback_delay: 50,
     after_open: function(modal){
       $(modal).find('.modaal-content').each(function(index,element){
         if(index === 0){
