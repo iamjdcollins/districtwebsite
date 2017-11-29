@@ -1,3 +1,4 @@
+from django.conf import settings
 from django import forms
 from django.db.models import Q
 from django.contrib import admin
@@ -5,7 +6,7 @@ from django.utils import timezone
 from django.contrib.auth import get_permission_codename
 from guardian.admin import GuardedModelAdmin
 from mptt.admin import MPTTModelAdmin
-from ajax_select import make_ajax_form
+from ajax_select import make_ajax_form, make_ajax_field
 from apps.common.classes import DeletedListFilter, EditLinkToInlineObject
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
@@ -297,9 +298,12 @@ class DepartmentAdminForm(forms.ModelForm):
         model = Department
         fields = ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent',]
 
+    #primary_contact = make_ajax_field(settings.AUTH_USER_MODEL, 'primary_contact', 'employee', help_text=None)
+
 class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
-  form = DepartmentAdminForm
+  #form = DepartmentAdminForm
+  form = make_ajax_form(Department,{'primary_contact': 'employee'}, DepartmentAdminForm)
 
   def get_fields(self, request, obj=None):
       return ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent']
