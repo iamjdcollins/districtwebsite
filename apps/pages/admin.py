@@ -258,9 +258,20 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
 
+class SchoolAdminForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SchoolAdminForm, self).__init__(*args, **kwargs)
+        if self.instance:
+            if 'parent' in self.fields:
+                self.fields['parent'].queryset = Node.objects.filter(deleted=0).filter(published=1).filter(Q(content_type='page', node_title='Elementary Schools') | Q(content_type='page', node_title='K-8 Schools') | Q(content_type='page', node_title='Middle Schools') | Q(content_type='page', node_title='High Schools') | Q(content_type='page', node_title='Charter Schools'))
+
+    class Meta:
+        model = School
+        fields = ['title', 'body','building_location','main_phone','main_fax','enrollment','openenrollmentstatus','schooltype','website_url','scc_url','boundary_map','primary_contact','parent','url']
+
 class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
-  form = make_ajax_form(School,{'primary_contact': 'employee'})
+  form = make_ajax_form(School,{'primary_contact': 'employee'},SchoolAdminForm)
 
   def get_fields(self, request, obj=None):
       return ['title', 'body','building_location','main_phone','main_fax','enrollment','openenrollmentstatus','schooltype','website_url','scc_url','boundary_map','primary_contact','parent','url']
@@ -317,11 +328,8 @@ class DepartmentAdminForm(forms.ModelForm):
         model = Department
         fields = ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent','url']
 
-    #primary_contact = make_ajax_field(settings.AUTH_USER_MODEL, 'primary_contact', 'employee', help_text=None)
-
 class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
-  #form = DepartmentAdminForm
   form = make_ajax_form(Department,{'primary_contact': 'employee'}, DepartmentAdminForm)
 
   def get_fields(self, request, obj=None):
