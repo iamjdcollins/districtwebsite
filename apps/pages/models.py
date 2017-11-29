@@ -80,8 +80,10 @@ class School(BasePage):
 
 class Department(BasePage):
 
-    CONTENTBANNERS = True
+    CONTENTBANNER = True
     STAFF = True
+    RESOURCELINK = True
+    DOCUMENT = True
 
     title = models.CharField(max_length=200, unique=True, help_text='',db_index=True)
     body = RichTextField(null=True, blank=True, help_text='')
@@ -151,23 +153,29 @@ class News(BasePage):
     delete = apps.common.functions.modeltrash
 
 class SubPage(BasePage):
-  title = models.CharField(max_length=200, help_text='',db_index=True)
-  body = RichTextField(null=True, blank=True, help_text=PageHelp.body)
 
-  subpage_page_node = models.OneToOneField(BasePage, db_column='subpage_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+    CONTENTBANNER = True
+    STAFF = True
+    RESOURCELINK = True
+    DOCUMENT = True
 
-  class Meta:
-    db_table = 'pages_subpage'
-    get_latest_by = 'update_date'
-    permissions = (('trash_subpage', 'Can soft delete subpage'),('restore_subpage', 'Can restore subpage'))
-    verbose_name = 'Sub Page'
-    verbose_name_plural = 'Sub Pages'
+    title = models.CharField(max_length=200, help_text='',db_index=True)
+    body = RichTextField(null=True, blank=True, help_text=PageHelp.body)
 
-  def __str__(self):
-    return self.title
+    subpage_page_node = models.OneToOneField(BasePage, db_column='subpage_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
-  save = apps.common.functions.pagesave
-  delete = apps.common.functions.modeltrash
+    class Meta:
+        db_table = 'pages_subpage'
+        get_latest_by = 'update_date'
+        permissions = (('trash_subpage', 'Can soft delete subpage'),('restore_subpage', 'Can restore subpage'))
+        verbose_name = 'Sub Page'
+        verbose_name_plural = 'Sub Pages'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.pagesave
+    delete = apps.common.functions.modeltrash
 
 # class Page(SiteStructure):
 #   uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False,)
