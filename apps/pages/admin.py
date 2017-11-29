@@ -175,17 +175,20 @@ class FileInline(admin.TabularInline):
       return qs.filter(deleted=0)
 
 class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+  form = make_ajax_form(Page, {'primary_contact': 'employee'})
+
   def get_fields(self, request, obj=None):
-    if obj:
-      return ('title', 'body', 'parent','url')
-    else:
-      return ('title', 'body', 'parent','url')
+      return ['title', 'body','primary_contact','parent','url']
 
   def get_readonly_fields(self, request, obj=None):
-        if obj:
+        if request.user.is_superuser:
             return ['url']
         else:
-            return ['url']
+            if obj:
+                return ['title','parent','url']
+            else:
+                return ['url']
 
   inlines = []
 
@@ -256,6 +259,21 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     super().save_model(request, obj, form, change)
 
 class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+  form = make_ajax_form(School,{'primary_contact': 'employee'})
+
+  def get_fields(self, request, obj=None):
+      return ['title', 'body','building_location','main_phone','main_fax','enrollment','openenrollmentstatus','schooltype','website_url','scc_url','boundary_map','primary_contact','parent','url']
+
+  def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ['url']
+        else:
+            if obj:
+                return ['title','parent','url']
+            else:
+                return ['url']
+
   inlines = [ThumbnailInline, ContentBannerInline,SchoolAdministratorInline,ResourceLinkInline,DocumentInline,]
 
   def get_formsets_with_inlines(self, request, obj=None):
@@ -292,11 +310,12 @@ class DepartmentAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(DepartmentAdminForm, self).__init__(*args, **kwargs)
         if self.instance:
-            self.fields['parent'].queryset = Node.objects.filter(deleted=0).filter(published=1).filter(Q(content_type='page', node_title='Departments') | Q(content_type='department'))
+            if 'parent' in self.fields:
+                self.fields['parent'].queryset = Node.objects.filter(deleted=0).filter(published=1).filter(Q(content_type='page', node_title='Departments') | Q(content_type='department'))
 
     class Meta:
         model = Department
-        fields = ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent',]
+        fields = ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent','url']
 
     #primary_contact = make_ajax_field(settings.AUTH_USER_MODEL, 'primary_contact', 'employee', help_text=None)
 
@@ -306,7 +325,16 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
   form = make_ajax_form(Department,{'primary_contact': 'employee'}, DepartmentAdminForm)
 
   def get_fields(self, request, obj=None):
-      return ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent']
+      return ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent','url']
+
+  def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ['url']
+        else:
+            if obj:
+                return ['title','parent','url']
+            else:
+                return ['url']
 
   inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline,]
 
