@@ -295,14 +295,14 @@ class DepartmentAdminForm(forms.ModelForm):
 
     class Meta:
         model = Department
-        fields = ['title','short_description','body','building_location','main_phone','main_fax','parent',]
+        fields = ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent',]
 
 class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   form = DepartmentAdminForm
 
   def get_fields(self, request, obj=None):
-      return ('title','short_description','body','building_location','main_phone','main_fax','parent')
+      return ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent']
 
   inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline,]
 

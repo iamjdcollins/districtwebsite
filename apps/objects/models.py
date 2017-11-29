@@ -14,6 +14,7 @@ class Node(MPTTModel):
   content_type = models.CharField(max_length=200, editable=False, null=True, blank=True, db_index=True)
   menu_item = models.BooleanField(default=False, db_index=True)
   menu_title = models.CharField(max_length=200, null=True, blank=True)
+  primary_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=False, to_field='uuid', on_delete=models.PROTECT, related_name='objects_node_primary_contact')
   create_date = models.DateTimeField(auto_now_add=True, db_index=True)
   create_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, to_field='uuid', on_delete=models.DO_NOTHING, related_name='objects_node_create_user')
   update_date = models.DateTimeField(auto_now=True, db_index=True)
