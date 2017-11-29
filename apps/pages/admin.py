@@ -26,6 +26,7 @@ class ThumbnailInline(admin.TabularInline):
   model = Thumbnail
   fk_name = 'parent'
   fields = ['title','image_file','alttext',]
+  readonly_fields = []
   extra = 0 
   min_num = 0
   max_num = 1
@@ -45,6 +46,7 @@ class NewsThumbnailInline(admin.TabularInline):
   model = NewsThumbnail
   fk_name = 'parent'
   fields = ['title','image_file','alttext',]
+  readonly_fields = []
   extra = 0
   min_num = 0
   max_num = 1
@@ -64,6 +66,7 @@ class ContentBannerInline(admin.TabularInline):
   model = ContentBanner
   fk_name = 'parent'
   fields = ['title','image_file','alttext',]
+  readonly_fields = []
   extra = 0 
   min_num = 0
   max_num = 5
@@ -83,6 +86,7 @@ class SchoolAdministratorInline(admin.TabularInline):
   model = SchoolAdministrator
   fk_name = 'parent'
   fields = ['employee', 'schooladministratortype',]
+  readonly_fields = []
   extra = 0 
   min_num = 0
   max_num = 5
@@ -104,6 +108,7 @@ class StaffInline(admin.TabularInline):
   model = Staff
   fk_name = 'parent'
   fields = ['employee','job_title',]
+  readonly_fields = []
   ordering = ['title',]
   extra = 0
   min_num = 0
@@ -126,6 +131,7 @@ class ResourceLinkInline(admin.TabularInline):
   model = ResourceLink.related_nodes.through
   fk_name = 'node'
   fields = []
+  readonly_fields = []
   ordering = ['resourcelink__title',]
   extra = 0 
   min_num = 0
@@ -134,10 +140,21 @@ class ResourceLinkInline(admin.TabularInline):
   has_change_permission = apps.common.functions.has_change_permission_inline
   has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+class DocumentInlineForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ['title'] 
+
+    def __init__(self, *args, **kwargs):
+        super(DocumentInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['title'].disabled = True
+
 class DocumentInline(EditLinkToInlineObject, admin.TabularInline):
   model = Document
+  form = DocumentInlineForm
   fk_name = 'parent'
-  readonly_fields = ('edit_link', )
+  readonly_fields = ['edit_link',]
   fields = ['title', 'edit_link', ]
   ordering = ['title',]
   extra = 0 
@@ -159,6 +176,7 @@ class FileInline(admin.TabularInline):
   model = File
   fk_name = 'parent'
   fields = ['file_file', 'file_language']
+  readonly_fields = []
   extra = 0 
   min_num = 0
   max_num = 50
@@ -174,9 +192,20 @@ class FileInline(admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
+class PageAdminForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PageAdminForm, self).__init__(*args, **kwargs)
+        if self.instance:
+            if 'parent' in self.fields:
+                self.fields['parent'].queryset = Node.objects.filter(deleted=0).filter(published=1).filter(Q(node_type='page'))
+
+    class Meta:
+        model = Page
+        fields = ['title', 'body','primary_contact','parent','url']
+
 class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
-  form = make_ajax_form(Page, {'primary_contact': 'employee'})
+  form = make_ajax_form(Page, {'primary_contact': 'employee'},PageAdminForm)
 
   def get_fields(self, request, obj=None):
       return ['title', 'body','primary_contact','parent','url']
@@ -206,9 +235,9 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_list_display(self,request):
     if request.user.has_perm('pages.restore_page'):
-      return ('title','update_date','update_user','published','deleted')
+      return ['title','update_date','update_user','published','deleted']
     else:
-      return ('title','update_date','update_user','published')
+      return ['title','update_date','update_user','published']
 
   #ordering = ('url',)
   
@@ -238,7 +267,7 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if request.user.has_perm('pages.restore_page'):
       return (DeletedListFilter,'published')
     else:
-      return ('published',)
+      return ['published',]
 
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
@@ -383,7 +412,7 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_fields(self, request, obj=None):
-      return ('title','pinned','summary','body','author_date')
+      return ['title','pinned','summary','body','author_date']
 
   inlines = [NewsThumbnailInline,ContentBannerInline,]
 
@@ -420,7 +449,7 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_fields(self, request, obj=None):
-      return ('title',)
+      return ['title',]
 
   inlines = []
 
@@ -457,9 +486,9 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
     if obj:
-      return ('title', 'link_url','url')
+      return ['title', 'link_url','url']
     else:
-      return ('title', 'link_url','url')
+      return ['title', 'link_url','url']
 
   def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -483,9 +512,9 @@ class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_list_display(self,request):
     if request.user.has_perm('links.restore_resourcelink'):
-      return ('title','update_date','update_user','published','deleted')
+      return ['title','update_date','update_user','published','deleted']
     else:
-      return ('title','update_date','update_user','published')
+      return ['title','update_date','update_user','published']
 
   #ordering = ('url',)
   
@@ -515,7 +544,7 @@ class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if request.user.has_perm('links.restore_resourcelink'):
       return (DeletedListFilter,'published')
     else:
-      return ('published',)
+      return ['published',]
 
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
@@ -553,9 +582,9 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_fields(self, request, obj=None):
     if obj:
-      return ('title','url')
+      return ['title','url']
     else:
-      return ('title', 'url')
+      return ['title', 'url']
 
   def get_readonly_fields(self, request, obj=None):
         if obj:
@@ -565,9 +594,9 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_list_display(self,request):
     if request.user.has_perm('documents.restore_document'):
-      return ('title','update_date','update_user','published','deleted')
+      return ['title','update_date','update_user','published','deleted']
     else:
-      return ('title','update_date','update_user','published')
+      return ['title','update_date','update_user','published']
 
   #ordering = ('url',)
   
@@ -597,7 +626,7 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if request.user.has_perm('documents.restore_document'):
       return (DeletedListFilter,'published')
     else:
-      return ('published',)
+      return ['published',]
 
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
