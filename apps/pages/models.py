@@ -109,6 +109,8 @@ class NewsYear(BasePage):
     title = models.CharField(max_length=200, unique=True, help_text="",)
     yearend = models.CharField(max_length=4, unique=True, help_text="", blank=True)
 
+    newsyear_page_node = models.OneToOneField(BasePage, db_column='newsyear_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
     class Meta:
         db_table = 'pages_newsyear'
         get_latest_by = 'update_date'
@@ -132,6 +134,8 @@ class News(BasePage):
     pinned = models.BooleanField(default=False,)
     author_date = models.DateTimeField(default=timezone.now,)
 
+    news_page_node = models.OneToOneField(BasePage, db_column='news_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
     class Meta:
         db_table = 'pages_news'
         get_latest_by = 'update_date'
@@ -145,6 +149,7 @@ class News(BasePage):
 
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
+
 
 # class Page(SiteStructure):
 #   uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False,)
