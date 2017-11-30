@@ -229,7 +229,7 @@ class PageAdminForm(forms.ModelForm):
         super(PageAdminForm, self).__init__(*args, **kwargs)
         if self.instance:
             if 'parent' in self.fields:
-                self.fields['parent'].queryset = Node.objects.filter(deleted=0).filter(published=1).filter(Q(node_type='page'))
+                self.fields['parent'].queryset = Node.objects.filter(deleted=0).filter(published=1).filter(Q(node_type='pages'))
 
     class Meta:
         model = Page

@@ -7,6 +7,7 @@ from django.contrib.auth import get_permission_codename
 from guardian.shortcuts import get_perms
 from apps.objects.models import Node, User
 from django.core.cache import cache
+from django.apps import apps
 
 def findfileext_media(media):
   media = media.split('/')[-1:]
@@ -60,50 +61,54 @@ def has_add_permission(self, request, obj=None):
   return False
 
 def has_change_permission(self, request, obj=None):
+  # Check for regular global model permission
   if request.user.has_perm(self.model._meta.app_label + '.' + get_permission_codename('change',self.model._meta)):
     return True
   elif obj:
-    if get_permission_codename('change',self.model._meta) in get_perms(request.user, obj):
-      return True
+    if obj.has_permissions:
+      # Check for object level permission through Guardian
+      if get_permission_codename('change',obj._meta) in get_perms(request.user, obj):
+        return True
+    else:
+      node = objectfindnode(obj)
+      permission_point = nodefindobject(node.get_ancestors().filter(has_permissions=True).last())
+      if get_permission_codename('change',permission_point._meta) in get_perms(request.user, permission_point):
+        return True
   return False
 
 def has_delete_permission(self, request, obj=None):
   if request.user.has_perm(self.model._meta.app_label + '.' + get_permission_codename('trash',self.model._meta)):
     return True
   elif obj:
-    if get_permission_codename('trash',self.model._meta) in get_perms(request.user, obj):
-      return True
+    if obj.has_permissions:
+      # Check for object level permission through Guardian
+      if get_permission_codename('trash',self.model._meta) in get_perms(request.user, obj):
+        return True
+    else:
+      node = objectfindnode(obj)
+      permission_point = nodefindobject(node.get_ancestors().filter(has_permissions=True).last())
+      if get_permission_codename('change',permission_point._meta) in get_perms(request.user, permission_point):
+        return True
   return False
 
 def has_add_permission_inline(self, request, obj=None):
-  # Allow if object is new
+  # Allow if object is new (should always be new)
   if obj == None:
     return True
-  if request.user.has_perm(self.model._meta.app_label + '.' + get_permission_codename('add',self.model._meta)):
-    return True
-  elif obj:
-    if get_permission_codename('add',self.model._meta) in get_perms(request.user, obj):
-      return True
   return False
 
 def has_change_permission_inline(self, request, obj=None):
   if obj == None:
     return True
-  if request.user.has_perm(self.model._meta.app_label + '.' + get_permission_codename('change',self.model._meta)):
+  if has_change_permission(self, request, obj):
     return True
-  elif obj:
-    if get_permission_codename('change',self.model._meta) in get_perms(request.user, obj):
-      return True
   return False
 
 def has_delete_permission_inline(self, request, obj=None):
   if obj == None:
     return True
-  if request.user.has_perm(self.model._meta.app_label + '.' + get_permission_codename('trash',self.model._meta)):
+  if  has_delete_permission(self, request, obj):
     return True
-  elif obj:
-    if get_permission_codename('trash',obj._meta) in get_perms(request.user, obj):
-      return True
   return False
 
 def modeltrash(self, *args, **kwargs):
@@ -175,14 +180,19 @@ def usersave(self, *args, **kwargs):
   if self.username:
     self.node_title = self.username
   # Set the node type
-  self.node_type = 'user'
+  self.node_type = self._meta.app_label
   # Set the content type
   self.user_type = self._meta.model_name
   self.content_type = self._meta.model_name
+  # Does this item have permissions?
+  if self.HAS_PERMISSIONS:
+    self.has_permissions = True
+  else:
+    self.has_permissions = False
   # Save the item
   super(self._meta.model, self).save(*args, **kwargs)
   # Set the user type node
-  self.node_type = self.user._meta.model_name
+  #self.node_type = self.user._meta.model_name
   if urlchanged:
       # Save Children
       for child in self.get_children():
@@ -228,12 +238,17 @@ def pagesave(self, *args, **kwargs):
   # Set the node_title for the node
   self.node_title = self.title
   # Set the node type
-  self.node_type = 'page'
+  self.node_type = self._meta.app_label
   # Set the content type
   self.page_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # if not self.menu_title:
   #   self.menu_title = self.title
+  # Does this item have permissions?
+  if self.HAS_PERMISSIONS:
+    self.has_permissions = True
+  else:
+    self.has_permissions = False
   # Save the item
   super(self._meta.model, self).save(*args, **kwargs)
   f = open('/tmp/movingfile.txt', 'a')
@@ -272,10 +287,15 @@ def taxonomysave(self, *args, **kwargs):
   # Set the node_title for the node
   self.node_title = self.title
   # Set the node type
-  self.node_type = 'taxonomy'
+  self.node_type = self._meta.app_label
   # Set the content type
   self.taxonomy_type = self._meta.model_name
   self.content_type = self._meta.model_name
+  # Does this item have permissions?
+  if self.HAS_PERMISSIONS:
+    self.has_permissions = True
+  else:
+    self.has_permissions = False
   # Save the item
   super(self._meta.model, self).save(*args, **kwargs)
   if urlchanged:
@@ -330,10 +350,15 @@ def imagesave(self, *args, **kwargs):
   # Set the node_title for the node
   self.node_title = self.title
   # Set the node type
-  self.node_type = 'image'
+  self.node_type = self._meta.app_label
   # Set the content type
   self.image_type = self._meta.model_name
   self.content_type = self._meta.model_name
+  # Does this item have permissions?
+  if self.HAS_PERMISSIONS:
+    self.has_permissions = True
+  else:
+    self.has_permissions = False
   # Save the item
   super(self._meta.model, self).save(*args, **kwargs)
   f = open('/tmp/movingfile.txt', 'a')
@@ -384,10 +409,15 @@ def directoryentrysave(self, *args, **kwargs):
   # Set the node_title for the node
   self.node_title = self.title
   # Set the node type
-  self.node_type = 'directoryentry'
+  self.node_type = self._meta.app_label
   # Set the content type
   self.image_type = self._meta.model_name
   self.content_type = self._meta.model_name
+  # Does this item have permissions?
+  if self.HAS_PERMISSIONS:
+    self.has_permissions = True
+  else:
+    self.has_permissions = False
   # Save the item
   super(self._meta.model, self).save(*args, **kwargs)
   if urlchanged:
@@ -428,10 +458,15 @@ def linksave(self, *args, **kwargs):
   # Set the node_title for the node
   self.node_title = self.title
   # Set the node type
-  self.node_type = 'link'
+  self.node_type = self._meta.app_label
   # Set the content type
   self.link_type = self._meta.model_name
   self.content_type = self._meta.model_name
+  # Does this item have permissions?
+  if self.HAS_PERMISSIONS:
+    self.has_permissions = True
+  else:
+    self.has_permissions = False
   # Save the item
   super(self._meta.model, self).save(*args, **kwargs)
   if urlchanged:
@@ -485,10 +520,15 @@ def filesave(self, *args, **kwargs):
   # Set the node_title for the node
   self.node_title = self.title
   # Set the node type
-  self.node_type = 'file'
+  self.node_type = self._meta.app_label
   # Set the content type
   self.link_type = self._meta.model_name
   self.content_type = self._meta.model_name
+  # Does this item have permissions?
+  if self.HAS_PERMISSIONS:
+    self.has_permissions = True
+  else:
+    self.has_permissions = False
   # Save the item
   super(self._meta.model, self).save(*args, **kwargs)
   if urlchanged:
@@ -534,10 +574,15 @@ def documentsave(self, *args, **kwargs):
   # Set the node_title for the node
   self.node_title = self.title
   # Set the node type
-  self.node_type = 'document'
+  self.node_type = self._meta.app_label
   # Set the content type
   self.link_type = self._meta.model_name
   self.content_type = self._meta.model_name
+  # Does this item have permissions?
+  if self.HAS_PERMISSIONS:
+    self.has_permissions = True
+  else:
+    self.has_permissions = False
   # Save the item
   super(self._meta.model, self).save(*args, **kwargs)
   if urlchanged:
@@ -551,59 +596,14 @@ def documentsave(self, *args, **kwargs):
 
 # Model Inheritance Object
 def nodefindobject(node):
-  if node.node_type == 'user':
-    if node.content_type == 'employee':
-      return node.user.employee
-    if node.content_type == 'system':
-      return node.user.system
-  if node.node_type == 'page':
-    if node.content_type == 'page':
-      return node.page.page
-    if node.content_type == 'school':
-      return node.page.school
-    if node.content_type == 'department':
-      return node.page.department
-    if node.content_type == 'newsyear':
-      return node.page.newsyear
-    if node.content_type == 'news':
-      return node.page.news
-  if node.node_type == 'taxonomy':
-    if node.content_type == 'location':
-      return node.taxonomy.location
-    if node.content_type == 'city':
-      return node.taxonomy.city
-    if node.content_type == 'state':
-      return node.taxonomy.state
-    if node.content_type == 'zipcode':
-      return node.taxonomy.zipcode
-    if node.content_type == 'language':
-      return node.taxonomy.language
-    if node.content_type == 'translationtype':
-      return node.taxonomy.translationtype
-    if node.content_type == 'schooltype':
-      return node.taxonomy.schooltype
-    if node.content_type == 'openenrollmentstatus':
-      return node.taxonomy.openenrollmentstatus
-  if node.node_type == 'image':
-    if node.content_type == 'thumbnail':
-      return node.image.thumbnail
-    if node.content_type == 'pagebanner':
-      return node.image.pagebanner
-    if node.content_type == 'contentbanner':
-      return node.image.contentbanner
-  if node.node_type == 'link':
-    if node.content_type == 'resourcelink':
-      return node.link.resourcelink
-  if node.node_type == 'file':
-    if node.content_type == 'file':
-      return node.file.file
-  if node.node_type == 'document':
-    if node.content_type == 'document':
-      return node.document.document
+  return apps.get_model(node.node_type + '.' + node.content_type).objects.get(pk=node.pk)
+
+def objectfindnode(object):
+  return Node.objects.get(pk=object.pk)
 
 # MPTT Tree Functions
 def resetchildrentoalphatitle():
-  top = Node.objects.filter(node_type='page').get(node_title='Charter Schools')
+  top = Node.objects.filter(node_type='pages').get(node_title='Charter Schools')
   children = top.get_children()
   children = children.order_by('node_title')
   parent = children[0]

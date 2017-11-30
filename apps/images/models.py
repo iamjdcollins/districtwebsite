@@ -105,5 +105,3 @@ class ContentBanner(Image):
 
   save = apps.common.functions.imagesave
   delete = apps.common.functions.modeltrash
-
-# Create your models here.
