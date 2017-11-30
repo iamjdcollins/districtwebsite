@@ -32,7 +32,7 @@
       <li><a href="#pages">Pages</a></li>
       <ul>
       {% for department_subpage in page.pages_subpage_node.all %}
-        <li><a href="{{ department_subpage.url }}" title="{{ department_subpage.title }}">{{ department_subpage.title }}</a></li>
+        <li><a href="{{ department_subpage.url }}" >{{ department_subpage.title }}</a></li>
       {% endfor %}
       </ul>
       {% endif %}
@@ -77,7 +77,7 @@
       {% if page.pages_subpage_node.all %}
       <option value="#pages">Pages</option>
       {% for department_subpage in page.pages_subpage_node.all %}
-      <option class="page" value="{{ department_subpage.url }}" title="{{ department_subpage.title }}">-- {{ department_subpage.title }}</option>
+      <option class="page" value="{{ department_subpage.url }}" >-- {{ department_subpage.title }}</option>
       {% endfor %}
       {% endif %}
     </select>
