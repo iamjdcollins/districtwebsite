@@ -1,5 +1,6 @@
 Django==1.11.6
 gunicorn==19.7.1
+pyasn1==0.3.7
 ldap3==2.3
 psycopg2==2.7.3.2
 python-memcached==1.58
