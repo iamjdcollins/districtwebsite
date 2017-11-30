@@ -4,7 +4,7 @@ from guardian.shortcuts import assign_perm
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import Group
 import apps.common.functions
-from apps.objects.models import Page as BasePage
+from apps.objects.models import Node, Page as BasePage
 from apps.pages.help import PageHelp
 from django.contrib.auth import get_permission_codename
 from apps.taxonomy.models import Location, SchoolType, OpenEnrollmentStatus
@@ -169,6 +169,7 @@ class SubPage(BasePage):
 
     title = models.CharField(max_length=200, help_text='',db_index=True)
     body = RichTextField(null=True, blank=True, help_text=PageHelp.body)
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='pages_subpage_node', editable=False)
 
     subpage_page_node = models.OneToOneField(BasePage, db_column='subpage_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 

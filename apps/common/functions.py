@@ -8,6 +8,7 @@ from guardian.shortcuts import get_perms
 from apps.objects.models import Node, User
 from django.core.cache import cache
 from django.apps import apps
+from django.core.exceptions import FieldDoesNotExist
 
 def findfileext_media(media):
   media = media.split('/')[-1:]
@@ -236,6 +237,12 @@ def pagesave(self, *args, **kwargs):
     self.url = urlclean_remdoubleslashes('/' + parent_url + '/' + is_deleted + urlclean_objname(self.title) + '/')
     if not is_new:
       urlchanged = True
+  # Related Node matches Parent
+  try:
+    if self._meta.get_field('related_node'):
+      self.related_node = self.parent
+  except FieldDoesNotExist:
+    pass
   # Set the node_title for the node
   self.node_title = self.title
   # Set the node type
@@ -285,6 +292,12 @@ def taxonomysave(self, *args, **kwargs):
     self.url = urlclean_remdoubleslashes('/' + parent_url + '/' + is_deleted + urlclean_objname(self.title) + '/')
     if not is_new:
       urlchanged = True
+  # Related Node matches Parent
+  try:
+    if self._meta.get_field('related_node'):
+      self.related_node = self.parent
+  except FieldDoesNotExist:
+    pass
   # Set the node_title for the node
   self.node_title = self.title
   # Set the node type
