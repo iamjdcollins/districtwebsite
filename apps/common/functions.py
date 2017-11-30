@@ -61,10 +61,11 @@ def has_add_permission(self, request, obj=None):
   return False
 
 def has_change_permission(self, request, obj=None):
-  # Check for regular global model permission
-  if request.user.has_perm(self.model._meta.app_label + '.' + get_permission_codename('change',self.model._meta)):
-    return True
-  elif obj:
+  if self != None:
+    # Check for regular global model permission
+    if request.user.has_perm(self.model._meta.app_label + '.' + get_permission_codename('change',self.model._meta)):
+      return True
+  if obj:
     if obj.has_permissions:
       # Check for object level permission through Guardian
       if get_permission_codename('change',obj._meta) in get_perms(request.user, obj):

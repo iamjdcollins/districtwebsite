@@ -1,4 +1,4 @@
-{% load static mptt_tags guardian_tags admin_urls %}
+{% load static mptt_tags guardian_tags admin_urls object_permissions %}
 <!DOCTYPE html>
 <html class="no-js" lang="en">
   <head>
@@ -11,7 +11,6 @@
     <div class="pushfooter slcschools-grey lighten-3">
       <a href="#main" class="skipto">Skip to main content</a>
       {% if user.is_authenticated %}
-      {% get_obj_perms request.user for page as "page_perms" %}
       <div class="authenticated wrapper slcschools-grey white-text">
         <div class="row">
           <div class="col s6">
@@ -33,8 +32,8 @@
             </a>
           </div>
           <div class="col s6">
-            {% for item in page_perms %}
-            {% if 'change_' in item %}
+            {% has_change_permissions request page as can_edit%}
+            {% if can_edit %}
             <a id="editpagemodaal" href="{% url pageopts|admin_urlname:'change' page.pk %}" class="right btn btn-flat">
               <span class="sr-only">Edit Page</span>
               <span class="no-sr" aria-hidden="true">Edit Page
@@ -42,7 +41,6 @@
               </span>
             </a>
             {% endif %}
-            {% endfor %}
           </div>
         </div>
       </div>
