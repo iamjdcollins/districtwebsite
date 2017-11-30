@@ -10,7 +10,7 @@ from ajax_select import make_ajax_form, make_ajax_field
 from apps.common.classes import DeletedListFilter, EditLinkToInlineObject
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
-from .models import Page, School, Department, News, NewsYear
+from .models import Page, School, Department, News, NewsYear, SubPage
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner
 from apps.directoryentries.models import SchoolAdministrator, Staff
 from apps.links.models import ResourceLink
@@ -191,6 +191,38 @@ class FileInline(admin.TabularInline):
       if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
           return qs
       return qs.filter(deleted=0)
+
+class SubPageInlineForm(forms.ModelForm):
+    class Meta:
+        model = SubPage
+        fields = ['title']
+
+    def __init__(self, *args, **kwargs):
+        super(SubPageInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['title'].disabled = True
+
+class SubPageInline(EditLinkToInlineObject, admin.TabularInline):
+    model = SubPage
+    form = SubPageInlineForm
+    fk_name = 'parent'
+    readonly_fields = ['edit_link',]
+    fields = ['title', 'edit_link', ]
+    ordering = ['title',]
+    extra = 0
+    min_num = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
 
 class PageAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -373,7 +405,7 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
             else:
                 return ['url']
 
-  inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline,]
+  inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline,SubPageInline]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -646,6 +678,58 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
 
+class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+  form = make_ajax_form(Department,{'primary_contact': 'employee'})
+
+  def get_fields(self, request, obj=None):
+      return ['title','body','primary_contact','parent','url']
+
+  def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ['url']
+        else:
+            if obj:
+                return ['title','parent','url']
+            else:
+                return ['url']
+
+  inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline]
+
+  def get_formsets_with_inlines(self, request, obj=None):
+      for inline in self.get_inline_instances(request, obj):
+          if not isinstance(inline,ResourceLinkInline):
+              # Remove delete fields is not superuser
+              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                  inline.fields.append('deleted')
+              else:
+                while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
+          yield inline.get_formset(request, obj), inline
+
+  has_change_permission = apps.common.functions.has_change_permission
+  has_add_permission = apps.common.functions.has_add_permission
+  has_delete_permission = apps.common.functions.has_delete_permission
+
+  def save_formset(self, request, form, formset, change):
+    instances = formset.save(commit=False)
+    for obj in formset.deleted_objects:
+      obj.delete()
+    for obj in formset.new_objects:
+      obj.create_user = request.user
+      obj.update_user = request.user
+      obj.save()
+    for obj in formset.changed_objects:
+      obj[0].update_user = request.user
+      obj[0].save()
+
+  def save_model(self, request, obj, form, change):
+    if getattr(obj, 'create_user', None) is None:
+      obj.create_user = request.user
+    obj.update_user = request.user
+    super().save_model(request, obj, form, change)
+
 # Register your models here.
 admin.site.register(Page, PageAdmin)
 admin.site.register(School, SchoolAdmin)
@@ -654,3 +738,4 @@ admin.site.register(News, NewsAdmin)
 admin.site.register(NewsYear, NewsYearAdmin)
 admin.site.register(ResourceLink,ResourceLinkAdmin)
 admin.site.register(Document,DocumentAdmin)
+admin.site.register(SubPage,SubPageAdmin)
