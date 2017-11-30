@@ -28,10 +28,10 @@
       {% if  page.content_type == 'department' and page.parent.content_type == 'department' or department_children %}
       <li><a href="#relateddepartments">Departments / Programs</a></li>
       {% endif %}
-      {% if department_subpages %}
+      {% if page.pages_subpage_node.all %}
       <li><a href="#pages">Pages</a></li>
       <ul>
-      {% for department_subpage in department_subpages %}
+      {% for department_subpage in page.pages_subpage_node.all %}
         <li><a href="{{ department_subpage.url }}" title="{{ department_subpage.title }}">{{ department_subpage.title }}</a></li>
       {% endfor %}
       </ul>
@@ -74,9 +74,9 @@
       {% if  page.content_type == 'department' and page.parent.content_type == 'department' or department_children %}
       <option value="#relateddepartments">Departments / Programs</option>
       {% endif %}
-      {% if department_subpages %}
+      {% if page.pages_subpage_node.all %}
       <option value="#pages">Pages</option>
-      {% for department_subpage in department_subpages %}
+      {% for department_subpage in page.pages_subpage_node.all %}
       <option class="page" value="{{ department_subpage.url }}" title="{{ department_subpage.title }}">-- {{ department_subpage.title }}</option>
       {% endfor %}
       {% endif %}

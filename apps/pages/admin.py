@@ -301,6 +301,10 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     else:
       return ['published',]
 
+  has_change_permission = apps.common.functions.has_change_permission
+  has_add_permission = apps.common.functions.has_add_permission
+  has_delete_permission = apps.common.functions.has_delete_permission
+
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
     for obj in formset.deleted_objects:
@@ -359,6 +363,10 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
                 while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
+
+  has_change_permission = apps.common.functions.has_change_permission
+  has_add_permission = apps.common.functions.has_add_permission
+  has_delete_permission = apps.common.functions.has_delete_permission
 
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
@@ -460,6 +468,10 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
+  has_change_permission = apps.common.functions.has_change_permission
+  has_add_permission = apps.common.functions.has_add_permission
+  has_delete_permission = apps.common.functions.has_delete_permission
+
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
     for obj in formset.deleted_objects:
@@ -496,6 +508,10 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
                 while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
+
+  has_change_permission = apps.common.functions.has_change_permission
+  has_add_permission = apps.common.functions.has_add_permission
+  has_delete_permission = apps.common.functions.has_delete_permission
 
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
@@ -578,6 +594,10 @@ class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
     else:
       return ['published',]
 
+  has_change_permission = apps.common.functions.has_change_permission
+  has_add_permission = apps.common.functions.has_add_permission
+  has_delete_permission = apps.common.functions.has_delete_permission
+
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
     for obj in formset.deleted_objects:
@@ -659,6 +679,10 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
       return (DeletedListFilter,'published')
     else:
       return ['published',]
+
+  has_change_permission = apps.common.functions.has_change_permission
+  has_add_permission = apps.common.functions.has_add_permission
+  has_delete_permission = apps.common.functions.has_delete_permission
 
   def save_formset(self, request, form, formset, change):
     instances = formset.save(commit=False)
