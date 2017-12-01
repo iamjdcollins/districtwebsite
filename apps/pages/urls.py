@@ -17,6 +17,7 @@ urlpatterns = [
   url(r'^schools/middle-schools/$', views.middleschools, name='middleschools'),
   url(r'^schools/high-schools/$', views.highschools, name='highschools'),
   url(r'^schools/charter-schools/$', views.charterschools, name='charterschools'),
+  url(r'^schools/community-learning-centers/$', views.communitylearningcenters, name='communitylearningcenters'),
   url(r'^schools/[a-z0-9-]+\/[a-z0-9-]+\/$', views.schooldetail, name='schooldetail'),
   url(r'^departments/$', views.departments, name='departments'),
   url(r'^departments/(?:[a-z0-9-]+\/)+$', views.departmentdetail, name='departmentdetail'),

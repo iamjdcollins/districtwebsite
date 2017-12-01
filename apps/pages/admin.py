@@ -328,7 +328,7 @@ class SchoolAdminForm(forms.ModelForm):
         super(SchoolAdminForm, self).__init__(*args, **kwargs)
         if self.instance:
             if 'parent' in self.fields:
-                self.fields['parent'].queryset = Node.objects.filter(deleted=0).filter(published=1).filter(Q(content_type='page', node_title='Elementary Schools') | Q(content_type='page', node_title='K-8 Schools') | Q(content_type='page', node_title='Middle Schools') | Q(content_type='page', node_title='High Schools') | Q(content_type='page', node_title='Charter Schools'))
+                self.fields['parent'].queryset = Node.objects.filter(deleted=0).filter(published=1).filter(Q(content_type='page', node_title='Elementary Schools') | Q(content_type='page', node_title='K-8 Schools') | Q(content_type='page', node_title='Middle Schools') | Q(content_type='page', node_title='High Schools') | Q(content_type='page', node_title='Charter Schools') | Q(content_type='page',node_title='Community Learning Centers'))
 
     class Meta:
         model = School
