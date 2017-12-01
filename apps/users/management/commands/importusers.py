@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 from ldap3 import Connection, Server, ANONYMOUS, SIMPLE, SYNC, ASYNC, ALL, NTLM
 from apps.users.models import Employee, System
 from apps.objects.models import Node
+from django.contrib.auth.models import Group
 import uuid
 
 def show_in_directory(item):
@@ -35,7 +36,7 @@ def directory_department(item,departments):
         return departments[str(item.department).lower()]
     return None
 
-def importUser(item, account, departments):
+def importUser(item, account, departments,all_adult_staff):
   print('Importing: ' + str(item))
   obj, created = Employee.objects.get_or_create(uuid=uuid.UUID(str(item.objectGUID)), defaults={'email':'tempemail@slcschools.org','url':'/tempemail'})
   obj.username = str(item.userPrincipalName).lower()
@@ -53,6 +54,7 @@ def importUser(item, account, departments):
   if created:
     obj.create_user = account
   obj.update_user = account
+  obj.groups.add(all_adult_staff)
   obj.save()
 
 class Command(BaseCommand):
@@ -62,15 +64,16 @@ class Command(BaseCommand):
     for node in department_nodes:
       departments[str(node.node_title).lower()] = node
     importuserssvc = System.objects.get(username='importuserssvc')
+    all_adult_staff = Group.objects.get(name='All Adult Staff')
     server = Server('slcsd.net', use_ssl=True, get_info=ALL)
     conn = Connection(server, user=settings.SLCSD_LDAP_USER, password=settings.SLCSD_LDAP_PASSWORD, authentication=NTLM)
     conn.bind()
-    conn.search('OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title'])
+    conn.search('OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title'])
     for item in conn.entries:
-      importUser(item, importuserssvc,departments)
-    conn.search('OU=DO,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title'])
+      importUser(item, importuserssvc,departments,all_adult_staff)
+    conn.search('OU=DO,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title'])
     for item in conn.entries:
-      importUser(item, importuserssvc,departments)
-    conn.search('OU=INFORMATION_SYSTEMS,DC=SLCSD,DC=NET', '(&(objectClass=user)(|(memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title'])
+      importUser(item, importuserssvc,departments,all_adult_staff)
+    conn.search('OU=INFORMATION_SYSTEMS,DC=SLCSD,DC=NET', '(&(objectClass=user)(|(memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title'])
     for item in conn.entries:
-      importUser(item, importuserssvc,departments)
+      importUser(item, importuserssvc,departments,all_adult_staff)
