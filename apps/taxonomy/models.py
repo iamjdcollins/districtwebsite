@@ -199,3 +199,26 @@ class SchoolAdministratorType(Taxonomy):
 
   save = apps.common.functions.taxonomysave
   delete = apps.common.functions.modeltrash
+
+class BoardPrecinct(Taxonomy):
+
+    PARENT_URL = '/taxonomy/board-precinct/'
+
+    title = models.CharField(max_length=200, unique=True, help_text='')
+
+    boardprecinct_taxonomy_node = models.OneToOneField(Taxonomy, db_column='boardprecinct_taxonomy_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'taxonomy_boardprecinct'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardprecinct', 'Can soft delete board precinct'),('restore_boardprecinct', 'Can restore board precinct'))
+        verbose_name = 'Board Precinct'
+        verbose_name_plural = 'Board Precincts'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.taxonomysave
+    delete = apps.common.functions.modeltrash
+
