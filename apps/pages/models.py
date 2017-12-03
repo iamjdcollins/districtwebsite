@@ -115,6 +115,33 @@ class Department(BasePage):
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
 
+class Board(BasePage):
+
+    HAS_PERMISSIONS = True
+
+    CONTENTBANNER = True
+
+    title = models.CharField(max_length=200, unique=True, help_text='',db_index=True)
+    body = RichTextField(null=True, blank=True, help_text='',)
+    building_location = models.ForeignKey(Location, to_field='location_taxonomy_node', on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='pages_board_building_location')
+    main_phone = models.CharField(max_length=11, null=True, blank=True,help_text='',)
+    main_fax = models.CharField(max_length=11, null=True, blank=True,help_text='',)
+    mission_statement = models.TextField(max_length=2000, help_text='', verbose_name='Mission Statement', null=True, blank=True,)
+    vision_statement = models.TextField(max_length=2000, help_text='', verbose_name='Vision Statement', null=True, blank=True,)
+
+    class Meta:
+        db_table = 'board_board'
+        get_latest_by = 'update_date'
+        permissions = (('trash_board', 'Can soft delete board'),('restore_board', 'Can restore board'))
+        verbose_name = 'Board'
+        verbose_name_plural = 'Board'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.pagesave
+    delete = apps.common.functions.modeltrash
+
 class NewsYear(BasePage):
     title = models.CharField(max_length=200, unique=True, help_text="",)
     yearend = models.CharField(max_length=4, unique=True, help_text="", blank=True)
