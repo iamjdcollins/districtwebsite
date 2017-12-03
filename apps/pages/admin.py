@@ -12,7 +12,7 @@ from apps.common.actions import trash_selected, restore_selected, publish_select
 from django.contrib.admin.actions import delete_selected
 from .models import Page, School, Department, Board, News, NewsYear, SubPage
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner
-from apps.directoryentries.models import SchoolAdministrator, Staff
+from apps.directoryentries.models import SchoolAdministrator, Staff, BoardMember
 from apps.links.models import ResourceLink
 from apps.documents.models import Document
 from apps.files.models import File
@@ -113,6 +113,29 @@ class StaffInline(admin.TabularInline):
   extra = 0
   min_num = 0
   max_num = 50
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
+
+  form = make_ajax_form(Staff, {'employee': 'employee'})
+
+class BoardMemberInline(admin.TabularInline):
+  model = BoardMember
+  fk_name = 'parent'
+  fields = ['employee','precinct','phone','street_address','city','state','zipcode']
+  readonly_fields = []
+  ordering = ['title',]
+  extra = 0
+  min_num = 0
+  max_num = 7
   has_add_permission = apps.common.functions.has_add_permission_inline
   has_change_permission = apps.common.functions.has_change_permission_inline
   has_delete_permission = apps.common.functions.has_delete_permission_inline
@@ -476,7 +499,7 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
             else:
                 return ['url']
 
-  inlines = [ContentBannerInline,]
+  inlines = [ContentBannerInline,BoardMemberInline,]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):

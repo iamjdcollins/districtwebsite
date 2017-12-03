@@ -45,7 +45,7 @@
       {% if request.path == '/board-of-education/board-meetings/' %}
       <li><a href="#board_meetings">Board Meetings</a></li>
       {% endif %}
-      {% if  page.board_boardmember_board.all %}
+      {% if  page.directoryentries_boardmember_node.all %}
       <li><a href="#members">Board Members</a></li>
       {% endif %}
       {% if page.mission_statement %}
@@ -106,7 +106,7 @@
       {% if page.building_location or page.main_phone or page.main_fax %}
       <option value="#contact">Contact</option>
       {% endif %}
-      {% if  page.board_boardmember_board.all %}
+      {% if  page.directoryentries_boardmember_node.all %}
       <option value="#members">Board Members</option>
       {% endif %}
       {% if page.mission_statement %}
@@ -539,11 +539,11 @@
     </div>
     {% endif %}
     {% endif %}
-    {% if  page.board_boardmember_board.all %}
+    {% if  page.directoryentries_boardmember_node.all %}
     <div class="row">
       <div id="members" class="scrollspy contactcardlist">
         <h2>Board Members</h2>
-        {% for member in page.board_boardmember_board.all %}
+        {% for member in page.directoryentries_boardmember_node.all %}
         <div class="card horizontal">
           <div class="card-image">
             <img src="{% if member.employee.websites_userprofileimage_employee.image %}/{{member.employee.websites_userprofileimage_employee.image}}{% else %}/users/images/placeholder.jpg{% endif %}" />

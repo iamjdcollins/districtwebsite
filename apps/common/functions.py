@@ -394,8 +394,9 @@ def directoryentrysave(self, *args, **kwargs):
   # Setup New and Deleted Variables
   is_new = self._state.adding
   is_deleted = '_' if self.deleted == True else ''
-  #Force Title
-  self.title = urlclean_objname(str(self.employee.email).split('@', 1)[0])
+  if not self.title:
+    #Force Title
+    self.title = urlclean_objname(str(self.employee.email).split('@', 1)[0])
   # Set UUID if None
   if self.uuid is None:
     self.uuid = uuid.uuid4()

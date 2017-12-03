@@ -1,7 +1,7 @@
 from django.db import models
 from apps.objects.models import Node, DirectoryEntry
 from apps.users.models import Employee
-from apps.taxonomy.models import SchoolAdministratorType
+from apps.taxonomy.models import SchoolAdministratorType, City, State, Zipcode, BoardPrecinct
 import apps.common.functions
 
 class SchoolAdministrator(DirectoryEntry):
@@ -47,3 +47,30 @@ class Staff(DirectoryEntry):
 
   save = apps.common.functions.directoryentrysave
   delete = apps.common.functions.modeltrash
+
+class BoardMember(DirectoryEntry):
+    PARENT_URL = ''
+    URL_PREFIX = '/directory/boardmember/'
+
+    title = models.CharField(max_length=200, help_text='')
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='directoryenties_boardmember_employee')
+    precinct = models.ForeignKey(BoardPrecinct, on_delete=models.PROTECT, related_name='directoryenties_boardmember_precinct')
+    phone = models.CharField(max_length=11, help_text='')
+    street_address = models.CharField(max_length=200, null=True, blank=True, unique=True, help_text='')
+    city = models.ForeignKey(City, null=True, blank=True, on_delete=models.PROTECT, related_name='directoryenties_boardmember_city', limit_choices_to={'deleted': False,}, help_text='')
+    state = models.ForeignKey(State, null=True, blank=True, on_delete=models.PROTECT, related_name='directoryenties_boardmember_state', limit_choices_to={'deleted': False,}, help_text='')
+    zipcode = models.ForeignKey(Zipcode, null=True, blank=True, on_delete=models.PROTECT, related_name='directoryenties_boardmember_zipcode', limit_choices_to={'deleted': False,}, help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='directoryentries_boardmember_node', editable=False)
+
+
+    boardmember_directoryentry_node = models.OneToOneField(DirectoryEntry, db_column='boardmember_directoryentry_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'directoryenties_boardmember'
+        get_latest_by = 'create_date'
+        verbose_name = 'Board Member'
+        verbose_name_plural = 'Board Members'
+        default_manager_name = 'objects'
+
+    save = apps.common.functions.directoryentrysave
+    delete = apps.common.functions.modeltrash
