@@ -132,7 +132,7 @@ class BoardMemberInline(admin.TabularInline):
   fk_name = 'parent'
   fields = ['employee','precinct','phone','street_address','city','state','zipcode']
   readonly_fields = []
-  ordering = ['title',]
+  ordering = ['precinct__title',]
   extra = 0
   min_num = 0
   max_num = 7
@@ -141,7 +141,7 @@ class BoardMemberInline(admin.TabularInline):
   has_delete_permission = apps.common.functions.has_delete_permission_inline
 
   def get_queryset(self, request):
-      qs = super().get_queryset(request).order_by('precinct')
+      qs = super().get_queryset(request)
       if request.user.is_superuser:
           return qs
       if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
