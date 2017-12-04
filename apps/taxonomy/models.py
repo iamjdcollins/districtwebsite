@@ -243,3 +243,27 @@ class BoardMeetingType(Taxonomy):
 
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
+
+class BoardPolicySection(Taxonomy):
+
+    PARENT_URL = '/taxonomy/board-policy-section/'
+
+    title = models.CharField(max_length=200, unique=True, help_text='',verbose_name="Policy Section Name")
+    description = models.CharField(max_length=500,null=True, blank=True,verbose_name='Policy Section Description')
+    section_prefix = models.CharField(max_length=1,null=True, blank=True,)
+
+    boardpolicysection_taxonomy_node = models.OneToOneField(Taxonomy, db_column='boardpolicysection_taxonomy_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'taxonomy_boardpolicysection'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardpolicysection', 'Can soft delete board policy section'),('restore_boardpolicysection', 'Can restore board policy section'))
+        verbose_name = 'Board Policy Section'
+        verbose_name_plural = 'Board Policy Sections'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.taxonomysave
+    delete = apps.common.functions.modeltrash
