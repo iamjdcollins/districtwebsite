@@ -620,7 +620,7 @@ class BoardSubPageAdminForm(forms.ModelForm):
 
 class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
-  form = make_ajax_form(Board,{'primary_contact': 'employee'}, BoardAdminForm)
+  form = make_ajax_form(BoardSubPage,{'primary_contact': 'employee'}, BoardSubPageAdminForm)
 
   def get_fields(self, request, obj=None):
       return ['title','body','building_location','main_phone','main_fax','primary_contact','parent','url']
@@ -634,7 +634,7 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
             else:
                 return ['url']
 
-  inlines = [ContentBannerInline,BoardMemberInline,StudentBoardMemberInline,BoardSubPageInline,]
+  inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline,SubPageInline]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
