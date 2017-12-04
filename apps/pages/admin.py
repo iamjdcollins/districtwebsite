@@ -135,8 +135,19 @@ class StaffInline(admin.TabularInline):
 
   form = make_ajax_form(Staff, {'employee': 'employee'})
 
+class StudentBoardMemberInlineForm(forms.ModelForm):
+    class Meta:
+        model = StudentBoardMember
+        fields = ['title']
+
+    def __init__(self, *args, **kwargs):
+        super(StudentBoardMemberInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['title'].disabled = True
+
 class StudentBoardMemberInline(EditLinkToInlineObject, admin.TabularInline):
   model = StudentBoardMember
+  form = StudentBoardMemberInlineForm
   fk_name = 'parent'
   fields = ['title','edit_link']
   readonly_fields = ['edit_link']
