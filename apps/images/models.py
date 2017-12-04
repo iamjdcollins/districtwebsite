@@ -105,3 +105,29 @@ class ContentBanner(Image):
 
   save = apps.common.functions.imagesave
   delete = apps.common.functions.modeltrash
+
+class ProfilePicture(Image):
+
+  PARENT_URL = ''
+  URL_PREFIX = '/images/profilepictures/'
+
+  title = models.CharField(max_length=200, help_text='')
+  image_file = models.ImageField(max_length=2000, upload_to=apps.common.functions.image_upload_to, verbose_name='Image', help_text='')
+  alttext = models.CharField(max_length=200, verbose_name='Alternative Text', help_text='')
+  related_node = models.ForeignKey(Node, blank=True, null=True, related_name='images_profilepicture_node', editable=False)
+
+  profilepicture_image_node = models.OneToOneField(Image, db_column='profilepicture_image_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+  class Meta:
+    db_table = 'images_profilepicture'
+    get_latest_by = 'update_date'
+    permissions = (('trash_profilepicture', 'Can soft delete profile picture'),('restore_profilepicture', 'Can restore profile picture'))
+    verbose_name = 'Profile Picture'
+    verbose_name_plural = 'Profile Pictures'
+    default_manager_name = 'objects'
+
+  def __str__(self):
+    return self.title
+
+  save = apps.common.functions.imagesave
+  delete = apps.common.functions.modeltrash
