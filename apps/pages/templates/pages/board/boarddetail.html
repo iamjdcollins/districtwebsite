@@ -19,7 +19,7 @@
       {% if page.building_location or page.main_phone or page.main_fax %}
       <li><a href="#contact">Contact</a></li>
       {% endif %}
-      {% if request.path == '/board-of-education/board-policies/' %}
+      {% if request.path == '/board-of-education/policies/' %}
       {% if board_policies %}
       <li><a href="#board_policies">Board Policies ({{ board_policies|length }})</a></li>
       {% endif %}
@@ -179,7 +179,7 @@
       </div>
     </div>
     {% endif %}
-    {% if request.path == '/board-of-education/board-policies/' %}
+    {% if request.path == '/board-of-education/policies/' %}
     {% if board_policies %}
     <div class="row">
       <div id="board_policies" class="scrollspy">

@@ -574,7 +574,7 @@ def documentsave(self, *args, **kwargs):
   # Related Node matches Parent
   self.related_node = self.parent
   # Set Title
-  if self._meta.model_name == 'BoardPolicy':
+  if self._meta.model_name == 'boardpolicy':
     self.title = self.section.section_prefix + '-' + str(self.index) + ' ' + self.policy_title
   # Track URL Changes
   urlchanged = False
