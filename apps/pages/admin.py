@@ -141,7 +141,7 @@ class BoardMemberInline(admin.TabularInline):
   has_delete_permission = apps.common.functions.has_delete_permission_inline
 
   def get_queryset(self, request):
-      qs = super().get_queryset(request)
+      qs = super().get_queryset(request).order_by('precinct')
       if request.user.is_superuser:
           return qs
       if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
