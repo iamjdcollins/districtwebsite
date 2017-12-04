@@ -130,7 +130,7 @@ class Board(BasePage):
     vision_statement = models.TextField(max_length=2000, help_text='', verbose_name='Vision Statement', null=True, blank=True,)
 
     class Meta:
-        db_table = 'board_board'
+        db_table = 'pages_board'
         get_latest_by = 'update_date'
         permissions = (('trash_board', 'Can soft delete board'),('restore_board', 'Can restore board'))
         verbose_name = 'Board'
@@ -141,6 +141,32 @@ class Board(BasePage):
 
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
+
+class BoardSubPage(BasePage):
+
+    HAS_PERMISSIONS = True
+
+    CONTENTBANNER = True
+    STAFF = True
+    RESOURCELINK = True
+    DOCUMENT = True
+    SUBPAGE = True
+
+    title = models.CharField(max_length=200, unique=True, help_text='',db_index=True)
+    body = RichTextField(null=True, blank=True, help_text='',)
+    building_location = models.ForeignKey(Location, to_field='location_taxonomy_node', on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='pages_boardsubpage_building_location')
+    main_phone = models.CharField(max_length=11, null=True, blank=True,help_text='',)
+    main_fax = models.CharField(max_length=11, null=True, blank=True,help_text='',)
+
+    class Meta:
+        db_table = 'pages_boardsubpage'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardsubpage', 'Can soft delete board subpage'),('restore_boardsubpage', 'Can restore board subpage'))
+        verbose_name = 'Board Subpage'
+        verbose_name_plural = 'Board Subpages'
+
+    def __str__(self):
+        return self.title
 
 class NewsYear(BasePage):
     title = models.CharField(max_length=200, unique=True, help_text="",)
@@ -204,8 +230,8 @@ class SubPage(BasePage):
         db_table = 'pages_subpage'
         get_latest_by = 'update_date'
         permissions = (('trash_subpage', 'Can soft delete subpage'),('restore_subpage', 'Can restore subpage'))
-        verbose_name = 'Sub Page'
-        verbose_name_plural = 'Sub Pages'
+        verbose_name = 'Subpage'
+        verbose_name_plural = 'Subpages'
 
     def __str__(self):
         return self.title
