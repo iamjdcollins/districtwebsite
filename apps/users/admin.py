@@ -10,13 +10,15 @@ from apps.common.classes import DeletedListFilter
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
 from apps.objects.models import Node
+from apps.images.models import ProfilePicture
 
-
-# class UserProfileImageInline(admin.StackedInline):
-#   model = UserProfileImage
-#   extra = 0
-#   min_num = 1
-#   max_num = 1
+class ProfilePictureInline(admin.StackedInline):
+    model = ProfilePicture
+    fk_name = 'parent'
+    fields = ['title','image_file','alttext',]
+    extra = 0
+    min_num = 1
+    max_num = 1
 
 class EmployeeAdminChangeForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
@@ -29,6 +31,8 @@ class EmployeeAdminChangeForm(UserChangeForm):
 
 class EmployeeAdminAdmin(UserAdmin):
     form = EmployeeAdminChangeForm
+
+    inlines = [ProfilePictureInline,]
 
     fieldsets = UserAdmin.fieldsets + (
             (None, {'fields': ('department','job_title')}),
