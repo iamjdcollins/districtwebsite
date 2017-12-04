@@ -222,3 +222,24 @@ class BoardPrecinct(Taxonomy):
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
+class BoardMeetingType(Taxonomy):
+
+    PARENT_URL = '/taxonomy/board-meeting-type/'
+
+    title = models.CharField(max_length=200, unique=True, help_text='')
+
+    boardmeetingtype_taxonomy_node = models.OneToOneField(Taxonomy, db_column='boardmeetingtype_taxonomy_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'taxonomy_boardmeetingtype'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardmeetingtype', 'Can soft delete board meeting type'),('restore_boardprecinct', 'Can restore board meeting type'))
+        verbose_name = 'Board Meeting Type'
+        verbose_name_plural = 'Board Meeting Types'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.taxonomysave
+    delete = apps.common.functions.modeltrash
