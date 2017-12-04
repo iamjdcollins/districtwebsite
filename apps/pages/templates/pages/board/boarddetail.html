@@ -54,10 +54,13 @@
       {% if page.vision_statement %}
       <li><a href="#vision">Vision Statement</a></li>
       {% endif %}
-      {% if board_subpages %}
+      {% if page.pages_boardsubpage_node.all or page.pages_subpage_node.all %}
       <li><a href="#pages">Pages</a></li>
       <ul>
-      {% for board_subpage in board_subpages %}
+      {% for board_subpage in page.pages_boardsubpage_node.all %}
+        <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}">{{ board_subpage.title }}</a></li>
+      {% endfor %}
+      {% for board_subpage in page.pages_subpage_node.all %}
         <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}">{{ board_subpage.title }}</a></li>
       {% endfor %}
       </ul>
