@@ -129,6 +129,8 @@ class Board(BasePage):
     mission_statement = models.TextField(max_length=2000, help_text='', verbose_name='Mission Statement', null=True, blank=True,)
     vision_statement = models.TextField(max_length=2000, help_text='', verbose_name='Vision Statement', null=True, blank=True,)
 
+    board_page_node = models.OneToOneField(BasePage, db_column='board_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
     class Meta:
         db_table = 'pages_board'
         get_latest_by = 'update_date'
@@ -157,6 +159,8 @@ class BoardSubPage(BasePage):
     building_location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='pages_boardsubpage_building_location')
     main_phone = models.CharField(max_length=11, null=True, blank=True,help_text='',)
     main_fax = models.CharField(max_length=11, null=True, blank=True,help_text='',)
+
+    boardsubpage_page_node = models.OneToOneField(BasePage, db_column='boardsubpage_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
     class Meta:
         db_table = 'pages_boardsubpage'
