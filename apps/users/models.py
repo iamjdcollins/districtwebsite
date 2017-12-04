@@ -42,6 +42,7 @@ class Employee(User):
 
   department = models.ForeignKey(Node, null=True, blank=True, on_delete=models.PROTECT, limit_choices_to=Q(content_type='school') | Q(content_type='department'),related_name='users_employee_department')
   job_title =  models.CharField(max_length=200, null=True, blank=True, help_text='')
+  non_employee = models.BooleanField(default=False,db_index=True)
   in_directory = models.BooleanField(default=False,db_index=True)
 
   employee_user_node = models.OneToOneField(User, db_column='employee_user_node', on_delete=models.CASCADE, parent_link=True,editable=False,)

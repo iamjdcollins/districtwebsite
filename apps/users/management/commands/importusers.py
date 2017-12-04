@@ -7,7 +7,7 @@ from apps.objects.models import Node
 from django.contrib.auth.models import Group
 import uuid
 
-def show_in_directory(item):
+def show_in_directory(item,obj):
     exclude_upn = [
         'webmaster@slcschools.org',
     ]
@@ -18,6 +18,8 @@ def show_in_directory(item):
     if str(item.userPrincipalName).lower() in  exclude_upn:
         return False
     if str(item.department).lower() in exclude_department:
+        return False
+    if obj.non_employee:
         return False
     return True
 
@@ -37,7 +39,6 @@ def directory_department(item,departments):
     return None
 
 def importUser(item, account, departments,all_adult_staff):
-  print('Importing: ' + str(item))
   obj, created = Employee.objects.get_or_create(uuid=uuid.UUID(str(item.objectGUID)), defaults={'email':'tempemail@slcschools.org','url':'/tempemail'})
   obj.username = str(item.userPrincipalName).lower()
   obj.first_name = item.givenName
@@ -49,7 +50,11 @@ def importUser(item, account, departments,all_adult_staff):
   obj.job_title = job_title_titlecase(item)
   obj.department = directory_department(item,departments)
   obj.is_staff = True
-  obj.in_directory = show_in_directory(item)
+  if str(item.extensionAttribute1).lower().startswith('n-'):
+    obj.non_employee = True
+  else:
+    obj.non_employee = False
+  obj.in_directory = show_in_directory(item,obj)
   obj.deleted = False
   if created:
     obj.create_user = account
@@ -68,12 +73,12 @@ class Command(BaseCommand):
     server = Server('slcsd.net', use_ssl=True, get_info=ALL)
     conn = Connection(server, user=settings.SLCSD_LDAP_USER, password=settings.SLCSD_LDAP_PASSWORD, authentication=NTLM)
     conn.bind()
-    conn.search('OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title'])
+    conn.search('OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title','extensionAttribute1'])
     for item in conn.entries:
       importUser(item, importuserssvc,departments,all_adult_staff)
-    conn.search('OU=DO,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title'])
+    conn.search('OU=DO,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title','extensionAttribute1'])
     for item in conn.entries:
       importUser(item, importuserssvc,departments,all_adult_staff)
-    conn.search('OU=INFORMATION_SYSTEMS,DC=SLCSD,DC=NET', '(&(objectClass=user)(|(memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title'])
+    conn.search('OU=INFORMATION_SYSTEMS,DC=SLCSD,DC=NET', '(&(objectClass=user)(|(memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title','extensionAttribute1',])
     for item in conn.entries:
       importUser(item, importuserssvc,departments,all_adult_staff)
