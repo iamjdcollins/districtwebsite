@@ -45,7 +45,7 @@
       {% if request.path == '/board-of-education/board-meetings/' %}
       <li><a href="#board_meetings">Board Meetings</a></li>
       {% endif %}
-      {% if  page.directoryentries_boardmember_node.all %}
+      {% if  page.directoryentries_boardmember_node.all or page.directoryentries_studentboardmember_node.all%}
       <li><a href="#members">Board Members</a></li>
       {% endif %}
       {% if page.mission_statement %}
@@ -106,7 +106,7 @@
       {% if page.building_location or page.main_phone or page.main_fax %}
       <option value="#contact">Contact</option>
       {% endif %}
-      {% if  page.directoryentries_boardmember_node.all %}
+      {% if  page.directoryentries_boardmember_node.all or page.directoryentries_studentboardmember_node.all%}
       <option value="#members">Board Members</option>
       {% endif %}
       {% if page.mission_statement %}
@@ -539,7 +539,7 @@
     </div>
     {% endif %}
     {% endif %}
-    {% if  page.directoryentries_boardmember_node.all %}
+    {% if  page.directoryentries_boardmember_node.all or page.directoryentries_studentboardmember_node.all%}
     <div class="row">
       <div id="members" class="scrollspy contactcardlist">
         <h2>Board Members</h2>
@@ -564,6 +564,28 @@
             </div>
             <div class="card-action">
               <a href="#">SEND ME A MESSAGE</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% for member in page.directoryentries_studentboardmember_node.all %}
+        <div class="card horizontal">
+          <div class="card-image">
+            {% for profilepicture in member.images_profilepicture_node.all %}
+            <img src="{{profilepicture.image_file.url}}" alt="{{profilepicture.alttext}}"/>
+            {% empty %}
+            <img src="/users/images/placeholder.jpg" alt="No Profile Picture" />
+            {% endfor %}
+          </div>
+          <div class="card-stacked">
+            <div class="card-content">
+              <h5 class="contactcardname">{{ member.first_name }} {{ member.last_name }}</h5>
+              <strong>Student Board Member</strong><br>
+              <i class="material-icons tiny">&#xE55F;</i> {{ member.building_location.street_address }}<br>
+              <i class="material-icons tiny blank"></i> {{ member.building_location.location_city.title }}, {{member.building_location.location_state.title}} {{member.building_location.location_zipcode.title}}<br>
+               <a href="tel:+{{member.phone|slice:"0:1"}}-{{member.phone|slice:"1:4"}}-{{member.phone|slice:"4:7"}}-{{member.phone|slice:"7:11"}}">
+                <i class="material-icons tiny black-text">&#xE0CD;</i> {{member.phone|slice:"1:4"}}.{{member.phone|slice:"4:7"}}.{{member.phone|slice:"7:11"}}
+              </a>
             </div>
           </div>
         </div>
