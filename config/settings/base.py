@@ -125,7 +125,10 @@ DATABASES = {
       'PASSWORD': os.environ['WWW_DB_PASSWORD'],
       'HOST': os.environ['WWW_DB_HOST'],
       'PORT': os.environ['WWW_DB_PORT'],
-      'CONN_MAX_AGE': None,
+      'CONN_MAX_AGE': 600,
+      'OPTIONS' = {
+          'connection_timeout': 0
+      }
     },
 }
 
