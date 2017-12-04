@@ -81,10 +81,10 @@ class StudentBoardMember(DirectoryEntry):
     URL_PREFIX = '/directory/studentboardmember/'
 
     title = models.CharField(max_length=200, help_text='')
-    first_name = models.CharField(max_length=30, help_text='', verbose_name='First Name')
-    last_name =  models.CharField(max_length=30, help_text='', verbose_name='Last Name')
-    phone = models.CharField(max_length=11, help_text='')
-    building_location = models.ForeignKey(Location, on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='directoryentries_studentboardmember_building_location')
+    first_name = models.CharField(max_length=30, null=True, blank=True, help_text='', verbose_name='First Name')
+    last_name =  models.CharField(max_length=30, null=True, blank=True, help_text='', verbose_name='Last Name')
+    phone = models.CharField(max_length=11, null=True, blank=True, help_text='')
+    building_location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='directoryentries_studentboardmember_building_location')
     related_node = models.ForeignKey(Node, blank=True, null=True, related_name='directoryentries_studentboardmember_node', editable=False)
 
 
