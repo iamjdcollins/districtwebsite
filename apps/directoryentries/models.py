@@ -3,6 +3,7 @@ from apps.objects.models import Node, DirectoryEntry
 from apps.users.models import Employee
 from apps.taxonomy.models import SchoolAdministratorType, City, State, Zipcode, BoardPrecinct
 import apps.common.functions
+from apps.taxonomy.models import Location
 
 class SchoolAdministrator(DirectoryEntry):
   PARENT_URL = ''
@@ -70,6 +71,30 @@ class BoardMember(DirectoryEntry):
         get_latest_by = 'create_date'
         verbose_name = 'Board Member'
         verbose_name_plural = 'Board Members'
+        default_manager_name = 'objects'
+
+    save = apps.common.functions.directoryentrysave
+    delete = apps.common.functions.modeltrash
+
+class StudentBoardMember(DirectoryEntry):
+    PARENT_URL = ''
+    URL_PREFIX = '/directory/studentboardmember/'
+
+    title = models.CharField(max_length=200, help_text='')
+    first_name = models.CharField(max_length=30, help_text='', verbose_name='First Name')
+    last_name =  models.CharField(max_length=30, help_text='', verbose_name='Last Name')
+    phone = models.CharField(max_length=11, help_text='')
+    building_location = models.ForeignKey(Location, on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='directoryentries_studentboardmember_building_location')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='directoryentries_studentboardmember_node', editable=False)
+
+
+    studentboardmember_directoryentry_node = models.OneToOneField(DirectoryEntry, db_column='studentboardmember_directoryentry_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'directoryenties_studentboardmember'
+        get_latest_by = 'create_date'
+        verbose_name = 'Student Board Member'
+        verbose_name_plural = 'Student Board Members'
         default_manager_name = 'objects'
 
     save = apps.common.functions.directoryentrysave
