@@ -29,7 +29,7 @@ class Document(BaseDocument):
 class BoardPolicy(BaseDocument):
 
     PARENT_URL = ''
-    URL_PREFIX = '/documents/boardpolicy/'
+    URL_PREFIX = ''
 
     title = models.CharField(max_length=200, help_text='')
     policy_title = models.CharField(max_length=150, unique=True, help_text='',verbose_name="Policy Title")
