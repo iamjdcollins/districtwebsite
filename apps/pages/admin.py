@@ -1,3 +1,9 @@
+import base64
+from django.utils.translation import ugettext as _, ungettext
+from django.utils.encoding import force_text, python_2_unicode_compatible
+from django.utils.html import format_html
+from django.http import HttpResponseRedirect
+from django.utils.http import urlencode, urlquote
 from django.conf import settings
 from django import forms
 from django.db.models import Q
@@ -485,6 +491,12 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
 
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
+
 class SchoolAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SchoolAdminForm, self).__init__(*args, **kwargs)
@@ -547,6 +559,12 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
       obj.create_user = request.user
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
+
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
 
 class DepartmentAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -611,6 +629,12 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
 
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
+
 class BoardAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(BoardAdminForm, self).__init__(*args, **kwargs)
@@ -673,6 +697,12 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
       obj.create_user = request.user
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
+
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
 
 class BoardSubPageAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -748,6 +778,12 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
 
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
+
 class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_fields(self, request, obj=None):
@@ -789,6 +825,12 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
 
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
+
 class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_fields(self, request, obj=None):
@@ -829,6 +871,12 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
       obj.create_user = request.user
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
+
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
 
 class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
@@ -914,6 +962,12 @@ class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
       obj.create_user = request.user
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
+
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
 
 class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
   
@@ -1001,6 +1055,12 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
 
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
+
 class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     inlines = [PolicyInline,]
@@ -1085,6 +1145,12 @@ class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
             obj.create_user = request.user
         obj.update_user = request.user
         super().save_model(request, obj, form, change)
+
+    def response_change(self, request, obj):
+        if request.GET['next']:
+            if '_continue' not in request.POST:
+                return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+        return super(self.__class__, self).response_change(request, obj)
 
 class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
@@ -1171,6 +1237,12 @@ class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
         obj.update_user = request.user
         super().save_model(request, obj, form, change)
 
+    def response_change(self, request, obj):
+        if request.GET['next']:
+            if '_continue' not in request.POST:
+                return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+        return super(self.__class__, self).response_change(request, obj)
+
 class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   form = make_ajax_form(Department,{'primary_contact': 'employee'})
@@ -1223,6 +1295,12 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
 
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
+
 class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_fields(self, request, obj=None):
@@ -1272,6 +1350,12 @@ class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
       obj.create_user = request.user
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
+
+  def response_change(self, request, obj):
+    if request.GET['next']:
+      if '_continue' not in request.POST:
+        return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)
 
 # Register your models here.
 admin.site.register(Page, PageAdmin)
