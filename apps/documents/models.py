@@ -58,3 +58,75 @@ class BoardPolicy(BaseDocument):
 
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
+
+class Policy(BaseDocument):
+
+    PARENT_URL = ''
+    URL_PREFIX = '/documents/policy/'
+
+    title = models.CharField(max_length=200, help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_policy_node', editable=False)
+
+    document_policy_node = models.OneToOneField(BaseDocument, db_column='document_policy_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+        db_table = 'documents_policy'
+        get_latest_by = 'update_date'
+        permissions = (('trash_policy', 'Can soft delete policy'),('restore_policy', 'Can restore policy'))
+        verbose_name = 'Policy'
+        verbose_name_plural = 'Policies'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.documentsave
+    delete = apps.common.functions.modeltrash
+
+class AdministrativeProcedure(BaseDocument):
+
+    PARENT_URL = ''
+    URL_PREFIX = '/documents/administrativeprocedure/'
+
+    title = models.CharField(max_length=200, help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_administrativeprocedure_node', editable=False)
+
+    document_administrativeprocedure_node = models.OneToOneField(BaseDocument, db_column='document_administrativeprocedure_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+        db_table = 'documents_administrativeprocedure'
+        get_latest_by = 'update_date'
+        permissions = (('trash_administrativeprocedure', 'Can soft delete administrative procedure'),('restore_administrativeprocedure', 'Can restore administrative procedure'))
+        verbose_name = 'Administrative Procedure'
+        verbose_name_plural = 'Administrative Procedures'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+       return self.title
+
+    save = apps.common.functions.documentsave
+    delete = apps.common.functions.modeltrash
+
+class SupportingDocument(BaseDocument):
+
+    PARENT_URL = ''
+    URL_PREFIX = '/documents/supportingdocument/'
+
+    title = models.CharField(max_length=200, help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_supportingdocument_node', editable=False)
+
+    document_supportingdocument_node = models.OneToOneField(BaseDocument, db_column='document_supportingdocument_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+        db_table = 'documents_supportingdocument'
+        get_latest_by = 'update_date'
+        permissions = (('trash_supportingdocument', 'Can soft delete supporting document'),('restore_supportingdocument', 'Can restore supporting document'))
+        verbose_name = 'Supporting Document'
+        verbose_name_plural = 'Supporting Documents'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.documentsave
+    delete = apps.common.functions.modeltrash
