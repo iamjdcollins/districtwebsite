@@ -10,6 +10,16 @@ from django.core.cache import cache
 from django.apps import apps
 from django.core.exceptions import FieldDoesNotExist
 
+# Required for response change
+import base64
+from django.utils.translation import ugettext as _, ungettext
+from django.utils.encoding import force_text, python_2_unicode_compatible
+from django.utils.html import format_html
+from django.http import HttpResponseRedirect
+from django.utils.http import urlencode, urlquote
+from django.contrib import messages
+from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
+
 def findfileext_media(media):
   media = media.split('/')[-1:]
   return os.path.splitext(media[0])
@@ -641,3 +651,32 @@ def resetchildrentoalphatitle():
 # Cache Functions
 def clearcache(object):
   pass
+
+def response_change(self, request, obj):
+    if 'next' in request.GET:
+        opts = self.model._meta
+        pk_value = obj._get_pk_val()
+        preserved_filters = self.get_preserved_filters(request)
+
+        msg_dict = {
+            'name': force_text(opts.verbose_name),
+            'obj': format_html('<a class="editlink" href="{}">{}</a>', urlquote(request.path), obj),
+        }
+
+        if "_continue" in request.POST:
+            msg = format_html(
+                _('The {name} "{obj}" was changed successfully. You may edit it again below.'),
+                **msg_dict
+            )
+            self.message_user(request, msg, messages.SUCCESS)
+            redirect_url = request.get_full_path()
+            redirect_url = add_preserved_filters({'preserved_filters': preserved_filters, 'opts': opts}, redirect_url)
+            return HttpResponseRedirect(redirect_url)
+        if '_continue' not in request.POST:
+            msg = format_html(
+                _('The {name} "{obj}" was changed successfully.'),
+                **msg_dict
+            )
+            self.message_user(request, msg, messages.SUCCESS)
+            return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
+    return super(self.__class__, self).response_change(request, obj)

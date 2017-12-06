@@ -62,7 +62,7 @@ class BoardPolicy(BaseDocument):
 class Policy(BaseDocument):
 
     PARENT_URL = ''
-    URL_PREFIX = '/documents/policy/'
+    URL_PREFIX = ''
 
     title = models.CharField(max_length=200, help_text='')
     related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_policy_node', editable=False)
@@ -86,7 +86,7 @@ class Policy(BaseDocument):
 class AdministrativeProcedure(BaseDocument):
 
     PARENT_URL = ''
-    URL_PREFIX = '/documents/administrativeprocedure/'
+    URL_PREFIX = ''
 
     title = models.CharField(max_length=200, help_text='')
     related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_administrativeprocedure_node', editable=False)
@@ -110,7 +110,7 @@ class AdministrativeProcedure(BaseDocument):
 class SupportingDocument(BaseDocument):
 
     PARENT_URL = ''
-    URL_PREFIX = '/documents/supportingdocument/'
+    URL_PREFIX = ''
 
     title = models.CharField(max_length=200, help_text='')
     related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_supportingdocument_node', editable=False)

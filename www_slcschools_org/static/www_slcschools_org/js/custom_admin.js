@@ -14,7 +14,7 @@ django.jQuery(document).ready(function(){
     }
   };
   nextURL = btoa(window.location)
-  django.jQuery('.field-edit_link a').each(function(index,element){
+  django.jQuery('.editlink').each(function(index,element){
     django.jQuery(element).attr('href', django.jQuery(element).attr('href') + '?next=' + nextURL)
   });
   console.log(atob(nextURL))
