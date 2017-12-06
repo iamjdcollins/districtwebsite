@@ -389,8 +389,19 @@ class SupportingDocumentInline(EditLinkToInlineObject, admin.TabularInline):
             return qs
         return qs.filter(deleted=0)
 
+class FileInlineForm(forms.ModelForm):
+    class Meta:
+        model = File
+        fields = ['file_file', 'file_language']
+
+    def __init__(self, *args, **kwargs):
+        super(FileInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['file_language'].disabled = True
+
 class FileInline(admin.TabularInline):
   model = File
+  form = FileInlineForm
   fk_name = 'parent'
   fields = ['file_file', 'file_language']
   readonly_fields = []
