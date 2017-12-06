@@ -196,66 +196,7 @@
           </thead>
           <tbody>
             {% for policy in board_policies %}
-            {% for document in policy.documents_policy_node.all %}
-            <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex">{{ policy.get_policy_index }}</td>
-              <td>{{ policy.title }}</td>
-              <td class="rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
-                <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE157;</i></a>
-                <div id="{{ document.pk }}" class="hide">
-                  <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
-                  <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
-                  {% for file in document.files_file_node.all %}
-                  <a class="btn stretch" href="{{ file.file_file.url }}">
-                    <span class="sr-only">{{ file.title }}</span>
-                    <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
-                  </a>
-                  {% endfor %}
-                </div>
-              </td>
-              <td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>
-            </tr>
-            {% endfor %}
-            {% for document in policy.documents_administrativeprocedure_node.all %}
-            <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Administrative Procedure</td>
-              <td class="rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
-                <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE157;</i></a>
-                <div id="{{ document.pk }}" class="hide">
-                  <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
-                  <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
-                  {% for file in document.files_file_node.all %}
-                  <a class="btn stretch" href="{{ file.file_file.url }}">
-                    <span class="sr-only">{{ file.title }}</span>
-                    <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
-                  </a>
-                  {% endfor %}
-               </div>
-             </td>
-              <td class="rowaction"></td>
-            </tr>
-            {% endfor %}
-            {% for document in policy.documents_supportingdocument_node.all %}
-            <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>{{document.title}}</td>
-              <td class="rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
-                <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE157;</i></a>
-                <div id="{{ document.pk }}" class="hide">
-                  <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
-                  <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
-                  {% for file in document.files_file_node.all %}
-                  <a class="btn stretch" href="{{ file.file_file.url }}">
-                    <span class="sr-only">{{ file.title }}</span>
-                    <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
-                  </a>
-                  {% endfor %}
-               </div>
-              </td>
-              <td class="rowaction"></td>
-            </tr>
-            {% endfor %}
+            {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
         </table>
@@ -272,36 +213,13 @@
             <tr>
               <th class="policyindex">Index</th>
               <th>Policy Title</th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
+              <th class="rowaction">Documents</th>
+              <th class="rowaction">Contacts</th>
             </tr>
           </thead>
           <tbody>
             {% for policy in community_policies %}
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex">{{ policy.get_policy_index }}</td>
-              <td>{{ policy.title }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>
-            </tr>
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Administrative Procedure</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% for document in "0" %}
-            <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Supporting Document {{ forloop.counter }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% endfor %}
+            {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
         </table>
@@ -318,36 +236,13 @@
             <tr>
               <th class="policyindex">Index</th>
               <th>Policy Title</th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
+              <th class="rowaction">Documents</th>
+              <th class="rowaction">Contacts</th>
             </tr>
           </thead>
           <tbody>
             {% for policy in financial_policies %}
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex">{{ policy.get_policy_index }}</td>
-              <td>{{ policy.title }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>
-            </tr>
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Administrative Procedure</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% for document in "0" %}
-            <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Supporting Document {{ forloop.counter }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% endfor %}
+            {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
         </table>
@@ -364,36 +259,13 @@
             <tr>
               <th class="policyindex">Index</th>
               <th>Policy Title</th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
+              <th class="rowaction">Documents</th>
+              <th class="rowaction">Contacts</th>
             </tr>
           </thead>
           <tbody>
             {% for policy in general_policies %}
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex">{{ policy.get_policy_index }}</td>
-              <td>{{ policy.title }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>
-            </tr>
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Administrative Procedure</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% for document in "0" %}
-            <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Supporting Document {{ forloop.counter }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% endfor %}
+            {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
         </table>
@@ -410,36 +282,13 @@
             <tr>
               <th class="policyindex">Index</th>
               <th>Policy Title</th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
+              <th class="rowaction">Documents</th>
+              <th class="rowaction">Contacts</th>
             </tr>
           </thead>
           <tbody>
             {% for policy in instructional_policies %}
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex">{{ policy.get_policy_index }}</td>
-              <td>{{ policy.title }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>
-            </tr>
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Administrative Procedure</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% for document in "0" %}
-            <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Supporting Document {{ forloop.counter }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% endfor %}
+            {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
         </table>
@@ -456,36 +305,13 @@
             <tr>
               <th class="policyindex">Index</th>
               <th>Policy Title</th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
+              <th class="rowaction">Documents</th>
+              <th class="rowaction">Contacts</th>
             </tr>
           </thead>
           <tbody>
             {% for policy in personnel_policies %}
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex">{{ policy.get_policy_index }}</td>
-              <td>{{ policy.title }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>
-            </tr>
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Administrative Procedure</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% for document in "0" %}
-            <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Supporting Document {{ forloop.counter }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% endfor %}
+            {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
         </table>
@@ -502,36 +328,13 @@
             <tr>
               <th class="policyindex">Index</th>
               <th>Policy Title</th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
-              <th class="rowaction"></th>
+              <th class="rowaction">Documents</th>
+              <th class="rowaction">Contacts</th>
             </tr>
           </thead>
           <tbody>
             {% for policy in student_policies %}
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex">{{ policy.get_policy_index }}</td>
-              <td>{{ policy.title }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>
-            </tr>
-            <tr {% if forloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Administrative Procedure</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% for document in "0" %}
-            <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
-              <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-              <td>Supporting Document {{ forloop.counter }}</td>
-              <td class="rowaction"><a href="#!" title="Link"><i class="material-icons">&#xE157;</i></a></td>
-              <td class="rowaction"><a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a></td>
-              <td class="rowaction"></td>
-            </tr>
-            {% endfor %}
+            {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
         </table>
