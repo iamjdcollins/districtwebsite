@@ -15,7 +15,12 @@
       {% endfor %}
     </div>
   </td>
-  <td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>
+  <!--<td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>-->
+  <td>
+    {% for boardpolicyadmin in policy.directoryentries_boardpolicyadmin_node.all %}
+      {{boardpolicyadmin.employee.email}}<br>
+    {% endfor %}
+  </td>
 </tr>
 {% endfor %}
 {% for document in policy.documents_administrativeprocedure_node.all %}
