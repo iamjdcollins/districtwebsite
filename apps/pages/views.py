@@ -212,13 +212,13 @@ def boarddetail(request):
   elif boardsubpage:
     page = boardsubpage
   pageopts = page._meta
-  board_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Board Policies')
-  community_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Community Policies')
-  financial_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Financial Policies')
-  general_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='General Policies')
-  instructional_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Instructional Policies')
-  personnel_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Personnel Policies')
-  student_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Student Policies')
+  board_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Board Policies').order_by('title')
+  community_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Community Policies').order_by('title')
+  financial_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Financial Policies').order_by('title')
+  general_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='General Policies').order_by('title')
+  instructional_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Instructional Policies').order_by('title')
+  personnel_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Personnel Policies').order_by('title')
+  student_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Student Policies').order_by('title')
   return render(request, 'pages/board/boarddetail.html', {'page': page,'pageopts': pageopts,'board_policies': board_policies,'community_policies': community_policies,'financial_policies': financial_policies,'general_policies': general_policies,'instructional_policies': instructional_policies,'personnel_policies': personnel_policies,'student_policies': student_policies})
   #board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1)
   #board_meeting_years = {}

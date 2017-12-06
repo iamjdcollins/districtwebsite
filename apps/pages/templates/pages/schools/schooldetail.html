@@ -145,12 +145,16 @@
         {% for admin in page.directoryentries_schooladministrator_node.all %}
         <div class="card horizontal">
           <div class="card-image">
-            <img src="{% if admin.employee.users_userprofileimage_user.image %}/{{admin.employee.users_userprofileimage_user.image}}{% else %}/users/images/placeholder.jpg{% endif %}" alt="{% if admin.employee.users_userprofileimage_user.image %}{{admin.profileimage.alttext}}{% else %}User Profile Picture Not Available{% endif %}"/>
+            {% for profilepicture in admin.employee.images_profilepicture_node.all %}
+            <img src="{{profilepicture.image_file.url}}" alt="{{profilepicture.alttext}}"/>
+            {% empty %}
+            <img src="/users/images/placeholder.jpg" alt="No Profile Picture" />
+            {% endfor %}
           </div>
           <div class="card-stacked">
             <div class="card-content">
               <span class="card-title contactcardname">{{ admin.employee.first_name }} {{ admin.employee.last_name }}</span>
-              <strong>{{ admin.admin_type }}</strong> <br />
+              <strong>{{ admin.schooladministratortype }}</strong> <br />
               {% if admin.phone %}
               <a href="tel:+{{admin.phone|slice:"0:1"}}-{{admin.phone|slice:"1:4"}}-{{admin.phone|slice:"4:7"}}-{{admin.phone|slice:"7:11"}}">
                 <i class="material-icons tiny black-text">&#xE0CD;</i> {{admin.phone|slice:"1:4"}}.{{admin.phone|slice:"4:7"}}.{{admin.phone|slice:"7:11"}}
