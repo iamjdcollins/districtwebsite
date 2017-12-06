@@ -99,3 +99,24 @@ class StudentBoardMember(DirectoryEntry):
 
     save = apps.common.functions.directoryentrysave
     delete = apps.common.functions.modeltrash
+
+class BoardPolicyAdmin(DirectoryEntry):
+    PARENT_URL = ''
+    URL_PREFIX = '/directory/boardpolicyadmin/'
+
+    title = models.CharField(max_length=200, help_text='')
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='directoryenties_boardpolicyadmin_employee')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='directoryentries_boardpolicyadmin_node', editable=False)
+
+
+    boardpolicyadmin_directoryentry_node = models.OneToOneField(DirectoryEntry, db_column='boardpolicyadmin_directoryentry_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'directoryenties_boardpolicyadmin'
+        get_latest_by = 'create_date'
+        verbose_name = 'Board Policy Administrator'
+        verbose_name_plural = 'Board Policy Administrators'
+        default_manager_name = 'objects'
+
+    save = apps.common.functions.directoryentrysave
+    delete = apps.common.functions.modeltrash
