@@ -233,6 +233,7 @@ function modaalAdminPageModify(){
   $(".modaal-adminpage iframe").contents().find('#add_id_building_location').unbind()
   $(".modaal-adminpage iframe").css('visibility','visible')
   $(".modaal-adminpage iframe").contents().find("[name='_save']").click(function(){$(".modaal-adminpage iframe").css('visibility','hidden')});
+  $(".modaal-adminpage iframe").contents().find("[name='_continue']").click(function(){$(".modaal-adminpage iframe").css('visibility','hidden')});
 }
 function modaalAdminPageLoad(){
   $('.modal-iframe-loading').css('display','block');
@@ -433,6 +434,9 @@ $(document).ready(function(){
       $($content).append( '<img src="/static/www_slcschools_org/images/loadingspinner.gif" class="modal-iframe-loading" />' );
       modaalAdminPageLoad();
       $(modal).find('.modaal-content').get(0).focus()
+    },
+    after_close: function(){
+      location.reload()
     },
   });
   $(".document-inline").modaal({
