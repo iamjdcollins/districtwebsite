@@ -18,7 +18,7 @@
   <!--<td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>-->
   <td>
     {% for boardpolicyadmin in policy.directoryentries_boardpolicyadmin_node.all %}
-      {{boardpolicyadmin.employee.email}}<br>
+      <a href="#!" style="white-space: pre">{{boardpolicyadmin.employee.first_name}} {{boardpolicyadmin.employee.last_name}}</a><br>
     {% endfor %}
   </td>
 </tr>

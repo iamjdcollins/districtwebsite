@@ -277,7 +277,7 @@ class BoardPolicyInline(EditLinkToInlineObject, admin.TabularInline):
   fk_name = 'parent'
   readonly_fields = ['edit_link',]
   fields = ['policy_title', 'section', 'index', 'edit_link', ]
-  ordering = ['title',]
+  ordering = ['section__lft','index',]
   extra = 0
   min_num = 0
   max_num = 100
