@@ -1,7 +1,7 @@
 {% for document in policy.documents_policy_node.all %}
 <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
   <td class="policyindex">{{ policy.get_policy_index }}</td>
-  <td>{{ policy.title }}</td>
+  <td>{{ policy.policy_title }}</td>
   <td class="rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
     <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE157;</i></a>
     <div id="{{ document.pk }}" class="hide">
@@ -46,7 +46,7 @@
 {% for document in policy.documents_supportingdocument_node.all %}
 <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
   <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-  <td>{{document.title}}</td>
+  <td>{{document.document_title}}</td>
   <td class="rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
     <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE157;</i></a>
     <div id="{{ document.pk }}" class="hide">

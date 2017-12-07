@@ -113,6 +113,7 @@ class SupportingDocument(BaseDocument):
     URL_PREFIX = ''
 
     title = models.CharField(max_length=200, help_text='')
+    document_title = models.CharField(max_length=200, help_text='',verbose_name='Title')
     related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_supportingdocument_node', editable=False)
 
     document_supportingdocument_node = models.OneToOneField(BaseDocument, db_column='document_supportingdocument_node', on_delete=models.CASCADE, parent_link=True, editable=False)

@@ -585,11 +585,15 @@ def documentsave(self, *args, **kwargs):
   self.related_node = self.parent
   # Set Title
   if self._meta.model_name == 'boardpolicy':
-    self.title = self.section.section_prefix + '-' + str(self.index) + ' ' + self.policy_title
+    self.title = self.section.section_prefix + '-' + str(self.index)
   if self._meta.model_name == 'policy':
     self.title = self.parent.node_title + ' Policy'
   if self._meta.model_name == 'administrativeprocedure':
     self.title = self.parent.node_title + ' AP'
+  if self._meta.model_name == 'supportingdocument':
+    if (( not self.document_title ) and self.title) or self.title != self.node_title:
+        self.document_title = re.sub(r'^' + re.escape(self.parent.node_title) + '[ ]?','',self.title).strip()
+    self.title = self.parent.node_title + ' ' + self.document_title
   # Track URL Changes
   urlchanged = False
   parent_url = self.parent.url if self.parent else self.PARENT_URL
