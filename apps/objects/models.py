@@ -124,3 +124,14 @@ class Document(Node):
     get_latest_by = 'create_date'
     verbose_name = 'Document'
     verbose_name_plural = 'Documents'
+
+class Event(Node):
+  event_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
+
+  event_node = models.OneToOneField(Node, db_column='event_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+  class Meta:
+    db_table = 'objects_event'
+    get_latest_by = 'create_date'
+    verbose_name = 'Event'
+    verbose_name_plural = 'Events'
