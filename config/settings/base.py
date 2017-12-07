@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'apps.links',
     'apps.files',
     'apps.documents',
+    'apps.events',
     #'apps.schools',
     #'apps.board',
     #'apps.news',

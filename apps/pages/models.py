@@ -176,6 +176,25 @@ class BoardSubPage(BasePage):
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
 
+class BoardMeetingYear(BasePage):
+    title = models.CharField(max_length=200, unique=True, help_text='',)
+    yearend = models.CharField(max_length=4, unique=True, help_text='', blank=True)
+
+    boardmeetingyear_page_node = models.OneToOneField(BasePage, db_column='boardmeetingyear_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'pages_boardmeetingyear'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardmeetingyear', 'Can soft delete board meeting year'),('restore_boardmeetingyear', 'Can restore board meeting year'))
+        verbose_name = 'Board Meeting Year'
+        verbose_name_plural = 'Board Meeting Years'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.pagesave
+    delete = apps.common.functions.modeltrash
+
 class NewsYear(BasePage):
     title = models.CharField(max_length=200, unique=True, help_text="",)
     yearend = models.CharField(max_length=4, unique=True, help_text="", blank=True)

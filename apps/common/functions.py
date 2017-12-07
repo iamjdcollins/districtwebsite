@@ -630,6 +630,75 @@ def documentsave(self, *args, **kwargs):
       silentmove_media(settings.MEDIA_ROOT + oldurl, settings.MEDIA_ROOT + self.url)
   clearcache(self)  
 
+def eventsave(self, *args, **kwargs):
+  # Setup New and Deleted Variables
+  is_new = self._state.adding
+  is_deleted = '_' if self.deleted == True else ''
+  # Set UUID if None
+  if self.uuid is None:
+    self.uuid = uuid.uuid4()
+  #Force Parent
+  if self.PARENT_URL:
+    try:
+      self.parent = Node.objects.exclude(uuid=self.uuid).get(url=self.PARENT_URL)
+    except Node.DoesNotExist:
+      pass
+  if self._meta.model_name == 'boardmeeting':
+    if self.author_date.month >= 7:
+      yearend = self.startdate.year + 1
+      yearstring = str(self.startdate.year) + '-' + str(self.startdate.year + 1)[2:]
+    else:
+      yearend=self.startdate.year
+      yearstring = str(self.startdate.year - 1) + '-' + str(self.startdate.year)[2:]
+    try:
+      newsyear = self.PARENT_TYPE.objects.get(yearend=yearend)
+    except self.PARENT_TYPE.DoesNotExist:
+      webmaster = User.objects.get(username='webmaster@slcschools.org')
+      parent = Node.objects.get(node_title='Board Meetings', content_type='boardsubpage')
+      boardmeetingyear = self.PARENT_TYPE(title=yearstring, yearend=yearend, parent=parent, create_user=webmaster, update_user=webmaster)
+      boardmeeting.save()
+    self.parent = Node.objects.get(url=newsyear.url)
+  # Related Node matches Parent
+  self.related_node = self.parent
+  # Set Title
+  if self._meta.model_name == 'boardmeeting':
+    self.title = self.section.section_prefix + '-' + str(self.index)
+  # Track URL Changes
+  urlchanged = False
+  parent_url = self.parent.url if self.parent else self.PARENT_URL
+  if not self.url.startswith(parent_url):
+    try:
+      self.url = Node.objects.get(pk=self.pk).url
+    except Node.DoesNotExist:
+      pass
+  oldurl = self.url
+  if self.url != urlclean_remdoubleslashes('/' + parent_url + '/' + self.URL_PREFIX + '/' + is_deleted + urlclean_objname(self.title) + '/'):
+    self.url = urlclean_remdoubleslashes('/' + parent_url + '/' + self.URL_PREFIX + '/' + is_deleted + urlclean_objname(self.title) + '/')
+    if not is_new:
+      urlchanged = True
+  # Set the node_title for the node
+  self.node_title = self.title
+  # Set the node type
+  self.node_type = self._meta.app_label
+  # Set the content type
+  self.link_type = self._meta.model_name
+  self.content_type = self._meta.model_name
+  # Does this item have permissions?
+  if self.HAS_PERMISSIONS:
+    self.has_permissions = True
+  else:
+    self.has_permissions = False
+  # Save the item
+  super(self._meta.model, self).save(*args, **kwargs)
+  if urlchanged:
+      # Save Children
+      for child in self.get_children():
+        object = nodefindobject(child)
+        object.save()
+      # Move Directory
+      silentmove_media(settings.MEDIA_ROOT + oldurl, settings.MEDIA_ROOT + self.url)
+  clearcache(self)
+
 # Model Inheritance Object
 def nodefindobject(node):
   return apps.get_model(node.node_type + '.' + node.content_type).objects.get(pk=node.pk)
