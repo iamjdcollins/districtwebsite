@@ -9,7 +9,7 @@ from apps.objects.models import Node, User
 from django.core.cache import cache
 from django.apps import apps
 from django.core.exceptions import FieldDoesNotExist
-
+from django.utils import timezone
 # Required for response change
 import base64
 from django.utils.translation import ugettext as _, ungettext
@@ -644,25 +644,25 @@ def eventsave(self, *args, **kwargs):
     except Node.DoesNotExist:
       pass
   if self._meta.model_name == 'boardmeeting':
-    if self.author_date.month >= 7:
+    if self.startdate.month >= 7:
       yearend = self.startdate.year + 1
       yearstring = str(self.startdate.year) + '-' + str(self.startdate.year + 1)[2:]
     else:
       yearend=self.startdate.year
       yearstring = str(self.startdate.year - 1) + '-' + str(self.startdate.year)[2:]
     try:
-      newsyear = self.PARENT_TYPE.objects.get(yearend=yearend)
+      boardmeetingyear = self.PARENT_TYPE.objects.get(yearend=yearend)
     except self.PARENT_TYPE.DoesNotExist:
       webmaster = User.objects.get(username='webmaster@slcschools.org')
       parent = Node.objects.get(node_title='Board Meetings', content_type='boardsubpage')
       boardmeetingyear = self.PARENT_TYPE(title=yearstring, yearend=yearend, parent=parent, create_user=webmaster, update_user=webmaster)
-      boardmeeting.save()
-    self.parent = Node.objects.get(url=newsyear.url)
+      boardmeetingyear.save()
+    self.parent = Node.objects.get(url=boardmeetingyear.url)
   # Related Node matches Parent
   self.related_node = self.parent
   # Set Title
   if self._meta.model_name == 'boardmeeting':
-    self.title = self.section.section_prefix + '-' + str(self.index)
+    self.title = timezone.localtime(self.startdate).strftime('%Y%m%d-%H%M')
   # Track URL Changes
   urlchanged = False
   parent_url = self.parent.url if self.parent else self.PARENT_URL

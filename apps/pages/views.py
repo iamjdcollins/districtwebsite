@@ -10,7 +10,7 @@ from django.http import HttpResponse
 
 import apps.common.functions
 from apps.objects.models import Node
-from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage
+from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear
 from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture
 from apps.directoryentries.models import Staff, BoardMember, StudentBoardMember
@@ -237,3 +237,8 @@ def boarddetail(request):
   #else:
   #  board_meeting_years['current'] = currentdate.year
   #return render(request, 'board/boarddetail.html', {'page': page,'pageopts': pageopts, 'board_subpages': board_subpages, 'board_policies': board_policies, 'community_policies': community_policies, 'financial_policies': financial_policies, 'general_policies': general_policies, 'instructional_policies': instructional_policies, 'personnel_policies': personnel_policies, 'student_policies': student_policies, 'board_meeting_years': board_meeting_years, 'board_meetings': board_meetings})
+
+def BoardMeetingYearArchive(request):
+    page = BoardMeetingYear.objects.filter(url=request.path).first()
+    pageopts = page._meta
+    return render(request, 'pages/news/yeararchive.html', {'page': page, 'pageopts': pageopts,})
