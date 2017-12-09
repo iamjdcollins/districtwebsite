@@ -492,10 +492,13 @@ class BoardMeetingInlineForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(BoardMeetingInlineForm, self).__init__(*args, **kwargs)
-        #raise Exception(dir(self.fields['startdate']))
         if self.instance.pk:
+            pass
+            #raise Exception(dir(self))
+            #self.fields['startdate'].data = self.instance.startdate
             #self.fields['startdate'].disabled = True
-            self.fields['meeting_type'].disabled = True
+            #self.fields['startdate'].widget = forms.DateTimeInput
+            #self.fields['meeting_type'].disabled = True
 
 class BoardMeetingInline(EditLinkToInlineObject, admin.TabularInline):
   model = BoardMeeting
@@ -504,10 +507,9 @@ class BoardMeetingInline(EditLinkToInlineObject, admin.TabularInline):
   fields = ['startdate', 'meeting_type','edit_link',]
   readonly_fields = ['edit_link',]
   ordering = ['startdate',]
-  filter_horizontal = ['meeting_type',]
   extra = 0
   min_num = 0
-  max_num = 100
+  max_num = 50 
   has_add_permission = apps.common.functions.has_add_permission_inline
   has_change_permission = apps.common.functions.has_change_permission_inline
   has_delete_permission = apps.common.functions.has_delete_permission_inline
@@ -856,15 +858,7 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
                 while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           if obj.url == '/board-of-education/policies/':
-              if isinstance(inline,ContentBannerInline):
-                  continue
-              if isinstance(inline,StaffInline):
-                  continue
-              if isinstance(inline,ResourceLinkInline):
-                  continue
-              if isinstance(inline,DocumentInline):
-                  continue
-              if isinstance(inline,SubPageInline):
+              if not isinstance(inline,BoardPolicyInline):
                   continue
           if obj.url == '/board-of-education/board-meetings/':
               if not isinstance(inline,BoardMeetingInline):
@@ -1629,16 +1623,20 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','startdate','meeting_type','parent','url']
+        fields = ['title','originaldate', 'startdate','cancelled','meeting_type','building_location','non_district_location','non_district_location_google_place']
+        if request.user.is_superuser:
+            fields.append('parent')
+            fields.append('url')
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
             return ['url']
         else:
             if obj:
-                return ['title','startdate','meeting_type','parent','url']
+                return ['title','originaldate']
             else:
-                return ['url']
+                return []
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -1704,7 +1702,6 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            #raise Exception(dir(inline))
             if not isinstance(inline,ResourceLinkInline):
                 # Remove delete fields is not superuser
                 if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
@@ -1767,7 +1764,7 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_delete_permission = apps.common.functions.has_delete_permission
 
     def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
+        instances = formset.save(commit=True)
         for obj in formset.deleted_objects:
             obj.delete()
         for obj in formset.new_objects:
