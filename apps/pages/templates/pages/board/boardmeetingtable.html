@@ -1,0 +1,8 @@
+<tr class="{{meeting.yearend}} {% if meeting.cancelled %}red lighten-4{% endif %}">
+  <td><div>{{ meeting.startdate|date:"M. d, Y" }}</div>{% if meeting.startdate|date:"l" != 'Tuesday' %}<div class="yellow lighten-4">{{ meeting.startdate|date:"l" }}</div>{% endif %}{% if meeting.startdate|date:"H:i" != '18:30' %}<div class="yellow lighten-4">{{ meeting.startdate|date:"g:i A" }}</div>{% endif %}</td>
+  <td>{% if meeting.building_location or meeting.non_district_location_google_place %}<a href="{% if meeting.non_district_location_google_place %}{{  meeting.non_district_location_google_place }}{% else %}{{meeting.building_location.google_place}}{% endif %}" target="_blank">{% if meeting.non_district_location %}{{  meeting.non_district_location }}{% else %}{{ meeting.building_location.title }}{% endif %}<i class="material-icons tiny">&#xE55F;</i></a>{% else %}Location Not Specified{% endif %}</td>
+  <td>{% if meeting.cancelled %}**MEETING CANCELLED**{% else %}{% if meeting.meeting_type.all %}{% for type in meeting.meeting_type.all %}{% if not forloop.first %} <br> {% endif %}{{ type.title }}{% endfor %}{% endif %}{% endif %}</td>
+  <td class="center"><a href="#!"><i class="material-icons">&#xE24D;</i></a></td>
+  <td class="center"><a href="#!"><i class="material-icons">&#xE24D;</i></a></td>
+  <td class="center"><a href="#!"><i class="material-icons">&#xE039;</i></a></td>
+</tr>
