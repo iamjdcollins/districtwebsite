@@ -231,6 +231,7 @@ function modaalAdminPageModify(){
   $(".modaal-adminpage iframe").contents().find(".changeform-navigation").css('display','none')
   $(".modaal-adminpage iframe").contents().find(".object-tools").css('display','none')
   $(".modaal-adminpage iframe").contents().find('#add_id_building_location').unbind()
+  $(".modaal-adminpage iframe").contents().find("body.menu-pinned #branding-pin").click()
   $(".modaal-adminpage iframe").css('visibility','visible')
   $(".modaal-adminpage iframe").contents().find("[name='_save']").click(function(){$(".modaal-adminpage iframe").css('visibility','hidden')});
   $(".modaal-adminpage iframe").contents().find("[name='_continue']").click(function(){$(".modaal-adminpage iframe").css('visibility','hidden')});
@@ -387,6 +388,22 @@ $(document).ready(function(){
           $(element).attr('aria-describedby','fulltranslationlistdesc')
           $(element).focus()
         }
+      });
+    },
+  });
+  $("a.yearnav").modaal({
+    type: 'inline',
+    fullscreen: 'true',
+    custom_class: 'modaal-yearnav',
+    after_callback_delay: 300,
+    after_open: function(modal){
+      $(modal).find('.modaal-focus').each(function(index,element){
+        //if(index === 0){
+        //  $(element).removeAttr('aria-label')
+        //  $(element).attr('aria-labelledby','fulltranslationlisttitle')
+        //  $(element).attr('aria-describedby','fulltranslationlistdesc')
+        //  $(element).focus()
+        //}
       });
     },
   });

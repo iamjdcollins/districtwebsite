@@ -70,13 +70,13 @@ body {top:0 !important;}
 #google_translate_element2 {display:none!important;}
 
 /* Menu Modaals */
-.modaal-mainmenu .modaal-container, .modaal-fulltranslationlist .modaal-container{
+.modaal-mainmenu .modaal-container, .modaal-fulltranslationlist .modaal-container, .modaal-yearnav .modaal-container{
   background-color: $slcschools-grey-lighten-1;
 }
-.modaal-mainmenu ul, .modaal-fulltranslationlist ul {
+.modaal-mainmenu ul, .modaal-fulltranslationlist ul, .modaal-yearnav ul {
   margin: 0px -30px -30px -30px;
 }
-.modaal-mainmenu ul li a, .modaal-fulltranslationlist ul li a {
+.modaal-mainmenu ul li a, .modaal-fulltranslationlist ul li a, .modaal-yearnav ul li a{
   @extend .btn;
   display: block;
   width: 100%;
@@ -603,6 +603,42 @@ table.board_policies > tbody > tr.even {
 }
 .googlemap{
   width: 100%;
+}
+nav.yearnav {
+  background-color: rgb(240, 240, 240);
+  height: 42px;
+  position: relative;
+  margin-bottom: 20px;
+}
+nav.yearnav a {
+  background-color: rgb(240, 240, 240);
+  height: 42px;
+  position: absolute;
+  margin-bottom: 20px;
+  width: 100%;
+}
+nav.yearnav span.currentyear {
+  color: initial;
+  position: absolute;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+  height: 10px;
+  margin: auto 0;
+  line-height: 10px;
+  z-index: 3;
+}
+nav.yearnav span.caret {
+  color: initial;
+  position: absolute;
+  right: 16px;
+  top: 0;
+  bottom: 0;
+  height: 10px;
+  margin: auto 0;
+  font-size: 10px;
+  line-height: 10px;
+  z-index: 3;
 }
 footer{
   min-height: 100px;
