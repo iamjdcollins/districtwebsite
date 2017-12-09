@@ -11,7 +11,10 @@ class BoardMeeting(BaseEvent):
     PARENT_TYPE = BoardMeetingYear
 
     title = models.CharField(max_length=200, help_text='')
-    startdate = models.DateTimeField(unique=False, verbose_name="Start Date and Time")
+    startdate = models.DateTimeField(default=apps.common.functions.next_tuesday_sixthrity, unique=False, verbose_name="Start Date and Time")
+    originaldate = models.DateTimeField(unique=False, verbose_name="Original Start Date and Time")
+    schoolyear = models.CharField(max_length=7, help_text='')
+    yearend = models.CharField(max_length=4, help_text='')
     building_location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='events_boardmeeting_build_location')
     non_district_location = models.CharField(max_length=200, null=True, blank=True, help_text='', verbose_name='Name of Non-District Location')
     non_district_location_google_place = models.URLField(max_length=2048, blank=True,null=True, help_text='', verbose_name='Name of Non-District Location Google Place')
