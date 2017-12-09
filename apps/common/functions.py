@@ -10,6 +10,7 @@ from django.core.cache import cache
 from django.apps import apps
 from django.core.exceptions import FieldDoesNotExist
 from django.utils import timezone
+from datetime import timedelta
 # Required for response change
 import base64
 from django.utils.translation import ugettext as _, ungettext
@@ -660,9 +661,13 @@ def eventsave(self, *args, **kwargs):
     self.parent = Node.objects.get(url=boardmeetingyear.url)
   # Related Node matches Parent
   self.related_node = self.parent
-  # Set Title
+  # Set Original Date
+  if (not self.originaldate) and self.startdate:
+    self.originaldate = self.startdate
+  # Set Title & Prefix
   if self._meta.model_name == 'boardmeeting':
-    self.title = timezone.localtime(self.startdate).strftime('%Y%m%d-%H%M')
+    self.title = timezone.localtime(self.originaldate).strftime('%Y%m%d-%H%M')
+    self.URL_PREFIX = str(self.pk)[0:8]
   # Track URL Changes
   urlchanged = False
   parent_url = self.parent.url if self.parent else self.PARENT_URL
@@ -683,6 +688,9 @@ def eventsave(self, *args, **kwargs):
   # Set the content type
   self.link_type = self._meta.model_name
   self.content_type = self._meta.model_name
+  # Set Event School Year and Year End fields
+  self.schoolyear = str(currentyear(self.startdate)['currentyear']['long'])
+  self.yearend = str(currentyear(self.startdate)['currentyear']['short'])
   # Does this item have permissions?
   if self.HAS_PERMISSIONS:
     self.has_permissions = True
@@ -753,3 +761,21 @@ def response_change(self, request, obj):
             self.message_user(request, msg, messages.SUCCESS)
             return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
     return super(self.__class__, self).response_change(request, obj)
+
+def currentyear(date=timezone.now()):
+  if date.month >= 7:
+    currentyearkey = date.year + 1
+    currentyearstring = str(date.year) + '-' + str(date.year + 1)[2:]
+  else:
+    currentyearkey = date.year
+    currentyearstring = str(date.year -1) + '-' + str(date.year)[2:]
+  currentyear = {"short": currentyearkey, "long": currentyearstring}
+  return {'currentyear': currentyear}
+
+def next_tuesday_sixthrity():
+    now = timezone.datetime.strptime(timezone.datetime.now().strftime('%Y-%m-%d %H:%M'),'%Y-%m-%d %H:%M')
+    while now.weekday() != 1:
+        now += timedelta(days=1)
+    now += timedelta(hours=18-int(now.strftime('%H')))
+    now += timedelta(minutes=30-int(now.strftime('%M')))
+    return timezone.make_aware(now)
