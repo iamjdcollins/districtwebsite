@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.template import Context, Template, RequestContext
@@ -17,6 +17,7 @@ from apps.directoryentries.models import Staff, BoardMember, StudentBoardMember
 from apps.links.models import ResourceLink
 from apps.documents.models import Document, BoardPolicy
 from apps.files.models import File
+from apps.events.models import BoardMeeting
 # from apps.schools.models import School
 # from apps.departments.models import Department
 # from apps.news.models import News, NewsYear
@@ -205,6 +206,9 @@ def employees(request):
     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
 def boarddetail(request):
+  currentyear = apps.common.functions.currentyear()
+  if request.path == '/board-of-education/board-meetings/':
+      return redirect('./' + currentyear['currentyear']['long'])
   board = Board.objects.filter(url=request.path).only('pk','title','body','building_location','main_phone','main_fax','mission_statement','vision_statement').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_contentbanner_node', queryset = ContentBanner.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')),Prefetch('directoryentries_boardmember_node',queryset=BoardMember.objects.filter(deleted=0).filter(published=1).order_by('precinct__title').only('employee','precinct','phone','street_address','city','state','zipcode','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('last_name','first_name','email').prefetch_related(Prefetch('images_profilepicture_node',ProfilePicture.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')))),Prefetch('precinct', queryset = BoardPrecinct.objects.filter(deleted=0).filter(published=1).only('pk','title').order_by('title')),Prefetch('city', queryset = City.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('state', queryset = State.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('pk','title')))),Prefetch('directoryentries_studentboardmember_node',queryset=StudentBoardMember.objects.filter(deleted=0).filter(published=1).order_by('title').only('first_name','last_name','phone','building_location','related_node').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_profilepicture_node',ProfilePicture.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id'))))).first()
   boardsubpage = BoardSubPage.objects.filter(url=request.path).first()
   if board:
@@ -219,7 +223,9 @@ def boarddetail(request):
   instructional_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Instructional Policies').order_by('section__lft','index')
   personnel_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Personnel Policies').order_by('section__lft','index')
   student_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Student Policies').order_by('section__lft','index')
-  return render(request, 'pages/board/boarddetail.html', {'page': page,'pageopts': pageopts,'board_policies': board_policies,'community_policies': community_policies,'financial_policies': financial_policies,'general_policies': general_policies,'instructional_policies': instructional_policies,'personnel_policies': personnel_policies,'student_policies': student_policies})
+  board_meeting_years = BoardMeetingYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
+  board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1).filter(yearend=currentyear['currentyear']['short'])
+  return render(request, 'pages/board/boarddetail.html', {'page': page,'pageopts': pageopts,'board_policies': board_policies,'community_policies': community_policies,'financial_policies': financial_policies,'general_policies': general_policies,'instructional_policies': instructional_policies,'personnel_policies': personnel_policies,'student_policies': student_policies,'board_meeting_years': board_meeting_years,'board_meetings': board_meetings})
   #board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1)
   #board_meeting_years = {}
   #board_meeting_years['years'] = {}
@@ -241,4 +247,6 @@ def boarddetail(request):
 def BoardMeetingYearArchive(request):
     page = BoardMeetingYear.objects.filter(url=request.path).first()
     pageopts = page._meta
-    return render(request, 'pages/news/yeararchive.html', {'page': page, 'pageopts': pageopts,})
+    board_meeting_years = BoardMeetingYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
+    board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path)
+    return render(request, 'pages/board/boardmeetingyears.html', {'page': page, 'pageopts': pageopts,'board_meeting_years': board_meeting_years,'board_meetings': board_meetings})
