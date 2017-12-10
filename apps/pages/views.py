@@ -3,6 +3,7 @@ from django.core.cache import cache
 from django.http import HttpResponse
 from django.template import Context, Template, RequestContext
 from django.db.models import Prefetch
+from django.utils import timezone
 
 # Create your views here.
 
@@ -208,7 +209,16 @@ def employees(request):
 def boarddetail(request):
   currentyear = apps.common.functions.currentyear()
   if request.path == '/board-of-education/board-meetings/':
-      return redirect('./' + currentyear['currentyear']['long'])
+      try:
+          year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'])
+      except BoardMeetingYear.DoesNotExist:
+          meeting, created = BoardMeeting.objects.get_or_create(startdate=timezone.now())
+          if created:
+              meeting.save()
+              meeting.delete()
+              meeting.delete() 
+          year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'])
+      return redirect(year.url)
   board = Board.objects.filter(url=request.path).only('pk','title','body','building_location','main_phone','main_fax','mission_statement','vision_statement').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_contentbanner_node', queryset = ContentBanner.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')),Prefetch('directoryentries_boardmember_node',queryset=BoardMember.objects.filter(deleted=0).filter(published=1).order_by('precinct__title').only('employee','precinct','phone','street_address','city','state','zipcode','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('last_name','first_name','email').prefetch_related(Prefetch('images_profilepicture_node',ProfilePicture.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')))),Prefetch('precinct', queryset = BoardPrecinct.objects.filter(deleted=0).filter(published=1).only('pk','title').order_by('title')),Prefetch('city', queryset = City.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('state', queryset = State.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('pk','title')))),Prefetch('directoryentries_studentboardmember_node',queryset=StudentBoardMember.objects.filter(deleted=0).filter(published=1).order_by('title').only('first_name','last_name','phone','building_location','related_node').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_profilepicture_node',ProfilePicture.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id'))))).first()
   boardsubpage = BoardSubPage.objects.filter(url=request.path).first()
   if board:
@@ -245,7 +255,7 @@ def boarddetail(request):
   #return render(request, 'board/boarddetail.html', {'page': page,'pageopts': pageopts, 'board_subpages': board_subpages, 'board_policies': board_policies, 'community_policies': community_policies, 'financial_policies': financial_policies, 'general_policies': general_policies, 'instructional_policies': instructional_policies, 'personnel_policies': personnel_policies, 'student_policies': student_policies, 'board_meeting_years': board_meeting_years, 'board_meetings': board_meetings})
 
 def BoardMeetingYearArchive(request):
-    page = BoardMeetingYear.objects.filter(url=request.path).first()
+    page = get_object_or_404(BoardMeetingYear, url=request.path)
     pageopts = page._meta
     board_meeting_years = BoardMeetingYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
     board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path)

@@ -119,16 +119,9 @@
       </div>
     </div>
     {% endif %}
-    {% if board_meetings %}
     <div class="row">
       <div id="board_meetings" class="scrollspy">
-        <!--<form id="schoolyearfilter" class="textfieldboxes">
-          <select>
-            {% for year in board_meeting_years %}
-            <option value="{{ year.yearend }}" {% if page.yearend == year.yearend %}selected{% endif %}>{{ year.title }}</option>
-            {% endfor %}
-          </select>
-        </form>-->
+        {% if board_meeting_years %}
         <nav class="yearnav">
           <a class="yearnav" href="#yearnav">
             <span class="currentyear">{{page.title}}</span>
@@ -142,6 +135,8 @@
             {% endfor %}
           </ul>
         </div>
+        {% endif %}
+        {% if board_meetings %}
         <table class="striped">
           <thead>
             <tr>
@@ -159,9 +154,11 @@
         {% endfor %}
           </tbody>
         </table>
+        {% else %}
+        <p>There are not any scheduled meetings for this year yet. Please select a different year above and check back soon.</p>
+        {% endif %}
       </div>
     </div>
-    {% endif %}
   </div>
   <div class="card-action">
     <a class="btn-flat disabled narrow" title="Last Updated"><i class="material-icons left">&#xE192;</i>{{ page.update_date|date:"N d, Y" }}</a>
