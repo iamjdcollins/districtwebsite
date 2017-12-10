@@ -240,7 +240,7 @@ function modaalAdminPageLoad(){
   $('.modal-iframe-loading').css('display','block');
   $(".modaal-adminpage iframe").on('load', function(){
     console.log('iframe loaded')
-    if ( ! /.*\/(change)?(delete)?\/$/.test(this.contentWindow.location.pathname)){
+    if ( ! /.*\/(change)?(delete)?(add)?\/$/.test(this.contentWindow.location.pathname)){
         $("#editpagemodaal").modaal('close')
         location.reload()
     } else { 
