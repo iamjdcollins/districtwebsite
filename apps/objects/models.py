@@ -31,7 +31,7 @@ class Node(MPTTModel):
     get_latest_by = 'create_date'
     verbose_name = 'Node'
     verbose_name_plural = 'Nodes'
-    unique_together = (('parent', 'node_title'),)
+    #unique_together = (('parent', 'node_title'),)
 
   def __str__(self):
     return self.node_title

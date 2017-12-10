@@ -3,6 +3,7 @@ import shutil
 import re
 import uuid
 from django.conf import settings
+from django.apps import apps
 from django.contrib.auth import get_permission_codename
 from guardian.shortcuts import get_perms
 from apps.objects.models import Node, User
@@ -761,6 +762,13 @@ def response_change(self, request, obj):
             self.message_user(request, msg, messages.SUCCESS)
             return HttpResponseRedirect(base64.b64decode(request.GET['next']).decode('utf-8'))
     return super(self.__class__, self).response_change(request, obj)
+
+def get_district_office():
+    Location = apps.get_model('taxonomy','location')
+    try:
+        return Location.objects.get(title='District Office').pk
+    except Location.DoesNotExist:
+        return ''
 
 def currentyear(date=timezone.now()):
   if date.month >= 7:
