@@ -10,7 +10,6 @@ uuid==1.30
 django-ckeditor==5.3.1
 django-guardian==1.4.9
 django-jet==1.0.6
-django-js-asset==0.1.1
 django-mptt==0.8.7
 django-ajax-selects==1.6.1
 pysaml2==4.5.0
