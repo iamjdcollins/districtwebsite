@@ -117,6 +117,9 @@ body {top:0 !important;}
   padding: 14px 30px 15px 30px;
   background: #fff;
 }
+.modaal-wrapper audio, .modaal-wrapper video{
+  width: 100%
+}
 .modaal-close {
   right: 0px !important;
   top: 0px !important;
@@ -156,6 +159,9 @@ nav .material-icons {
     font-size: 24px;
     height: 100px;
     line-height: 100px;
+}
+.disabled.material-icons {
+    color: #999;
 }
 no-sr{
   speak:none;

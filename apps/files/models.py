@@ -28,3 +28,53 @@ class File(BaseFile):
 
   save = apps.common.functions.filesave
   delete = apps.common.functions.modeltrash
+
+class AudioFile(BaseFile):
+
+  PARENT_URL = ''
+  URL_PREFIX = ''
+
+  title = models.CharField(max_length=200, help_text='')
+  file_file = models.FileField(max_length=2000, upload_to=apps.common.functions.file_upload_to, verbose_name='File', help_text='')
+  related_node = models.ForeignKey(Node, blank=True, null=True, related_name='files_audiofile_node', editable=False)
+
+
+  audiofile_file_node = models.OneToOneField(BaseFile, db_column='audiofile_file_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+  class Meta:
+    db_table = 'files_audiofile'
+    get_latest_by = 'update_date'
+    permissions = (('trash_audiofile', 'Can soft delete audio file'),('restore_audiofile', 'Can restore audio file'))
+    verbose_name = 'Audio File'
+    verbose_name_plural = 'Audio Files'
+
+  # def __str__(self):
+  #   return self.title
+
+  save = apps.common.functions.filesave
+  delete = apps.common.functions.modeltrash
+
+class VideoFile(BaseFile):
+
+  PARENT_URL = ''
+  URL_PREFIX = ''
+
+  title = models.CharField(max_length=200, help_text='')
+  file_file = models.FileField(max_length=2000, upload_to=apps.common.functions.file_upload_to, verbose_name='File', help_text='')
+  related_node = models.ForeignKey(Node, blank=True, null=True, related_name='files_videofile_node', editable=False)
+
+
+  videofile_file_node = models.OneToOneField(BaseFile, db_column='videofile_file_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+  class Meta:
+    db_table = 'files_videofile'
+    get_latest_by = 'update_date'
+    permissions = (('trash_videofile', 'Can soft delete video file'),('restore_videofile', 'Can restore video file'))
+    verbose_name = 'Video File'
+    verbose_name_plural = 'Video Files'
+
+  # def __str__(self):
+  #   return self.title
+
+  save = apps.common.functions.filesave
+  delete = apps.common.functions.modeltrash

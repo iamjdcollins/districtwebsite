@@ -233,8 +233,9 @@ function modaalAdminPageModify(){
   $(".modaal-adminpage iframe").contents().find('#add_id_building_location').unbind()
   $(".modaal-adminpage iframe").contents().find("body.menu-pinned #branding-pin").click()
   $(".modaal-adminpage iframe").css('visibility','visible')
-  $(".modaal-adminpage iframe").contents().find("[name='_save']").click(function(){$(".modaal-adminpage iframe").css('visibility','hidden')});
-  $(".modaal-adminpage iframe").contents().find("[name='_continue']").click(function(){$(".modaal-adminpage iframe").css('visibility','hidden')});
+  $(".modaal-adminpage iframe").contents().find("[name='_save']").click(function(){$(".modaal-adminpage iframe").css('visibility','hidden');$('.modal-iframe-loading').css('display','block');});
+  $(".modaal-adminpage iframe").contents().find("[name='_continue']").click(function(){$(".modaal-adminpage iframe").css('visibility','hidden');$('.modal-iframe-loading').css('display','block');});
+  $(".modaal-adminpage iframe").contents().find(".editlink").click(function(){$(".modaal-adminpage iframe").css('visibility','hidden');$('.modal-iframe-loading').css('display','block');});
 }
 function modaalAdminPageLoad(){
   $('.modal-iframe-loading').css('display','block');

@@ -14,3 +14,5 @@ django-mptt==0.8.7
 django-ajax-selects==1.6.1
 pysaml2==4.5.0
 pillow==4.3.0
+gevent==1.2.2
+greenlet==0.4.12

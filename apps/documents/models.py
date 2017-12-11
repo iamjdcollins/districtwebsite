@@ -131,3 +131,99 @@ class SupportingDocument(BaseDocument):
 
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
+
+class BoardMeetingAgenda(BaseDocument):
+
+    PARENT_URL = ''
+    URL_PREFIX = ''
+
+    title = models.CharField(max_length=200, help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_boardmeetingagenda_node', editable=False)
+
+    document_boardmeetingagenda_node = models.OneToOneField(BaseDocument, db_column='document_boardmeetingagenda_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+        db_table = 'documents_boardmeetingagenda'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardmeetingagenda', 'Can soft delete board meeting agenda'),('restore_boardmeetingagenda', 'Can restore board meeting agenda'))
+        verbose_name = 'Board Meeting Agenda'
+        verbose_name_plural = 'Board Meeting Agendas'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+       return self.title
+
+    save = apps.common.functions.documentsave
+    delete = apps.common.functions.modeltrash
+
+class BoardMeetingMinutes(BaseDocument):
+
+    PARENT_URL = ''
+    URL_PREFIX = ''
+
+    title = models.CharField(max_length=200, help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_boardmeetingminutes_node', editable=False)
+
+    document_boardmeetingminutes_node = models.OneToOneField(BaseDocument, db_column='document_boardmeetingminutes_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+        db_table = 'documents_boardmeetingminutes'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardmeetingminutes', 'Can soft delete board meeting minutes'),('restore_boardmeetingminutes', 'Can restore board meeting minutes'))
+        verbose_name = 'Board Meeting Minutes'
+        verbose_name_plural = 'Board Meeting Minutes'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+       return self.title
+
+    save = apps.common.functions.documentsave
+    delete = apps.common.functions.modeltrash
+
+class BoardMeetingAudio(BaseDocument):
+
+    PARENT_URL = ''
+    URL_PREFIX = ''
+
+    title = models.CharField(max_length=200, help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_boardmeetingaudio_node', editable=False)
+
+    boardmeetingaudio_document_node = models.OneToOneField(BaseDocument, db_column='boardmeetingaudio_document_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+        db_table = 'documents_boardmeetingaudio'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardmeetingaudio', 'Can soft delete board meeting audio'),('restore_boardmeetingaudio', 'Can restore board meeting audio'))
+        verbose_name = 'Board Meeting Audio'
+        verbose_name_plural = 'Board Meeting Audio'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+       return self.title
+
+    save = apps.common.functions.documentsave
+    delete = apps.common.functions.modeltrash
+
+class BoardMeetingVideo(BaseDocument):
+
+    PARENT_URL = ''
+    URL_PREFIX = ''
+
+    title = models.CharField(max_length=200, help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_boardmeetingvideo_node', editable=False)
+
+    boardmeetingvideo_document_node = models.OneToOneField(BaseDocument, db_column='boardmeetingvideo_document_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+        db_table = 'documents_boardmeetingvideo'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardmeetingvideo', 'Can soft delete board meeting video'),('restore_boardmeetingvideo', 'Can restore board meeting video'))
+        verbose_name = 'Board Meeting Video'
+        verbose_name_plural = 'Board Meeting Videos'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+       return self.title
+
+    save = apps.common.functions.documentsave
+    delete = apps.common.functions.modeltrash

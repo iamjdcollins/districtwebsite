@@ -510,7 +510,12 @@ def filesave(self, *args, **kwargs):
   is_new = self._state.adding
   is_deleted = '_' if self.deleted == True else ''
   #Force Title
-  self.title = self.parent.node_title + ' (' + self.file_language.title + ')'
+  if self._meta.model_name == 'file':
+    self.title = self.parent.node_title + ' (' + self.file_language.title + ')'
+  if self._meta.model_name == 'audiofile':
+    self.title = self.parent.node_title
+  if self._meta.model_name == 'videofile':
+    self.title = self.parent.node_title 
   # Set UUID if None
   if self.uuid is None:
     self.uuid = uuid.uuid4()
@@ -531,10 +536,16 @@ def filesave(self, *args, **kwargs):
     except Node.DoesNotExist:
       pass
   oldurl = self.url
-  if self.url != urlclean_remdoubleslashes('/' + parent_url + '/' + self.URL_PREFIX + '/' + is_deleted + urlclean_objname(self.file_language.title) + '/'):
-    self.url = urlclean_remdoubleslashes('/' + parent_url + '/' + self.URL_PREFIX + '/' + is_deleted + urlclean_objname(self.file_language.title) + '/')
-    if not is_new:
-      urlchanged = True
+  if self._meta.model_name == 'file':
+    if self.url != urlclean_remdoubleslashes('/' + parent_url + '/' + self.URL_PREFIX + '/' + is_deleted + urlclean_objname(self.file_language.title) + '/'):
+      self.url = urlclean_remdoubleslashes('/' + parent_url + '/' + self.URL_PREFIX + '/' + is_deleted + urlclean_objname(self.file_language.title) + '/')
+      if not is_new:
+        urlchanged = True
+  else:
+    if self.url != urlclean_remdoubleslashes('/' + parent_url + '/' + self.URL_PREFIX + '/' + is_deleted + urlclean_objname(self._meta.model_name) + '/'):
+      self.url = urlclean_remdoubleslashes('/' + parent_url + '/' + self.URL_PREFIX + '/' + is_deleted + urlclean_objname(self._meta.model_name) + '/')
+      if not is_new:
+        urlchanged = True
   # Move Files
   currentname = None
   newname = None
@@ -596,6 +607,14 @@ def documentsave(self, *args, **kwargs):
     if (( not self.document_title ) and self.title) or self.title != self.node_title:
         self.document_title = re.sub(r'^' + re.escape(self.parent.node_title) + '[ ]?','',self.title).strip()
     self.title = self.parent.node_title + ' ' + self.document_title
+  if self._meta.model_name == 'boardmeetingagenda':
+    self.title = timezone.localtime(self.parent.event.boardmeeting.originaldate).strftime('%Y%m%d-%H%M') + ' Agenda'
+  if self._meta.model_name == 'boardmeetingminutes':
+    self.title = timezone.localtime(self.parent.event.boardmeeting.originaldate).strftime('%Y%m%d-%H%M') + ' Minutes'
+  if self._meta.model_name == 'boardmeetingaudio':
+    self.title = timezone.localtime(self.parent.event.boardmeeting.originaldate).strftime('%Y%m%d-%H%M') + ' Audio'
+  if self._meta.model_name == 'boardmeetingvideo':
+    self.title = timezone.localtime(self.parent.event.boardmeeting.originaldate).strftime('%Y%m%d-%H%M') + ' Video'
   # Track URL Changes
   urlchanged = False
   parent_url = self.parent.url if self.parent else self.PARENT_URL
