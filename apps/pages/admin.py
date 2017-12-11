@@ -696,7 +696,7 @@ class BoardMeetingInline(EditLinkToInlineObject, admin.TabularInline):
   fk_name = 'parent'
   fields = ['startdate', 'meeting_type','edit_link',]
   readonly_fields = ['edit_link',]
-  ordering = ['startdate',]
+  ordering = ['-startdate',]
   extra = 0
   min_num = 0
   max_num = 50 
