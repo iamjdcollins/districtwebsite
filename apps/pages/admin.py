@@ -1955,8 +1955,6 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def save_formset(self, request, form, formset, change):
         instances = formset.save(commit=True)
-        for obj in formset.deleted_objects:
-            obj.delete()
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
