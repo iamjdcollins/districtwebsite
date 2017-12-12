@@ -185,3 +185,45 @@ CACHES = {
 
 SLCSD_LDAP_USER = os.environ['SLCSD_LDAP_USER']
 SLCSD_LDAP_PASSWORD = os.environ['SLCSD_LDAP_PASSWORD']
+
+
+#DEFAULT_CONFIG = {
+#    'skin': 'moono-lisa',
+#    'toolbar_Basic': [
+#        ['Source', '-', 'Bold', 'Italic']
+#    ],
+#    'toolbar_Full': [
+#        ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+#        ['Link', 'Unlink', 'Anchor'],
+#        ['Image', 'Flash', 'Table', 'HorizontalRule'],
+#        ['TextColor', 'BGColor'],
+#        ['Smiley', 'SpecialChar'], ['Source'],
+#    ],
+#    'toolbar': 'Full',
+#    'height': 291,
+#    'width': 835,
+#    'filebrowserWindowWidth': 940,
+#    'filebrowserWindowHeight': 725,
+#}
+
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'SLCSD',
+        'toolbar_SLCSD': [
+            ['Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Undo', 'Redo'],
+            ['NumberedList', 'BulletedList'],
+            #['Link', 'Unlink'],
+            ['Table', 'HorizontalRule'],
+            ['Source']
+        ],
+        'format_tags': 'p;h3;h4;h5;h6',
+        'autoGrow_bottomSpace': 10,
+        'autoGrow_maxHeight': 0,
+        'autoGrow_onStartup': True,
+        'extraPlugins': ','.join([
+            'autogrow',
+        ]),
+        'disableNativeSpellChecker': False,
+    }
+}
