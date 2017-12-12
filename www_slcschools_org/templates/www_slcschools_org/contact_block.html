@@ -1,0 +1,56 @@
+<h2>Contact</h2>
+<div class="card primarycontact">
+  <div class="card-content">
+    <div class="collection">
+      {% if page.building_location %}
+      <a href="{{page.building_location.google_place}}" class="collection-item">
+        <span class="title">Address</span>
+        <address class="schooladdress">
+          <p class="streetaddress">{{page.building_location.street_address}} <br />
+                                   {{page.building_location.location_city}}, {{page.building_location.location_state}} {{page.building_location.location_zipcode}}
+          </p>
+        </address>
+        <i class="material-icons secondary-content absolute-right small">&#xE55F;</i>
+      </a>
+      {% endif %}
+      {% if page.main_phone %}
+      <a href="tel:+{{page.main_phone|slice:"0:1"}}-{{page.main_phone|slice:"1:4"}}-{{page.main_phone|slice:"4:7"}}-{{page.main_phone|slice:"7:11"}}" class="collection-item">
+        <span class="title">Phone</span>
+        <div class="mainphone">{{page.main_phone|slice:"1:4"}}.{{page.main_phone|slice:"4:7"}}.{{page.main_phone|slice:"7:11"}}</div>
+        <i class="material-icons secondary-content absolute-right small">&#xE0CD;</i>
+      </a>
+      {% endif %}
+      {% if page.main_fax %}
+      <a href="#" onclick="return false;" class="collection-item">
+        <span class="title">Fax</span>
+        <div class="mainfax">{{page.main_fax|slice:"1:4"}}.{{page.main_fax|slice:"4:7"}}.{{page.main_fax|slice:"7:11"}}</div>
+        <i class="material-icons secondary-content absolute-right small">&#xE8AD;</i>
+      </a>
+      {% endif %}
+      {% if pageopts.model_name == 'school' %}
+      <a href="#" onclick="return false;" class="collection-item">
+        <span class="title">Enrollment</span>
+        <div class="schoolenrollment">
+          <div class="chip">
+            {% if page.openenrollmentstatus.title == 'Open' %}
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gA+Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1c2luZyBJSkcgSlBFRyB2NjIpLCBkZWZhdWx0IHF1YWxpdHkK/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8AAEQgAAQABAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8Anooorwz5o//Z" alt="Open Enrollment Icon Green"/>
+            {% elif page.openenrollmentstatus.title == 'Closed' %}
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gA+Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1c2luZyBJSkcgSlBFRyB2NjIpLCBkZWZhdWx0IHF1YWxpdHkK/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8AAEQgAAQABAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8Aq0UUV8+fqB//2Q==" alt="Closed Enrollment Icon Red"/>
+            {% endif %}{{page.openenrollmentstatus.title}}
+          </div>
+          <div class="chip">
+            Enrollment: {{page.enrollment}}
+          </div>
+        </div>
+        <i class="material-icons secondary-content absolute-right small">&#xE80C;</i>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="card-action">
+    {% if pageopts.model_name == 'school' %}
+    <a href="{{page.website_url}}">Visit Our Website</a>
+    {% endif %}
+    <a href="#{{page.uuid}}" class="pagefeedback">Send Us A Message</a>
+  </div>
+</div>

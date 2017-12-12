@@ -81,41 +81,7 @@
     {% if page.building_location or page.main_phone or page.main_fax %}
     <div class="row">
       <div id="contact" class="scrollspy">
-        <h2>Contact</h2>
-        <div class="card primarycontact">
-          <div class="card-content">
-            <div class="collection">
-              {% if page.building_location %}
-              <a href="{{page.building_location.google_place}}" class="collection-item">
-                <span class="title">Address</span>
-                <address class="schooladdress">
-                  <p class="streetaddress">{{page.building_location.street_address}}<br>
-                                           {{page.building_location.location_city.title}}, {{page.building_location.location_state.title}} {{page.building_location.location_zipcode.title}}
-                  </p>
-                </address>
-                <i class="material-icons secondary-content absolute-right small">&#xE55F;</i>
-              </a>
-              {% endif %}
-              {% if page.main_phone %}
-              <a href="tel:+{{page.main_phone|slice:"0:1"}}-{{page.main_phone|slice:"1:4"}}-{{page.main_phone|slice:"4:7"}}-{{page.main_phone|slice:"7:11"}}" class="collection-item">
-                <span class="title">Phone</span>
-                <div class="schoolphone">{{page.main_phone|slice:"1:4"}}.{{page.main_phone|slice:"4:7"}}.{{page.main_phone|slice:"7:11"}}</div>
-                <i class="material-icons secondary-content absolute-right small">&#xE0CD;</i>
-              </a>
-              {% endif %}
-              {% if page.main_fax %}
-              <a href="#!" class="collection-item">
-                <span class="title">Fax</span>
-                <div class="schoolfax">{{page.main_fax|slice:"1:4"}}.{{page.main_fax|slice:"4:7"}}.{{page.main_fax|slice:"7:11"}}</div>
-                <i class="material-icons secondary-content absolute-right small">&#xE8AD;</i>
-              </a>
-              {% endif %}
-            </div>
-          </div>
-          <div class="card-action">
-            <a href="#">Send Us A Message</a>
-          </div>
-        </div>
+        {% include "www_slcschools_org/contact_block.html" %}
       </div>
     </div>
     {% endif %}
