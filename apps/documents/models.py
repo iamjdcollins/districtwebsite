@@ -227,3 +227,51 @@ class BoardMeetingVideo(BaseDocument):
 
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
+
+class BoardMeetingExhibit(BaseDocument):
+
+    PARENT_URL = ''
+    URL_PREFIX = ''
+
+    title = models.CharField(max_length=200, help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_boardmeetingexhibit_node', editable=False)
+
+    boardmeetingexhibit_document_node = models.OneToOneField(BaseDocument, db_column='boardmeetingexhibit_document_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+        db_table = 'documents_boardmeetingexhibit'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardmeetingexhibit', 'Can soft delete board meeting exhibit'),('restore_boardmeetingexhibit', 'Can restore board meeting exhibit'))
+        verbose_name = 'Board Meeting Exhibit'
+        verbose_name_plural = 'Board Meeting Exhibits'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+       return self.title
+
+    save = apps.common.functions.documentsave
+    delete = apps.common.functions.modeltrash
+
+class BoardMeetingAgendaItem(BaseDocument):
+
+    PARENT_URL = ''
+    URL_PREFIX = ''
+
+    title = models.CharField(max_length=200, help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='documents_boardmeetingagendaitem_node', editable=False)
+
+    boardmeetingagendaitem_document_node = models.OneToOneField(BaseDocument, db_column='boardmeetingagendaitem_document_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+        db_table = 'documents_boardmeetingagendaitem'
+        get_latest_by = 'update_date'
+        permissions = (('trash_boardmeetingagendaitem', 'Can soft delete board meeting agenda item'),('restore_boardmeetingagendaitem', 'Can restore board meeting agenda item'))
+        verbose_name = 'Board Meeting Agenda Item'
+        verbose_name_plural = 'Board Meeting Agenda Items'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+       return self.title
+
+    save = apps.common.functions.documentsave
+    delete = apps.common.functions.modeltrash
