@@ -84,6 +84,34 @@
   </div>
   <div id="main" class="card-content">
     <h1>{{page.title}}</h1>
+    {% if page.links_actionbutton_node.all %}
+    {% with actionbuttoncount=page.links_actionbutton_node.all|length %}
+    <div class="row">
+      {% for button in page.links_actionbutton_node.all %}
+      {% if actionbuttoncount == 1 %}
+      <div class="col s12 action-{{forloop.counter}}"> 
+        <a class="waves-effect waves-light btn-large stretch">{{button.title}}</a>
+      </div>
+      {% endif %}
+      {% if actionbuttoncount == 2 %}
+      <div class="col s12 m6 action-{{forloop.counter}}">
+        <a class="waves-effect waves-light btn-large stretch">{{button.title}}</a>
+      </div>
+      {% endif %}
+      {% if actionbuttoncount == 3 %}
+      <div class="col s12 m4 action-{{forloop.counter}}">
+        <a class="waves-effect waves-light btn-large stretch">{{button.title}}</a>
+      </div>
+      {% endif %}
+      {% if actionbuttoncount == 4 %}
+      <div class="col s12 m6 l3 action-{{forloop.counter}}">
+        <a class="waves-effect waves-light btn-large stretch">{{button.title}}</a>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endwith %}
+    {% endif %}
     {% if page.body != '' %}
     <div class="row">
       <div id="about" class="richtext scrollspy">

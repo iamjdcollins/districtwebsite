@@ -233,6 +233,21 @@ no-sr{
     font-size: 1.3rem;
     line-height: inherit;
 }
+.row.actionbuttons .col{
+  padding: 0px;
+}
+.action-1 a{
+  background: rgb(0,88,123);
+}
+.action-2 a{
+  background: rgb(247,147,30);
+}
+.action-3 a{
+  background: rgb(0,147,68);
+}
+.action-4 a{
+  background: rgb(200,32,38);
+}
 .btn.stretch{
   display: block;
   width: 100%;

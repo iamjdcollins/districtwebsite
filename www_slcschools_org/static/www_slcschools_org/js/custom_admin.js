@@ -20,27 +20,30 @@ django.jQuery(document).ready(function(){
   }
   django.jQuery(".change-related").off()
   django.jQuery(".change-related").each(function(index,element){
-    django.jQuery(this).attr('href',django.jQuery(this).attr('href').split('?')[0])
-    django.jQuery(this).attr('href', django.jQuery(this).attr('href') + '?next=' + nextURL)
-    //django.jQuery(this).removeClass('change-related')
-    var clone = this.cloneNode();
-    while (element.firstChild) {
-      clone.appendChild(element.lastChild);
+    if( django.jQuery(this).attr('href') != undefined ){
+      django.jQuery(this).attr('href',django.jQuery(this).attr('href').split('?')[0])
+      django.jQuery(this).attr('href', django.jQuery(this).attr('href') + '?next=' + nextURL)
+      var clone = this.cloneNode();
+      while (this.firstChild) {
+        clone.appendChild(this.lastChild);
+      }
+      this.parentNode.replaceChild(clone, this);
     }
-    element.parentNode.replaceChild(clone, element);
   })
   while( django.jQuery(".add-related").length > django.jQuery(".add-related.initialized").length ){
     console.log('waiting to initialize')
   }
   django.jQuery(".add-related").off()
   django.jQuery(".add-related").each(function(index,element){
-    django.jQuery(this).attr('href',django.jQuery(this).attr('href').split('?')[0])
-    django.jQuery(this).attr('href', django.jQuery(this).attr('href') + '?next=' + nextURL)
-    var clone = this.cloneNode();
-    while (element.firstChild) {
-      clone.appendChild(element.lastChild);
+    if( django.jQuery(this).attr('href') != undefined ){
+      django.jQuery(element).attr('href',django.jQuery(element).attr('href').split('?')[0])
+      django.jQuery(element).attr('href', django.jQuery(element).attr('href') + '?next=' + nextURL)
+      var clone = this.cloneNode();
+      while (element.firstChild) {
+        clone.appendChild(element.lastChild);
+      }
+      element.parentNode.replaceChild(clone, element);
     }
-    element.parentNode.replaceChild(clone, element);
   })
   django.jQuery('.editlink').each(function(index,element){
     django.jQuery(element).attr('href', django.jQuery(element).attr('href') + '?next=' + nextURL)
