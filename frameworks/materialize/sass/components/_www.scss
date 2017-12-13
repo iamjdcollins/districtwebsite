@@ -59,6 +59,69 @@
   visibility: hidden;
 }
 
+@charset "UTF-8";
+
+@font-face {
+  font-family: "md";
+  src:url("../fonts/md.eot");
+  src:url("../fonts/md.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/md.woff") format("woff"),
+    url("../fonts/md.ttf") format("truetype"),
+    url("../fonts/md.svg#md") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "md" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="md-"]:before,
+[class*=" md-"]:before {
+  font-family: "md" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-briefcase:before {
+  content: "\61";
+}
+.md-bus:before {
+  content: "\62";
+}
+.md-building:before {
+  content: "\63";
+}
+.md-gift:before {
+  content: "\64";
+}
+.md-heart:before {
+  content: "\65";
+}
+.md-home:before {
+  content: "\66";
+}
+.md-phone:before {
+  content: "\67";
+}
+
+
 /* GTranslate */
 a.gflag {vertical-align:middle;font-size:16px;padding:1px 0;background-repeat:no-repeat;background-image:url('http://joomla-gtranslate.googlecode.com/svn/trunk/mod_gtranslate/tmpl/lang/16.png');}
 a.gflag img {border:0;}
