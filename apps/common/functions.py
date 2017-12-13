@@ -101,7 +101,7 @@ def has_delete_permission(self, request, obj=None):
     else:
       node = objectfindnode(obj)
       permission_point = nodefindobject(node.get_ancestors().filter(has_permissions=True).last())
-      if get_permission_codename('change',permission_point._meta) in get_perms(request.user, permission_point):
+      if get_permission_codename('trash',permission_point._meta) in get_perms(request.user, permission_point):
         return True
   return False
 
@@ -112,18 +112,10 @@ def has_add_permission_inline(self, request, obj=None):
   return False
 
 def has_change_permission_inline(self, request, obj=None):
-  if obj == None:
-    return True
-  if has_change_permission(self, request, obj):
-    return True
-  return False
+  return True
 
 def has_delete_permission_inline(self, request, obj=None):
-  if obj == None:
-    return True
-  if  has_delete_permission(self, request, obj):
-    return True
-  return False
+  return True
 
 def modeltrash(self, *args, **kwargs):
     if self.deleted == 0:

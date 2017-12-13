@@ -457,6 +457,7 @@ $(document).ready(function(){
       location.reload()
     },
   });
+  $("#editpagemodaal").removeClass('hide')
   $(".document-inline").modaal({
     type: 'inline',
     custom_class: 'modaal-document-inline',

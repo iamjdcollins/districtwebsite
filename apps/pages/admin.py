@@ -228,16 +228,6 @@ class ResourceLinkInline(admin.TabularInline):
   has_change_permission = apps.common.functions.has_change_permission_inline
   has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-class DocumentInlineForm(forms.ModelForm):
-    class Meta:
-        model = Document
-        fields = ['title'] 
-
-    def __init__(self, *args, **kwargs):
-        super(DocumentInlineForm, self).__init__(*args, **kwargs)
-        if self.instance.pk:
-            self.fields['title'].disabled = True
-
 class ActionButtonInlineForm(forms.ModelForm):
     class Meta:
         model = ActionButton
@@ -269,6 +259,16 @@ class ActionButtonInline(EditLinkToInlineObject, admin.TabularInline):
       if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
           return qs
       return qs.filter(deleted=0)
+
+class DocumentInlineForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ['title']
+
+    def __init__(self, *args, **kwargs):
+        super(DocumentInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['title'].disabled = True
 
 class DocumentInline(EditLinkToInlineObject, admin.TabularInline):
   model = Document
