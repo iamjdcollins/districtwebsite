@@ -48,5 +48,5 @@ django.jQuery(document).ready(function(){
   django.jQuery('.editlink').each(function(index,element){
     django.jQuery(element).attr('href', django.jQuery(element).attr('href') + '?next=' + nextURL)
   });
-  console.log(atob(nextURL))
+  django.jQuery('body').addClass('loaded');
 });
