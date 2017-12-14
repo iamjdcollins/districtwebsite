@@ -737,13 +737,12 @@ class SubPageInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class SubPageInline(EditLinkToInlineObject, admin.TabularInline):
+class SubPageInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.TabularInline):
     model = SubPage
     form = SubPageInlineForm
     fk_name = 'parent'
     readonly_fields = ['edit_link',]
     fields = ['title', 'edit_link', ]
-    ordering = ['title',]
     extra = 0
     min_num = 0
     max_num = 50
