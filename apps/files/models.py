@@ -22,6 +22,7 @@ class File(BaseFile):
     permissions = (('trash_file', 'Can soft delete file'),('restore_file', 'Can restore file'))
     verbose_name = 'File'
     verbose_name_plural = 'Files'
+    default_manager_name = 'objects'
 
   # def __str__(self):
   #   return self.title
@@ -47,6 +48,7 @@ class AudioFile(BaseFile):
     permissions = (('trash_audiofile', 'Can soft delete audio file'),('restore_audiofile', 'Can restore audio file'))
     verbose_name = 'Audio File'
     verbose_name_plural = 'Audio Files'
+    default_manager_name = 'objects'
 
   # def __str__(self):
   #   return self.title
@@ -72,6 +74,7 @@ class VideoFile(BaseFile):
     permissions = (('trash_videofile', 'Can soft delete video file'),('restore_videofile', 'Can restore video file'))
     verbose_name = 'Video File'
     verbose_name_plural = 'Video Files'
+    default_manager_name = 'objects'
 
   # def __str__(self):
   #   return self.title

@@ -19,6 +19,7 @@ class ResourceLink(Link):
     permissions = (('trash_resourcelink', 'Can soft delete resource link'),('restore_resourcelink', 'Can restore resource link'))
     verbose_name = 'Resource Link'
     verbose_name_plural = 'Resource Links'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title

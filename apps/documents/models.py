@@ -22,6 +22,7 @@ class Document(BaseDocument):
     permissions = (('trash_document', 'Can soft delete document'),('restore_document', 'Can restore document'))
     verbose_name = 'Document'
     verbose_name_plural = 'Documents'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -48,6 +49,7 @@ class BoardPolicy(BaseDocument):
         permissions = (('trash_boardpolicy', 'Can soft delete board policy'),('restore_boardpolicy', 'Can restore board policy'))
         verbose_name = 'Board Policy'
         verbose_name_plural = 'Board Policies'
+        default_manager_name = 'objects'
 
     def get_policy_index(self):
         return '{0}-{1}'.format(self.section.section_prefix, self.index)

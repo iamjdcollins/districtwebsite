@@ -29,6 +29,7 @@ class Page(BasePage):
     permissions = (('trash_page', 'Can soft delete page'),('restore_page', 'Can restore page'))
     verbose_name = 'Page'
     verbose_name_plural = 'Pages'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -76,6 +77,7 @@ class School(BasePage):
     permissions = (('trash_school', 'Can soft delete school'),('restore_school', 'Can restore school'))
     verbose_name = 'School'
     verbose_name_plural = 'Schools'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -108,6 +110,7 @@ class Department(BasePage):
         permissions = (('trash_department', 'Can soft delete department'),('restore_department', 'Can restore department'))
         verbose_name = 'Department'
         verbose_name_plural = 'Departments'
+        default_manager_name = 'objects'
 
     def __str__(self):
         return self.title
@@ -137,6 +140,7 @@ class Board(BasePage):
         permissions = (('trash_board', 'Can soft delete board'),('restore_board', 'Can restore board'))
         verbose_name = 'Board'
         verbose_name_plural = 'Board'
+        default_manager_name = 'objects'
 
     def __str__(self):
         return self.title
@@ -169,6 +173,7 @@ class BoardSubPage(BasePage):
         permissions = (('trash_boardsubpage', 'Can soft delete board subpage'),('restore_boardsubpage', 'Can restore board subpage'))
         verbose_name = 'Board Subpage'
         verbose_name_plural = 'Board Subpages'
+        default_manager_name = 'objects'
 
     def __str__(self):
         return self.title
@@ -188,6 +193,7 @@ class BoardMeetingYear(BasePage):
         permissions = (('trash_boardmeetingyear', 'Can soft delete board meeting year'),('restore_boardmeetingyear', 'Can restore board meeting year'))
         verbose_name = 'Board Meeting Year'
         verbose_name_plural = 'Board Meeting Years'
+        default_manager_name = 'objects'
 
     def __str__(self):
         return self.title
@@ -207,6 +213,7 @@ class NewsYear(BasePage):
         permissions = (('trash_newsyear', 'Can soft delete newsyear'),('restore_newsyear', 'Can restore newsyear'))
         verbose_name = 'News Year'
         verbose_name_plural = 'News Years'
+        default_manager_name = 'objects'
 
     def __str__(self):
         return self.title
@@ -233,6 +240,7 @@ class News(BasePage):
         verbose_name = 'News'
         verbose_name_plural = 'News'
         ordering = ['-author_date',]
+        default_manager_name = 'objects'
 
     def __str__(self):
         return self.title
@@ -253,12 +261,16 @@ class SubPage(BasePage):
 
     subpage_page_node = models.OneToOneField(BasePage, db_column='subpage_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
+    inline_order = models.PositiveIntegerField(default=0,blank=False, null=False,db_index=True)
+
     class Meta:
         db_table = 'pages_subpage'
+        ordering = ['inline_order',]
         get_latest_by = 'update_date'
         permissions = (('trash_subpage', 'Can soft delete subpage'),('restore_subpage', 'Can restore subpage'))
         verbose_name = 'Subpage'
         verbose_name_plural = 'Subpages'
+        default_manager_name = 'objects'
 
     def __str__(self):
         return self.title

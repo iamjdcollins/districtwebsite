@@ -58,6 +58,7 @@ class Page(Node):
     get_latest_by = 'create_date'
     verbose_name = 'Page'
     verbose_name_plural = 'Pages'
+    default_manager_name = 'objects'
 
 class Taxonomy(Node):
   taxonomy_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
@@ -69,6 +70,7 @@ class Taxonomy(Node):
     get_latest_by = 'create_date'
     verbose_name = 'Taxonomy'
     verbose_name_plural = 'Taxonomies'
+    default_manager_name = 'objects'
 
 class Image(Node):
   image_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
@@ -80,6 +82,7 @@ class Image(Node):
     get_latest_by = 'create_date'
     verbose_name = 'Image'
     verbose_name_plural = 'Images'
+    default_manager_name = 'objects'
 
 class DirectoryEntry(Node):
   directoryentry_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
@@ -91,6 +94,7 @@ class DirectoryEntry(Node):
     get_latest_by = 'create_date'
     verbose_name = 'Directory Entry'
     verbose_name_plural = 'Directory Entries'
+    default_manager_name = 'objects'
 
 class Link(Node):
   link_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
@@ -102,6 +106,7 @@ class Link(Node):
     get_latest_by = 'create_date'
     verbose_name = 'Link'
     verbose_name_plural = 'Links'
+    default_manager_name = 'objects'
 
 class File(Node):
   file_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
@@ -113,6 +118,7 @@ class File(Node):
     get_latest_by = 'create_date'
     verbose_name = 'File'
     verbose_name_plural = 'Files'
+    default_manager_name = 'objects'
 
 class Document(Node):
   document_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
@@ -124,6 +130,7 @@ class Document(Node):
     get_latest_by = 'create_date'
     verbose_name = 'Document'
     verbose_name_plural = 'Documents'
+    default_manager_name = 'objects'
 
 class Event(Node):
   event_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
@@ -135,3 +142,4 @@ class Event(Node):
     get_latest_by = 'create_date'
     verbose_name = 'Event'
     verbose_name_plural = 'Events'
+    default_manager_name = 'objects'

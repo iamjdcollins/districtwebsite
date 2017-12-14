@@ -25,6 +25,7 @@ class Location(Taxonomy):
     permissions = (('trash_location', 'Can soft delete location'),('restore_location', 'Can restore location'))
     verbose_name = 'Location'
     verbose_name_plural = 'Locations'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -46,6 +47,7 @@ class City(Taxonomy):
     permissions = (('trash_city', 'Can soft delete city'),('restore_city', 'Can restore city'))
     verbose_name = 'City'
     verbose_name_plural = 'Cities'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -67,6 +69,7 @@ class State(Taxonomy):
     permissions = (('trash_state', 'Can soft delete state'),('restore_state', 'Can restore state'))
     verbose_name = 'State'
     verbose_name_plural = 'States'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -88,6 +91,7 @@ class Zipcode(Taxonomy):
     permissions = (('trash_zipcode', 'Can soft delete zipcode'),('restore_zipcode', 'Can restore zipcode'))
     verbose_name = 'ZIP Code'
     verbose_name_plural = 'ZIP Codes'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -112,6 +116,7 @@ class Language(Taxonomy):
     permissions = (('trash_language', 'Can soft delete language'),('restore_language', 'Can restore language'))
     verbose_name = 'Language'
     verbose_name_plural = 'Languages'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -133,6 +138,7 @@ class TranslationType(Taxonomy):
     permissions = (('trash_translationtype', 'Can soft delete translation type'),('restore_translationtype', 'Can restore translation type'))
     verbose_name = 'Translation Type'
     verbose_name_plural = 'Translation Types'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -154,6 +160,7 @@ class SchoolType(Taxonomy):
     permissions = (('trash_schooltype', 'Can soft delete school type'),('restore_schooltype', 'Can restore school type'))
     verbose_name = 'School Type'
     verbose_name_plural = 'School Types'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -175,6 +182,7 @@ class OpenEnrollmentStatus(Taxonomy):
     permissions = (('trash_openenrollmentstatus', 'Can soft delete school open enrollment status'),('restore_openenrollmentstatus', 'Can restore school open enrollment status'))
     verbose_name = 'Open Enrollment Status'
     verbose_name_plural = 'Open Enrollment Statuses'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
@@ -193,6 +201,7 @@ class SchoolAdministratorType(Taxonomy):
     permissions = (('trash_schooladministratortype', 'Can soft delete school administrator type'),('restore_schooladministratortype', 'Can restore school administrator type'))
     verbose_name = 'School Administrator Type'
     verbose_name_plural = 'School Administrator Types'
+    default_manager_name = 'objects'
 
   def __str__(self):
     return self.title
