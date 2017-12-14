@@ -237,12 +237,11 @@ class BoardPolicyAdminInline(admin.TabularInline):
   form = make_ajax_form(BoardPolicyAdmin, {'employee': 'employee'})
 
 
-class ResourceLinkInline(admin.TabularInline):
-  model = ResourceLink.related_nodes.through
-  fk_name = 'node'
-  fields = []
+class ResourceLinkInline(SortableInlineAdminMixin, admin.TabularInline):
+  model = ResourceLink
+  fk_name = 'parent'
+  fields = ['title','link_url',]
   readonly_fields = []
-  ordering = ['resourcelink__title',]
   extra = 0 
   min_num = 0
   max_num = 50
