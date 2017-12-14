@@ -64,8 +64,11 @@ class Staff(DirectoryEntry):
 
   staff_directoryentry_node = models.OneToOneField(DirectoryEntry, db_column='staff_directoryentry_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
+  inline_order = models.PositiveIntegerField(default=0,blank=False, null=False,db_index=True)
+
   class Meta:
     db_table = 'directoryenties_staff'
+    ordering = ['inline_order']
     get_latest_by = 'create_date'
     verbose_name = 'Staff'
     verbose_name_plural = 'Staff'

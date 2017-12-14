@@ -8,8 +8,6 @@ from guardian.admin import GuardedModelAdmin
 from mptt.admin import MPTTModelAdmin
 from ajax_select import make_ajax_form, make_ajax_field
 from adminsortable2.admin import SortableInlineAdminMixin
-#from adminsortable.admin import NonSortableParentAdmin, SortableTabularInline
-#from adminsortable.utils import get_is_sortable
 from apps.common.classes import DeletedListFilter, EditLinkToInlineObject
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
@@ -134,17 +132,11 @@ class AdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
           return qs
       if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
           return qs
-      qs.filter(deleted=0)
-      #Required for adminsortable
-      #if get_is_sortable(qs):
-      #    self.model.is_sortable = True
-      #else:
-      #    self.model.is_sortable = False
-      #return qs
+      return qs.filter(deleted=0)
 
   form = make_ajax_form(Staff, {'employee': 'employee'})
 
-class StaffInline(admin.TabularInline):
+class StaffInline(SortableInlineAdminMixin, admin.TabularInline):
   model = Staff
   fk_name = 'parent'
   fields = ['employee','job_title',]
@@ -1017,7 +1009,6 @@ class DepartmentAdminForm(forms.ModelForm):
         fields = ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent','url']
 
 class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
-  #change_form_template_extends = 'admin/guardian/model/change_form.html'
 
   form = make_ajax_form(Department,{'primary_contact': 'employee'}, DepartmentAdminForm)
 
