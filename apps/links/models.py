@@ -8,7 +8,7 @@ class ResourceLink(Link):
   URL_PREFIX = ''
 
   title = models.CharField(max_length=200, help_text='')
-  link_url = models.CharField(max_length=2000, unique=True, db_index=True)
+  link_url = models.CharField(max_length=2000, db_index=True)
   related_node = models.ForeignKey(Node, blank=True, null=True, related_name='links_resourcelink_node', editable=False)
 
   resourcelink_link_node = models.OneToOneField(Link, db_column='resourcelink_link_node', on_delete=models.CASCADE, parent_link=True, editable=False)
@@ -36,7 +36,7 @@ class ActionButton(Link):
   URL_PREFIX = '/actionbuttons/'
 
   title = models.CharField(max_length=200, help_text='')
-  link_url = models.CharField(max_length=2000, unique=True, db_index=True)
+  link_url = models.CharField(max_length=2000, db_index=True)
   related_node = models.ForeignKey(Node, blank=True, null=True, related_name='links_actionbutton_node', editable=False)
 
   actionbutton_link_node = models.OneToOneField(Link, db_column='actionbutton_link_node', on_delete=models.CASCADE, parent_link=True, editable=False)
