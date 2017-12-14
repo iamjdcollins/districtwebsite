@@ -19,6 +19,9 @@
       {%if page.building_location or page.main_phone or page.main_fax %}
       <li><a href="#contact">Contact</a></li>
       {% endif %}
+      {% if page.directoryentries_administrator_node.all %}
+      <li><a href="#administration">Administration</a></li>
+      {% endif %}
       {% if page.directoryentries_staff_node.all or page.departments_departmentsubpagestaff_department.all%}
       <li><a href="#staff">Staff</a></li>
       {% endif %}
@@ -65,6 +68,9 @@
       {%if page.building_location or page.main_phone or page.main_fax %}
       <option value="#contact">Contact</option>
       {% endif %}
+      {% if page.directoryentries_administrator_node.all %}
+      <option value="#administration">Administration</option>
+      {% endif %}
       {% if page.directoryentries_staff_node.all or page.departments_departmentsubpagestaff_department.all%}
       <option value="#staff">Staff</option>
       {% endif %}
@@ -98,6 +104,16 @@
     <div class="row">
       <div id="contact" class="scrollspy">
         {% include "www_slcschools_org/contact_block.html" %}
+      </div>
+    </div>
+    {% endif %}
+    {% if page.directoryentries_administrator_node.all %}
+    <div class="row">
+      <div id="administration" class="scrollspy contactcardlist">
+        <h2>Administration</h2>
+        {% for admin in page.directoryentries_administrator_node.all %}
+        {% include "www_slcschools_org/admindirectorylist.html" %}
+        {% endfor %}
       </div>
     </div>
     {% endif %}

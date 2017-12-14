@@ -311,6 +311,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
 };
 
 $(document).ready(function(){
+  $("a").each( function( index, item){ if ( window.location.hostname !== item.hostname) { console.log('Adding ' + item.hostname); $(item).attr('target', '_blank') }});
   $('.authenticated').pushpin({
       top: $('.preheader.wrapper').offset().top,
       bottom: Infinity,
