@@ -27,6 +27,28 @@ class SchoolAdministrator(DirectoryEntry):
   save = apps.common.functions.directoryentrysave
   delete = apps.common.functions.modeltrash
 
+class Administrator(DirectoryEntry):
+  PARENT_URL = ''
+  URL_PREFIX = '/directory/administrator/'
+
+  title = models.CharField(max_length=200, help_text='')
+  employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='directoryenties_administrator_employee')
+  job_title =  models.CharField(max_length=200, help_text='')
+  related_node = models.ForeignKey(Node, blank=True, null=True, related_name='directoryentries_administrator_node', editable=False)
+
+
+  administrator_directoryentry_node = models.OneToOneField(DirectoryEntry, db_column='administrator_directoryentry_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+  class Meta:
+    db_table = 'directoryenties_administrator'
+    get_latest_by = 'create_date'
+    verbose_name = 'Administrator'
+    verbose_name_plural = 'Administrators'
+    default_manager_name = 'objects'
+
+  save = apps.common.functions.directoryentrysave
+  delete = apps.common.functions.modeltrash
+
 class Staff(DirectoryEntry):
   PARENT_URL = ''
   URL_PREFIX = '/directory/staff/'

@@ -12,7 +12,7 @@ from apps.common.actions import trash_selected, restore_selected, publish_select
 from django.contrib.admin.actions import delete_selected
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture
-from apps.directoryentries.models import SchoolAdministrator, Staff, BoardMember, StudentBoardMember, BoardPolicyAdmin
+from apps.directoryentries.models import SchoolAdministrator, Administrator, Staff, BoardMember, StudentBoardMember, BoardPolicyAdmin
 from apps.links.models import ResourceLink, ActionButton
 from apps.documents.models import Document, BoardPolicy, Policy, AdministrativeProcedure, SupportingDocument, BoardMeetingAgenda, BoardMeetingMinutes, BoardMeetingAudio, BoardMeetingVideo, BoardMeetingExhibit, BoardMeetingAgendaItem
 from apps.events.models import BoardMeeting
@@ -113,6 +113,29 @@ class SchoolAdministratorInline(admin.TabularInline):
 
   form = make_ajax_form(SchoolAdministrator, {'employee': 'employee'})
 
+class AdministratorInline(admin.TabularInline):
+  model = Administrator
+  fk_name = 'parent'
+  fields = ['employee','job_title',]
+  readonly_fields = []
+  ordering = ['title',]
+  extra = 0
+  min_inum = 0
+  max_num = 15
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
+
+  form = make_ajax_form(Staff, {'employee': 'employee'})
+
 class StaffInline(admin.TabularInline):
   model = Staff
   fk_name = 'parent'
@@ -120,7 +143,7 @@ class StaffInline(admin.TabularInline):
   readonly_fields = []
   ordering = ['title',]
   extra = 0
-  min_num = 0
+  min_inum = 0
   max_num = 50
   has_add_permission = apps.common.functions.has_add_permission_inline
   has_change_permission = apps.common.functions.has_change_permission_inline
@@ -1001,7 +1024,7 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
             else:
                 return ['url']
 
-  inlines = [ContentBannerInline,ActionButtonInline,StaffInline,ResourceLinkInline,DocumentInline,SubPageInline]
+  inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,SubPageInline]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
