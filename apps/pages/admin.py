@@ -141,7 +141,6 @@ class StaffInline(SortableInlineAdminMixin, admin.TabularInline):
   fk_name = 'parent'
   fields = ['employee','job_title',]
   readonly_fields = []
-  ordering = ['title',]
   extra = 0
   min_inum = 0
   max_num = 50
@@ -261,13 +260,12 @@ class ActionButtonInlineForm(forms.ModelForm):
         if self.instance.pk:
             pass
 
-class ActionButtonInline(EditLinkToInlineObject, admin.TabularInline):
+class ActionButtonInline(SortableInlineAdminMixin, admin.TabularInline):
   model = ActionButton
   form = ActionButtonInlineForm
   fk_name = 'parent'
-  readonly_fields = ['edit_link',]
+  readonly_fields = []
   fields = ['title', 'link_url', ]
-  ordering = ['title',]
   extra = 0
   min_num = 0
   max_num = 4

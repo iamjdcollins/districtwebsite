@@ -37,8 +37,11 @@ class ActionButton(Link):
 
   actionbutton_link_node = models.OneToOneField(Link, db_column='actionbutton_link_node', on_delete=models.CASCADE, parent_link=True, editable=False)
 
+  inline_order = models.PositiveIntegerField(default=0,blank=False, null=False,db_index=True)
+
   class Meta:
     db_table = 'links_actionbutton'
+    ordering = ['inline_order',] 
     get_latest_by = 'update_date'
     permissions = (('trash_actionbutton', 'Can soft delete action button'),('restore_resourcelink', 'Can restore action button'))
     verbose_name = 'Action Button'
