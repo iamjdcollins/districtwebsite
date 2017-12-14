@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'mptt',
     'ckeditor',
     'ajax_select',
+    'adminsortable2',
     'www_slcschools_org',
     'apps.objects',
     'apps.taxonomy',

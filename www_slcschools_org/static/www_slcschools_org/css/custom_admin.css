@@ -59,4 +59,36 @@
 .md-phone:before {
   content: "\67";
 }
+.md-arrowall:before {
+  content: "\68";
+}
+.md-filedocument:before {
+  content: "\69";
+}
+.md-linkvariant:before {
+  content: "\6a";
+}
+.md-openinnew:before {
+  content: "\6b";
+}
 
+
+div.inline-group table.ui-sortable tr.form-row.has_original td.drag::before {
+    content: '\68';
+}
+div.inline-group table.ui-sortable tr.form-row.has_original td.drag {
+    font-family: "md" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: '\67';
+    background-image: none !important;
+    background-repeat: no-repeat;
+    text-align: center;
+    font-size: 18px;
+}
