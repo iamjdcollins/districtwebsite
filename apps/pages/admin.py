@@ -1819,7 +1819,7 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
             else:
                 return ['url']
 
-  inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline]
+  inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
