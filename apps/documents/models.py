@@ -13,8 +13,11 @@ class Document(BaseDocument):
 
   document_document_node = models.OneToOneField(BaseDocument, db_column='document_document_node', on_delete=models.CASCADE, parent_link=True, editable=False)
 
+  inline_order = models.PositiveIntegerField(default=0,blank=False, null=False,db_index=True)
+
   class Meta:
     db_table = 'documents_document'
+    ordering = ['inline_order',]
     get_latest_by = 'update_date'
     permissions = (('trash_document', 'Can soft delete document'),('restore_document', 'Can restore document'))
     verbose_name = 'Document'

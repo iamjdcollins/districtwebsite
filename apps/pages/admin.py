@@ -72,7 +72,7 @@ class NewsThumbnailInline(admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-class ContentBannerInline(admin.TabularInline):
+class ContentBannerInline(SortableInlineAdminMixin, admin.TabularInline):
   model = ContentBanner
   fk_name = 'parent'
   fields = ['title','image_file','alttext',]
@@ -291,13 +291,12 @@ class DocumentInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class DocumentInline(EditLinkToInlineObject, admin.TabularInline):
+class DocumentInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.TabularInline):
   model = Document
   form = DocumentInlineForm
   fk_name = 'parent'
   readonly_fields = ['edit_link',]
   fields = ['title', 'edit_link', ]
-  ordering = ['title',]
   extra = 0 
   min_num = 0
   max_num = 50

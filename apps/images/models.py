@@ -92,8 +92,11 @@ class ContentBanner(Image):
 
   contentbanner_image_node = models.OneToOneField(Image, db_column='contentbanner_image_node', on_delete=models.CASCADE, parent_link=True, editable=False)
 
+  inline_order = models.PositiveIntegerField(default=0,blank=False, null=False,db_index=True)
+
   class Meta:
     db_table = 'images_contentbanner'
+    ordering = ['inline_order',]
     get_latest_by = 'update_date'
     permissions = (('trash_contentbanner', 'Can soft delete content banner'),('restore_contentbanner', 'Can restore content banner'))
     verbose_name = 'Content Banner'
