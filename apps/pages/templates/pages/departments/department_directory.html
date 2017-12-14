@@ -29,8 +29,14 @@
   </div>
   <div id="main" class="card-content">
     <h1>Alphabetical Directory</h1>
+    <!--<form class="textfieldboxes" onsubmit="myFunction(); return false;">
+      <input id="tableSearch" class="autocomplete" onkeyup="myFunction()" placeholder="Search Department, Programs, and Services" title="Search Department, Programs, and Services" type="text">
+    </form>-->
     <form class="textfieldboxes" onsubmit="myFunction(); return false;">
-      <input id="tableSearch" class="autocomplete" onkeyup="myFunction()" placeholder="Search Departments / Programs" title="Search Departments / Programs" type="text">
+      <div class="input-field">
+        <input class="autocomplete" onkeyup="myFunction()" title="Search Schools" id="tableSearch" type="text">
+        <label for="schoolsfilter">Search Department, Programs, and Services</label>
+      </div>
     </form>
     <div id="departments" class="scrollspy">
       <div class="row">
