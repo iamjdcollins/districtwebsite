@@ -1,10 +1,10 @@
 <tr class="{{meeting.yearend}} {% if meeting.cancelled %}red lighten-4{% endif %}">
-  <td><div>{{ meeting.startdate|date:"M. d, Y" }}</div>{% if meeting.startdate|date:"l" != 'Tuesday' %}<div class="yellow lighten-4">{{ meeting.startdate|date:"l" }}</div>{% endif %}{% if meeting.startdate|date:"H:i" != '18:30' %}<div class="yellow lighten-4">{{ meeting.startdate|date:"g:i A" }}</div>{% endif %}</td>
-  <td>{% if meeting.building_location or meeting.non_district_location_google_place %}<a href="{% if meeting.non_district_location_google_place %}{{  meeting.non_district_location_google_place }}{% else %}{{meeting.building_location.google_place}}{% endif %}" target="_blank">{% if meeting.non_district_location %}{{  meeting.non_district_location }}{% else %}{{ meeting.building_location.title }}{% endif %}<i class="material-icons tiny">&#xE55F;</i></a>{% else %}Location Not Specified{% endif %}</td>
-  <td>{% if meeting.cancelled %}**MEETING CANCELLED**{% else %}{% if meeting.meeting_type.all %}{% for type in meeting.meeting_type.all %}{% if not forloop.first %} <br> {% endif %}{{ type.title }}{% endfor %}{% endif %}{% endif %}</td>
+  <td class="date"><div>{{ meeting.startdate|date:"M. d, Y" }}</div>{% if meeting.startdate|date:"l" != 'Tuesday' %}<div class="yellow lighten-4">{{ meeting.startdate|date:"l" }}</div>{% endif %}{% if meeting.startdate|date:"H:i" != '18:30' %}<div class="yellow lighten-4">{{ meeting.startdate|date:"g:i A" }}</div>{% endif %}</td>
+  <td class="location">{% if meeting.building_location or meeting.non_district_location_google_place %}<a href="{% if meeting.non_district_location_google_place %}{{  meeting.non_district_location_google_place }}{% else %}{{meeting.building_location.google_place}}{% endif %}" target="_blank">{% if meeting.non_district_location %}{{  meeting.non_district_location }}{% else %}{{ meeting.building_location.title }}{% endif %}<i class="material-icons tiny">&#xE55F;</i></a>{% else %}Location Not Specified{% endif %}</td>
+  <td class="meetingtype">{% if meeting.cancelled %}**MEETING CANCELLED**{% else %}{% if meeting.meeting_type.all %}{% for type in meeting.meeting_type.all %}{% if not forloop.first %} <br> {% endif %}{{ type.title }}{% endfor %}{% endif %}{% endif %}</td>
   {% for document in meeting.documents_boardmeetingagenda_node.all %}
   {% if forloop.first %}
-  <td class="center">
+  <td class="agenda center">
     <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE24D;</i></a>
     <div id="{{ document.pk }}" class="hide">
       <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
@@ -19,11 +19,11 @@
   </td>
   {% endif %}
   {% empty %}
-  <td class="center"><i class="disabled material-icons">&#xE24D;</i></td>
+  <td class="agenda center"><i class="disabled material-icons">&#xE24D;</i></td>
   {% endfor %}
   {% for document in meeting.documents_boardmeetingminutes_node.all %}
   {% if forloop.first %}
-  <td class="center">
+  <td class="minutes center">
     <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE24D;</i></a>
     <div id="{{ document.pk }}" class="hide">
       <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
@@ -38,11 +38,11 @@
   </td>
   {% endif %}
   {% empty %}
-  <td class="center"><i class="disabled material-icons">&#xE24D;</i></td>
+  <td class="minutes center"><i class="disabled material-icons">&#xE24D;</i></td>
   {% endfor %}
   {% for audio in meeting.documents_boardmeetingaudio_node.all %}
   {% if forloop.first %}
-  <td class="center">
+  <td class="audio center">
     <a href="#{{audio.pk}}" class="document-inline"><i class="material-icons">&#xE029;</i></a>
     <div id="{{ audio.pk }}" class="hide">
       <div id="{{ audio.pk }}-title" class="modal-title">Board Audio Recording</div>
@@ -57,11 +57,11 @@
   </td>
   {% endif %}
   {% empty %}
-  <td class="center"><i class="disabled material-icons">&#xE029;</i></td>
+  <td class="audio center"><i class="disabled material-icons">&#xE029;</i></td>
   {% endfor %}
   {% for video in meeting.documents_boardmeetingvideo_node.all %}
   {% if forloop.first %}
-  <td class="center">
+  <td class="video center">
   <a href="#{{video.pk}}" class="document-inline"><i class="material-icons">&#xE04B;</i></a>
     <div id="{{ video.pk }}" class="hide">
       <div id="{{ video.pk }}-title" class="modal-title">Board Video Recording</div>
@@ -76,6 +76,6 @@
   </td>
   {% endif %}
   {% empty %}
-  <td class="center"><i class="disabled material-icons">&#xE04B;</i></td>
+  <td class="video center"><i class="disabled material-icons">&#xE04B;</i></td>
   {% endfor %}
 </tr>

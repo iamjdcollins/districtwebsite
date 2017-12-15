@@ -856,6 +856,10 @@ select.browser-default.withprefixicon{
     content: "Title: ";
     font-weight: bold;
   }
+  table.mobileblock td.contact:before {
+    content: "contact: ";
+    font-weight: bold;
+  }
   table.mobileblock td.department:before {
     content: "Department: ";
     font-weight: bold;
@@ -870,6 +874,58 @@ select.browser-default.withprefixicon{
   }
   table.mobileblock td.email:before {
     content: "Email: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.phone:before {
+    content: "Phone: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.policy.policyindex:before {
+    content: "Policy Index: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.policytitle:before {
+    content: "Policy Title: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.documents:before {
+    content: "Documents: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.contacts:before {
+    content: "Contacts: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.aptitle:before {
+    content: "Title: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.supportingdoctitle:before {
+    content: "Document Title: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.date:before {
+    content: "Date: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.meetingtype:before {
+    content: "Meeting Type: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.agenda:before {
+    content: "Agenda: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.minutes:before {
+    content: "Minutes: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.audio:before {
+    content: "Audio: ";
+    font-weight: bold;
+  }
+  table.mobileblock td.video:before {
+    content: "Video: ";
     font-weight: bold;
   }
 }

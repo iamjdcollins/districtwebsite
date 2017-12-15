@@ -1,8 +1,8 @@
 {% for document in policy.documents_policy_node.all %}
 <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
   <td class="policyindex">{{ policy.get_policy_index }}</td>
-  <td>{{ policy.policy_title }}</td>
-  <td class="rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
+  <td class="policytitle">{{ policy.policy_title }}</td>
+  <td class="documents rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
     <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE157;</i></a>
     <div id="{{ document.pk }}" class="hide">
       <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
@@ -16,7 +16,7 @@
     </div>
   </td>
   <!--<td class="rowaction"><a href="#!" title="Question / Comment"><i class="material-icons">&#xE0C9;</i></a></td>-->
-  <td>
+  <td class="contacts">
     {% for boardpolicyadmin in policy.directoryentries_boardpolicyadmin_node.all %}
       <a href="#!" style="white-space: pre">{{boardpolicyadmin.employee.first_name}} {{boardpolicyadmin.employee.last_name}}</a><br>
     {% endfor %}
@@ -26,8 +26,8 @@
 {% for document in policy.documents_administrativeprocedure_node.all %}
 <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
   <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-  <td>Administrative Procedure</td>
-  <td class="rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
+  <td class="aptitle">Administrative Procedure</td>
+  <td class="documents rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
     <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE157;</i></a>
     <div id="{{ document.pk }}" class="hide">
       <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
@@ -46,8 +46,8 @@
 {% for document in policy.documents_supportingdocument_node.all %}
 <tr {% if forloop.parentloop.counter0|divisibleby:"2" %}class="even"{% endif %}>
   <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
-  <td>{{document.document_title}}</td>
-  <td class="rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
+  <td class="supportingdoctitle" >{{document.document_title}}</td>
+  <td class="documents rowaction"><!--<a href="#!" title="Download"><i class="material-icons">&#xE2C4;</i></a>-->
     <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE157;</i></a>
     <div id="{{ document.pk }}" class="hide">
       <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>

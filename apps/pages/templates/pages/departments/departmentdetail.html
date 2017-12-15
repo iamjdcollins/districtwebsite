@@ -121,20 +121,20 @@
     <div class="row">
       <div id="staff" class="scrollspy contactcardlist">
         <h2>Staff</h2>
-        <table class="striped">
+        <table class="striped highlighted mobileblock">
           <thead>
             <tr>
               <th>Name</th>
-              <th>Job Title</th>
+              <th>Title</th>
               <th>Contact</th>
             </tr>
           </thead>
           <tbody>
         {% for staff in page.directoryentries_staff_node.all %}
             <tr>
-              <td>{{ staff.employee.first_name }} {{ staff.employee.last_name }}</td>
-              <td>{{ staff.job_title }}</td>
-              <td><a href="#">SEND ME A MESSAGE</a></td>
+              <td class="name">{{ staff.employee.first_name }} {{ staff.employee.last_name }}</td>
+              <td class="title">{{ staff.job_title }}</td>
+              <td class="contact"><a href="#">SEND ME A MESSAGE</a></td>
             </tr>
         {% endfor %}
           </tbody>
