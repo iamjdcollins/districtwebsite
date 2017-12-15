@@ -27,7 +27,8 @@ from django.core.urlresolvers import reverse
 class ProfilePictureInline(admin.StackedInline):
     model = ProfilePicture
     fk_name = 'parent'
-    fields = ['title','image_file','alttext',]
+    fields = ['title','image_file','alttext','update_user','update_date',]
+    readonly_fields = ['update_user','update_date',]
     extra = 0
     min_num = 1
     max_num = 1
@@ -35,8 +36,8 @@ class ProfilePictureInline(admin.StackedInline):
 class ThumbnailInline(admin.TabularInline):
   model = Thumbnail
   fk_name = 'parent'
-  fields = ['title','image_file','alttext',]
-  readonly_fields = []
+  fields = ['title','image_file','alttext','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0 
   min_num = 0
   max_num = 1
@@ -55,8 +56,8 @@ class ThumbnailInline(admin.TabularInline):
 class NewsThumbnailInline(admin.TabularInline):
   model = NewsThumbnail
   fk_name = 'parent'
-  fields = ['title','image_file','alttext',]
-  readonly_fields = []
+  fields = ['title','image_file','alttext','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0
   min_num = 0
   max_num = 1
@@ -75,8 +76,8 @@ class NewsThumbnailInline(admin.TabularInline):
 class ContentBannerInline(SortableInlineAdminMixin, admin.TabularInline):
   model = ContentBanner
   fk_name = 'parent'
-  fields = ['title','image_file','alttext',]
-  readonly_fields = []
+  fields = ['title','image_file','alttext','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0 
   min_num = 0
   max_num = 5
@@ -95,8 +96,8 @@ class ContentBannerInline(SortableInlineAdminMixin, admin.TabularInline):
 class SchoolAdministratorInline(admin.TabularInline):
   model = SchoolAdministrator
   fk_name = 'parent'
-  fields = ['employee', 'schooladministratortype',]
-  readonly_fields = []
+  fields = ['employee', 'schooladministratortype','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0 
   min_num = 0
   max_num = 5
@@ -117,8 +118,8 @@ class SchoolAdministratorInline(admin.TabularInline):
 class AdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
   model = Administrator
   fk_name = 'parent'
-  fields = ['employee','job_title',]
-  readonly_fields = []
+  fields = ['employee','job_title','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0
   min_inum = 0
   max_num = 15
@@ -139,8 +140,8 @@ class AdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
 class StaffInline(SortableInlineAdminMixin, admin.TabularInline):
   model = Staff
   fk_name = 'parent'
-  fields = ['employee','job_title',]
-  readonly_fields = []
+  fields = ['employee','job_title','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0
   min_inum = 0
   max_num = 50
@@ -172,8 +173,8 @@ class StudentBoardMemberInline(EditLinkToInlineObject, admin.TabularInline):
   model = StudentBoardMember
   form = StudentBoardMemberInlineForm
   fk_name = 'parent'
-  fields = ['title','edit_link']
-  readonly_fields = ['edit_link']
+  fields = ['title','update_user','update_date','edit_link']
+  readonly_fields = ['update_user','update_date','edit_link']
   ordering = ['title',]
   extra = 0
   min_num = 0
@@ -193,8 +194,8 @@ class StudentBoardMemberInline(EditLinkToInlineObject, admin.TabularInline):
 class BoardMemberInline(admin.TabularInline):
   model = BoardMember
   fk_name = 'parent'
-  fields = ['employee','precinct','phone','street_address','city','state','zipcode']
-  readonly_fields = []
+  fields = ['employee','precinct','phone','street_address','city','state','zipcode','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   ordering = ['precinct__title',]
   extra = 0
   min_num = 0
@@ -216,8 +217,8 @@ class BoardMemberInline(admin.TabularInline):
 class BoardPolicyAdminInline(admin.TabularInline):
   model = BoardPolicyAdmin
   fk_name = 'parent'
-  fields = ['employee',]
-  readonly_fields = []
+  fields = ['employee','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   ordering = ['title',]
   extra = 0
   min_num = 0
@@ -240,8 +241,8 @@ class BoardPolicyAdminInline(admin.TabularInline):
 class ResourceLinkInline(SortableInlineAdminMixin, admin.TabularInline):
   model = ResourceLink
   fk_name = 'parent'
-  fields = ['title','link_url',]
-  readonly_fields = []
+  fields = ['title','link_url','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0 
   min_num = 0
   max_num = 50
@@ -263,8 +264,8 @@ class ActionButtonInline(SortableInlineAdminMixin, admin.TabularInline):
   model = ActionButton
   form = ActionButtonInlineForm
   fk_name = 'parent'
-  readonly_fields = []
-  fields = ['title', 'link_url', ]
+  fields = ['title', 'link_url','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0
   min_num = 0
   max_num = 4
@@ -294,8 +295,8 @@ class DocumentInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.Tab
   model = Document
   form = DocumentInlineForm
   fk_name = 'parent'
-  readonly_fields = ['edit_link',]
-  fields = ['title', 'edit_link', ]
+  fields = ['title','update_user','update_date','edit_link',]
+  readonly_fields = ['update_user','update_date','edit_link',]
   extra = 0 
   min_num = 0
   max_num = 50
@@ -327,8 +328,8 @@ class BoardPolicyInline(EditLinkToInlineObject, admin.TabularInline):
   model = BoardPolicy
   form = BoardPolicyInlineForm
   fk_name = 'parent'
-  readonly_fields = ['edit_link',]
-  fields = ['policy_title', 'section', 'index', 'edit_link', ]
+  fields = ['policy_title','section','index','update_user','update_date','edit_link',]
+  readonly_fields = ['update_user','update_date','edit_link',]
   ordering = ['section__lft','index',]
   extra = 0
   min_num = 0
@@ -359,8 +360,8 @@ class PolicyInline(EditLinkToInlineObject, admin.TabularInline):
     model = Policy
     form = PolicyInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link',]
+    readonly_fields = ['update_user','update_date','edit_link',]
     ordering = ['title',]
     extra = 0
     min_num = 0
@@ -391,8 +392,8 @@ class AdministrativeProcedureInline(EditLinkToInlineObject, admin.TabularInline)
     model = AdministrativeProcedure
     form = AdministrativeProcedureInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link',]
+    readonly_fields = ['update_user','update_date','edit_link',]
     ordering = ['title',]
     extra = 0
     min_num = 0
@@ -423,8 +424,8 @@ class SupportingDocumentInline(EditLinkToInlineObject, admin.TabularInline):
     model = SupportingDocument
     form = SupportingDocumentInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link',]
+    readonly_fields = ['update_user','update_date','edit_link',]
     ordering = ['title',]
     extra = 0
     min_num = 0
@@ -455,8 +456,8 @@ class BoardMeetingAgendaInline(EditLinkToInlineObject, admin.TabularInline):
     model = BoardMeetingAgenda
     form = BoardMeetingAgendaInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link',]
+    readonly_fields = ['update_user','update_date','edit_link',]
     ordering = ['title',]
     extra = 0
     min_num = 0
@@ -487,8 +488,8 @@ class BoardMeetingMinutesInline(EditLinkToInlineObject, admin.TabularInline):
     model = BoardMeetingMinutes
     form = BoardMeetingMinutesInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link',]
+    readonly_fields = ['update_user','update_date','edit_link',]
     ordering = ['title',]
     extra = 0
     min_num = 0
@@ -519,8 +520,8 @@ class BoardMeetingAudioInline(EditLinkToInlineObject, admin.TabularInline):
     model = BoardMeetingAudio
     form = BoardMeetingAudioInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link',]
+    readonly_fields = ['update_user','update_date','edit_link',]
     ordering = ['title',]
     extra = 0
     min_num = 0
@@ -551,8 +552,8 @@ class BoardMeetingVideoInline(EditLinkToInlineObject, admin.TabularInline):
     model = BoardMeetingVideo
     form = BoardMeetingVideoInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link',]
+    readonly_fields = ['update_user','update_date','edit_link',]
     ordering = ['title',]
     extra = 0
     min_num = 0
@@ -583,8 +584,8 @@ class BoardMeetingExhibitInline(EditLinkToInlineObject, admin.TabularInline):
     model = BoardMeetingExhibit
     form = BoardMeetingExhibitInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link',]
+    readonly_fields = ['update_user','update_date','edit_link',]
     ordering = ['title',]
     extra = 0
     min_num = 0
@@ -615,8 +616,8 @@ class BoardMeetingAgendaItemInline(EditLinkToInlineObject, admin.TabularInline):
     model = BoardMeetingAgendaItem
     form = BoardMeetingAgendaItemInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link',]
+    readonly_fields = ['update_user','update_date','edit_link',]
     ordering = ['title',]
     extra = 0
     min_num = 0
@@ -647,8 +648,8 @@ class FileInline(admin.TabularInline):
   model = File
   form = FileInlineForm
   fk_name = 'parent'
-  fields = ['file_file', 'file_language']
-  readonly_fields = []
+  fields = ['file_file','file_language','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0 
   min_num = 0
   max_num = 50
@@ -678,8 +679,8 @@ class AudioFileInline(admin.TabularInline):
   model = AudioFile
   form = AudioFileInlineForm
   fk_name = 'parent'
-  fields = ['file_file',]
-  readonly_fields = []
+  fields = ['file_file','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0
   min_num = 0
   max_num = 1
@@ -709,8 +710,8 @@ class VideoFileInline(admin.TabularInline):
   model = VideoFile
   form = VideoFileInlineForm
   fk_name = 'parent'
-  fields = ['file_file',]
-  readonly_fields = []
+  fields = ['file_file','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
   extra = 0
   min_num = 0
   max_num = 1
@@ -729,7 +730,7 @@ class VideoFileInline(admin.TabularInline):
 class SubPageInlineForm(forms.ModelForm):
     class Meta:
         model = SubPage
-        fields = ['title']
+        fields = ['title',]
 
     def __init__(self, *args, **kwargs):
         super(SubPageInlineForm, self).__init__(*args, **kwargs)
@@ -740,8 +741,8 @@ class SubPageInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.Tabu
     model = SubPage
     form = SubPageInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link', ]
+    readonly_fields = ['update_user','update_date','edit_link',]
     extra = 0
     min_num = 0
     max_num = 50
@@ -771,8 +772,8 @@ class BoardSubPageInline(EditLinkToInlineObject, admin.TabularInline):
     model = BoardSubPage
     form = BoardSubPageInlineForm
     fk_name = 'parent'
-    readonly_fields = ['edit_link',]
-    fields = ['title', 'edit_link', ]
+    fields = ['title','update_user','update_date','edit_link',]
+    readonly_fields = ['update_user','update_date','edit_link',]
     ordering = ['title',]
     extra = 0
     min_num = 0
@@ -808,8 +809,8 @@ class BoardMeetingInline(EditLinkToInlineObject, admin.TabularInline):
   model = BoardMeeting
   form = BoardMeetingInlineForm
   fk_name = 'parent'
-  fields = ['startdate', 'meeting_type','edit_link',]
-  readonly_fields = ['edit_link',]
+  fields = ['startdate', 'meeting_type','update_user','update_date','edit_link',]
+  readonly_fields = ['update_user','update_date','edit_link',]
   ordering = ['-startdate',]
   extra = 0
   min_num = 0
