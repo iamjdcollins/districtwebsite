@@ -148,6 +148,12 @@ body {top:0 !important;}
 #google_translate_element2 {display:none!important;}
 
 /* Menu Modaals */
+.modaal-wrapper{
+  z-index: 13 !important;
+}
+.modaal-overlay{
+  z-index: 12 !important;
+}
 .modaal-mainmenu .modaal-container, .modaal-fulltranslationlist .modaal-container, .modaal-yearnav .modaal-container{
   background-color: $slcschools-grey-lighten-1;
 }
@@ -171,7 +177,8 @@ body {top:0 !important;}
 }
 .modaal-wrapper .modal-title {
   margin: -30px -30px 0px -30px;
-  padding: 30px;
+  padding: 1px 30px 1px 5px;
+  line-height: 30px;
   color: white;
   text-transform: capitalize !important;
   font-size: 1.5em;
@@ -761,7 +768,7 @@ footer h2{
   width: 40px;
   line-height: 40px;
   overflow: hidden;
-  z-index: 999;
+  z-index: 11;
   cursor: pointer;
   position: fixed;
   bottom: 18px;
