@@ -862,13 +862,12 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
-              else:
-                while 'deleted' in inline.fields:
+          else:
+              while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
@@ -967,14 +966,13 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
               else:
-                while 'deleted' in inline.fields:
-                  inline.fields.remove('deleted')
+                  while 'deleted' in inline.fields:
+                      inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
   has_change_permission = apps.common.functions.has_change_permission
@@ -1036,13 +1034,12 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
-              else:
-                while 'deleted' in inline.fields:
+          else:
+              while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
@@ -1105,13 +1102,12 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
-              else:
-                while 'deleted' in inline.fields:
+          else:
+              while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
@@ -1174,13 +1170,12 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
-              else:
-                while 'deleted' in inline.fields:
+          else:
+              while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           if obj.url == '/board-of-education/policies/':
               if not isinstance(inline,BoardPolicyInline):
@@ -1236,13 +1231,12 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
-              else:
-                while 'deleted' in inline.fields:
+          else:
+              while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
@@ -1292,13 +1286,12 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
-              else:
-                while 'deleted' in inline.fields:
+          else:
+              while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
@@ -1332,13 +1325,12 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
-              else:
-                while 'deleted' in inline.fields:
+          else:
+              while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
@@ -1424,14 +1416,13 @@ class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -1517,14 +1508,13 @@ class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -1608,14 +1598,13 @@ class AdministrativeProcedureAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -1699,14 +1688,13 @@ class SupportingDocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -1808,13 +1796,12 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
-              else:
-                while 'deleted' in inline.fields:
+          else:
+              while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
@@ -1864,13 +1851,12 @@ class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
-              else:
-                while 'deleted' in inline.fields:
+          else:
+              while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
@@ -1904,14 +1890,13 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -1996,14 +1981,13 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -2085,14 +2069,13 @@ class BoardMeetingAgendaAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -2176,14 +2159,13 @@ class BoardMeetingMinutesAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -2267,14 +2249,13 @@ class BoardMeetingAudioAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -2358,14 +2339,13 @@ class BoardMeetingVideoAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -2450,14 +2430,13 @@ class BoardMeetingExhibitAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
@@ -2541,14 +2520,13 @@ class BoardMeetingAgendaItemAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
-            if not isinstance(inline,ResourceLinkInline):
-                # Remove delete fields is not superuser
-                if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                    if not 'deleted' in inline.fields:
-                        inline.fields.append('deleted')
-                else:
-                    while 'deleted' in inline.fields:
-                        inline.fields.remove('deleted')
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
             yield inline.get_formset(request, obj), inline
 
 
