@@ -854,7 +854,6 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
       fields = ['title','update_user','update_date','create_user','create_date',]
       if request.user.is_superuser:
           fields.remove('title')
-          fields += ['parent']
           if obj:
            fields += ['url']
       return fields
@@ -960,7 +959,6 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
       fields = ['title','update_user','update_date','create_user','create_date',]
       if request.user.is_superuser:
           fields.remove('title')
-          fields += ['parent']
           if obj:
            fields += ['url']
       return fields
@@ -1030,7 +1028,6 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
       fields = ['title','update_user','update_date','create_user','create_date',]
       if request.user.is_superuser:
           fields.remove('title')
-          fields += ['parent']
           if obj:
            fields += ['url']
       return fields
@@ -1100,7 +1097,6 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
       fields = ['title','update_user','update_date','create_user','create_date',]
       if request.user.is_superuser:
           fields.remove('title')
-          fields += ['parent']
           if obj:
            fields += ['url']
       return fields
@@ -1170,7 +1166,6 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
       fields = ['title','update_user','update_date','create_user','create_date',]
       if request.user.is_superuser:
           fields.remove('title')
-          fields += ['parent']
           if obj:
            fields += ['url']
       return fields
@@ -1233,7 +1228,6 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
       fields = ['title','update_user','update_date','create_user','create_date',]
       if request.user.is_superuser:
           fields.remove('title')
-          fields += ['parent']
           if obj:
            fields += ['url']
       return fields
@@ -1290,7 +1284,6 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
       fields = ['title','update_user','update_date','create_user','create_date',]
       if request.user.is_superuser:
           fields.remove('title')
-          fields += ['parent']
           if obj:
            fields += ['url']
       return fields
@@ -1361,7 +1354,6 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
       fields = ['title','update_user','update_date','create_user','create_date',]
       if request.user.is_superuser:
           fields.remove('title')
-          fields += ['parent']
           if obj:
            fields += ['url']
       return fields
@@ -1457,7 +1449,6 @@ class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
             fields.remove('title')
             fields.remove('section')
             fields.remove('index')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -1549,7 +1540,6 @@ class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
         fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
             fields.remove('title')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -1641,7 +1631,6 @@ class AdministrativeProcedureAdmin(MPTTModelAdmin,GuardedModelAdmin):
         fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
             fields.remove('title')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -1733,7 +1722,6 @@ class SupportingDocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
         fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
             fields.remove('title')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -1812,7 +1800,6 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
       fields = ['title','update_user','update_date','create_user','create_date',]
       if request.user.is_superuser:
           fields.remove('title')
-          fields += ['parent']
           if obj:
            fields += ['url']
       return fields
@@ -1869,7 +1856,6 @@ class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
       fields = ['title','update_user','update_date','create_user','create_date',]
       if request.user.is_superuser:
           fields.remove('title')
-          fields += ['parent']
           if obj:
            fields += ['url']
       return fields
@@ -1942,7 +1928,6 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if request.user.is_superuser:
             fields.remove('title')
             fields.remove('originaldate')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -2034,7 +2019,6 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
         fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
             fields.remove('title')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -2124,7 +2108,6 @@ class BoardMeetingAgendaAdmin(MPTTModelAdmin,GuardedModelAdmin):
         fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
             fields.remove('title')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -2216,7 +2199,6 @@ class BoardMeetingMinutesAdmin(MPTTModelAdmin,GuardedModelAdmin):
         fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
             fields.remove('title')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -2308,7 +2290,6 @@ class BoardMeetingAudioAdmin(MPTTModelAdmin,GuardedModelAdmin):
         fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
             fields.remove('title')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -2400,7 +2381,6 @@ class BoardMeetingVideoAdmin(MPTTModelAdmin,GuardedModelAdmin):
         fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
             fields.remove('title')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -2493,7 +2473,6 @@ class BoardMeetingExhibitAdmin(MPTTModelAdmin,GuardedModelAdmin):
         fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
             fields.remove('title')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
@@ -2585,7 +2564,6 @@ class BoardMeetingAgendaItemAdmin(MPTTModelAdmin,GuardedModelAdmin):
         fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
             fields.remove('title')
-            fields += ['parent']
             if obj:
              fields += ['url']
         return fields
