@@ -843,16 +843,21 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   form = make_ajax_form(Page, {'primary_contact': 'employee'},PageAdminForm)
 
   def get_fields(self, request, obj=None):
-      return ['title', 'body','primary_contact','parent','url']
+      fields = ['title', 'body','primary_contact',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['parent']
+          if obj:
+              fields += ['url']
+      return fields
 
   def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ['url']
-        else:
-            if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          fields += ['parent']
+          if obj:
+           fields += ['url']
+      return fields
 
   inlines = [ActionButtonInline,]
 
@@ -944,16 +949,21 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
   form = make_ajax_form(School,{'primary_contact': 'employee'},SchoolAdminForm)
 
   def get_fields(self, request, obj=None):
-      return ['title', 'body','building_location','main_phone','main_fax','enrollment','openenrollmentstatus','schooltype','website_url','scc_url','boundary_map','primary_contact','parent','url']
+      fields = ['title', 'body','building_location','main_phone','main_fax','enrollment','openenrollmentstatus','schooltype','website_url','scc_url','boundary_map','primary_contact',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['parent']
+          if obj:
+              fields += ['url']
+      return fields
 
   def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ['url']
-        else:
-            if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          fields += ['parent']
+          if obj:
+           fields += ['url']
+      return fields
 
   inlines = [ThumbnailInline, ContentBannerInline,SchoolAdministratorInline,ResourceLinkInline,DocumentInline,]
 
@@ -1009,16 +1019,21 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
   form = make_ajax_form(Department,{'primary_contact': 'employee'}, DepartmentAdminForm)
 
   def get_fields(self, request, obj=None):
-      return ['title','short_description','body','building_location','main_phone','main_fax','primary_contact','parent','url']
+      fields = ['title','short_description','body','building_location','main_phone','main_fax','primary_contact',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['parent']
+          if obj:
+              fields += ['url']
+      return fields
 
   def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ['url']
-        else:
-            if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          fields += ['parent']
+          if obj:
+           fields += ['url']
+      return fields
 
   inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,SubPageInline]
 
@@ -1074,16 +1089,21 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
   form = make_ajax_form(Board,{'primary_contact': 'employee'}, BoardAdminForm)
 
   def get_fields(self, request, obj=None):
-      return ['title','body','building_location','main_phone','main_fax','mission_statement','vision_statement','primary_contact','parent','url']
+      fields = ['title','body','building_location','main_phone','main_fax','mission_statement','vision_statement','primary_contact',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['parent']
+          if obj:
+              fields += ['url']
+      return fields
 
   def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ['url']
-        else:
-            if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          fields += ['parent']
+          if obj:
+           fields += ['url']
+      return fields
 
   inlines = [ContentBannerInline,BoardMemberInline,StudentBoardMemberInline,BoardSubPageInline,]
 
@@ -1139,16 +1159,21 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   form = make_ajax_form(BoardSubPage,{'primary_contact': 'employee'}, BoardSubPageAdminForm)
 
   def get_fields(self, request, obj=None):
-      return ['title','body','building_location','main_phone','main_fax','primary_contact','parent','url']
+      fields = ['title','body','building_location','main_phone','main_fax','primary_contact',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['parent']
+          if obj:
+              fields += ['url']
+      return fields
 
   def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ['url']
-        else:
-            if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          fields += ['parent']
+          if obj:
+           fields += ['url']
+      return fields
 
   inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline,BoardPolicyInline,BoardMeetingInline,SubPageInline,]
 
@@ -1197,7 +1222,21 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_fields(self, request, obj=None):
-      return ['title','pinned','summary','body','author_date']
+      fields = ['title','pinned','summary','body','author_date',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['parent']
+          if obj:
+              fields += ['url']
+      return fields
+  
+  def get_readonly_fields(self, request, obj=None):
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          fields += ['parent']
+          if obj:
+           fields += ['url']
+      return fields
 
   inlines = [NewsThumbnailInline,ContentBannerInline,]
 
@@ -1240,58 +1279,21 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_fields(self, request, obj=None):
-      return ['title',]
-
-  inlines = []
-
-  def get_formsets_with_inlines(self, request, obj=None):
-      for inline in self.get_inline_instances(request, obj):
-          if not isinstance(inline,ResourceLinkInline):
-              # Remove delete fields is not superuser
-              if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
-                if not 'deleted' in inline.fields:
-                  inline.fields.append('deleted')
-              else:
-                while 'deleted' in inline.fields:
-                  inline.fields.remove('deleted')
-          yield inline.get_formset(request, obj), inline
-
-  has_change_permission = apps.common.functions.has_change_permission
-  has_add_permission = apps.common.functions.has_add_permission
-  has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    super().save_model(request, obj, form, change)
-
-  response_change = apps.common.functions.response_change
-
-class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
-  def get_fields(self, request, obj=None):
-    if obj:
-      return ['title', 'link_url','url']
-    else:
-      return ['title', 'link_url','url']
+      fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['parent']
+          if obj:
+              fields += ['url']
+      return fields
 
   def get_readonly_fields(self, request, obj=None):
-        if obj:
-            return ['url']
-        else:
-            return ['url']
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          fields += ['parent']
+          if obj:
+           fields += ['url']
+      return fields
 
   inlines = []
 
@@ -1306,42 +1308,6 @@ class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
                 while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
-
-  def get_list_display(self,request):
-    if request.user.has_perm('links.restore_resourcelink'):
-      return ['title','update_date','update_user','published','deleted']
-    else:
-      return ['title','update_date','update_user','published']
-
-  #ordering = ('url',)
-  
-  def get_queryset(self, request):
-   qs = super().get_queryset(request)
-   if request.user.is_superuser:
-     return qs
-   if request.user.has_perm('links.restore_resourcelink'):
-     return qs
-   return qs.filter(deleted=0)
-
-  def get_actions(self, request):
-        actions = super().get_actions(request)
-        if 'delete_selected' in actions:
-          del actions['delete_selected']
-        if request.user.has_perm('links.trash_resourcelink'):    
-          actions['trash_selected'] = (trash_selected,'trash_selected',trash_selected.short_description)
-        if request.user.has_perm('links.restore_resourcelink'):
-          actions['restore_selected'] = (restore_selected,'restore_selected',restore_selected.short_description)
-        if request.user.has_perm('links.change_resourcelink'):
-          actions['publish_selected'] = (publish_selected, 'publish_selected', publish_selected.short_description)
-          actions['unpublish_selected'] = (unpublish_selected, 'unpublish_selected', unpublish_selected.short_description)
-        return actions
-  
-
-  def get_list_filter(self, request):
-    if request.user.has_perm('links.restore_resourcelink'):
-      return (DeletedListFilter,'published')
-    else:
-      return ['published',]
 
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
@@ -1364,7 +1330,6 @@ class ResourceLinkAdmin(MPTTModelAdmin,GuardedModelAdmin):
       obj.create_user = request.user
     obj.update_user = request.user
     super().save_model(request, obj, form, change)
-
 
   response_change = apps.common.functions.response_change
 
@@ -1385,16 +1350,21 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
           yield inline.get_formset(request, obj), inline
 
   def get_fields(self, request, obj=None):
-    if obj:
-      return ['title','url']
-    else:
-      return ['title', 'url']
+      fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['parent']
+          if obj:
+              fields += ['url']
+      return fields
 
   def get_readonly_fields(self, request, obj=None):
-        if obj:
-            return ['url']
-        else:
-            return ['url']
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          fields += ['parent']
+          if obj:
+           fields += ['url']
+      return fields
 
   def get_list_display(self,request):
     if request.user.has_perm('documents.restore_document'):
@@ -1474,16 +1444,23 @@ class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','section','index','parent','url']
+        fields = ['title','section','index',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','section','index','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields.remove('section')
+            fields.remove('index')
+            fields += ['parent']
             if obj:
-                return ['title','section','index','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -1561,16 +1538,21 @@ class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','parent','url']
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields += ['parent']
             if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -1648,16 +1630,21 @@ class AdministrativeProcedureAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','parent','url']
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields += ['parent']
             if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -1735,16 +1722,21 @@ class SupportingDocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','parent','url']
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields += ['parent']
             if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -1809,16 +1801,21 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   form = make_ajax_form(Department,{'primary_contact': 'employee'})
 
   def get_fields(self, request, obj=None):
-      return ['title','body','primary_contact','parent','url']
+      fields = ['title','body','primary_contact',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['parent']
+          if obj:
+              fields += ['url']
+      return fields
 
   def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ['url']
-        else:
-            if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          fields += ['parent']
+          if obj:
+           fields += ['url']
+      return fields
 
   inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,]
 
@@ -1861,16 +1858,21 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_fields(self, request, obj=None):
-      return ['title','first_name','last_name','phone','building_location','parent','url']
+      fields = ['title','first_name','last_name','phone','building_location',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['parent']
+          if obj:
+              fields += ['url']
+      return fields
 
   def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ['url']
-        else:
-            if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          fields += ['parent']
+          if obj:
+           fields += ['url']
+      return fields
 
   inlines = [ProfilePictureInline,]
 
@@ -1928,20 +1930,22 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        fields = ['title','originaldate', 'startdate','cancelled','meeting_type','building_location','non_district_location','non_district_location_google_place']
+        fields = ['title','originaldate', 'startdate','cancelled','meeting_type','building_location','non_district_location','non_district_location_google_place',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields.append('parent')
-            fields.append('url')
+            fields += ['parent']
+            if obj:
+                fields += ['url']
         return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','originaldate','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields.remove('originaldate')
+            fields += ['parent']
             if obj:
-                return ['title','originaldate']
-            else:
-                return []
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -2019,16 +2023,21 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','parent','url']
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields += ['parent']
             if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -2104,16 +2113,21 @@ class BoardMeetingAgendaAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','parent','url']
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields += ['parent']
             if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -2191,16 +2205,21 @@ class BoardMeetingMinutesAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','parent','url']
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields += ['parent']
             if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -2278,16 +2297,21 @@ class BoardMeetingAudioAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','parent','url']
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields += ['parent']
             if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -2365,16 +2389,21 @@ class BoardMeetingVideoAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','parent','url']
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields += ['parent']
             if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -2453,16 +2482,21 @@ class BoardMeetingExhibitAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','parent','url']
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields += ['parent']
             if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -2540,16 +2574,21 @@ class BoardMeetingAgendaItemAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        return ['title','parent','url']
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
 
     def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
         if request.user.is_superuser:
-            return ['url']
-        else:
+            fields.remove('title')
+            fields += ['parent']
             if obj:
-                return ['title','parent','url']
-            else:
-                return ['url']
+             fields += ['url']
+        return fields
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
@@ -2634,7 +2673,6 @@ admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Board, BoardAdmin)
 admin.site.register(News, NewsAdmin)
 admin.site.register(NewsYear, NewsYearAdmin)
-admin.site.register(ResourceLink,ResourceLinkAdmin)
 admin.site.register(Document,DocumentAdmin)
 admin.site.register(BoardPolicy,BoardPolicyAdmin)
 admin.site.register(Policy,PolicyAdmin)
