@@ -11,8 +11,9 @@
           <span class="card-title contactcardname">{{ admin.employee.first_name }} {{ admin.employee.last_name }}</span>
           {% if pageopts.model_name == 'school' %}
           <strong>{{ admin.schooladministratortype }}</strong> <br />
+          <strong>{{ admin.employee.job_title }}</strong> <br />
           {% elif pageopts.model_name == 'department' %}
-          <strong>{{ admin.job_title }}</strong> <br />
+          <strong>{{ admin.employee.job_title }}</strong> <br />
           {% endif %}
           {% if admin.phone %}
           <a href="tel:+{{admin.phone|slice:"0:1"}}-{{admin.phone|slice:"1:4"}}-{{admin.phone|slice:"4:7"}}-{{admin.phone|slice:"7:11"}}">

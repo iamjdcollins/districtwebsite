@@ -98,7 +98,7 @@
       <div id="administration" class="scrollspy contactcardlist">
         <h2>Administration</h2>
         {% for admin in page.directoryentries_schooladministrator_node.all %}
-        <div class="card horizontal">
+        <!--<div class="card horizontal">
           <div class="card-image">
             {% for profilepicture in admin.employee.images_profilepicture_node.all %}
             <img src="{{profilepicture.image_file.url}}" alt="{{profilepicture.alttext}}"/>
@@ -120,7 +120,8 @@
               <a href="#">SEND ME A MESSAGE</a>
             </div>
           </div>
-        </div>
+        </div>-->
+        {% include "www_slcschools_org/admindirectorylist.html" %}
         {% endfor %}
       </div>
     </div>

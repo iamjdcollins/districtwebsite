@@ -118,7 +118,7 @@ class SchoolAdministratorInline(admin.TabularInline):
 class AdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
   model = Administrator
   fk_name = 'parent'
-  fields = ['employee','job_title','update_user','update_date',]
+  fields = ['employee','update_user','update_date',]
   readonly_fields = ['update_user','update_date',]
   extra = 0
   min_inum = 0
@@ -140,7 +140,7 @@ class AdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
 class StaffInline(SortableInlineAdminMixin, admin.TabularInline):
   model = Staff
   fk_name = 'parent'
-  fields = ['employee','job_title','update_user','update_date',]
+  fields = ['employee','update_user','update_date',]
   readonly_fields = ['update_user','update_date',]
   extra = 0
   min_inum = 0

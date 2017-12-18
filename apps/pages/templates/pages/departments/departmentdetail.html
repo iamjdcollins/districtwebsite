@@ -133,7 +133,7 @@
         {% for staff in page.directoryentries_staff_node.all %}
             <tr>
               <td class="name">{{ staff.employee.first_name }} {{ staff.employee.last_name }}</td>
-              <td class="title">{{ staff.job_title }}</td>
+              <td class="title">{{ staff.employee.job_title }}</td>
               <td class="contact"><a href="#">SEND ME A MESSAGE</a></td>
             </tr>
         {% endfor %}

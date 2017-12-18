@@ -33,7 +33,7 @@ class Administrator(DirectoryEntry):
 
   title = models.CharField(max_length=200, help_text='')
   employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='directoryenties_administrator_employee')
-  job_title =  models.CharField(max_length=200, help_text='')
+  job_title =  models.CharField(max_length=200, null=True, blank=True,  help_text='')
   related_node = models.ForeignKey(Node, blank=True, null=True, related_name='directoryentries_administrator_node', editable=False)
 
 
@@ -58,7 +58,7 @@ class Staff(DirectoryEntry):
 
   title = models.CharField(max_length=200, help_text='')
   employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='directoryenties_staff_employee')
-  job_title =  models.CharField(max_length=200, help_text='')
+  job_title =  models.CharField(max_length=200,  null=True, blank=True, help_text='')
   related_node = models.ForeignKey(Node, blank=True, null=True, related_name='directoryentries_staff_node', editable=False)
 
 
