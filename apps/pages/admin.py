@@ -93,6 +93,16 @@ class ContentBannerInline(SortableInlineAdminMixin, admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
+class SchoolAdministratorInlineForm(forms.ModelForm):
+    class Meta:
+        model = SchoolAdministrator
+        fields = ['employee']
+
+    def __init__(self, *args, **kwargs):
+        super(SchoolAdministratorInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['employee'].disabled = True
+
 class SchoolAdministratorInline(admin.TabularInline):
   model = SchoolAdministrator
   fk_name = 'parent'
@@ -113,7 +123,17 @@ class SchoolAdministratorInline(admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-  form = make_ajax_form(SchoolAdministrator, {'employee': 'employee'})
+  form = make_ajax_form(SchoolAdministrator, {'employee': 'employee'},SchoolAdministratorInlineForm)
+
+class AdministratorInlineForm(forms.ModelForm):
+    class Meta:
+        model = Administrator
+        fields = ['employee']
+
+    def __init__(self, *args, **kwargs):
+        super(AdministratorInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['employee'].disabled = True
 
 class AdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
   model = Administrator
@@ -135,7 +155,17 @@ class AdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-  form = make_ajax_form(Administrator, {'employee': 'employee'})
+  form = make_ajax_form(Administrator, {'employee': 'employee'},AdministratorInlineForm)
+
+class StaffInlineForm(forms.ModelForm):
+    class Meta:
+        model = Staff
+        fields = ['employee']
+
+    def __init__(self, *args, **kwargs):
+        super(StaffInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['employee'].disabled = True
 
 class StaffInline(SortableInlineAdminMixin, admin.TabularInline):
   model = Staff
@@ -157,7 +187,7 @@ class StaffInline(SortableInlineAdminMixin, admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-  form = make_ajax_form(Staff, {'employee': 'employee'})
+  form = make_ajax_form(Staff, {'employee': 'employee'},StaffInlineForm)
 
 class StudentBoardMemberInlineForm(forms.ModelForm):
     class Meta:
@@ -191,6 +221,16 @@ class StudentBoardMemberInline(EditLinkToInlineObject, admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
+class BoardMemberInlineForm(forms.ModelForm):
+    class Meta:
+        model = BoardMember
+        fields = ['employee']
+
+    def __init__(self, *args, **kwargs):
+        super(BoardMemberInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['employee'].disabled = True
+
 class BoardMemberInline(admin.TabularInline):
   model = BoardMember
   fk_name = 'parent'
@@ -212,7 +252,7 @@ class BoardMemberInline(admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-  form = make_ajax_form(BoardMember, {'employee': 'employee'})
+  form = make_ajax_form(BoardMember, {'employee': 'employee'},BoardMemberInlineForm)
 
 class BoardPolicyAdminInline(admin.TabularInline):
   model = BoardPolicyAdmin
