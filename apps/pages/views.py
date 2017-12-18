@@ -206,6 +206,11 @@ def employees(request):
     pageopts = page._meta
     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
+def search(request):
+    page = get_object_or_404(Page, url=request.path)
+    pageopts = page._meta
+    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+
 def boarddetail(request):
   currentyear = apps.common.functions.currentyear()
   if request.path == '/board-of-education/board-meetings/':

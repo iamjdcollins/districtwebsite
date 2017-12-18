@@ -26,6 +26,7 @@ urlpatterns = [
   url(r'^calendars/$', views.calendars, name='calendars'),
   url(r'^board-of-education/board-meetings/\d\d\d\d-\d\d\/$', views.BoardMeetingYearArchive, name='boardmeetingyeararchive'),
   url(r'^board-of-education/(?:[a-z0-9-]+\/)*$', views.boarddetail, name='board'),
+  url(r'^search/$', views.search, name='search'),
   url(r'^employees/$', views.employees, name='employees'),
   # url(r'^temp/$', views.temp, name='temp'),
 ]
