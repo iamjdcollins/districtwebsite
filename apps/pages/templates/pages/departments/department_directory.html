@@ -29,10 +29,11 @@
   </div>
   <div id="main" class="card-content">
     <h1>Alphabetical Directory</h1>
-    <form class="textfieldboxes" onsubmit="myFunction(); return false;">
+    <form class="textfieldboxes" action="javascript:void(0);" onsubmit="myFunction(); return false;">
       <div class="input-field">
         <input class="autocomplete" onkeyup="myFunction()" title="Search Departments, Programs, and Services" id="tableSearch" type="text">
         <label for="tableSearch">Search Departments, Programs, and Services</label>
+        <button type="submit" class="tableSearchSubmit" name="tableSearchSubmit"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
       </div>
     </form>
     <div id="departments" class="scrollspy">

@@ -177,7 +177,7 @@ body {top:0 !important;}
 }
 .modaal-wrapper .modal-title {
   margin: -30px -30px 0px -30px;
-  padding: 1px 30px 1px 5px;
+  padding: 5px 40px 5px 10px;
   line-height: 30px;
   color: white;
   text-transform: capitalize !important;
@@ -209,8 +209,8 @@ body {top:0 !important;}
   right: 0px !important;
   top: 0px !important;
   color: white;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   //background-color: transparent !important;
   background: #002f4f !important;
   position: absolute;
@@ -223,8 +223,8 @@ body {top:0 !important;}
   background-color: #fff !important;
 }
 .modaal-close::after, .modaal-close::before{
-  top: 5px !important;
-  right: 13px !important;
+  top: 9px !important;
+  right: 18px !important;
   left: initial !important;
 }
 /* Screen Readers */
@@ -829,6 +829,18 @@ select.browser-default.withprefixicon{
 }
 .row.alphafilter .col a:first-child {
     margin-left: 0px;
+}
+/* Page Filters */
+.tableSearchSubmit {
+    background: none;
+    border: none;
+    position: absolute;
+    top: 8px;
+    right: 0px;
+}
+button.tableSearchSubmit:focus,button.tableSearchSubmit:hover,button.tableSearchSubmit:active{
+    background: none !important;
+    color: #00587b !important;
 }
 /* Table Styles */
 

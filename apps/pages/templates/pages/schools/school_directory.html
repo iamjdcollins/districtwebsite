@@ -32,10 +32,11 @@
   </div>
   <div class="card-content">
     <h1>{{ page.title }} Directory</h1>
-    <form class="textfieldboxes" onsubmit="myFunction(); return false;">
+    <form class="textfieldboxes" action="javascript:void(0);" onsubmit="myFunction(); return false;">
       <div class="input-field">
         <input class="autocomplete" onkeyup="myFunction()" title="Search Schools" id="schoolsfilter" type="text">
         <label for="schoolsfilter">Search Schools</label>
+        <button type="submit" class="tableSearchSubmit" name="tableSearchSubmit"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
       </div>
     </form>
     <div id="schools" class="scrollspy filterpoint">

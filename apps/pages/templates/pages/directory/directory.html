@@ -47,10 +47,11 @@
         <a class="alphafilter" href="/directory/last-name-z/" title="Last Name Z">Z</a>
       </div>
     </div>
-    <form class="textfieldboxes" onsubmit="myFunction(); return false;">
+    <form class="textfieldboxes" action="javascript:void(0);" onsubmit="myFunction(); return false;">
       <div class="input-field">
         <input id="tableSearch" class="autocomplete" onchange="myFunction()" title="Filter People" type="text">
         <label for="tableSearch" class="">Search Directory</label>
+        <button type="submit" class="tableSearchSubmit" name="tableSearchSubmit"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
       </div>
     </form>
     <div id="people" class="scrollspy">
