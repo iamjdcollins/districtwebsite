@@ -135,7 +135,7 @@ class AdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-  form = make_ajax_form(Staff, {'employee': 'employee'})
+  form = make_ajax_form(Administrator, {'employee': 'employee'})
 
 class StaffInline(SortableInlineAdminMixin, admin.TabularInline):
   model = Staff
