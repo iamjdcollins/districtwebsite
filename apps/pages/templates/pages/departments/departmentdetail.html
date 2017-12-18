@@ -134,7 +134,12 @@
             <tr>
               <td class="name">{{ staff.employee.first_name }} {{ staff.employee.last_name }}</td>
               <td class="title">{{ staff.employee.job_title }}</td>
-              <td class="contact"><a href="#">SEND ME A MESSAGE</a></td>
+              <td class="contact rowaction">
+                <a href="#">
+                  <span class="sr-only">Send {{ staff.employee.first_name }} {{ staff.employee.last_name }} a message.</span>
+                  <span class="material-icons" aria-hidden="true">&#xE163;</span>
+                </a>
+              </td>
             </tr>
         {% endfor %}
           </tbody>
