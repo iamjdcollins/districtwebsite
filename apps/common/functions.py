@@ -729,7 +729,7 @@ def faqsave(self, *args, **kwargs):
   if self.uuid is None:
     self.uuid = uuid.uuid4()
   # Set title to uuid
-  self.title = self.uuid
+  self.title = str(self.uuid)
   #Force Parent
   if self.PARENT_URL:
     try:
