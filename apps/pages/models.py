@@ -257,6 +257,9 @@ class SubPage(BasePage):
 
     title = models.CharField(max_length=200, help_text='',db_index=True)
     body = RichTextField(null=True, blank=True, help_text=PageHelp.body)
+    building_location = models.ForeignKey(Location, null=True, blank=True,to_field='location_taxonomy_node', on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='pages_subpage_building_location')
+    main_phone = models.CharField(max_length=11, null=True, blank=True, help_text='')
+    main_fax = models.CharField(max_length=11, null=True, blank=True, help_text='')
     related_node = models.ForeignKey(Node, blank=True, null=True, related_name='pages_subpage_node', editable=False)
 
     subpage_page_node = models.OneToOneField(BasePage, db_column='subpage_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
