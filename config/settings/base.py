@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'apps.files',
     'apps.documents',
     'apps.events',
+    'apps.faqs',
     #'apps.schools',
     #'apps.board',
     #'apps.news',

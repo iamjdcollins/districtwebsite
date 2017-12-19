@@ -19,6 +19,7 @@ from apps.documents.models import Document, BoardPolicy, Policy, AdministrativeP
 from apps.events.models import BoardMeeting
 from apps.files.models import File, AudioFile, VideoFile
 from apps.objects.models import Node
+from apps.faqs.models import FAQ
 import apps.common.functions
 
 from django.utils.safestring import mark_safe
