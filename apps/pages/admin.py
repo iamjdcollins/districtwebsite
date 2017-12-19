@@ -959,6 +959,7 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
       obj[0].update_user = request.user
@@ -1027,6 +1028,7 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
       obj[0].update_user = request.user
@@ -1095,6 +1097,7 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
       obj[0].update_user = request.user
@@ -1163,6 +1166,7 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
       obj[0].update_user = request.user
@@ -1237,6 +1241,7 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
       obj[0].update_user = request.user
@@ -1292,6 +1297,7 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
       obj[0].update_user = request.user
@@ -1347,6 +1353,7 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
       obj[0].update_user = request.user
@@ -1438,6 +1445,7 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
       obj[0].update_user = request.user
@@ -1530,6 +1538,7 @@ class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -1620,6 +1629,7 @@ class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -1710,6 +1720,7 @@ class AdministrativeProcedureAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -1800,6 +1811,7 @@ class SupportingDocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -1857,6 +1869,7 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
       obj[0].update_user = request.user
@@ -1912,6 +1925,7 @@ class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
       obj[0].update_user = request.user
@@ -2003,6 +2017,7 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -2091,6 +2106,7 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -2181,6 +2197,7 @@ class BoardMeetingAgendaAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -2271,6 +2288,7 @@ class BoardMeetingMinutesAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -2361,6 +2379,7 @@ class BoardMeetingAudioAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -2451,6 +2470,7 @@ class BoardMeetingVideoAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -2542,6 +2562,7 @@ class BoardMeetingExhibitAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -2632,6 +2653,7 @@ class BoardMeetingAgendaItemAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
@@ -2650,6 +2672,7 @@ class BoardMeetingAgendaItemAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
             obj[0].update_user = request.user
