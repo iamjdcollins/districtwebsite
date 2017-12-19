@@ -19,9 +19,6 @@ from apps.links.models import ResourceLink, ActionButton
 from apps.documents.models import Document, BoardPolicy
 from apps.files.models import File
 from apps.events.models import BoardMeeting
-# from apps.schools.models import School
-# from apps.departments.models import Department
-# from apps.news.models import News, NewsYear
 from apps.users.models import Employee
 
 def home(request):
