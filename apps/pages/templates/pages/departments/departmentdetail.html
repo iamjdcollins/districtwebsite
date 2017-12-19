@@ -13,7 +13,7 @@
   <div class="table-of-contents">
     <h5>Contents:</h5>
     <ul>
-      {% if page.body != '' %}
+      {% if page.body != '' and page.body is not None %}
       <li><a href="#about">About</a></li>
       {% endif %}
       {%if page.building_location or page.main_phone or page.main_fax %}
@@ -62,7 +62,7 @@
   <div class="input-field mobile-table-of-contents hide-on-med-and-up">
     <select class="browser-default z-depth-1">
       <option value="#!" disabled selected style="display:none;">Table of Contents</option>
-      {% if page.body != '' %}
+      {% if page.body != '' and page.body is not None %}
       <option value="#about">About</option>
       {% endif %}
       {%if page.building_location or page.main_phone or page.main_fax %}
@@ -91,9 +91,10 @@
   <div id="main" class="card-content">
     <h1>{{page.title}}</h1>
     {% include "www_slcschools_org/actionbuttons.html" %}
-    {% if page.body != '' %}
+    {% if page.body != '' and page.body is not None %}
     <div class="row">
       <div id="about" class="richtext scrollspy">
+        <h2 class="sr-only">About</h2>
         <div class="body">
           {{page.body|safe}}
         </div>
