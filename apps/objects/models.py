@@ -143,3 +143,16 @@ class Event(Node):
     verbose_name = 'Event'
     verbose_name_plural = 'Events'
     default_manager_name = 'objects'
+
+class FAQ(Node):
+  faq_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
+
+  faq_node = models.OneToOneField(Node, db_column='faq_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+  class Meta:
+    db_table = 'objects_faq'
+    get_latest_by = 'create_date'
+    verbose_name = 'FAQ'
+    verbose_name_plural = 'FAQs'
+    default_manager_name = 'objects'
+
