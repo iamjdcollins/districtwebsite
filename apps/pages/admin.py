@@ -1818,7 +1818,7 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   form = make_ajax_form(Department,{'primary_contact': 'employee'})
 
   def get_fields(self, request, obj=None):
-      fields = ['title','body','primary_contact',['update_user','update_date',],['create_user','create_date',],]
+      fields = ['title','body','building_location','main_phone','main_fax','primary_contact',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
           fields += ['parent']
           if obj:
