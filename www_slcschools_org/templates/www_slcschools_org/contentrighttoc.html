@@ -41,7 +41,7 @@
 $(document).ready(function(){
     $('.sidebar-first').pushpin({
       top: $('.content.wrapper').offset().top,
-      bottom: Infinity,
+      bottom: $(document).height() - ($("footer").height() + $('.sidebar-first').height()),
       offset: $('.authenticated.wrapper').height(),
     });
     $('.mobile-table-of-contents').pushpin({
