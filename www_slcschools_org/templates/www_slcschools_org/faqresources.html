@@ -1,0 +1,12 @@
+{% if faq.links_resourcelink_node.all %}
+<div class="row">
+  <div class="resourcelinks">
+    <h2>Resources</h2>
+    <div class="collection">
+      {% for resourcelink in faq.links_resourcelink_node.all %}
+      <a href="{{ resourcelink.link_url }}" class="collection-item">{{ resourcelink.title }} <i class="material-icons right">&#xE157;</i></a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}

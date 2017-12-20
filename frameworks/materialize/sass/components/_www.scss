@@ -637,7 +637,23 @@ ul ul{
 .card.overflow{
   margin: -3px -0.75rem 20px;
   box-shadow: none; 
-}/*
+}
+#faqs .collapsible .collection{
+  border: 1px solid #e0e0e0;
+}
+#faqs .collapsible-header{
+  justify-content: space-between;
+}
+#faqs li .faqclose{
+  display: none;
+}
+#faqs li.active .faqopen{
+  display: none;
+}
+#faqs li.active .faqclose{
+  display: inline;
+}
+/*
 .supermessage, .districtnews{
   margin: 0px -24px -24px -24px;
 }*/

@@ -800,6 +800,25 @@ def resetchildrentoalphatitle():
 def clearcache(object):
   pass
 
+def save_formset(self, request, form, formset, change):
+    instances = formset.save(commit=False)
+    for obj in formset.deleted_objects:
+        obj.delete()
+    for obj in formset.new_objects:
+        obj.create_user = request.user
+        obj.update_user = request.user
+        obj.primary_contact = request.user
+        obj.save()
+    for obj in formset.changed_objects:
+        obj[0].update_user = request.user
+        obj[0].save()
+
+def save_model(self, request, obj, form, change):
+    if getattr(obj, 'create_user', None) is None:
+        obj.create_user = request.user
+    obj.update_user = request.user
+    super(self.__class__,self).save_model(request, obj, form, change)
+
 def response_change(self, request, obj):
     if 'next' in request.GET:
         opts = self.model._meta
