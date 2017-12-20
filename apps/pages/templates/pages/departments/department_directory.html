@@ -13,7 +13,8 @@
   <div class="table-of-contents">
     <h5>Contents:</h5>
     <ul>
-      <li><a href="#departments">Departments ({{ departments|length }})</a></li>
+      <li><a href="#departments">Departments ({{ departments.departments|length }})</a></li>
+      <li><a href="#programs">Sub-Departments, Programs, and Services ({{ departments.programs|length }})</a></li>
     </ul>
   </div>
 </div>
@@ -24,7 +25,8 @@
   <div class="input-field mobile-table-of-contents hide-on-med-and-up">
     <select class="browser-default z-depth-1">
       <option value="#!" disabled selected style="display:none;">Table of Contents</option>
-      <option value="#departments">Departments ({{ departments|length }})</option>
+      <option value="#departments">Departments ({{ departments.departments|length }})</option>
+      <option value="#programs">Departments ({{ departments.programs|length }})</option>
     </select>
   </div>
   <div id="main" class="card-content">
@@ -36,7 +38,7 @@
         <button type="submit" class="btn tableSearchSubmit white-text" name="tableSearchSubmit"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
       </div>
     </form>
-    <div id="departments" class="scrollspy">
+    <div>
       <div class="row">
         <table id="searchTable" class="striped highlight mobileblock">
           <thead>
@@ -46,24 +48,20 @@
               <th>Location</th>
             </tr>
           </thead>
-          <tbody class="searchTableBody">
+          <tbody id="departments" class="scrollspy searchTableBody">
             <tr>
               <td colspan="3" class="slcschools-grey white-text">Departments</td>
             </tr>
-            {% for department in departments %}
-            {% if department.is_department %}
+            {% for department in departments.departments %}
             {% include "pages/departments/departmenttable.html" %}
-            {% endif %}
             {% endfor %}
           </tbody>
-          <tbody class="searchTableBody">
+          <tbody id="programs" class="scrollspy searchTableBody">
             <tr>
               <td colspan="3" class="slcschools-grey white-text">Sub-Departments, Programs, and Services</td>
             </tr>
-            {% for department in departments %}
-            {% if not department.is_department %}
+            {% for department in departments.programs %}
             {% include "pages/departments/departmenttable.html" %}
-            {% endif %}
             {% endfor %}
           </tbody>
         </table>
