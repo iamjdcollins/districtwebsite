@@ -1,0 +1,14 @@
+<tr>
+  <td class="name"><a href="{{ department.url }}" title="{{ department.title }}">{{ department.title  }}</a>{% if department.short_description %} <a href="#!" class="short_description tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ department.short_description }}"><i class="material-icons tiny">info_outline</i></a>{% endif %}</td>
+  <td class="phone">
+    <a href="tel:+{{department.main_phone|slice:'0:1'}}-{{department.main_phone|slice:'1:4'}}-{{department.main_phone|slice:'4:7'}}-{{department.main_phone|slice:'7:11'}}">
+      <i class="material-icons tiny black-text">&#xE0CD;</i> {{department.main_phone|slice:"1:4"}}.{{department.main_phone|slice:"4:7"}}.{{department.main_phone|slice:"7:11"}}
+    </a>
+  </td>
+  <td class="location">
+    <a href="{{ department.building_location.google_place }}" target="_blank">
+      <i class="material-icons tiny black-text">&#xE55F;</i> {{ department.building_location.street_address }}<br>
+      <i class="material-icons tiny blank black-text"></i> {{ department.building_location.location_city }}, {{ department.building_location.location_state }} {{ department.building_location.location_zipcode }}<br>
+    </a>
+  </td>
+</tr>

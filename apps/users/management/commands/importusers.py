@@ -31,7 +31,7 @@ def job_title_titlecase(item):
         return ''
     if str(item.title).lower() in overwrite_titlecase:
         return overwrite_titlecase[str(item.title).lower()]
-    return str(item.title).title()
+    return str(item.title)
 
 def directory_department(item,departments):
     if str(item.department).lower() in departments:
