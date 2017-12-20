@@ -46,7 +46,7 @@
               <th>Location</th>
             </tr>
           </thead>
-          <tbody id="searchTableBody">
+          <tbody class="searchTableBody">
             <tr>
               <td colspan="3" class="slcschools-grey white-text">Departments</td>
             </tr>
@@ -56,7 +56,7 @@
             {% endif %}
             {% endfor %}
           </tbody>
-          <tbody id="searchTableBody">
+          <tbody class="searchTableBody">
             <tr>
               <td colspan="3" class="slcschools-grey white-text">Sub-Departments, Programs and Services</td>
             </tr>
@@ -87,7 +87,7 @@ function myFunction() {
   var input, filter, table, tbody, tr, td, i;
   input = document.getElementById("tableSearch");
   filter = input.value.toUpperCase();
-  table = document.getElementById("searchTableBody");
+  table = document.getElementById("searchTable");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
       if (tr[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
