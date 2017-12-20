@@ -25,9 +25,19 @@
       </div>
     </div>
     {% endif %}
+    {% if request.path == '/search/' %}
+    <form class="textfieldboxes" action="javascript:void(0);" onsubmit="return false;">
+      <div class="input-field">
+        <input id="tableSearch" class="autocomplete" onchange="myFunction()" title="Search This Website" type="text">
+        <label for="tableSearch" class="">Search This Website</label>
+        <button type="submit" class="btn tableSearchSubmit white-text" name="tableSearchSubmit"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
+      </div>
+    </form>
+    {% endif %}
     {% if page.faqs_faq_node.all %}
     <div class="row">
       <div id="faqs">
+        <h2>Frequently Asked Questions</h2>
         <ul class="collapsible" data-collapsible="accordion">
           {% for faq in page.faqs_faq_node.all %}
           <li>

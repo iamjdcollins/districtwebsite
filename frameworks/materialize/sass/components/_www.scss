@@ -849,16 +849,21 @@ select.browser-default.withprefixicon{
 }
 /* Page Filters */
 .tableSearchSubmit {
-    background: none;
-    border: none;
-    position: absolute;
-    top: 8px;
-    right: 0px;
+  border: none;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 42px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #00587b;
+  line-height: 25px;
+  box-shadow: none !important;
 }
-button.tableSearchSubmit:focus,button.tableSearchSubmit:hover,button.tableSearchSubmit:active{
+/*button.tableSearchSubmit:focus,button.tableSearchSubmit:hover,button.tableSearchSubmit:active{
     background: none !important;
     color: #00587b !important;
-}
+}*/
 /* Table Styles */
 
 @media screen and (max-width: 760px){
@@ -957,4 +962,25 @@ button.tableSearchSubmit:focus,button.tableSearchSubmit:hover,button.tableSearch
     content: "Video: ";
     font-weight: bold;
   }
+}
+@media #{$small-and-down} {
+// styles for small screens and down
+}
+@media #{$medium-and-up} {
+// styles for medium screens and larger
+}
+@media #{$medium-and-down} {
+// styles for medium screens and down
+}
+@media #{$large-and-up} {
+// styles for large screens and up
+.tableSearchSubmit {
+  height: 43px;
+}
+}
+@media #{$extra-large-and-up} {
+// styles for extra large screens and up
+.tableSearchSubmit {
+  height: 45px;
+}
 }
