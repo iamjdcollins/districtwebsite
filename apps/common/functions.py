@@ -658,7 +658,7 @@ def eventsave(self, *args, **kwargs):
       self.parent = Node.objects.exclude(uuid=self.uuid).get(url=self.PARENT_URL)
     except Node.DoesNotExist:
       pass
-  if self._meta.model_name == 'boardmeeting':
+  if self._meta.model_name == 'boardmeeting' or self._meta.model_name == 'districtcalendaryear':
     if self.startdate.month >= 7:
       yearend = self.startdate.year + 1
       yearstring = str(self.startdate.year) + '-' + str(self.startdate.year + 1)[2:]
@@ -666,20 +666,20 @@ def eventsave(self, *args, **kwargs):
       yearend=self.startdate.year
       yearstring = str(self.startdate.year - 1) + '-' + str(self.startdate.year)[2:]
     try:
-      boardmeetingyear = self.PARENT_TYPE.objects.get(yearend=yearend)
+      yearobject = self.PARENT_TYPE.objects.get(yearend=yearend)
     except self.PARENT_TYPE.DoesNotExist:
       webmaster = User.objects.get(username='webmaster@slcschools.org')
-      parent = Node.objects.get(node_title='Board Meetings', content_type='boardsubpage')
-      boardmeetingyear = self.PARENT_TYPE(title=yearstring, yearend=yearend, parent=parent, create_user=webmaster, update_user=webmaster)
-      boardmeetingyear.save()
-    self.parent = Node.objects.get(url=boardmeetingyear.url)
+      parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL)
+      yearobject = self.PARENT_TYPE(title=yearstring, yearend=yearend, parent=parent, create_user=webmaster, update_user=webmaster)
+      yearobject.save()
+    self.parent = Node.objects.get(url=yearobject.url)
   # Related Node matches Parent
   self.related_node = self.parent
   # Set Original Date
   if (not self.originaldate) and self.startdate:
     self.originaldate = self.startdate
   # Set Title & Prefix
-  if self._meta.model_name == 'boardmeeting':
+  if self._meta.model_name == 'boardmeeting' or self._meta.model_name == 'districtcalendaryear':
     self.title = timezone.localtime(self.originaldate).strftime('%Y%m%d-%H%M')
     self.URL_PREFIX = str(self.pk)[0:8]
   # Track URL Changes
@@ -871,4 +871,11 @@ def next_tuesday_sixthrity():
         now += timedelta(days=1)
     now += timedelta(hours=18-int(now.strftime('%H')))
     now += timedelta(minutes=30-int(now.strftime('%M')))
+    return timezone.make_aware(now)
+
+def tomorrow_midnight():
+    now = timezone.datetime.strptime(timezone.datetime.now().strftime('%Y-%m-%d %H:%M'),'%Y-%m-%d %H:%M')
+    now += timedelta(days=1)
+    now += timedelta(hours=0-int(now.strftime('%H')))
+    now += timedelta(minutes=0-int(now.strftime('%M')))
     return timezone.make_aware(now)

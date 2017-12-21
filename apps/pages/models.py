@@ -183,6 +183,9 @@ class BoardSubPage(BasePage):
     delete = apps.common.functions.modeltrash
 
 class BoardMeetingYear(BasePage):
+
+    PARENT_URL = '/board-of-education/board-meetings/'
+
     title = models.CharField(max_length=200, unique=True, help_text='',)
     yearend = models.CharField(max_length=4, unique=True, help_text='', blank=True)
 
@@ -274,6 +277,29 @@ class SubPage(BasePage):
         permissions = (('trash_subpage', 'Can soft delete subpage'),('restore_subpage', 'Can restore subpage'))
         verbose_name = 'Subpage'
         verbose_name_plural = 'Subpages'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.pagesave
+    delete = apps.common.functions.modeltrash
+
+class DistrictCalendarYear(BasePage):
+
+    PARENT_URL = '/calendars/'
+
+    title = models.CharField(max_length=200, unique=True, help_text="",)
+    yearend = models.CharField(max_length=4, unique=True, help_text="", blank=True)
+
+    districtcalendaryear_page_node = models.OneToOneField(BasePage, db_column='districtcalendaryear_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'pages_districtcalendaryear'
+        get_latest_by = 'update_date'
+        permissions = (('trash_districtcalendaryear', 'Can soft delete district calendar year'),('restore_districtcalendaryear', 'Can restore district calendar year'))
+        verbose_name = 'District Calendar Year'
+        verbose_name_plural = 'District Calendar Years'
         default_manager_name = 'objects'
 
     def __str__(self):
