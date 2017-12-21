@@ -29,7 +29,7 @@ CKEDITOR.plugins.add( 'departments', {
 
 		// Create the toolbar button that executes the above command.
 		editor.ui.addButton( 'Departments', {
-			label: 'Insert Department, Program, or Service.',
+			label: 'Demo Feature (only links to payroll currently): Insert Department, Program, or Service.',
 			command: 'insertDepartment',
 			toolbar: 'insert'
 		});
