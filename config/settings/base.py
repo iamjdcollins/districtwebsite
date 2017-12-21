@@ -217,15 +217,18 @@ CKEDITOR_CONFIGS = {
             ['NumberedList', 'BulletedList'],
             #['Link', 'Unlink'],
             ['Table', 'HorizontalRule'],
-            ['Source']
+            #['Source']
+            ['Departments',],
         ],
         'format_tags': 'p;h3;h4;h5;h6',
         'autoGrow_bottomSpace': 10,
         'autoGrow_maxHeight': 0,
         'autoGrow_onStartup': True,
         'extraPlugins': ','.join([
-            'autogrow',
+            'autogrow','departments',
         ]),
         'disableNativeSpellChecker': False,
+        #'allowedContent': 'p h3 h4 h5 h6 strong em u s ol ul li table caption thead tbody tr th td hr br',
+        'extraAllowedContent': 'a(!relink)[!data-id]',
     }
 }

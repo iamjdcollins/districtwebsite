@@ -1,5 +1,5 @@
 {% extends "www_slcschools_org/contentrighttoc.html" %}
-{% load static mptt_tags %}
+{% load static mptt_tags relink %}
 
 {% block title %}
   {{page.title}}
@@ -96,7 +96,7 @@
       <div id="about" class="richtext scrollspy">
         <h2 class="sr-only">About</h2>
         <div class="body">
-          {{page.body|safe}}
+          {{page.body|safe|relink}}
         </div>
       </div>
     </div>
