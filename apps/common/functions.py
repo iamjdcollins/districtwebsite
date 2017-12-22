@@ -602,13 +602,13 @@ def documentsave(self, *args, **kwargs):
         self.document_title = re.sub(r'^' + re.escape(self.parent.node_title) + '[ ]?','',self.title).strip()
     self.title = self.parent.node_title + ' ' + self.document_title
   if self._meta.model_name == 'boardmeetingagenda':
-    self.title = timezone.localtime(self.parent.event.boardmeeting.originaldate).strftime('%Y%m%d-%H%M') + ' Agenda'
+    self.title = self.parent.node_title + ' Agenda'
   if self._meta.model_name == 'boardmeetingminutes':
-    self.title = timezone.localtime(self.parent.event.boardmeeting.originaldate).strftime('%Y%m%d-%H%M') + ' Minutes'
+    self.title = self.parent.node_title + ' Minutes'
   if self._meta.model_name == 'boardmeetingaudio':
-    self.title = timezone.localtime(self.parent.event.boardmeeting.originaldate).strftime('%Y%m%d-%H%M') + ' Audio'
+    self.title = self.parent.node_title + ' Audio'
   if self._meta.model_name == 'boardmeetingvideo':
-    self.title = timezone.localtime(self.parent.event.boardmeeting.originaldate).strftime('%Y%m%d-%H%M') + ' Video'
+    self.title = self.parent.node_title + ' Video'
   # Track URL Changes
   urlchanged = False
   parent_url = self.parent.url if self.parent else self.PARENT_URL
@@ -678,7 +678,7 @@ def eventsave(self, *args, **kwargs):
   # Set Original Date & Original Instance
   if (not self.originaldate) and self.startdate:
     self.originaldate = self.startdate
-    self.originalindex = len(self._meta.model.objects.filter(originaldate=self.originaldate)) + 1
+    self.originalinstance = len(self._meta.model.objects.filter(originaldate=self.originaldate)) + 1
   # Set Title & Prefix
   if self._meta.model_name == 'boardmeeting':
     self.title = timezone.localtime(self.originaldate).strftime('%Y%m%d-%H%M') + '-' +  str(self.originalinstance)
