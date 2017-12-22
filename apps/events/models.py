@@ -1,7 +1,7 @@
 from django.db import models
 import apps.common.functions
 from apps.objects.models import Node, Event as BaseEvent
-from apps.taxonomy.models import Location, BoardMeetingType
+from apps.taxonomy.models import Location, BoardMeetingType, DistrictCalendarEventCategory
 from apps.pages.models import BoardMeetingYear, DistrictCalendarYear
 
 class BoardMeeting(BaseEvent):
@@ -49,6 +49,7 @@ class DistrictCalendarEvent(BaseEvent):
     originaldate = models.DateTimeField(unique=False,verbose_name="Original Start Date and Time",db_index=True)
     originalinstance = models.PositiveIntegerField(unique=False,blank=True, null=True,)
     event_name = models.CharField(max_length=400, blank=True, null=True,help_text='')
+    event_category = models.ForeignKey(DistrictCalendarEventCategory, blank=True, related_name='events_districtcalendarevent_event_type',default=apps.common.functions.get_districtcalendareventcategory_general)
     startdate = models.DateTimeField(default=apps.common.functions.tomorrow_midnight, unique=False, verbose_name="Start Date and Time",db_index=True)
     enddate = models.DateTimeField(blank=True, null=True,unique=False, verbose_name="End Date and Time")
     schoolyear = models.CharField(max_length=7, help_text='')

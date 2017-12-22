@@ -1,7 +1,7 @@
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
 from mptt.admin import MPTTModelAdmin
-from .models import Location, City, State, Zipcode, Language, TranslationType, SchoolType, OpenEnrollmentStatus, BoardPrecinct, BoardMeetingType, BoardPolicySection
+from .models import Location, City, State, Zipcode, Language, TranslationType, SchoolType, OpenEnrollmentStatus, BoardPrecinct, BoardMeetingType, BoardPolicySection, DistrictCalendarEventCategory
 
 class LocationAdmin(MPTTModelAdmin,GuardedModelAdmin):
   pass
@@ -36,6 +36,9 @@ class BoardMeetingTypeAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class BoardPolicySectionAdmin(MPTTModelAdmin,GuardedModelAdmin):
   pass
 
+class DistrictCalendarEventCategoryAdmin(MPTTModelAdmin,GuardedModelAdmin):
+  pass
+
 admin.site.register(Location, LocationAdmin)
 admin.site.register(City, CityAdmin)
 admin.site.register(State, StateAdmin)
@@ -47,3 +50,4 @@ admin.site.register(OpenEnrollmentStatus, OpenEnrollmentStatusAdmin)
 admin.site.register(BoardPrecinct, BoardPrecinctAdmin)
 admin.site.register(BoardMeetingType, BoardMeetingTypeAdmin)
 admin.site.register(BoardPolicySection, BoardPolicySectionAdmin)
+admin.site.register(DistrictCalendarEventCategory, DistrictCalendarEventCategoryAdmin)

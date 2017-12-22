@@ -871,7 +871,7 @@ class BoardMeetingInline(EditLinkToInlineObject, admin.TabularInline):
 class DistrictCalendarEventInlineForm(forms.ModelForm):
     class Meta:
         model = DistrictCalendarEvent
-        fields = ['event_name','startdate','enddate',]
+        fields = ['event_name','event_category','startdate','enddate',]
 
     def __init__(self, *args, **kwargs):
         super(DistrictCalendarEventInlineForm, self).__init__(*args, **kwargs)
@@ -882,7 +882,7 @@ class DistrictCalendarEventInline(EditLinkToInlineObject, admin.TabularInline):
   model = DistrictCalendarEvent
   form = DistrictCalendarEventInlineForm
   fk_name = 'parent'
-  fields = ['event_name','startdate','enddate','update_user','update_date','edit_link',]
+  fields = ['event_name','event_category','startdate','enddate','update_user','update_date','edit_link',]
   readonly_fields = ['update_user','update_date','edit_link',]
   ordering = ['startdate',]
   extra = 0
@@ -972,9 +972,10 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
           else:
               while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
-          if obj.url == '/search/':
-              if not isinstance(inline,FAQInline):
-                  continue
+          if obj:
+              if obj.url == '/search/':
+                  if not isinstance(inline,FAQInline):
+                      continue
           yield inline.get_formset(request, obj), inline
 
   def get_list_display(self,request):
@@ -2875,7 +2876,7 @@ class DistrictCalendarEventAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        fields = ['event_name','startdate','enddate','building_location','non_district_location','non_district_location_google_place','cancelled',['update_user','update_date',],['create_user','create_date',],]
+        fields = ['event_name','event_category','startdate','enddate','building_location','non_district_location','non_district_location_google_place','cancelled',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
             fields += ['parent']
             if obj:
@@ -2891,9 +2892,9 @@ class DistrictCalendarEventAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_list_display(self,request):
         if request.user.has_perm('documents.restore_document'):
-            return ['event_name','startdate','enddate','update_date','update_user','published','deleted']
+            return ['event_name','event_category','startdate','enddate','update_date','update_user','published','deleted']
         else:
-            return ['event_name','startdate','enddate','update_date','update_user','published']
+            return ['event_name','event_category','startdate','enddate','update_date','update_user','published']
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

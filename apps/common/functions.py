@@ -858,6 +858,13 @@ def get_district_office():
     except Location.DoesNotExist:
         return ''
 
+def get_districtcalendareventcategory_general():
+    DistrictCalendarEventCategory = apps.get_model('taxonomy','districtcalendareventcategory')
+    try:
+        return DistrictCalendarEventCategory.objects.get(title='General Event').pk
+    except DistrictCalendarEventCategory.DoesNotExist:
+        return ''
+
 def currentyear(date=timezone.now()):
   if date.month >= 7:
     currentyearkey = date.year + 1

@@ -643,11 +643,11 @@ ul ul{
   font-weight: bold;
 }
 .collection-item.avatar.stripe{
-  padding-left: 42px !important;
+  padding-left: 32px !important;
 }
 .avatar-stripe{
 position: absolute;
-width: 32px;
+width: 22px;
 overflow: hidden;
 left: 0px;
 display: inline-block;
@@ -661,7 +661,24 @@ height: 100%;
 }
 .avatar-stripe.general{
 background: $slcschools-teal-base;
+/*background: $slcschools-grey-lighten-2;*/
 }
+.avatar-stripe.noschool{
+background: #c82026;
+}
+.avatar-stripe.quaterend{
+background: #00587b;
+}
+.avatar-stripe.trimesterend{
+background: #f7931e;
+}
+.avatar-stripe.semesterend{
+background: #000;
+}
+.avatar-stripe.graduation{
+background: #009344;
+}
+
 #faqs .collapsible .collection{
   border: 1px solid #e0e0e0;
 }

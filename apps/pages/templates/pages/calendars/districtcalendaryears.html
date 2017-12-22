@@ -105,7 +105,7 @@
         <ul class="collection">
           {% for event in districtcalendarevents %}
           <li class="collection-item avatar stripe">
-            <span class="avatar-stripe general"></span>
+            <span class="avatar-stripe {{ event.event_category.css_class }}"></span>
             <span class="title">{{ event.event_name }}</span>
             <div class="date">
               {{ event.startdate|date:"l, F j, Y" }}

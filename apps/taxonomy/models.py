@@ -276,3 +276,26 @@ class BoardPolicySection(Taxonomy):
 
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
+
+class DistrictCalendarEventCategory(Taxonomy):
+
+    PARENT_URL = '/taxonomy/district-calendar-event-categories/'
+
+    title = models.CharField(max_length=200, unique=True, help_text='',verbose_name='District Calendar Event Category')
+    css_class = models.CharField(max_length=100,null=False,blank=False,verbose_name='CSS Class used on events of this type')
+
+    districtcalendareventcategory_taxonomy_node = models.OneToOneField(Taxonomy, db_column='districtcalendareventcategory_taxonomy_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'taxonomy_districtcalendareventcategory'
+        get_latest_by = 'update_date'
+        permissions = (('trash_districtcalendareventcategory', 'Can soft delete district calendar event category'),('restore_districtcalendareventcategory', 'Can restore district calendar event category'))
+        verbose_name = 'District Calendar Event Category'
+        verbose_name_plural = 'District Calendar Event Categories'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.taxonomysave
+    delete = apps.common.functions.modeltrash
