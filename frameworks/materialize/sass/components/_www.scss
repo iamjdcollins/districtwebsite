@@ -638,6 +638,30 @@ ul ul{
   margin: -3px -0.75rem 20px;
   box-shadow: none; 
 }
+.collection .title{
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.collection-item.avatar.stripe{
+  padding-left: 42px !important;
+}
+.avatar-stripe{
+position: absolute;
+width: 32px;
+overflow: hidden;
+left: 0px;
+display: inline-block;
+vertical-align: middle;
+font-size: 38px;
+line-height: 42px;
+text-align: center;
+color: white;
+top: 0px;
+height: 100%;
+}
+.avatar-stripe.general{
+background: $slcschools-teal-base;
+}
 #faqs .collapsible .collection{
   border: 1px solid #e0e0e0;
 }
@@ -720,6 +744,9 @@ table.board_policies > tbody > tr.even {
 }
 .contactcardlist .card-image {
     max-width: 200px !important;
+}
+span.tiny{
+font-size: 1rem;
 }
 .material-icons.tiny.blank {
     padding-left: 1rem;

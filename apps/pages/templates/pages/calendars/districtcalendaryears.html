@@ -102,32 +102,22 @@
         </div>
         {% endif %}
         {% if districtcalendarevents %}
-        <table class="striped highlighted mobileblock">
-          <thead>
-            <tr>
-              <th>Event Name</th>
-              <th>Date</th>
-              <th>Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for event in districtcalendarevents %}
-            <tr>
-              <td class="eventname">{{ event.event_name }}</td>
-              <td class="date">
-                {{ event.startdate|date:"l, F j, Y" }}
-              </td>
-              <td class="location">
-                {% if event.building_location %}
-                {{ event.building_location}}
-                {% else %}
-                No Location
-                {% endif %}
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <ul class="collection">
+          {% for event in districtcalendarevents %}
+          <li class="collection-item avatar stripe">
+            <span class="avatar-stripe general"></span>
+            <span class="title">{{ event.event_name }}</span>
+            <div class="date">
+              {{ event.startdate|date:"l, F j, Y" }}
+            </div>
+            {% if event.building_location %}
+            <div class="location">
+              <a href="{{ event.building_location.google_place }}"><span class="material-icons tiny black-text"></span>{{ event.building_location }}</a>
+            </div>
+            {% endif %}
+          {% endfor %}
+          </li>
+        </ul>
         {% else %}
         <p>There are not any scheduled events for this year yet. Please select a different year above and check back soon.</p>
         {% endif %}
