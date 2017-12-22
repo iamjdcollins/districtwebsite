@@ -884,7 +884,7 @@ class DistrictCalendarEventInline(EditLinkToInlineObject, admin.TabularInline):
   fk_name = 'parent'
   fields = ['event_name','startdate','enddate','update_user','update_date','edit_link',]
   readonly_fields = ['update_user','update_date','edit_link',]
-  ordering = ['-startdate',]
+  ordering = ['startdate',]
   extra = 0
   min_num = 0
   max_num = 50

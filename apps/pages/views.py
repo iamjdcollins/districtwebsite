@@ -224,7 +224,7 @@ def districtcalendaryearsarchive(request):
     page = get_object_or_404(DistrictCalendarYear, url=request.path)
     pageopts = page._meta
     districtcalendaryears = DistrictCalendarYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
-    districtcalendarevents = DistrictCalendarEvent.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path).order_by('-startdate')
+    districtcalendarevents = DistrictCalendarEvent.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path)
     return render(request, 'pages/calendars/districtcalendaryears.html', {'page': page, 'pageopts': pageopts,'districtcalendaryears': districtcalendaryears,'districtcalendarevents': districtcalendarevents})
 
 def employees(request):

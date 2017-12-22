@@ -49,7 +49,7 @@ class DistrictCalendarEvent(BaseEvent):
     originaldate = models.DateTimeField(unique=False,verbose_name="Original Start Date and Time",db_index=True)
     originalinstance = models.PositiveIntegerField(unique=False,blank=True, null=True,)
     event_name = models.CharField(max_length=400, blank=True, null=True,help_text='')
-    startdate = models.DateTimeField(default=apps.common.functions.tomorrow_midnight, unique=False, verbose_name="Start Date and Time")
+    startdate = models.DateTimeField(default=apps.common.functions.tomorrow_midnight, unique=False, verbose_name="Start Date and Time",db_index=True)
     enddate = models.DateTimeField(blank=True, null=True,unique=False, verbose_name="End Date and Time")
     schoolyear = models.CharField(max_length=7, help_text='')
     yearend = models.CharField(max_length=4, help_text='')
@@ -63,6 +63,7 @@ class DistrictCalendarEvent(BaseEvent):
 
     class Meta:
         db_table = 'events_districtcalendarevent'
+        ordering = ['startdate',]
         get_latest_by = 'update_date'
         permissions = (('trash_districtcalendarevent', 'Can soft delete district calendar event'),('restore_districtcalendarevent', 'Can restore district calendar event'))
         verbose_name = 'District Calendar Event'
