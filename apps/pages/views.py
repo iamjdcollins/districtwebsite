@@ -11,14 +11,14 @@ from django.http import HttpResponse
 
 import apps.common.functions
 from apps.objects.models import Node
-from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear
+from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear
 from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture
 from apps.directoryentries.models import Staff, SchoolAdministrator, Administrator,  BoardMember, StudentBoardMember
 from apps.links.models import ResourceLink, ActionButton
 from apps.documents.models import Document, BoardPolicy
 from apps.files.models import File
-from apps.events.models import BoardMeeting
+from apps.events.models import BoardMeeting, DistrictCalendarEvent
 from apps.users.models import Employee
 
 def home(request):
@@ -204,9 +204,28 @@ def directory_letter(request, letter):
     return render(request, 'pages/directory/directory_letter.html', {'page': page,'pageopts': pageopts, 'people': people})
 
 def calendars(request):
+    currentyear = apps.common.functions.currentyear()
+    if request.path == '/calendars/':
+        try:
+            year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'])
+        except DistrictCalendarYear.DoesNotExist:
+            event, created = DistrictCalendarEvent.objects.get_or_create(startdate=timezone.now())
+            if created:
+                event.save()
+                event.delete()
+                event.delete()
+            year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'])
+        return redirect(year.url)
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+
+def districtcalendaryearsarchive(request):
+    page = get_object_or_404(DistrictCalendarYear, url=request.path)
+    pageopts = page._meta
+    districtcalendaryears = DistrictCalendarYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
+    districtcalendarevents = DistrictCalendarEvent.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path).order_by('-startdate')
+    return render(request, 'pages/calendars/districtcalendaryears.html', {'page': page, 'pageopts': pageopts,'districtcalendaryears': districtcalendaryears,'districtcalendarevents': districtcalendarevents})
 
 def employees(request):
     page = get_object_or_404(Page, url=request.path)

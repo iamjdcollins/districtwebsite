@@ -13,6 +13,7 @@ class BoardMeeting(BaseEvent):
     title = models.CharField(max_length=200, help_text='')
     startdate = models.DateTimeField(default=apps.common.functions.next_tuesday_sixthrity, unique=False, verbose_name="Start Date and Time")
     originaldate = models.DateTimeField(unique=False, verbose_name="Original Start Date and Time")
+    originalinstance = models.PositiveIntegerField(unique=False,blank=True, null=True,)
     schoolyear = models.CharField(max_length=7, help_text='')
     yearend = models.CharField(max_length=4, help_text='')
     building_location = models.ForeignKey(Location, null=True, blank=True, default=apps.common.functions.get_district_office, on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='events_boardmeeting_build_location')
@@ -45,9 +46,11 @@ class DistrictCalendarEvent(BaseEvent):
     PARENT_TYPE = DistrictCalendarYear
 
     title = models.CharField(max_length=200, help_text='')
-    originaldate = models.DateTimeField(unique=False, verbose_name="Original Start Date and Time")
+    originaldate = models.DateTimeField(unique=False,verbose_name="Original Start Date and Time",db_index=True)
+    originalinstance = models.PositiveIntegerField(unique=False,blank=True, null=True,)
+    event_name = models.CharField(max_length=400, blank=True, null=True,help_text='')
     startdate = models.DateTimeField(default=apps.common.functions.tomorrow_midnight, unique=False, verbose_name="Start Date and Time")
-    enddate = models.DateTimeField(default='', unique=False, verbose_name="Start Date and Time")
+    enddate = models.DateTimeField(blank=True, null=True,unique=False, verbose_name="End Date and Time")
     schoolyear = models.CharField(max_length=7, help_text='')
     yearend = models.CharField(max_length=4, help_text='')
     building_location = models.ForeignKey(Location, null=True, blank=True, default='', on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='events_districtcalendarevent_build_location')

@@ -24,6 +24,7 @@ urlpatterns = [
   url(r'^directory/$', views.directory, name='directory'),
   url(r'^directory/last-name-(?P<letter>[a-z])/$', views.directory_letter, name='directory_letter'),
   url(r'^calendars/$', views.calendars, name='calendars'),
+  url(r'^calendars/\d\d\d\d-\d\d\/$', views.districtcalendaryearsarchive, name='districtcalendaryearsarchive'),
   url(r'^board-of-education/board-meetings/\d\d\d\d-\d\d\/$', views.BoardMeetingYearArchive, name='boardmeetingyeararchive'),
   url(r'^board-of-education/(?:[a-z0-9-]+\/)*$', views.boarddetail, name='board'),
   url(r'^search/$', views.search, name='search'),

@@ -11,12 +11,12 @@ from adminsortable2.admin import SortableInlineAdminMixin
 from apps.common.classes import DeletedListFilter, EditLinkToInlineObject
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
-from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear
+from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture
 from apps.directoryentries.models import SchoolAdministrator, Administrator, Staff, BoardMember, StudentBoardMember, BoardPolicyAdmin
 from apps.links.models import ResourceLink, ActionButton
 from apps.documents.models import Document, BoardPolicy, Policy, AdministrativeProcedure, SupportingDocument, BoardMeetingAgenda, BoardMeetingMinutes, BoardMeetingAudio, BoardMeetingVideo, BoardMeetingExhibit, BoardMeetingAgendaItem
-from apps.events.models import BoardMeeting
+from apps.events.models import BoardMeeting, DistrictCalendarEvent
 from apps.files.models import File, AudioFile, VideoFile
 from apps.objects.models import Node
 from apps.faqs.models import FAQ
@@ -856,6 +856,38 @@ class BoardMeetingInline(EditLinkToInlineObject, admin.TabularInline):
   extra = 0
   min_num = 0
   max_num = 50 
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
+
+class DistrictCalendarEventInlineForm(forms.ModelForm):
+    class Meta:
+        model = DistrictCalendarEvent
+        fields = ['event_name','startdate','enddate',]
+
+    def __init__(self, *args, **kwargs):
+        super(DistrictCalendarEventInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            pass
+
+class DistrictCalendarEventInline(EditLinkToInlineObject, admin.TabularInline):
+  model = DistrictCalendarEvent
+  form = DistrictCalendarEventInlineForm
+  fk_name = 'parent'
+  fields = ['event_name','startdate','enddate','update_user','update_date','edit_link',]
+  readonly_fields = ['update_user','update_date','edit_link',]
+  ordering = ['-startdate',]
+  extra = 0
+  min_num = 0
+  max_num = 50
   has_add_permission = apps.common.functions.has_add_permission_inline
   has_change_permission = apps.common.functions.has_change_permission_inline
   has_delete_permission = apps.common.functions.has_delete_permission_inline
@@ -2754,6 +2786,150 @@ class FAQAdmin(MPTTModelAdmin,GuardedModelAdmin):
     save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
+class DistrictCalendarYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+    inlines = [DistrictCalendarEventInline,]
+
+    def get_formsets_with_inlines(self, request, obj=None):
+        for inline in self.get_inline_instances(request, obj):
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
+            yield inline.get_formset(request, obj), inline
+
+
+    def get_fields(self, request, obj=None):
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
+        if request.user.is_superuser:
+            if obj:
+             fields += ['url']
+        return fields
+
+    def get_list_display(self,request):
+        if request.user.has_perm('documents.restore_document'):
+            return ['title','update_date','update_user','published','deleted']
+        else:
+            return ['title','update_date','update_user','published']
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('documents.restore_document'):
+            return qs
+        return qs.filter(deleted=0)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        if request.user.has_perm('documents.trash_document'):
+            actions['trash_selected'] = (trash_selected,'trash_selected',trash_selected.short_description)
+        if request.user.has_perm('documents.restore_document'):
+            actions['restore_selected'] = (restore_selected,'restore_selected',restore_selected.short_description)
+        if request.user.has_perm('documents.change_document'):
+            actions['publish_selected'] = (publish_selected, 'publish_selected', publish_selected.short_description)
+            actions['unpublish_selected'] = (unpublish_selected, 'unpublish_selected', unpublish_selected.short_description)
+        return actions
+
+
+    def get_list_filter(self, request):
+        if request.user.has_perm('documents.restore_document'):
+            return (DeletedListFilter,'published')
+        else:
+            return ['published',]
+
+    has_change_permission = apps.common.functions.has_change_permission
+    has_add_permission = apps.common.functions.has_add_permission
+    has_delete_permission = apps.common.functions.has_delete_permission
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
+    response_change = apps.common.functions.response_change
+
+class DistrictCalendarEventAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+    inlines = []
+
+    def get_formsets_with_inlines(self, request, obj=None):
+        for inline in self.get_inline_instances(request, obj):
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
+            yield inline.get_formset(request, obj), inline
+
+
+    def get_fields(self, request, obj=None):
+        fields = ['event_name','startdate','enddate','building_location','non_district_location','non_district_location_google_place','cancelled',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = ['update_user','update_date','create_user','create_date',]
+        if request.user.is_superuser:
+            if obj:
+             fields += ['url']
+        return fields
+
+    def get_list_display(self,request):
+        if request.user.has_perm('documents.restore_document'):
+            return ['event_name','startdate','enddate','update_date','update_user','published','deleted']
+        else:
+            return ['event_name','startdate','enddate','update_date','update_user','published']
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('documents.restore_document'):
+            return qs
+        return qs.filter(deleted=0)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        if request.user.has_perm('documents.trash_document'):
+            actions['trash_selected'] = (trash_selected,'trash_selected',trash_selected.short_description)
+        if request.user.has_perm('documents.restore_document'):
+            actions['restore_selected'] = (restore_selected,'restore_selected',restore_selected.short_description)
+        if request.user.has_perm('documents.change_document'):
+            actions['publish_selected'] = (publish_selected, 'publish_selected', publish_selected.short_description)
+            actions['unpublish_selected'] = (unpublish_selected, 'unpublish_selected', unpublish_selected.short_description)
+        return actions
+
+
+    def get_list_filter(self, request):
+        if request.user.has_perm('documents.restore_document'):
+            return (DeletedListFilter,'published')
+        else:
+            return ['published',]
+
+    has_change_permission = apps.common.functions.has_change_permission
+    has_add_permission = apps.common.functions.has_add_permission
+    has_delete_permission = apps.common.functions.has_delete_permission
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
+    response_change = apps.common.functions.response_change
+
 # Register your models here.
 admin.site.register(Page, PageAdmin)
 admin.site.register(School, SchoolAdmin)
@@ -2778,3 +2954,5 @@ admin.site.register(BoardSubPage, BoardSubPageAdmin)
 admin.site.register(BoardMeeting, BoardMeetingAdmin)
 admin.site.register(BoardMeetingYear, BoardMeetingYearAdmin)
 admin.site.register(FAQ, FAQAdmin)
+admin.site.register(DistrictCalendarYear,DistrictCalendarYearAdmin)
+admin.site.register(DistrictCalendarEvent,DistrictCalendarEventAdmin)

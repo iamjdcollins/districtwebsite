@@ -658,7 +658,7 @@ def eventsave(self, *args, **kwargs):
       self.parent = Node.objects.exclude(uuid=self.uuid).get(url=self.PARENT_URL)
     except Node.DoesNotExist:
       pass
-  if self._meta.model_name == 'boardmeeting' or self._meta.model_name == 'districtcalendaryear':
+  if self._meta.model_name == 'boardmeeting' or self._meta.model_name == 'districtcalendarevent':
     if self.startdate.month >= 7:
       yearend = self.startdate.year + 1
       yearstring = str(self.startdate.year) + '-' + str(self.startdate.year + 1)[2:]
@@ -675,13 +675,16 @@ def eventsave(self, *args, **kwargs):
     self.parent = Node.objects.get(url=yearobject.url)
   # Related Node matches Parent
   self.related_node = self.parent
-  # Set Original Date
+  # Set Original Date & Original Instance
   if (not self.originaldate) and self.startdate:
     self.originaldate = self.startdate
+    self.originalindex = len(self._meta.model.objects.filter(originaldate=self.originaldate)) + 1
   # Set Title & Prefix
-  if self._meta.model_name == 'boardmeeting' or self._meta.model_name == 'districtcalendaryear':
-    self.title = timezone.localtime(self.originaldate).strftime('%Y%m%d-%H%M')
-    self.URL_PREFIX = str(self.pk)[0:8]
+  if self._meta.model_name == 'boardmeeting':
+    self.title = timezone.localtime(self.originaldate).strftime('%Y%m%d-%H%M') + '-' +  str(self.originalinstance)
+    #self.URL_PREFIX = str(self.pk)[0:8]
+  elif self._meta.model_name == 'districtcalendarevent':
+    self.title = timezone.localtime(self.originaldate).strftime('%Y%m%d-%H%M') + '-' +  str(self.originalinstance)
   # Track URL Changes
   urlchanged = False
   parent_url = self.parent.url if self.parent else self.PARENT_URL
