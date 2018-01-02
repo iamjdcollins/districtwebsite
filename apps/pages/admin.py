@@ -3050,7 +3050,7 @@ class DistrictCalendarEventAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 class DistrictLogoAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
-    inlines = [DistrictLogoGIFInline,DistrictLogoJPGInline,DistrictLogoPNGInline,DistrictLogoTIFInline,]
+    inlines = [ThumbnailInline,DistrictLogoGIFInline,DistrictLogoJPGInline,DistrictLogoPNGInline,DistrictLogoTIFInline,]
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):

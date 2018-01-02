@@ -1,0 +1,32 @@
+<div class="col s12 l4">
+  <div class="card schoolcard">
+    <div class="card-image">
+      {% for image in logo.images_thumbnail_node.all %}
+      <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ image.image_file.url }}" alt="{{ image.alttext }}">
+      {% endfor %}
+    </div>
+    <div class="card-content">
+      <span class="card-title">{{ logo.district_logo_style_variation.title }}</span>
+      {% if logo.images_districtlogogif_node %}
+      {% for image in logo.images_districtlogogif_node.all %}
+      <a href="{{ image.image_file.url }}" class="collection-item">GIF</a>
+      {% endfor %}
+      {% endif %}
+      {% if logo.images_districtlogojpg_node %}
+      {% for image in logo.images_districtlogojpg_node.all %}
+      <a href="{{ image.image_file.url }}" class="collection-item">JPG</a>
+      {% endfor %}
+      {% endif %}
+      {% if logo.images_districtlogopng_node %}
+      {% for image in logo.images_districtlogopng_node.all %}
+      <a href="{{ image.image_file.url }}" class="collection-item">PNG</a>
+      {% endfor %}
+      {% endif %}
+      {% if logo.images_districtlogotif_node %}
+      {% for image in logo.images_districtlogotif_node.all %}
+      <a href="{{ image.image_file.url }}" class="collection-item">TIF</a>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>

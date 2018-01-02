@@ -39,6 +39,23 @@
       {% endfor %}
       </ul>
       {% endif %}
+      {% if request.path == '/departments/communications-and-community-relations/district-logo/' %}
+      {% if districtlogos.primary %}
+      <li><a href="#primary">Primary Logo</a></li>
+      {% endif %}
+      {% if districtlogos.primaryrev %}
+      <li><a href="#primaryrev">Primary Logo Reversed</a></li>
+      {% endif %}
+      {% if districtlogos.secondary %}
+      <li><a href="#secondary">Secondary Logo</a></li>
+      {% endif %}
+      {% if districtlogos.secondaryrev %}
+      <li><a href="#secondaryrev">Secondary Logo Reversed</a></li>
+      {% endif %}
+      {% if districtlogos.wordmark %}
+      <li><a href="#wordmark">Wordmark</a></li>
+      {% endif %}
+      {% endif %}
     </ul>
   </div>
 </div>
@@ -85,6 +102,23 @@
       {% for department_subpage in page.pages_subpage_node.all %}
       <option class="page" value="{{ department_subpage.url }}" >-- {{ department_subpage.title }}</option>
       {% endfor %}
+      {% endif %}
+      {% if request.path == '/departments/communications-and-community-relations/district-logo/' %}
+      {% if districtlogos.primary %}
+      <option value="#primary">Primary Logo</option>
+      {% endif %}
+      {% if districtlogos.primaryrev %}
+      <option value="#primaryrev">Primary Logo Reversed</option>
+      {% endif %}
+      {% if districtlogos.secondary %}
+      <option value="#secondary">Secondary Logo</option>
+      {% endif %}
+      {% if districtlogos.secondaryrev %}
+      <option value="#secondaryrev">Secondary Logo Reversed</option>
+      {% endif %}
+      {% if districtlogos.wordmark %}
+      <option value="#wordmark">Wordmark</option>
+      {% endif %}
       {% endif %}
     </select>
   </div>
@@ -290,6 +324,26 @@
         </table>
       </div>
     </div>
+    {% endif %}
+    {% if request.path == '/departments/communications-and-community-relations/district-logo/' %}
+      {% if districtlogos.primary %}
+      <div class="row">
+        <div id="primary" class="scrollspy">
+          <h2>Primary Logo</h2>
+          {% for logo in districtlogos.primary %}
+          {% include 'www_slcschools_org/districtlogocard.html' %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% if districtlogos.primaryrev %}
+      {% endif %}
+      {% if districtlogos.secondary %}
+      {% endif %}
+      {% if districtlogos.secondaryrev %}
+      {% endif %}
+      {% if districtlogos.wordmark %}
+      {% endif %}
     {% endif %}
   </div>
   <div class="card-action">

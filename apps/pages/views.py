@@ -13,7 +13,7 @@ import apps.common.functions
 from apps.objects.models import Node
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear
 from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct
-from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture
+from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo
 from apps.directoryentries.models import Staff, SchoolAdministrator, Administrator,  BoardMember, StudentBoardMember
 from apps.links.models import ResourceLink, ActionButton
 from apps.documents.models import Document, BoardPolicy
@@ -181,15 +181,45 @@ def departments(request):
   return render(request, 'pages/departments/department_directory.html', {'page': page,'pageopts': pageopts, 'departments': departments})
 
 def departmentdetail(request):
+    template = None
+    context = {}
+
     department = Department.objects.filter(deleted=0).filter(published=1).filter(url=request.path).only('title','body','building_location','main_phone','main_fax').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_contentbanner_node', queryset = ContentBanner.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','inline_order','related_node_id')),Prefetch('links_actionbutton_node', queryset = ActionButton.objects.filter(deleted=0).filter(published=1).only('title','link_url','inline_order','related_node')),Prefetch('directoryentries_administrator_node',queryset=Administrator.objects.filter(deleted=0).filter(published=1).only('employee','job_title','inline_order','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('last_name','first_name','email','job_title')))),Prefetch('directoryentries_staff_node',queryset=Staff.objects.filter(deleted=0).filter(published=1).only('employee','job_title','inline_order','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('last_name','first_name','email','job_title')))),Prefetch('links_resourcelink_node',queryset=ResourceLink.objects.filter(deleted=0).filter(published=1).only('title','link_url','inline_order','related_node')),Prefetch('documents_document_node',queryset=Document.objects.filter(deleted=0).filter(published=1).only('pk','title','inline_order','related_node').prefetch_related(Prefetch('files_file_node',queryset=File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))),Prefetch('pages_subpage_node', queryset = SubPage.objects.filter(deleted=0).filter(published=1).only('title','url','inline_order','related_node_id'))).first()
     subpage = SubPage.objects.filter(deleted=0).filter(published=1).filter(url=request.path).only('title','body','building_location','main_phone','main_fax').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_contentbanner_node', queryset = ContentBanner.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','inline_order','related_node_id')),Prefetch('links_actionbutton_node', queryset = ActionButton.objects.filter(deleted=0).filter(published=1).only('title','link_url','inline_order','related_node')),Prefetch('directoryentries_administrator_node',queryset=Administrator.objects.filter(deleted=0).filter(published=1).only('employee','job_title','inline_order','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('last_name','first_name','email','job_title')))),Prefetch('directoryentries_staff_node',queryset=Staff.objects.filter(deleted=0).filter(published=1).only('employee','job_title','inline_order','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('last_name','first_name','email','job_title')))),Prefetch('links_resourcelink_node',queryset=ResourceLink.objects.filter(deleted=0).filter(published=1).only('title','link_url','inline_order','related_node')),Prefetch('documents_document_node',queryset=Document.objects.filter(deleted=0).filter(published=1).only('pk','title','inline_order','related_node').prefetch_related(Prefetch('files_file_node',queryset=File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title'))))))).first()
     if department:
         page = department
+        context['page'] = page
     elif subpage:
         page = subpage
+        context['page'] = page
     pageopts = page._meta
+    context['pageopts'] = pageopts
     department_children = Department.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path).order_by('title').only('pk','title','short_description','main_phone','building_location','content_type','menu_title','url').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))))
-    return render(request, 'pages/departments/departmentdetail.html', {'page': page,'pageopts': pageopts,'department_children': department_children})
+    context['department_children'] = department_children
+    if request.path == '/departments/communications-and-community-relations/district-logo/':
+        all_logos = DistrictLogo.objects.filter(deleted=0).filter(published=1)
+        districtlogos = {
+            'primary':[],
+            'primaryrev':[],
+            'secondary':[],
+            'secondaryrev':[],
+            'wordmark':[],
+        }
+        for logo in all_logos:
+            if logo.district_logo_group.title == 'Primary Logo':
+                districtlogos['primary'].append(logo)
+            if logo.district_logo_group.title == 'Primary Logo Reversed':
+                districtlogos['primaryrev'].append(logo)
+            if logo.district_logo_group.title == 'Secondary Logo':
+                districtlogos['secondary'].append(logo)
+            if logo.district_logo_group.title == 'Secondary Logo Reversed':
+                districtlogos['secondaryrev'].append(logo)
+            if logo.district_logo_group.title == 'Wordmark':
+                districtlogos['wordmark'].append(logo)
+        context['districtlogos'] = districtlogos
+    if not template:
+        template = 'pages/departments/departmentdetail.html'
+    return render(request, template, context)
 
 def directory(request):
     page = get_object_or_404(Page, url=request.path)
