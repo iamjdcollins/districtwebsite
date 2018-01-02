@@ -299,3 +299,47 @@ class DistrictCalendarEventCategory(Taxonomy):
 
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
+
+class DistrictLogoGroup(Taxonomy):
+
+    PARENT_URL = '/taxonomy/district-logo-groups/'
+
+    title = models.CharField(max_length=200, unique=True, help_text='',verbose_name='District Logo Group')
+
+    districtlogogroup_taxonomy_node = models.OneToOneField(Taxonomy, db_column='districtlogogroup_taxonomy_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'taxonomy_districtlogogroup'
+        get_latest_by = 'update_date'
+        permissions = (('trash_districtlogogroup', 'Can soft delete district logo group'),('restore_districtlogogroup', 'Can restore district logo group'))
+        verbose_name = 'District Logo Group'
+        verbose_name_plural = 'District Logo Groups'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.taxonomysave
+    delete = apps.common.functions.modeltrash
+
+class DistrictLogoStyleVariation(Taxonomy):
+
+    PARENT_URL = '/taxonomy/district-logo-style-variations/'
+
+    title = models.CharField(max_length=200, unique=True, help_text='',verbose_name='District Logo Style Variation')
+
+    districtlogostylevariation_taxonomy_node = models.OneToOneField(Taxonomy, db_column='districtlogostylevariation_taxonomy_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'taxonomy_districtlogostylevariation'
+        get_latest_by = 'update_date'
+        permissions = (('trash_districtlogostylevariation', 'Can soft delete district logo style variation'),('restore_districtlogostylevariation', 'Can restore district logo style variation'))
+        verbose_name = 'District Logo Style Variation'
+        verbose_name_plural = 'District Logo Style Variations'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.taxonomysave
+    delete = apps.common.functions.modeltrash
