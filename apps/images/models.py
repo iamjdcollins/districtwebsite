@@ -139,7 +139,7 @@ class ProfilePicture(Image):
 class DistrictLogoGIF(Image):
 
     PARENT_URL = ''
-    URL_PREFIX = '/images/districtlogogifs/'
+    URL_PREFIX = '/images/districtlogosgifs/'
 
     title = models.CharField(max_length=200, help_text='')
     image_file = models.ImageField(max_length=2000, upload_to=apps.common.functions.image_upload_to, verbose_name='Image', help_text='')
@@ -165,7 +165,7 @@ class DistrictLogoGIF(Image):
 class DistrictLogoJPG(Image):
 
     PARENT_URL = ''
-    URL_PREFIX = '/images/districtlogojpgs/'
+    URL_PREFIX = '/images/districtlogosjpgs/'
 
     title = models.CharField(max_length=200, help_text='')
     image_file = models.ImageField(max_length=2000, upload_to=apps.common.functions.image_upload_to, verbose_name='Image', help_text='')
@@ -191,7 +191,7 @@ class DistrictLogoJPG(Image):
 class DistrictLogoPNG(Image):
 
     PARENT_URL = ''
-    URL_PREFIX = '/images/districtlogopngs/'
+    URL_PREFIX = '/images/districtlogospngs/'
 
     title = models.CharField(max_length=200, help_text='')
     image_file = models.ImageField(max_length=2000, upload_to=apps.common.functions.image_upload_to, verbose_name='Image', help_text='')
@@ -217,7 +217,7 @@ class DistrictLogoPNG(Image):
 class DistrictLogoTIF(Image):
 
     PARENT_URL = ''
-    URL_PREFIX = '/images/districtlogotifs/'
+    URL_PREFIX = '/images/districtlogostifs/'
 
     title = models.CharField(max_length=200, help_text='')
     image_file = models.ImageField(max_length=2000, upload_to=apps.common.functions.image_upload_to, verbose_name='Image', help_text='')

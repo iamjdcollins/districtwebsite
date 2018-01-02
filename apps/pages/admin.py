@@ -12,7 +12,7 @@ from apps.common.classes import DeletedListFilter, EditLinkToInlineObject
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear
-from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture
+from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo, DistrictLogoGIF, DistrictLogoJPG, DistrictLogoPNG, DistrictLogoTIF
 from apps.directoryentries.models import SchoolAdministrator, Administrator, Staff, BoardMember, StudentBoardMember, BoardPolicyAdmin
 from apps.links.models import ResourceLink, ActionButton
 from apps.documents.models import Document, BoardPolicy, Policy, AdministrativeProcedure, SupportingDocument, BoardMeetingAgenda, BoardMeetingMinutes, BoardMeetingAudio, BoardMeetingVideo, BoardMeetingExhibit, BoardMeetingAgendaItem
@@ -42,6 +42,118 @@ class ThumbnailInline(admin.TabularInline):
   extra = 0 
   min_num = 0
   max_num = 1
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
+
+class DistrictLogoGIFInline(admin.TabularInline):
+  model = DistrictLogoGIF
+  fk_name = 'parent'
+  fields = ['title','image_file','alttext','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
+  extra = 0
+  min_num = 0
+  max_num = 1
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
+
+class DistrictLogoJPGInline(admin.TabularInline):
+  model = DistrictLogoJPG
+  fk_name = 'parent'
+  fields = ['title','image_file','alttext','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
+  extra = 0
+  min_num = 0
+  max_num = 1
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
+
+class DistrictLogoPNGInline(admin.TabularInline):
+  model = DistrictLogoPNG
+  fk_name = 'parent'
+  fields = ['title','image_file','alttext','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
+  extra = 0
+  min_num = 0
+  max_num = 1
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
+
+class DistrictLogoTIFInline(admin.TabularInline):
+  model = DistrictLogoTIF
+  fk_name = 'parent'
+  fields = ['title','image_file','alttext','update_user','update_date',]
+  readonly_fields = ['update_user','update_date',]
+  extra = 0
+  min_num = 0
+  max_num = 1
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
+
+class DistrictLogoInlineForm(forms.ModelForm):
+    class Meta:
+        model = DistrictLogo
+        fields = ['district_logo_group','district_logo_style_variation',]
+
+    def __init__(self, *args, **kwargs):
+        super(DistrictLogoInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['district_logo_group'].disabled = True
+            self.fields['district_logo_style_variation'].disabled = True
+
+class DistrictLogoInline(EditLinkToInlineObject, admin.TabularInline):
+  model = DistrictLogo
+  form = DistrictLogoInlineForm
+  fk_name = 'parent'
+  fields = ['district_logo_group','district_logo_style_variation','update_user','update_date','edit_link',]
+  readonly_fields = ['update_user','update_date','edit_link',]
+  extra = 0
+  min_num = 0
+  max_num = 14 
   has_add_permission = apps.common.functions.has_add_permission_inline
   has_change_permission = apps.common.functions.has_change_permission_inline
   has_delete_permission = apps.common.functions.has_delete_permission_inline
@@ -1911,7 +2023,7 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
            fields += ['url']
       return fields
 
-  inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,]
+  inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,DistrictLogoInline,]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -1922,6 +2034,10 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
           else:
               while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
+          if obj:
+              if not obj.url == '/departments/communications-and-community-relations/district-logo/':
+                  if isinstance(inline,DistrictLogoInline):
+                      continue
           yield inline.get_formset(request, obj), inline
 
   has_change_permission = apps.common.functions.has_change_permission
@@ -2931,6 +3047,77 @@ class DistrictCalendarEventAdmin(MPTTModelAdmin,GuardedModelAdmin):
     save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
+class DistrictLogoAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+    inlines = [DistrictLogoGIFInline,DistrictLogoJPGInline,DistrictLogoPNGInline,DistrictLogoTIFInline,]
+
+    def get_formsets_with_inlines(self, request, obj=None):
+        for inline in self.get_inline_instances(request, obj):
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
+            yield inline.get_formset(request, obj), inline
+
+
+    def get_fields(self, request, obj=None):
+        fields = ['district_logo_group','district_logo_style_variation',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['parent']
+            if obj:
+                fields += ['url']
+        return fields
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = ['district_logo_group','district_logo_style_variation','update_user','update_date','create_user','create_date',]
+        if request.user.is_superuser:
+            if obj:
+             fields += ['url']
+        return fields
+
+    def get_list_display(self,request):
+        if request.user.has_perm('documents.restore_document'):
+            return ['event_name','event_category','startdate','enddate','update_date','update_user','published','deleted']
+        else:
+            return ['event_name','event_category','startdate','enddate','update_date','update_user','published']
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('documents.restore_document'):
+            return qs
+        return qs.filter(deleted=0)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        if request.user.has_perm('documents.trash_document'):
+            actions['trash_selected'] = (trash_selected,'trash_selected',trash_selected.short_description)
+        if request.user.has_perm('documents.restore_document'):
+            actions['restore_selected'] = (restore_selected,'restore_selected',restore_selected.short_description)
+        if request.user.has_perm('documents.change_document'):
+            actions['publish_selected'] = (publish_selected, 'publish_selected', publish_selected.short_description)
+            actions['unpublish_selected'] = (unpublish_selected, 'unpublish_selected', unpublish_selected.short_description)
+        return actions
+
+    def get_list_filter(self, request):
+        if request.user.has_perm('documents.restore_document'):
+            return (DeletedListFilter,'published')
+        else:
+            return ['published',]
+
+    has_change_permission = apps.common.functions.has_change_permission
+    has_add_permission = apps.common.functions.has_add_permission
+    has_delete_permission = apps.common.functions.has_delete_permission
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
+    response_change = apps.common.functions.response_change
+
 # Register your models here.
 admin.site.register(Page, PageAdmin)
 admin.site.register(School, SchoolAdmin)
@@ -2957,3 +3144,4 @@ admin.site.register(BoardMeetingYear, BoardMeetingYearAdmin)
 admin.site.register(FAQ, FAQAdmin)
 admin.site.register(DistrictCalendarYear,DistrictCalendarYearAdmin)
 admin.site.register(DistrictCalendarEvent,DistrictCalendarEventAdmin)
+admin.site.register(DistrictLogo,DistrictLogoAdmin)

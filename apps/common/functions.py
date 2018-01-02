@@ -335,6 +335,9 @@ def imagesave(self, *args, **kwargs):
   # Set UUID if None
   if self.uuid is None:
     self.uuid = uuid.uuid4()
+  #Force Title
+  if self._meta.model_name == 'districtlogo':
+    self.title = self.district_logo_group.title + ' ' + self.district_logo_style_variation.title
   #Force Parent
   if self.PARENT_URL:
     try:
@@ -359,11 +362,14 @@ def imagesave(self, *args, **kwargs):
   # Move Files
   currentname = None
   newname = None
-  if self.image_file:
-      currentname = findfileext_media(self.image_file.name)
-      newname = image_upload_to(self,currentname[0] + currentname[1])
-      currentname = '/'.join (newname.split('/')[:-1]) + '/' + currentname[0] + currentname[1]
-      self.image_file.name = newname
+  try:
+      if self.image_file:
+          currentname = findfileext_media(self.image_file.name)
+          newname = image_upload_to(self,currentname[0] + currentname[1])
+          currentname = '/'.join (newname.split('/')[:-1]) + '/' + currentname[0] + currentname[1]
+          self.image_file.name = newname
+  except AttributeError:
+      pass
       
   # Set the node_title for the node
   self.node_title = self.title
