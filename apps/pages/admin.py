@@ -148,6 +148,7 @@ class DistrictLogoInlineForm(forms.ModelForm):
 class DistrictLogoInline(EditLinkToInlineObject, admin.TabularInline):
   model = DistrictLogo
   form = DistrictLogoInlineForm
+  ordering = ['district_logo_group__lft','district_logo_style_variation__lft',]
   fk_name = 'parent'
   fields = ['district_logo_group','district_logo_style_variation','update_user','update_date','edit_link',]
   readonly_fields = ['update_user','update_date','edit_link',]
