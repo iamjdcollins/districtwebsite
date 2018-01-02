@@ -337,12 +337,44 @@
       </div>
       {% endif %}
       {% if districtlogos.primaryrev %}
+      <div class="row">
+        <div id="primaryrev" class="scrollspy">
+          <h2>Primary Logo Reversed</h2>
+          {% for logo in districtlogos.primaryrev %}
+          {% include 'www_slcschools_org/districtlogocard.html' %}
+          {% endfor %}
+        </div>
+      </div>
       {% endif %}
       {% if districtlogos.secondary %}
+      <div class="row">
+        <div id="secondary" class="scrollspy">
+          <h2>Secondary Logo</h2>
+          {% for logo in districtlogos.secondary %}
+          {% include 'www_slcschools_org/districtlogocard.html' %}
+          {% endfor %}
+        </div>
+      </div>
       {% endif %}
       {% if districtlogos.secondaryrev %}
+      <div class="row">
+        <div id="secondaryrev" class="scrollspy">
+          <h2>Secondary Logo Reversed</h2>
+          {% for logo in districtlogos.secondaryrev %}
+          {% include 'www_slcschools_org/districtlogocard.html' %}
+          {% endfor %}
+        </div>
+      </div>
       {% endif %}
       {% if districtlogos.wordmark %}
+      <div class="row">
+        <div id="wordmark" class="scrollspy">
+          <h2>Wordmark</h2>
+          {% for logo in districtlogos.wordmark %}
+          {% include 'www_slcschools_org/districtlogocard.html' %}
+          {% endfor %}
+        </div>
+      </div>
       {% endif %}
     {% endif %}
   </div>

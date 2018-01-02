@@ -197,7 +197,7 @@ def departmentdetail(request):
     department_children = Department.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path).order_by('title').only('pk','title','short_description','main_phone','building_location','content_type','menu_title','url').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))))
     context['department_children'] = department_children
     if request.path == '/departments/communications-and-community-relations/district-logo/':
-        all_logos = DistrictLogo.objects.filter(deleted=0).filter(published=1)
+        all_logos = DistrictLogo.objects.filter(deleted=0).filter(published=1).order_by('district_logo_group__lft','district_logo_style_variation__lft')
         districtlogos = {
             'primary':[],
             'primaryrev':[],
