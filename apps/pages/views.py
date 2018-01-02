@@ -220,6 +220,11 @@ def calendars(request):
     pageopts = page._meta
     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
+def calendarguide(request):
+    page = get_object_or_404(Page, url=request.path)
+    pageopts = page._meta
+    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+
 def districtcalendaryearsarchive(request):
     page = get_object_or_404(DistrictCalendarYear, url=request.path)
     pageopts = page._meta
