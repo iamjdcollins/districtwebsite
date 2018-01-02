@@ -90,7 +90,7 @@ function myFunction() {
 }
 var dataSet = [
   {% for person in people %}
-  ["{{ person.last_name  }}, {{ person.first_name }}","{% if person.job_title %}{{ person.job_title }}{% endif %}","{% if person.department %}<a href=\"{{ person.department.url }}\">{{ person.department.node_title }}</a>{% endif %}","{{ person.email }}"],
+  ["{{ person.last_name  }}, {{ person.first_name }}","{% if person.job_title %}{{ person.job_title }}{% endif %}","{% if person.department %}<a href=\"{{ person.department.url }}\">{{ person.department.node_title }}</a>{% endif %}",'<a href="#"><span class="sr-only">Send {{ staff.employee.first_name }} {{ staff.employee.last_name }} a message.</span><span class="material-icons" aria-hidden="true">&#xE163;</span></a>'],
   {% endfor %}
 ];
 directoryTable = $('#searchTable').DataTable({
@@ -102,7 +102,7 @@ directoryTable = $('#searchTable').DataTable({
     { title: "Name", className: "name" },
     { title: "Title", className: "title" },
     { title: "Department", className: "department" },
-    { title: "Email", className: "email" }
+    { title: "Contact", className: "rowaction contact" }
   ],
   renderer: {
     "pageButton": "bootstrap",

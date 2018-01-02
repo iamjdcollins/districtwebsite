@@ -73,19 +73,24 @@
         <table id="searchTable" class="striped highlight mobileblock">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Title</th>
-              <th>Department</th>
-              <th>Email</th>
+              <th class="name">Name</th>
+              <th class="title">Title</th>
+              <th class="department">Department</th>
+              <th class="contact rowaction">Contact</th>
             </tr>
           </thead>
           <tbody id="searchTableBody">
             {% for person in people %}
             <tr>
-              <td>{{ person.last_name  }}, {{ person.first_name }}</td>
-              <td>{% if person.job_title %}{{ person.job_title }}{% endif %}</td>
-              <td>{% if person.department %}<a href="{{ person.department.url }}">{{ person.department.node_title }}</a>{% endif %}</td>
-              <td>{{ person.email }}</td>
+              <td class="name">{{ person.last_name  }}, {{ person.first_name }}</td>
+              <td class="title">{% if person.job_title %}{{ person.job_title }}{% endif %}</td>
+              <td class="department">{% if person.department %}<a href="{{ person.department.url }}">{{ person.department.node_title }}</a>{% endif %}</td>
+              <td class=contact rowaction">
+                <a href="#">
+                  <span class="sr-only">Send {{ staff.employee.first_name }} {{ staff.employee.last_name }} a message.</span>
+                  <span class="material-icons" aria-hidden="true">&#xE163;</span>
+                </a>
+              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -114,7 +119,7 @@ directoryTable = $('#searchTable').DataTable({
     { title: "Name", className: "name" },
     { title: "Title", className: "title" },
     { title: "Department", className: "department" },
-    { title: "Email", className: "email" }
+    { title: "Contact", className: "contact rowaction" }
   ],
   renderer: {
     "pageButton": "bootstrap",
