@@ -1,6 +1,7 @@
 from django.db import models
 import apps.common.functions
 from apps.objects.models import Node, Image
+from apps.taxonomy.models import DistrictLogoGroup, DistrictLogoStyleVariation
 
 class Thumbnail(Image):
 
@@ -134,3 +135,133 @@ class ProfilePicture(Image):
 
   save = apps.common.functions.imagesave
   delete = apps.common.functions.modeltrash
+
+class DistrictLogoGIF(Image):
+
+    PARENT_URL = ''
+    URL_PREFIX = '/images/districtlogogifs/'
+
+    title = models.CharField(max_length=200, help_text='')
+    image_file = models.ImageField(max_length=2000, upload_to=apps.common.functions.image_upload_to, verbose_name='Image', help_text='')
+    alttext = models.CharField(max_length=200, verbose_name='Alternative Text', help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='images_districtlogogif_node', editable=False)
+
+    districtlogogif_image_node = models.OneToOneField(Image, db_column='districtlogogif_image_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+      db_table = 'images_districtlogogif'
+      get_latest_by = 'update_date'
+      permissions = (('trash_districtlogogif', 'Can soft delete district logo gif'),('restore_districtlogogif', 'Can restore district logo gif'))
+      verbose_name = 'District Logo GIF'
+      verbose_name_plural = 'District Logo GIFs'
+      default_manager_name = 'objects'
+
+    def __str__(self):
+      return self.title
+
+    save = apps.common.functions.imagesave
+    delete = apps.common.functions.modeltrash
+
+class DistrictLogoJPG(Image):
+
+    PARENT_URL = ''
+    URL_PREFIX = '/images/districtlogojpgs/'
+
+    title = models.CharField(max_length=200, help_text='')
+    image_file = models.ImageField(max_length=2000, upload_to=apps.common.functions.image_upload_to, verbose_name='Image', help_text='')
+    alttext = models.CharField(max_length=200, verbose_name='Alternative Text', help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='images_districtlogojpg_node', editable=False)
+
+    districtlogojpg_image_node = models.OneToOneField(Image, db_column='districtlogojpg_image_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+      db_table = 'images_districtlogojpg'
+      get_latest_by = 'update_date'
+      permissions = (('trash_districtlogojpg', 'Can soft delete district logo jpg'),('restore_districtlogojpg', 'Can restore district logo jpg'))
+      verbose_name = 'District Logo JPG'
+      verbose_name_plural = 'District Logo JPGs'
+      default_manager_name = 'objects'
+
+    def __str__(self):
+      return self.title
+
+    save = apps.common.functions.imagesave
+    delete = apps.common.functions.modeltrash
+
+class DistrictLogoPNG(Image):
+
+    PARENT_URL = ''
+    URL_PREFIX = '/images/districtlogopngs/'
+
+    title = models.CharField(max_length=200, help_text='')
+    image_file = models.ImageField(max_length=2000, upload_to=apps.common.functions.image_upload_to, verbose_name='Image', help_text='')
+    alttext = models.CharField(max_length=200, verbose_name='Alternative Text', help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='images_districtlogopng_node', editable=False)
+
+    districtlogopng_image_node = models.OneToOneField(Image, db_column='districtlogopng_image_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+      db_table = 'images_districtlogopng'
+      get_latest_by = 'update_date'
+      permissions = (('trash_districtlogopng', 'Can soft delete district logo png'),('restore_districtlogopng', 'Can restore district logo png'))
+      verbose_name = 'District Logo PNG'
+      verbose_name_plural = 'District Logo PNGs'
+      default_manager_name = 'objects'
+
+    def __str__(self):
+      return self.title
+
+    save = apps.common.functions.imagesave
+    delete = apps.common.functions.modeltrash
+
+class DistrictLogoTIF(Image):
+
+    PARENT_URL = ''
+    URL_PREFIX = '/images/districtlogotifs/'
+
+    title = models.CharField(max_length=200, help_text='')
+    image_file = models.ImageField(max_length=2000, upload_to=apps.common.functions.image_upload_to, verbose_name='Image', help_text='')
+    alttext = models.CharField(max_length=200, verbose_name='Alternative Text', help_text='')
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='images_districtlogotif_node', editable=False)
+
+    districtlogotif_image_node = models.OneToOneField(Image, db_column='districtlogotif_image_node', on_delete=models.CASCADE, parent_link=True, editable=False)
+
+    class Meta:
+      db_table = 'images_districtlogotif'
+      get_latest_by = 'update_date'
+      permissions = (('trash_districtlogotif', 'Can soft delete district logo tif'),('restore_districtlogotif', 'Can restore district logo tif'))
+      verbose_name = 'District Logo TIF'
+      verbose_name_plural = 'District Logo TIFs'
+      default_manager_name = 'objects'
+
+    def __str__(self):
+      return self.title
+
+    save = apps.common.functions.imagesave
+    delete = apps.common.functions.modeltrash
+
+class DistrictLogo(Image):
+
+    PARENT_URL = ''
+    URL_PREFIX = ''
+
+    title = models.CharField(max_length=200, help_text='',)
+    district_logo_group = models.ForeignKey(DistrictLogoGroup, limit_choices_to={'deleted': False,'published': True,},related_name='images_districtlogo_district_logo_group', on_delete=models.PROTECT,verbose_name='District Logo Group',help_text='',)
+    district_logo_style_variation = models.ForeignKey(DistrictLogoStyleVariation, limit_choices_to={'deleted': False,'published': True,}, related_name='images_districtlogo_district_logo_style_variation', on_delete=models.PROTECT,verbose_name='District Logo Style Variation',help_text='',)
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='images_districtlogo_node',)
+
+    districtlogo_image_node = models.OneToOneField(Image, db_column='districtlogo_image_node', on_delete=models.CASCADE,)
+
+    class Meta:
+      db_table = 'images_districtlogo'
+      get_latest_by = 'update_date'
+      permissions = (('trash_districtlogo', 'Can soft delete district logo'),('restore_districtlogo', 'Can restore district logo'))
+      verbose_name = 'District Logo'
+      verbose_name_plural = 'District Logos'
+      default_manager_name = 'objects'
+
+    def __str__(self):
+      return self.title
+
+    save = apps.common.functions.imagesave
+    delete = apps.common.functions.modeltrash
