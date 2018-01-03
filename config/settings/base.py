@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'apps.thirdparty.django_saml2_auth',
     'guardian',
     'mptt',
@@ -231,4 +232,11 @@ CKEDITOR_CONFIGS = {
         #'allowedContent': 'p h3 h4 h5 h6 strong em u s ol ul li table caption thead tbody tr th td hr br',
         'extraAllowedContent': 'a(!relink)[!data-id]',
     }
+}
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr/www_slcschools_org',
+        'ADMIN_URL': 'http://127.0.0.1:8983/solr/admin/cores',
+    },
 }

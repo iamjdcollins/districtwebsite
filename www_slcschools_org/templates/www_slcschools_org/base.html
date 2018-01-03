@@ -32,6 +32,7 @@
             </a>
           </div>
           <div class="col s6">
+            {% if pageopts %}
             {% has_change_permissions request page as can_edit%}
             {% if can_edit %}
             <a id="editpagemodaal" href="{% url pageopts|admin_urlname:'change' page.pk %}" class="right hide btn btn-flat">
@@ -40,6 +41,7 @@
                 <span class="material-icons left" aria-hidden="true">&#xE254;</span>
               </span>
             </a>
+            {% endif %}
             {% endif %}
           </div>
         </div>

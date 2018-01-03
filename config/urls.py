@@ -16,6 +16,11 @@ urlpatterns +=[
   url(r'', include('apps.pages.urls', namespace='pages')),
 ]
 
+# Search Results
+urlpatterns +=[
+    url(r'^search/results/', include('haystack.urls')),
+]
+
 #Board App
 #urlpatterns += [
 #    url(r'^board-of-education/', include('apps.board.urls', namespace='board')),

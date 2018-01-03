@@ -26,11 +26,11 @@
     </div>
     {% endif %}
     {% if request.path == '/search/' %}
-    <form class="textfieldboxes" action="javascript:void(0);" onsubmit="return false;">
+    <form class="textfieldboxes" action="/search/results/">
       <div class="input-field">
-        <input id="tableSearch" class="autocomplete" onchange="myFunction()" title="Search This Website" type="text">
+        <input id="tableSearch" name="q" class="autocomplete" title="Search This Website" type="text">
         <label for="tableSearch" class="">Search This Website</label>
-        <button type="submit" class="btn tableSearchSubmit white-text" name="tableSearchSubmit"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
+        <button type="submit" class="btn tableSearchSubmit white-text"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
       </div>
     </form>
     {% endif %}
