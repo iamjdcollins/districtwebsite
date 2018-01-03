@@ -1061,7 +1061,7 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
       fields = ['title', 'body','primary_contact',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
-          fields += ['parent']
+          fields += ['published','searchable','parent',]
           if obj:
               fields += ['url']
       return fields
@@ -1170,7 +1170,7 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
       fields = ['title', 'body','building_location','main_phone','main_fax','enrollment','openenrollmentstatus','schooltype','website_url','scc_url','boundary_map','primary_contact',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
-          fields += ['parent']
+          fields += ['published','searchable','parent',]
           if obj:
               fields += ['url']
       return fields
@@ -1239,7 +1239,7 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
       fields = ['title','short_description','body','building_location','main_phone','main_fax','primary_contact',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
-          fields += ['parent']
+          fields += ['published','searchable','parent',]
           if obj:
               fields += ['url']
       return fields
@@ -1308,7 +1308,7 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
       fields = ['title','body','building_location','main_phone','main_fax','mission_statement','vision_statement','primary_contact',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
-          fields += ['parent']
+          fields += ['published','searchable','parent',]
           if obj:
               fields += ['url']
       return fields
@@ -1377,7 +1377,7 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
       fields = ['title','body','building_location','main_phone','main_fax','primary_contact',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
-          fields += ['parent']
+          fields += ['published','searchable','parent',]
           if obj:
               fields += ['url']
       return fields
@@ -1439,7 +1439,7 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
       fields = ['title','pinned','summary','body','author_date',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
-          fields += ['parent']
+          fields += ['published','searchable','parent',]
           if obj:
               fields += ['url']
       return fields
@@ -1495,7 +1495,7 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
       fields = ['title',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
-          fields += ['parent']
+          fields += ['published','searchable','parent',]
           if obj:
               fields += ['url']
       return fields
@@ -1564,7 +1564,7 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
       fields = ['title',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
-          fields += ['parent']
+          fields += ['published','searchable','parent',]
           if obj:
               fields += ['url']
       return fields
@@ -1657,7 +1657,7 @@ class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title','section','index',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent',]
             if obj:
                 fields += ['url']
         return fields
@@ -1750,7 +1750,7 @@ class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent',]
             if obj:
                 fields += ['url']
         return fields
@@ -1841,7 +1841,7 @@ class AdministrativeProcedureAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent',]
             if obj:
                 fields += ['url']
         return fields
@@ -1932,7 +1932,7 @@ class SupportingDocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent',]
             if obj:
                 fields += ['url']
         return fields
@@ -2011,7 +2011,7 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
       fields = ['title','body','building_location','main_phone','main_fax','primary_contact',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
-          fields += ['parent']
+          fields += ['published','searchable','parent',]
           if obj:
               fields += ['url']
       return fields
@@ -2071,7 +2071,7 @@ class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
   def get_fields(self, request, obj=None):
       fields = ['title','first_name','last_name','phone','building_location',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
-          fields += ['parent']
+          fields += ['published','searchable','parent',]
           if obj:
               fields += ['url']
       return fields
@@ -2141,7 +2141,7 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title','originaldate', 'startdate','cancelled','meeting_type','building_location','non_district_location','non_district_location_google_place',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -2233,7 +2233,7 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -2322,7 +2322,7 @@ class BoardMeetingAgendaAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -2413,7 +2413,7 @@ class BoardMeetingMinutesAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -2504,7 +2504,7 @@ class BoardMeetingAudioAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -2595,7 +2595,7 @@ class BoardMeetingVideoAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -2687,7 +2687,7 @@ class BoardMeetingExhibitAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -2778,7 +2778,7 @@ class BoardMeetingAgendaItemAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -2851,7 +2851,7 @@ class FAQAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['question','answer',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -2923,7 +2923,7 @@ class DistrictCalendarYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['title',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -2995,7 +2995,7 @@ class DistrictCalendarEventAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['event_name','event_category','startdate','enddate','building_location','non_district_location','non_district_location_google_place','cancelled',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields
@@ -3067,7 +3067,7 @@ class DistrictLogoAdmin(MPTTModelAdmin,GuardedModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['district_logo_group','district_logo_style_variation',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
-            fields += ['parent']
+            fields += ['published','searchable','parent']
             if obj:
                 fields += ['url']
         return fields

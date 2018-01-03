@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 import uuid
 from mptt.models import MPTTModel, TreeForeignKey
-# import apps.common.functions
+from apps.common.functions import get_webmaster
 from django.contrib.auth.models import AbstractUser
 
 class Node(MPTTModel):
@@ -17,7 +17,7 @@ class Node(MPTTModel):
   content_type = models.CharField(max_length=200, editable=False, null=True, blank=True, db_index=True)
   menu_item = models.BooleanField(default=False, db_index=True)
   menu_title = models.CharField(max_length=200, null=True, blank=True)
-  primary_contact = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=False, to_field='uuid', on_delete=models.PROTECT, related_name='objects_node_primary_contact')
+  primary_contact = models.ForeignKey(settings.AUTH_USER_MODEL, default=get_webmaster, null=True, blank=False, to_field='uuid', on_delete=models.PROTECT, related_name='objects_node_primary_contact')
   has_permissions = models.BooleanField(default=False,db_index=True)
   create_date = models.DateTimeField(auto_now_add=True, db_index=True)
   create_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, to_field='uuid', on_delete=models.DO_NOTHING, related_name='objects_node_create_user')
@@ -25,6 +25,7 @@ class Node(MPTTModel):
   update_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, to_field='uuid', on_delete=models.DO_NOTHING, related_name='objects_node_update_user')
   published = models.BooleanField(default=True,db_index=True)
   deleted = models.BooleanField(default=False,db_index=True)
+  searchable = models.BooleanField(default=True,db_index=True)
 
   class Meta:
     db_table = 'objects_node'

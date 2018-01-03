@@ -23,11 +23,33 @@
     </form>
     <h1>Search Results</h1>
     {% if query %}
-        {% for result in page.object_list %}
-        <p><a href="{{ result.object.url }}">{{ result.object.title }}</a></p>
-        {% empty %}
-        <p>No results found.</p>
-        {% endfor %}
+        <div class="districtnews">
+          {% for result in page.object_list %}
+          <div class="row">
+            <div class="col s12 m4 l3 xl2 article-thumb" >
+              {% if result.object.images_newsthumbnail_node.all %}
+              {% for thumbnail in result.object.images_newsthumbnail_node.all %}
+              <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.image_file.url }}" width="350" height="350" alt="{{ thumbnail.alttext }}" typeof="foaf:Image" class="img-responsive">
+              {% endfor %}
+              {% elif result.object.images_thumbnail_node.all%}
+              {% for thumbnail in result.object.images_thumbnail_node.all %}
+              <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.image_file.url }}" width="350" height="350" alt="{{ thumbnail.alttext }}" typeof="foaf:Image" class="img-responsive">
+              {% endfor %}
+              {% else %}
+              <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/defaults/news/images/placeholder.png" width="350" height="350" alt="Salt Lake City School District Apple" typeof="foaf:Image" class="img-responsive">
+              {% endif %}
+            </div>
+            <div class="col s12 m8 l9 xl10">
+              <span class="news-title">{{ result.object.title }}</span>
+              {{ result.object.summary|truncatechars_html:400|safe }}
+            </div>
+            <a href="{{ result.object.url }}" class="btn-flat right" hreflang="en"><span class="sr-only">Read more about {{ result.object.title }}</span><span aria-hidden="true">Read More</span></a>
+          </div>
+          <!--<p><a href="{{ result.object.url }}">{{ result.object.title }}</a></p>-->
+          {% empty %}
+          <p>No results found.</p>
+          {% endfor %}
+        </div>
         {% if page.has_previous or page.has_next %}
         <div>
           {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}

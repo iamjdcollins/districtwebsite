@@ -1,2 +1,31 @@
 {{ object.title }}
+{{ object.short_description }}
 {{ object.body }}
+{{ object.building_location.title }}
+{{ object.building_location.street_address }}
+{{ object.main_phone }}
+{{ object.main_fax }}
+{% for image in object.images_contentbanner_node.all %}
+    {{ image.title }}
+    {{ image.alttext }}
+{% endfor %}
+{% for link in objects.links_actionbutton_node.all %}
+    {{ link.title }}
+    {{ link.link_url }}
+{% endfor %}
+{% for admin in object.directoryentries_administrator_node.all %}
+    {{ admin.employee.first_name }} {{ admin.employee.last_name }} {{ admin.employee.job_title }} {{ admin.employee.email }}
+{% endfor %}
+{% for staff in object.directoryentries_staff_node.all %}
+    {{ staff.employee.first_name }} {{ staff.employee.last_name }} {{ staff.employee.job_title }} {{ staff.employee.email }}
+{% endfor %}
+{% for link in objects.links_resourcelink_node.all %}
+    {{ link.title }}
+    {{ link.link_url }}
+{% endfor %}
+{% for document in object.documents_document_node.all %}
+    {{ document.title }}
+{% endfor %}
+{% for subpage in object.pages_subpage_node.all %}
+    {{ subpage.title }}
+{% endfor %}

@@ -6,7 +6,7 @@ from django.conf import settings
 from django.apps import apps
 from django.contrib.auth import get_permission_codename
 from guardian.shortcuts import get_perms
-from apps.objects.models import Node, User
+#from apps.objects.models import Node, User
 from django.core.cache import cache
 from django.apps import apps
 from django.core.exceptions import FieldDoesNotExist
@@ -162,6 +162,7 @@ def file_upload_to(instance, filename):
 # Save Content Functions
 
 def usersave(self, *args, **kwargs):
+  Node = apps.get_model('objects','node')
   # Setup New and Deleted Variables
   is_new = self._state.adding
   is_deleted = '_' if self.deleted == True else ''
@@ -209,6 +210,8 @@ def usersave(self, *args, **kwargs):
 
 
 def pagesave(self, *args, **kwargs):
+  Node = apps.get_model('objects','node')
+  User = apps.get_model('objects','user')
   f = open('/tmp/movingfile.txt', 'a')
   f.write('Saving Page ' + '\n')
   f.close()
@@ -276,6 +279,7 @@ def pagesave(self, *args, **kwargs):
   clearcache(self)
 
 def taxonomysave(self, *args, **kwargs):
+  Node = apps.get_model('objects','node')
   # Setup New and Deleted Variables
   is_new = self._state.adding
   is_deleted = '_' if self.deleted == True else ''
@@ -326,6 +330,7 @@ def taxonomysave(self, *args, **kwargs):
   clearcache(self)
 
 def imagesave(self, *args, **kwargs):
+  Node = apps.get_model('objects','node')
   f = open('/tmp/movingfile.txt', 'a')
   f.write('Saving Image ' + '\n')
   f.close()
@@ -401,6 +406,7 @@ def imagesave(self, *args, **kwargs):
   clearcache(self)
 
 def directoryentrysave(self, *args, **kwargs):
+  Node = apps.get_model('objects','node')
   # Setup New and Deleted Variables
   is_new = self._state.adding
   is_deleted = '_' if self.deleted == True else ''
@@ -455,6 +461,7 @@ def directoryentrysave(self, *args, **kwargs):
   clearcache(self)
 
 def linksave(self, *args, **kwargs):
+  Node = apps.get_model('objects','node')
   # Setup New and Deleted Variables
   is_new = self._state.adding
   is_deleted = '_' if self.deleted == True else ''
@@ -506,6 +513,7 @@ def linksave(self, *args, **kwargs):
   clearcache(self)
 
 def filesave(self, *args, **kwargs):
+  Node = apps.get_model('objects','node')
   # Setup New and Deleted Variables
   is_new = self._state.adding
   is_deleted = '_' if self.deleted == True else ''
@@ -582,6 +590,7 @@ def filesave(self, *args, **kwargs):
   clearcache(self)
 
 def documentsave(self, *args, **kwargs):
+  Node = apps.get_model('objects','node')
   # Setup New and Deleted Variables
   is_new = self._state.adding
   is_deleted = '_' if self.deleted == True else ''
@@ -652,6 +661,8 @@ def documentsave(self, *args, **kwargs):
   clearcache(self)  
 
 def eventsave(self, *args, **kwargs):
+  Node = apps.get_model('objects','node')
+  User = apps.get_model('objects','user')
   # Setup New and Deleted Variables
   is_new = self._state.adding
   is_deleted = '_' if self.deleted == True else ''
@@ -731,6 +742,7 @@ def eventsave(self, *args, **kwargs):
   clearcache(self)
 
 def faqsave(self, *args, **kwargs):
+  Node = apps.get_model('objects','node')
   # Setup New and Deleted Variables
   is_new = self._state.adding
   is_deleted = '_' if self.deleted == True else ''
@@ -788,10 +800,12 @@ def nodefindobject(node):
   return apps.get_model(node.node_type + '.' + node.content_type).objects.get(pk=node.pk)
 
 def objectfindnode(object):
-  return Node.objects.get(pk=object.pk)
+    Node = apps.get_model('objects','node')
+    return Node.objects.get(pk=object.pk)
 
 # MPTT Tree Functions
 def resetchildrentoalphatitle():
+  Node = apps.get_model('objects','node')
   top = Node.objects.filter(node_type='pages').get(node_title='Charter Schools')
   children = top.get_children()
   children = children.order_by('node_title')
@@ -869,6 +883,17 @@ def get_districtcalendareventcategory_general():
     try:
         return DistrictCalendarEventCategory.objects.get(title='General Event').pk
     except DistrictCalendarEventCategory.DoesNotExist:
+        return ''
+
+def get_webmaster(pk=True):
+    User = apps.get_model('objects','user')
+    try:
+        webmaster = User.objects.get(username='webmaster@slcschools.org')
+        if pk:
+            return webmaster.pk
+        else:
+            return webmaster
+    except User.DoesNotExist:
         return ''
 
 def currentyear(date=timezone.now()):
