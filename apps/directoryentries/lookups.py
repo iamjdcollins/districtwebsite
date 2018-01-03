@@ -9,7 +9,7 @@ class EmployeesLookup(UUIDLookupChannel):
 
   def get_query(self, q, request):
     q = re.sub(' ','.*',q)
-    return self.model.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).filter(username__iregex=q)[:10]
+    return (self.model.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).filter(username__iregex=q) | self.model.objects.filter(is_active=1).filter(is_staff=1).filter(username='webmaster@slcschools.org').filter(username__iregex=q))[:10]
 
   def format_item_display(self, item):
     return u"<span class='employee'>%s</span>" % item.username
