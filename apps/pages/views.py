@@ -326,3 +326,8 @@ def BoardMeetingYearArchive(request):
     board_meeting_years = BoardMeetingYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
     board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path).order_by('-startdate')
     return render(request, 'pages/board/boardmeetingyears.html', {'page': page, 'pageopts': pageopts,'board_meeting_years': board_meeting_years,'board_meetings': board_meetings})
+
+def contact(request):
+    page = get_object_or_404(Page, url=request.path)
+    pageopts = page._meta
+    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})

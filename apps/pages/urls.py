@@ -30,6 +30,7 @@ urlpatterns = [
   url(r'^board-of-education/(?:[a-z0-9-]+\/)*$', views.boarddetail, name='board'),
   url(r'^search/$', views.search, name='search'),
   url(r'^employees/$', views.employees, name='employees'),
+  url(r'^contact-us/$', views.contact, name='contact'),
   # url(r'^temp/$', views.temp, name='temp'),
 ]
 
