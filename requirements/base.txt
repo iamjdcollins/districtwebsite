@@ -17,5 +17,5 @@ pillow==4.3.0
 gevent==1.2.2
 greenlet==0.4.12
 django-admin-sortable2==0.6.18
-django-haystack==2.7.dev32+g471706a
+git+git://github.com/django-haystack/django-haystack.git@471706a
 pysolr==3.7.0
