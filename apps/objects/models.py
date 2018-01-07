@@ -157,14 +157,14 @@ class FAQ(Node):
     verbose_name_plural = 'FAQs'
     default_manager_name = 'objects'
 
-class Message(Node):
-  messagae_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
+class ContactMessage(Node):
+  contactmessagae_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
-  message_node = models.OneToOneField(Node, db_column='message_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+  contactmessage_node = models.OneToOneField(Node, db_column='contactmessage_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
   class Meta:
-    db_table = 'objects_message'
+    db_table = 'objects_contactmessage'
     get_latest_by = 'create_date'
-    verbose_name = 'Message'
-    verbose_name_plural = 'Messages'
+    verbose_name = 'Contact Message'
+    verbose_name_plural = 'Contact Messages'
     default_manager_name = 'objects'
