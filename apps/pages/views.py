@@ -163,6 +163,11 @@ def school_handbooks(request):
     pageopts = page._meta
     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
+def district_demographics(request):
+    page = get_object_or_404(Page, url=request.path)
+    pageopts = page._meta
+    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+
 def schooldetail(request):
   page = get_object_or_404(School, url=request.path)
   pageopts = page._meta
