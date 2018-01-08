@@ -950,6 +950,17 @@ def get_webmaster(pk=True):
     except User.DoesNotExist:
         return ''
 
+def get_contactpage(pk=True):
+    Node = apps.get_model('objects','node')
+    try:
+        page = Node.objects.get(node_title='Contact Us')
+        if pk:
+            return page.pk
+        else:
+            return page
+    except Node.DoesNotExist:
+        return ''
+
 def currentyear(date=timezone.now()):
   if date.month >= 7:
     currentyearkey = date.year + 1

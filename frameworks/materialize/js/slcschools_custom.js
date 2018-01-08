@@ -415,7 +415,7 @@ $(document).ready(function(){
     },
   });
   $(".pagefeedback").modaal({
-    type: 'inline',
+    type: 'ajax',
     custom_class: 'modaal-pagefeedback',
     after_callback_delay: 300,
     after_open: function(modal){

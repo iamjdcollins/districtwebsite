@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.http import HttpResponse
 
 import apps.common.functions
-from apps.objects.models import Node
+from apps.objects.models import Node, User
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear
 from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo
@@ -20,6 +20,7 @@ from apps.documents.models import Document, BoardPolicy
 from apps.files.models import File
 from apps.events.models import BoardMeeting, DistrictCalendarEvent
 from apps.users.models import Employee
+from apps.contactmessages.forms import ContactMessageForm
 
 def home(request):
   page = get_object_or_404(Page, url='/home/')
@@ -224,13 +225,13 @@ def departmentdetail(request):
 def directory(request):
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
-    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).order_by('last_name').only('last_name','first_name','job_title','email','department').prefetch_related(Prefetch('department',queryset=Node.objects.only('node_title','url')))
+    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).order_by('last_name').only('pk','last_name','first_name','job_title','email','department').prefetch_related(Prefetch('department',queryset=Node.objects.only('node_title','url')))
     return render(request, 'pages/directory/directory.html', {'page': page,'pageopts': pageopts, 'people': people})
 
 def directory_letter(request, letter):
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
-    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).filter(last_name__istartswith=letter).order_by('last_name').only('last_name','first_name','job_title','email','department').prefetch_related(Prefetch('department',queryset=Node.objects.only('node_title','url')))
+    people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).filter(last_name__istartswith=letter).order_by('last_name').only('pk','last_name','first_name','job_title','email','department').prefetch_related(Prefetch('department',queryset=Node.objects.only('node_title','url')))
     return render(request, 'pages/directory/directory_letter.html', {'page': page,'pageopts': pageopts, 'people': people})
 
 def calendars(request):
@@ -328,6 +329,75 @@ def BoardMeetingYearArchive(request):
     return render(request, 'pages/board/boardmeetingyears.html', {'page': page, 'pageopts': pageopts,'board_meeting_years': board_meeting_years,'board_meetings': board_meetings})
 
 def contact(request):
+    template = 'pages/contact/contact-us.html'
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
-    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+    if request.method == "POST":
+        form = ContactMessageForm(request.POST)
+        if form.is_valid():
+            if request.user.is_anonymous:
+                user = User.objects.get(username='AnonymousUser')
+            else:
+                user = User.objects.get(pk=request.user.pk)
+            post = form.save(commit=False)
+            message_parent = Node.objects.get(pk=post.parent.pk)
+            if post.primary_contact == '':
+                post.primary_contact = message_parent.primary_contact
+            post.create_user = user
+            post.update_user = user
+            post.searchable = False
+            post.save()
+            return redirect(post.parent.url)
+    else:
+        form = ContactMessageForm()
+
+        # Set parent initial value
+        try:
+            if request.GET['pid']:
+                form.fields['parent'].initial = request.GET['pid']
+        except:
+                form.fields['parent'].initial = apps.common.functions.get_contactpage()
+        # Set parent initial value
+        try:
+            if request.GET['cid']:
+                form.fields['primary_contact'].initial = request.GET['cid']
+        except:
+                form.fields['primary_contact'].initial = ''
+    return render(request, template, {'page': page,'pageopts': pageopts,'form': form,})
+
+def contact_inline(request):
+    template = 'pages/contact/contact-us-inline.html'
+    page = get_object_or_404(Page, url=request.path)
+    pageopts = page._meta
+    if request.method == "POST":
+        form = ContactMessageForm(request.POST)
+        if form.is_valid():
+            if request.user.is_anonymous:
+                user = User.objects.get(username='AnonymousUser')
+            else:
+                user = User.objects.get(pk=request.user.pk)
+            post = form.save(commit=False)
+            message_parent = Node.objects.get(pk=post.parent.pk)
+            if post.primary_contact == '':
+                post.primary_contact = message_parent.primary_contact
+            post.create_user = user
+            post.update_user = user
+            post.searchable = False
+            post.save()
+            return redirect(post.parent.url)
+    else:
+        form = ContactMessageForm()
+
+        # Set parent initial value
+        try:
+            if request.GET['pid']:
+                form.fields['parent'].initial = request.GET['pid']
+        except:
+                form.fields['parent'].initial = apps.common.functions.get_contactpage()
+        # Set parent initial value
+        try:
+            if request.GET['cid']:
+                form.fields['primary_contact'].initial = request.GET['cid']
+        except:
+                form.fields['primary_contact'].initial = ''
+    return render(request, template, {'page': page,'pageopts': pageopts,'form': form,})

@@ -20,9 +20,11 @@
             <i class="material-icons tiny black-text">&#xE0CD;</i> {{admin.phone|slice:"1:4"}}.{{admin.phone|slice:"4:7"}}.{{admin.phone|slice:"7:11"}}
           </a>
           {% endif %}
-        </div>
-        <div class="card-action">
-          <a href="#">SEND ME A MESSAGE</a>
+          <br/>
+          <a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{admin.employee.pk}}" class="btn narrow pagefeedback">
+            <span class="material-icons left" aria-hidden="true">&#xE163;</span><span aria-hidden="true">Send me a message</span>
+            <span class="sr-only">Send {{ admin.employee.first_name }} {{ admin.employee.last_name }} a Message</span>
+          </a>
         </div>
       </div>
     </div>

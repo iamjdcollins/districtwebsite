@@ -1421,7 +1421,7 @@ slider=$('.unslider');slider.on('unslider.ready',function(){firstItem=$(slider).
 //  $(element).attr('aria-describedby','fulltranslationlistdesc')
 //  $(element).focus()
 //}
-});}});$(".pagefeedback").modaal({type:'inline',custom_class:'modaal-pagefeedback',after_callback_delay:300,after_open:function(modal){$(modal).find('.modaal-focus').each(function(index,element){if(index===0){$(element).removeAttr('aria-label');$(element).attr('aria-labelledby','pagefeedbacktitle');$(element).attr('aria-describedby','pagefeedbackdesc');$(element).focus();}});$.when($('select').material_select()).then(materialSelectLabel());//$(modal).find('.modal-content').children().first().each(function(index,element){
+});}});$(".pagefeedback").modaal({type:'ajax',custom_class:'modaal-pagefeedback',after_callback_delay:300,after_open:function(modal){$(modal).find('.modaal-focus').each(function(index,element){if(index===0){$(element).removeAttr('aria-label');$(element).attr('aria-labelledby','pagefeedbacktitle');$(element).attr('aria-describedby','pagefeedbackdesc');$(element).focus();}});$.when($('select').material_select()).then(materialSelectLabel());//$(modal).find('.modal-content').children().first().each(function(index,element){
 //  if(index === 0){
 //    element.focus()
 //    console.log('Setting focus to ' + element)
