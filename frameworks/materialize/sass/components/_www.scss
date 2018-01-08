@@ -270,6 +270,20 @@ no-sr{
 .action-4 a{
   background: rgb(200,32,38);
 }
+.action-5 a{
+  @extend .deep-orange, .darken-1;
+}
+.action-6 a{
+  @extend .blue-grey, .darken-1;
+}
+.action-7 a{
+  @extend .purple, .darken-1;
+}
+.action-8 a{
+  @extend .light-blue, .darken-1;
+}
+
+
 .btn.stretch{
   display: block;
   width: 100%;
