@@ -1074,7 +1074,7 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
            fields += ['url']
       return fields
 
-  inlines = [ActionButtonInline,FAQInline,ResourceLinkInline,DocumentInline,]
+  inlines = [ActionButtonInline,FAQInline,ResourceLinkInline,DocumentInline,SubPageInline]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -1088,6 +1088,9 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
           if obj:
               if obj.url == '/search/':
                   if not isinstance(inline,FAQInline):
+                      continue
+              else:
+                  if isinstance(inline,FAQInline):
                       continue
           yield inline.get_formset(request, obj), inline
 
