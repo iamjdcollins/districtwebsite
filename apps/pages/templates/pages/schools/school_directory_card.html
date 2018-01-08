@@ -14,6 +14,16 @@
       <a href="tel:+{{school.main_phone|slice:"0:1"}}-{{school.main_phone|slice:"1:4"}}-{{school.main_phone|slice:"4:7"}}-{{school.main_phone|slice:"7:11"}}">
         <i class="material-icons tiny black-text">&#xE0CD;</i> {{school.main_phone|slice:"1:4"}}.{{school.main_phone|slice:"4:7"}}.{{school.main_phone|slice:"7:11"}}
       </a><br>
+      {% if school.scc_url %}
+      <a href="{{school.scc_url}}">
+        <span class="material-icons tiny black-text">&#xE7EF;</span> School Community Council
+      </a><br>
+      {% endif %}
+      {% if school.calendar_url %}
+      <a href="{{school.calendar_url}}">
+        <span class="material-icons tiny black-text">&#xE916;</span> School Calendar
+      </a><br>
+      {% endif %}
     </div>
     <div class="card-action">
       {% if school.website_url %}
