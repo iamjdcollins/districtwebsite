@@ -38,7 +38,7 @@ def directory_department(item,departments):
         return departments[str(item.department).lower()]
     return None
 
-def importUser(item, account, departments,all_adult_staff):
+def importUser(item, account, departments,all_adult_staff,website_managers):
   obj, created = Employee.objects.get_or_create(uuid=uuid.UUID(str(item.objectGUID)), defaults={'email':'tempemail@slcschools.org','url':'/tempemail'})
   obj.username = str(item.userPrincipalName).lower()
   obj.first_name = item.givenName
@@ -60,6 +60,8 @@ def importUser(item, account, departments,all_adult_staff):
     obj.create_user = account
   obj.update_user = account
   obj.groups.add(all_adult_staff)
+  if 'CN=USR_SERVERS_WEB_MANAGERS,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET' in item.memberOf.values:
+      obj.groups.add(website_managers)
   obj.save()
 
 class Command(BaseCommand):
@@ -70,15 +72,16 @@ class Command(BaseCommand):
       departments[str(node.node_title).lower()] = node
     importuserssvc = System.objects.get(username='importuserssvc')
     all_adult_staff = Group.objects.get(name='All Adult Staff')
+    website_managers = Group.objects.get(name='Website Managers')
     server = Server('slcsd.net', use_ssl=True, get_info=ALL)
     conn = Connection(server, user=settings.SLCSD_LDAP_USER, password=settings.SLCSD_LDAP_PASSWORD, authentication=NTLM)
     conn.bind()
-    conn.search('OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title','extensionAttribute1'])
+    conn.search('OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title','extensionAttribute1','memberOf',])
     for item in conn.entries:
-      importUser(item, importuserssvc,departments,all_adult_staff)
-    conn.search('OU=DO,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title','extensionAttribute1'])
+      importUser(item, importuserssvc,departments,all_adult_staff,website_managers)
+    conn.search('OU=DO,DC=SLCSD,DC=NET', '(&(objectClass=user)(| (memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title','extensionAttribute1','memberOf',])
     for item in conn.entries:
-      importUser(item, importuserssvc,departments,all_adult_staff)
-    conn.search('OU=INFORMATION_SYSTEMS,DC=SLCSD,DC=NET', '(&(objectClass=user)(|(memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title','extensionAttribute1',])
+      importUser(item, importuserssvc,departments,all_adult_staff,website_managers)
+    conn.search('OU=INFORMATION_SYSTEMS,DC=SLCSD,DC=NET', '(&(objectClass=user)(|(memberof:1.2.840.113556.1.4.1941:=CN=USR_SERVERS_WEB_ALL_ADULT_STAFF,OU=WEB,OU=SERVERS,DC=SLCSD,DC=NET)(memberof:1.2.840.113556.1.4.1941:=CN=USR_SLCSD_NONEMPLOYEE,DC=SLCSD,DC=NET)))', attributes=['DisplayName','userPrincipalName','givenName','sn','objectGUID','mail','department','title','extensionAttribute1','memberOf',])
     for item in conn.entries:
-      importUser(item, importuserssvc,departments,all_adult_staff)
+      importUser(item, importuserssvc,departments,all_adult_staff,website_managers)
