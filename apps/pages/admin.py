@@ -1074,7 +1074,7 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
            fields += ['url']
       return fields
 
-  inlines = [ActionButtonInline,FAQInline]
+  inlines = [ActionButtonInline,FAQInline,ResourceLinkInline,DocumentInline,]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
