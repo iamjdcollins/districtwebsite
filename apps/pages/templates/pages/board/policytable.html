@@ -18,10 +18,7 @@
   <!--<td class="rowaction"><a href="#!" title="Question / Comment"><span class="material-icons">&#xE0C9;</span></a></td>-->
   <td class="contacts">
     {% for boardpolicyadmin in policy.directoryentries_boardpolicyadmin_node.all %}
-      <a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{staff.employee.pk}}" style="white-space: pre" class="pagefeedback">
-        <span class="sr-only">Send {{ staff.employee.first_name }} {{ staff.employee.last_name }} a Message</span>
-        <span class="" aria-hidden="True">{{boardpolicyadmin.employee.first_name}} {{boardpolicyadmin.employee.last_name}}</span>
-      </a>
+    <a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{boardpolicyadmin.employee.pk}}" style="white-space: pre" class="pagefeedback"><span class="sr-only">Send {{boardpolicyadmin.employee.first_name}} {{boardpolicyadmin.employee.last_name}} a Message</span><span class="" aria-hidden="True">{{boardpolicyadmin.employee.first_name}} {{boardpolicyadmin.employee.last_name}}</span></a><br/>
     {% endfor %}
   </td>
 </tr>
