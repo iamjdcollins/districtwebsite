@@ -12,7 +12,7 @@
           {% if pageopts.model_name == 'school' %}
           <strong>{{ admin.schooladministratortype }}</strong> <br />
           <strong>{{ admin.employee.job_title }}</strong> <br />
-          {% elif pageopts.model_name == 'department' %}
+          {% elif pageopts.model_name == 'department' or pageopts.model_name == 'subpage' %}
           <strong>{{ admin.employee.job_title }}</strong> <br />
           {% endif %}
           {% if admin.phone %}
