@@ -54,6 +54,7 @@ class School(BasePage):
   schooltype = models.ForeignKey(SchoolType, to_field='schooltype_taxonomy_node', on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='pages_school_schooltype')
   website_url = models.URLField(max_length=2048, null=True, blank=True, help_text='')
   scc_url = models.URLField(max_length=2048, help_text="", null=True, blank=True)
+  calendar_url = models.URLField(max_length=2048, help_text="", null=True, blank=True, verbose_name="School Calendar URL")
   boundary_map = models.URLField(max_length=2048, help_text='', null=True, blank=True)
   openenrollmentstatus = models.ForeignKey(OpenEnrollmentStatus, null=True, blank=True, to_field='openenrollmentstatus_taxonomy_node', on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='pages_school_openenrollmentstatus')
 
