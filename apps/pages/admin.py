@@ -11,7 +11,7 @@ from adminsortable2.admin import SortableInlineAdminMixin
 from apps.common.classes import DeletedListFilter, EditLinkToInlineObject
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
-from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear
+from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear, SuperintendentMessage,SuperintendentMessageYear
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo, DistrictLogoGIF, DistrictLogoJPG, DistrictLogoPNG, DistrictLogoTIF
 from apps.directoryentries.models import SchoolAdministrator, Administrator, Staff, BoardMember, StudentBoardMember, BoardPolicyAdmin
 from apps.links.models import ResourceLink, ActionButton
@@ -981,6 +981,38 @@ class BoardMeetingInline(EditLinkToInlineObject, admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
+class SuperintendentMessageInlineForm(forms.ModelForm):
+    class Meta:
+        model = SuperintendentMessage
+        fields = ['author_date',]
+
+    def __init__(self, *args, **kwargs):
+        super(SuperintendentMessageInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            pass
+
+class SuperintendentMessageInline(EditLinkToInlineObject, admin.TabularInline):
+  model = SuperintendentMessage
+  form = SuperintendentMessageInlineForm
+  fk_name = 'parent'
+  fields = ['author_date','update_user','update_date','edit_link',]
+  readonly_fields = ['update_user','update_date','edit_link',]
+  ordering = ['-author_date',]
+  extra = 0
+  min_num = 0
+  max_num = 50
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+  def get_queryset(self, request):
+      qs = super().get_queryset(request)
+      if request.user.is_superuser:
+          return qs
+      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+          return qs
+      return qs.filter(deleted=0)
+
 class DistrictCalendarEventInlineForm(forms.ModelForm):
     class Meta:
         model = DistrictCalendarEvent
@@ -1512,6 +1544,117 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
       return fields
 
   inlines = []
+
+  def get_formsets_with_inlines(self, request, obj=None):
+      for inline in self.get_inline_instances(request, obj):
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
+                  inline.fields.append('deleted')
+          else:
+              while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
+          yield inline.get_formset(request, obj), inline
+
+  has_change_permission = apps.common.functions.has_change_permission
+  has_add_permission = apps.common.functions.has_add_permission
+  has_delete_permission = apps.common.functions.has_delete_permission
+
+  def save_formset(self, request, form, formset, change):
+    instances = formset.save(commit=False)
+    for obj in formset.deleted_objects:
+      obj.delete()
+    for obj in formset.new_objects:
+      obj.create_user = request.user
+      obj.update_user = request.user
+      obj.primary_contact = request.user
+      obj.save()
+    for obj in formset.changed_objects:
+      obj[0].update_user = request.user
+      obj[0].save()
+
+  def save_model(self, request, obj, form, change):
+    if getattr(obj, 'create_user', None) is None:
+      obj.create_user = request.user
+    obj.update_user = request.user
+    super().save_model(request, obj, form, change)
+
+  response_change = apps.common.functions.response_change
+
+class SuperintendentMessageAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+  def get_fields(self, request, obj=None):
+      fields = ['author_date','summary','body',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['published','searchable','parent',]
+          if obj:
+              fields += ['url']
+      return fields
+
+  def get_readonly_fields(self, request, obj=None):
+      fields = ['author_date','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          if obj:
+           fields += ['url']
+      return fields
+
+  inlines = [NewsThumbnailInline,ContentBannerInline,ResourceLinkInline,DocumentInline]
+
+  def get_formsets_with_inlines(self, request, obj=None):
+      for inline in self.get_inline_instances(request, obj):
+          # Remove delete fields is not superuser
+          if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+              if not 'deleted' in inline.fields:
+                  inline.fields.append('deleted')
+          else:
+              while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
+          yield inline.get_formset(request, obj), inline
+
+  has_change_permission = apps.common.functions.has_change_permission
+  has_add_permission = apps.common.functions.has_add_permission
+  has_delete_permission = apps.common.functions.has_delete_permission
+
+  def save_formset(self, request, form, formset, change):
+    instances = formset.save(commit=False)
+    for obj in formset.deleted_objects:
+      obj.delete()
+    for obj in formset.new_objects:
+      obj.create_user = request.user
+      obj.update_user = request.user
+      obj.primary_contact = request.user
+      obj.save()
+    for obj in formset.changed_objects:
+      obj[0].update_user = request.user
+      obj[0].save()
+
+  def save_model(self, request, obj, form, change):
+    if getattr(obj, 'create_user', None) is None:
+      obj.create_user = request.user
+    obj.update_user = request.user
+    super().save_model(request, obj, form, change)
+
+  response_change = apps.common.functions.response_change
+
+class SuperintendentMessageYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+  def get_fields(self, request, obj=None):
+      fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+      if request.user.is_superuser:
+          fields += ['published','searchable','parent',]
+          if obj:
+              fields += ['url']
+      return fields
+
+  def get_readonly_fields(self, request, obj=None):
+      fields = ['title','update_user','update_date','create_user','create_date',]
+      if request.user.is_superuser:
+          fields.remove('title')
+          if obj:
+           fields += ['url']
+      return fields
+
+  inlines = [SuperintendentMessageInline,]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -3129,6 +3272,8 @@ admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Board, BoardAdmin)
 admin.site.register(News, NewsAdmin)
 admin.site.register(NewsYear, NewsYearAdmin)
+admin.site.register(SuperintendentMessage, SuperintendentMessageAdmin)
+admin.site.register(SuperintendentMessageYear, SuperintendentMessageYearAdmin)
 admin.site.register(Document,DocumentAdmin)
 admin.site.register(BoardPolicy,BoardPolicyAdmin)
 admin.site.register(Policy,PolicyAdmin)

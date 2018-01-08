@@ -253,6 +253,56 @@ class News(BasePage):
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
 
+class SuperintendentMessageYear(BasePage):
+
+    PARENT_URL = '/departments/superintendents-office/superintendents-message/'
+
+    title = models.CharField(max_length=200, unique=True, help_text="",)
+    yearend = models.CharField(max_length=4, unique=True, help_text="", blank=True)
+
+    superintendentmessageyear_page_node = models.OneToOneField(BasePage, db_column='superintendentmessage_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'pages_superintendentmessageyear'
+        get_latest_by = 'update_date'
+        permissions = (('trash_superintendentmessageyear', 'Can soft delete superintendent message year'),('restore_superintendentmessageyear', 'Can restore superintendent message year'))
+        verbose_name = 'Superintendent Message Year'
+        verbose_name_plural = 'Superintendent Message Years'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.pagesave
+    delete = apps.common.functions.modeltrash
+
+class SuperintendentMessage(BasePage):
+
+    PARENT_TYPE = SuperintendentMessageYear
+
+    title = models.CharField(max_length=200, unique=False, help_text="",)
+    body = RichTextField(null=True, blank=True, help_text="",)
+    summary = RichTextField(max_length=400, null=True, blank=True, help_text="",)
+    author_date = models.DateTimeField(default=timezone.now,)
+    related_node = models.ForeignKey(Node, blank=True, null=True, related_name='pages_superintendentmessage_node', editable=False)
+
+    superintendentmessage_page_node = models.OneToOneField(BasePage, db_column='superintendentmessage_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'pages_superintendentmessage'
+        get_latest_by = 'update_date'
+        permissions = (('trash_superintendentmessage', 'Can soft delete superintendent message'),('restore_superintendentmessage', 'Can restore superintendent message'))
+        verbose_name = 'Superintendent Message'
+        verbose_name_plural = 'Superintendent Messages'
+        ordering = ['-author_date',]
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.pagesave
+    delete = apps.common.functions.modeltrash
+
 class SubPage(BasePage):
 
     CONTENTBANNER = True

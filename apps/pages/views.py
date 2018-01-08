@@ -11,7 +11,7 @@ from django.http import HttpResponse
 
 import apps.common.functions
 from apps.objects.models import Node, User
-from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear
+from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear,SuperintendentMessage,SuperintendentMessageYear
 from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo
 from apps.directoryentries.models import Staff, SchoolAdministrator, Administrator,  BoardMember, StudentBoardMember
@@ -25,8 +25,9 @@ from apps.contactmessages.forms import ContactMessageForm
 def home(request):
   page = get_object_or_404(Page, url='/home/')
   pageopts = page._meta
+  supermessage = SuperintendentMessage.objects.filter(deleted=0).filter(published=1).order_by('-author_date').only('title','author_date','summary','url')[:1]
   news = News.objects.all().filter(deleted=0).filter(published=1).order_by('-pinned','-author_date').only('title','author_date','summary','url').prefetch_related(Prefetch('images_newsthumbnail_node', queryset = NewsThumbnail.objects.only('image_file','alttext','related_node_id')))[0:5]
-  result = render(request, 'pages/home.html', {'page': page,'pageopts': pageopts,'news': news})
+  result = render(request, 'pages/home.html', {'page': page,'pageopts': pageopts,'news': news,'supermessage':supermessage})
   return result
 
 def news(request):
@@ -231,6 +232,71 @@ def departmentdetail(request):
     if not template:
         template = 'pages/departments/departmentdetail.html'
     return render(request, template, context)
+
+def superintendents_message(request):
+    currentyear = apps.common.functions.currentyear()
+    if request.path == '/departments/superintendents-office/superintendents-message/':
+        try:
+            year = SuperintendentMessageYear.objects.get(title=currentyear['currentyear']['long'])
+        except SuperintendentMessageYear.DoesNotExist:
+            message, created = SuperintendentMessage.objects.get_or_create(author_date=timezone.now())
+            if created:
+                message.save()
+                message.delete()
+                message.delete()
+            year = SuperintendentMessageYear.objects.get(title=currentyear['currentyear']['long'])
+        return redirect(year.url)
+
+def superintendents_message_yeararchive(request):
+    page = SuperintendentMessageYear.objects.filter(url=request.path).first()
+    pageopts = page._meta
+    superintendent_messages = SuperintendentMessage.objects.filter(parent__url=request.path).filter(deleted=0).filter(published=1).only('title','author_date','summary','url').prefetch_related(Prefetch('images_newsthumbnail_node', queryset = NewsThumbnail.objects.only('image_file','alttext','related_node_id')))
+    messagemonths = [
+        {'month': 'June', 'message': [],},
+        {'month': 'May', 'message': [],},
+        {'month': 'April', 'message': [],},
+        {'month': 'March', 'message': [],},
+        {'month': 'February', 'message': [],},
+        {'month': 'January', 'message': [],},
+        {'month': 'December', 'message': [],},
+        {'month': 'November', 'message': [],},
+        {'month': 'October', 'message': [],},
+        {'month': 'September', 'message': [],},
+        {'month': 'August', 'message': [],},
+        {'month': 'July', 'message': [],},
+    ]
+    for item in superintendent_messages:
+        if item.author_date.month == 6:
+            messagemonths[0]['message'].append(item)
+        if item.author_date.month == 5:
+            messagemonths[1]['message'].append(item)
+        if item.author_date.month == 4:
+            messagemonths[2]['message'].append(item)
+        if item.author_date.month == 3:
+            messagemonths[3]['message'].append(item)
+        if item.author_date.month == 2:
+            messagemonths[4]['message'].append(item)
+        if item.author_date.month == 1:
+            messagemonths[5]['message'].append(item)
+        if item.author_date.month == 12:
+            messagemonths[6]['message'].append(item)
+        if item.author_date.month == 11:
+            messagemonths[7]['message'].append(item)
+        if item.author_date.month == 10:
+            messagemonths[8]['message'].append(item)
+        if item.author_date.month == 9:
+            messagemonths[9]['message'].append(item)
+        if item.author_date.month == 8:
+            messagemonths[10]['message'].append(item)
+        if item.author_date.month == 7:
+            messagemonths[11]['message'].append(item)
+    return render(request, 'pages/news/yeararchive.html', {'page': page, 'pageopts': pageopts, 'superintendent_messages': superintendent_messages, 'messagemonths': messagemonths})
+
+def superintendents_message_detail(request):
+    pages =  SuperintendentMessage.objects.filter(published=1).filter(deleted=0)
+    page = get_object_or_404(pages, url=request.path)
+    pageopts = page._meta
+    return render(request, 'pages/news/articledetail.html', {'page': page, 'pageopts': pageopts})
 
 def directory(request):
     page = get_object_or_404(Page, url=request.path)

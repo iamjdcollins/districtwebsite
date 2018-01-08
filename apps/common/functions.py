@@ -221,7 +221,11 @@ def pagesave(self, *args, **kwargs):
   # Set UUID if None
   if self.uuid is None:
     self.uuid = uuid.uuid4()
-  if self._meta.model_name == 'news':
+  #Force Title
+  if self._meta.model_name == 'superintendentmessage':
+      if not self.title:
+          self.title = 'Superintendent\'s Message ' + self.author_date.strftime('%Y-%m-%d')
+  if self._meta.model_name == 'news' or self._meta.model_name == 'superintendentmessage':
     if self.author_date.month >= 7:
       yearend = self.author_date.year + 1
       yearstring = str(self.author_date.year) + '-' + str(self.author_date.year + 1)[2:]
@@ -229,13 +233,13 @@ def pagesave(self, *args, **kwargs):
       yearend=self.author_date.year
       yearstring = str(self.author_date.year - 1) + '-' + str(self.author_date.year)[2:]
     try:
-      newsyear = self.PARENT_TYPE.objects.get(yearend=yearend)
+      yearobject = self.PARENT_TYPE.objects.get(yearend=yearend)
     except self.PARENT_TYPE.DoesNotExist:
       webmaster = User.objects.get(username='webmaster@slcschools.org')
-      parent = Node.objects.get(node_title='News', content_type='page')
-      newsyear = self.PARENT_TYPE(title=yearstring, yearend=yearend, parent=parent, create_user=webmaster, update_user=webmaster)
-      newsyear.save()
-    self.parent = Node.objects.get(url=newsyear.url)
+      parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL)
+      yearobject = self.PARENT_TYPE(title=yearstring, yearend=yearend, parent=parent, create_user=webmaster, update_user=webmaster)
+      yearobject.save()
+    self.parent = Node.objects.get(url=yearobject.url)
   # Track URL Changes
   urlchanged = False
   parent_url = self.parent.url if self.parent else ''
