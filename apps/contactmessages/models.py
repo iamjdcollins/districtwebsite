@@ -12,6 +12,7 @@ class ContactMessage(BaseContactMessage):
     your_email = models.EmailField(max_length=254, help_text='')
     message_subject = models.CharField(max_length=400, help_text='')
     your_message = models.TextField(max_length=2000, help_text='')
+    confirm_set = models.BooleanField(default=False,db_index=True)
     message_sent = models.BooleanField(default=False,db_index=True)
     related_node = models.ForeignKey(Node, blank=True, null=True, related_name='contactmessages_contactmessage_node', editable=False)
 
