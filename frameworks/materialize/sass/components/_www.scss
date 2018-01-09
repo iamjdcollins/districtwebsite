@@ -326,6 +326,14 @@ no-sr{
   display: block;
   width: 100%;
 }
+.btn-large-wrap {
+  line-height: 20px;
+  padding-top: 17px;
+  padding-bottom: 17px;
+  word-wrap: normal;
+  white-space: normal;
+  height: unset;
+}
 .material-icons.right {
     float: right;
     margin-left: 15px;
