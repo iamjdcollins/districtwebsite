@@ -4,6 +4,7 @@ import re
 import uuid
 from django.conf import settings
 from django.apps import apps
+from django.core.mail import EmailMessage
 from django.contrib.auth import get_permission_codename
 from guardian.shortcuts import get_perms
 #from apps.objects.models import Node, User
@@ -21,6 +22,40 @@ from django.http import HttpResponseRedirect
 from django.utils.http import urlencode, urlquote
 from django.contrib import messages
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
+
+def contactmessage_confirm(self):
+    email = EmailMessage(
+        'THANK YOU: ' + self.message_subject,
+        '<p>We have received your message. We will get back to you shortly.</p><br><p><strong>Original Message</strong></p><br><p>' + self.your_message + '</p>',
+        'Salt Lake City School District <webmaster@slcschools.org>',
+        [self.your_email],
+        ['webmaster@slcschools.org'],
+        reply_to=['donotreply@slcschools.org'],
+        headers={'Message-ID': str(self.pk) + '-' + str(uuid.uuid4())[0:8]},
+    )
+    email.content_subtype = 'html'
+    try:
+        email.send(fail_silently=False)
+    except:
+        return False
+    return True
+
+def contactmessage_message(self):
+    email = EmailMessage(
+        'WEBSITE CONTACT: ' + self.message_subject,
+        '<p>' + self.your_message + '</p>',
+        'Salt Lake City School District <webmaster@slcschools.org>',
+        [self.primary_contact.email],
+        ['webmaster@slcschools.org'],
+        reply_to=[self.your_email],
+        headers={'Message-ID': str(self.pk) + '-' + str(uuid.uuid4())[0:8]},
+    )
+    email.content_subtype = 'html'
+    try:
+        email.send(fail_silently=False)
+    except:
+        return False
+    return True
 
 def findfileext_media(media):
   media = media.split('/')[-1:]
@@ -842,6 +877,12 @@ def contactmessagesave(self, *args, **kwargs):
     self.has_permissions = True
   else:
     self.has_permissions = False
+  #Send Confirm Email
+  if not self.confirm_sent:
+      self.confirm_sent = contactmessage_confirm(self)
+  #Send Message
+  if not self.message_sent:
+      self.message_sent = contactmessage_message(self)
   # Save the item
   super(self._meta.model, self).save(*args, **kwargs)
   if urlchanged:
