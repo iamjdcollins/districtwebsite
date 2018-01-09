@@ -24,6 +24,11 @@
         <span class="material-icons tiny black-text">&#xE916;</span> School Calendar
       </a><br>
       {% endif %}
+      {% if school.donate_url %}
+      <a href="{{school.donate_url}}">
+        <span class="material-icons tiny black-text">&#xE8F6;</span> Make a Donation
+      </a><br>
+      {% endif %}
       {% if school.boundary_map %}
       <a href="{{school.url}}#boundarymap">
         <span class="material-icons tiny black-text">&#xE55B;</span> School Boundary Map 
