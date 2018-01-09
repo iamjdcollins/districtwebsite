@@ -29,7 +29,6 @@ def contactmessage_confirm(self):
         '<p>We have received your message. We will get back to you shortly.</p><br><p><strong>Original Message</strong></p><br><p>' + self.your_message + '</p>',
         'Salt Lake City School District <webmaster@slcschools.org>',
         [self.your_email],
-        ['webmaster@slcschools.org'],
         reply_to=['donotreply@slcschools.org'],
         headers={'Message-ID': str(self.pk) + '-' + str(uuid.uuid4())[0:8]},
     )
@@ -46,7 +45,7 @@ def contactmessage_message(self):
         '<p>' + self.your_message + '</p>',
         'Salt Lake City School District <webmaster@slcschools.org>',
         [self.primary_contact.email],
-        ['webmaster@slcschools.org'],
+        bcc=['webmaster@slcschools.org'],
         reply_to=[self.your_email],
         headers={'Message-ID': str(self.pk) + '-' + str(uuid.uuid4())[0:8]},
     )
