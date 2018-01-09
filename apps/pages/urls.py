@@ -25,6 +25,7 @@ urlpatterns = [
   url(r'^departments/superintendents-office/superintendents-message/$', views.superintendents_message, name='superintendents_message'),
   url(r'^departments/superintendents-office/superintendents-message/\d\d\d\d-\d\d\/$', views.superintendents_message_yeararchive, name='superintendents_message_yeararchive'),
   url(r'^departments/superintendents-office/superintendents-message/\d\d\d\d-\d\d\/.*\/$', views.superintendents_message_detail, name='superintendents_message_detail'),
+  url(r'^departments/superintendents-office/downloads/$', views.superintendents_downloads, name='superintendents_downloads'),
   url(r'^departments/(?:[a-z0-9-]+\/)+$', views.departmentdetail, name='departmentdetail'),
   url(r'^directory/$', views.directory, name='directory'),
   url(r'^directory/last-name-(?P<letter>[a-z])/$', views.directory_letter, name='directory_letter'),

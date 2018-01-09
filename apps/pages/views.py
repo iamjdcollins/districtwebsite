@@ -298,6 +298,11 @@ def superintendents_message_detail(request):
     pageopts = page._meta
     return render(request, 'pages/news/articledetail.html', {'page': page, 'pageopts': pageopts})
 
+def superintendents_downloads(request):
+    page = get_object_or_404(Page, url=request.path)
+    pageopts = page._meta
+    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+
 def directory(request):
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
