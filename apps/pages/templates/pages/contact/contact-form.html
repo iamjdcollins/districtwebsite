@@ -1,41 +1,41 @@
 <div class="row">
-      <form class="col s12 focus" action="/contact-us/" method="post">
-        {% csrf_token %}
-        <div class="input-field col s12">
-          <span class="material-icons prefix" aria-hidden="true">&#xE7FD;</span>
-          {{ form.your_name.errors }}
-          {{ form.your_name }}
-          <label for="{{ form.your_name.id_for_label}}">Your Name</label>
-        </div>
-        <div class="input-field col s12">
-          <span class="material-icons prefix" aria-hidden="true">&#xE0BE;</span>
-          {{ form.your_email.errors }}
-          {{ form.your_email }}
-          <label for="{{ form.your_email.id_for_label}}">Your Email</label>
-        </div>
-        <div class="input-field col s12">
-          <span class="material-icons prefix" aria-hidden="true">&#xE254;</span>
-          {{ form.message_subject.errors }}
-          {{ form.message_subject }}
-          <label for="{{ form.message_subject.id_for_label}}">Message Subject</label>
-        </div>
-        <div class="input-field col s12">
-          <span class="material-icons prefix" aria-hidden="true">&#xE0C9;</span>
-          {{ form.your_message.errors }}
-          {{ form.your_message }}
-          <label for="{{ form.your_message.id_for_label}}">Your Message</label>
-        </div>
-        {{ form.parent }}
-        {{ form.primary_contact }}
-        <button type="submit" class="modal-action modal-close waves-effect waves-green btn ">
-          <span class="sr-only">Submit page feedback form.</span>
-          <span class="no-sr" aria-hidden="true">Submit</span>
-        </button>
-        {% if request.path == '/contact-us/inline/' %}
-        <a href="#" onclick="return false;" class="modal-action modal-close waves-effect waves-green btn-flat ">
-          <span class="sr-only">Cancel page feedback form and close dialog.</span>
-          <span class="no-sr" aria-hidden="true">Cancel</span>
-        </a>
-        {% endif %}
-      </form>
+  <form class="col s12 focus" action="/contact-us/" method="post">
+    {% csrf_token %}
+    <div class="input-field col s12">
+      <span class="material-icons prefix" aria-hidden="true">&#xE7FD;</span>
+      {{ form.your_name.errors }}
+      {{ form.your_name }}
+      <label for="{{ form.your_name.id_for_label}}">Your Name</label>
     </div>
+    <div class="input-field col s12">
+      <span class="material-icons prefix" aria-hidden="true">&#xE0BE;</span>
+      {{ form.your_email.errors }}
+      {{ form.your_email }}
+      <label for="{{ form.your_email.id_for_label}}">Your Email</label>
+    </div>
+    <div class="input-field col s12">
+      <span class="material-icons prefix" aria-hidden="true">&#xE254;</span>
+      {{ form.message_subject.errors }}
+      {{ form.message_subject }}
+      <label for="{{ form.message_subject.id_for_label}}">Message Subject</label>
+    </div>
+    <div class="input-field col s12">
+      <span class="material-icons prefix" aria-hidden="true">&#xE0C9;</span>
+      {{ form.your_message.errors }}
+      {{ form.your_message }}
+      <label for="{{ form.your_message.id_for_label}}">Your Message</label>
+    </div>
+    {{ form.parent }}
+    {{ form.primary_contact }}
+    <button type="submit" {% if request.path == '/contact-us/inline/' %}onclick="$('.modaal-container').css('display','none');$('.modal-loading').css('display','block').css('z-index','9999')" {% endif %}class="modal-action modal-close waves-effect waves-green btn ">
+      <span class="sr-only">Submit page feedback form.</span>
+      <span class="no-sr" aria-hidden="true">Submit</span>
+    </button>
+    {% if request.path == '/contact-us/inline/' %}
+    <a href="#" onclick="$('.pagefeedback').modaal('close'); return false;" class="modal-action modal-close waves-effect waves-green btn-flat ">
+      <span class="sr-only">Cancel page feedback form and close dialog.</span>
+      <span class="no-sr" aria-hidden="true">Cancel</span>
+    </a>
+    {% endif %}
+  </form>
+</div>
