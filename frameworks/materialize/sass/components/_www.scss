@@ -686,8 +686,8 @@ ul ul{
     padding: 10px;
 }
 .card.card-alert.success {
-  @extend .green, .lighten-5;
-  @extend .green-text;
+  @extend .green;
+  color: white !important;
 }
 
 .card.primarycontact{
