@@ -1,0 +1,41 @@
+{{ object.title }}
+{{ object.body }}
+{{ object.building_location.title }}
+{{ object.building_location.street_address }}
+{{ object.main_phone }}
+{{ object.main_fax }}
+{{ object.mission_statement }}
+{{ object.vision_statement }}
+{% for image in object.images_contentbanner_node.all %}
+    {{ image.title }}
+    {{ image.alttext }}
+{% endfor %}
+{% for member in object.directoryentries_boardmember_node.all %}
+    {{ member.employee.first_name }}
+    {{ member.employee.last_name }}
+    {{ member.employee.job_title }}
+    {{ member.employee.email }}
+    {{ member.precinct.title }}
+    {{ member.phone }}
+    {{ member.street_address }}
+    {{ member.city.title }}
+    {{ member.state.title }}
+    {{ member.zipcode.title }}
+{% endfor %}
+{% for member in object.directoryentries_studentboardmember_node.all %}
+    {{ member.first_name }}
+    {{ member.last_name }}
+    {{ member.phone }}
+    {{ member.building_location.title }}
+    {{ member.building_location.street_address }}
+{% endfor %}
+{% for link in object.links_resourcelink_node.all %}
+    {{ link.title }}
+    {{ link.link_url }}
+{% endfor %}
+{% for document in object.documents_document_node.all %}
+    {{ document.title }}
+{% endfor %}
+{% for subpage in object.pages_boardsubpage_node.all %}
+    {{ subpage.title }}
+{% endfor %}

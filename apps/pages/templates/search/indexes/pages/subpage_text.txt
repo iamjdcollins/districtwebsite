@@ -8,7 +8,7 @@
     {{ image.title }}
     {{ image.alttext }}
 {% endfor %}
-{% for link in objects.links_actionbutton_node.all %}
+{% for link in object.links_actionbutton_node.all %}
     {{ link.title }}
     {{ link.link_url }}
 {% endfor %}
@@ -18,7 +18,7 @@
 {% for staff in object.directoryentries_staff_node.all %}
     {{ staff.employee.first_name }} {{ staff.employee.last_name }} {{ staff.employee.job_title }} {{ staff.employee.email }}
 {% endfor %}
-{% for link in objects.links_resourcelink_node.all %}
+{% for link in object.links_resourcelink_node.all %}
     {{ link.title }}
     {{ link.link_url }}
 {% endfor %}

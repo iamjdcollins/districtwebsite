@@ -1,5 +1,5 @@
 from haystack import indexes
-from .models import Page, School, Department, SubPage
+from .models import Page, School, Department, SubPage, Board, BoardSubPage
 
 class PageIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -33,6 +33,24 @@ class SubPageIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return SubPage
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.filter(deleted=0).filter(published=1).filter(searchable=1)
+
+class BoardIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return Board
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.filter(deleted=0).filter(published=1).filter(searchable=1)
+
+class BoardSubPageIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return BoardSubPage
 
     def index_queryset(self, using=None):
         return self.get_model().objects.filter(deleted=0).filter(published=1).filter(searchable=1)
