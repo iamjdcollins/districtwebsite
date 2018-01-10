@@ -170,8 +170,11 @@ class BoardSubPage(BasePage):
 
     boardsubpage_page_node = models.OneToOneField(BasePage, db_column='boardsubpage_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
+    inline_order = models.PositiveIntegerField(default=0,blank=False, null=False,db_index=True)
+
     class Meta:
         db_table = 'pages_boardsubpage'
+        ordering = ['inline_order',]
         get_latest_by = 'update_date'
         permissions = (('trash_boardsubpage', 'Can soft delete board subpage'),('restore_boardsubpage', 'Can restore board subpage'))
         verbose_name = 'Board Subpage'
