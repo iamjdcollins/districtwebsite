@@ -1356,7 +1356,7 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
            fields += ['url']
       return fields
 
-  inlines = [ContentBannerInline,BoardMemberInline,StudentBoardMemberInline,BoardSubPageInline,]
+  inlines = [ContentBannerInline,BoardMemberInline,StudentBoardMemberInline,ResourceLinkInline,DocumentInline,BoardSubPageInline,]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -1436,11 +1436,36 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
           else:
               while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
-          if obj.url == '/board-of-education/policies/':
-              if not isinstance(inline,BoardPolicyInline):
+          if isinstance(inline,ContentBannerInline):
+              if obj.url == '/board-of-education/policies/':
                   continue
-          if obj.url == '/board-of-education/board-meetings/':
-              if not isinstance(inline,BoardMeetingInline):
+              if obj.url == '/board-of-education/board-meetings/':
+                  continue
+          if isinstance(inline,StaffInline):
+               if obj.url == '/board-of-education/policies/':
+                  continue
+              if obj.url == '/board-of-education/board-meetings/':
+                  continue
+          if isinstance(inline,ResourceLinkInline):
+               if obj.url == '/board-of-education/policies/':
+                  continue
+              if obj.url == '/board-of-education/board-meetings/':
+                  continue
+          if isinstance(inline,DocumentInline):
+               if obj.url == '/board-of-education/policies/':
+                  continue
+              if obj.url == '/board-of-education/board-meetings/':
+                  continue
+          if isinstance(inline,BoardPolicyInline):
+              if not obj.url == '/board-of-education/policies/':
+                  continue
+          if isinstance(inline,BoardMeetingInline):
+              if not obj.url == '/board-of-education/board-meetings/':
+                  continue
+          if isinstance(inline,SubPageInline):
+               if obj.url == '/board-of-education/policies/':
+                  continue
+              if obj.url == '/board-of-education/board-meetings/':
                   continue
           yield inline.get_formset(request, obj), inline
 
