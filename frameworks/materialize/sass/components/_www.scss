@@ -228,6 +228,13 @@ body {top:0 !important;}
     right: 50%;
     z-index: 1;
 }
+.modal-loading {
+    display: none;
+    position: fixed !important;
+    top: 50% !important;
+    right: 50%;
+    z-index: 1;
+}
 .modaal-iframe.modaal-wrapper .modal-title, .modaal-iframe.modaal-wrapper .modal-desc {
   margin: 0px !important;
   padding: 0px;
@@ -675,6 +682,14 @@ ul ul{
     list-style-type: disc;
     text-align: -webkit-match-parent;
 }
+.card.card-alert .card-content {
+    padding: 10px;
+}
+.card.card-alert.success {
+  @extend .green, .lighten-5;
+  @extend .green-text;
+}
+
 .card.primarycontact{
   background-color: #f5f5f6 !important
 }
