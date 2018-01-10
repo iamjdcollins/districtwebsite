@@ -12,11 +12,11 @@ from django.http import HttpResponse
 import apps.common.functions
 from apps.objects.models import Node, User
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear,SuperintendentMessage,SuperintendentMessageYear
-from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct
+from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct, BoardPolicySection
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo
-from apps.directoryentries.models import Staff, SchoolAdministrator, Administrator,  BoardMember, StudentBoardMember
+from apps.directoryentries.models import Staff, SchoolAdministrator, Administrator,  BoardMember, StudentBoardMember, BoardPolicyAdmin
 from apps.links.models import ResourceLink, ActionButton
-from apps.documents.models import Document, BoardPolicy
+from apps.documents.models import Document, BoardPolicy, Policy, AdministrativeProcedure, SupportingDocument
 from apps.files.models import File
 from apps.events.models import BoardMeeting, DistrictCalendarEvent
 from apps.users.models import Employee
@@ -355,6 +355,7 @@ def search(request):
     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
 def boarddetail(request):
+  context = {}
   currentyear = apps.common.functions.currentyear()
   if request.path == '/board-of-education/board-meetings/':
       try:
@@ -371,36 +372,56 @@ def boarddetail(request):
   boardsubpage = BoardSubPage.objects.filter(url=request.path).first()
   if board:
     page = board
+    context['page'] = page
   elif boardsubpage:
     page = boardsubpage
+    context['page'] = page
   pageopts = page._meta
-  board_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Board Policies').order_by('section__lft','index')
-  community_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Community Policies').order_by('section__lft','index')
-  financial_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Financial Policies').order_by('section__lft','index')
-  general_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='General Policies').order_by('section__lft','index')
-  instructional_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Instructional Policies').order_by('section__lft','index')
-  personnel_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Personnel Policies').order_by('section__lft','index')
-  student_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Student Policies').order_by('section__lft','index')
+  context['pageopts'] = pageopts
+  if request.path == '/board-of-education/policies/':
+      district_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).order_by('section__lft','index').only('pk','policy_title','index','section','related_node').prefetch_related(Prefetch('section', queryset= BoardPolicySection.objects.filter(deleted=0).filter(published=1).only('pk','section_prefix','description')),Prefetch('directoryentries_boardpolicyadmin_node',queryset=BoardPolicyAdmin.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','employee','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('pk','last_name','first_name')))),Prefetch('documents_policy_node', queryset = Policy.objects.filter(deleted=0).filter(published=1).only('pk','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))),Prefetch('documents_administrativeprocedure_node', queryset = AdministrativeProcedure.objects.filter(deleted=0).filter(published=1).only('pk','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))),Prefetch('documents_supportingdocument_node', queryset = SupportingDocument.objects.filter(deleted=0).filter(published=1).only('pk','document_title','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))))
+      board_policies = []
+      community_policies = []
+      financial_policies = []
+      general_policies = []
+      instructional_policies = []
+      personnel_policies = []
+      student_policies = []
+      for policy in district_policies:
+          if policy.section.title == 'Board Policies':
+              board_policies.append(policy)
+          if policy.section.title == 'Community Policies':
+              community_policies.append(policy)
+          if policy.section.title == 'Financial Policies':
+              financial_policies.append(policy)
+          if policy.section.title == 'General Policies':
+              general_policies.append(policy)
+          if policy.section.title == 'Instructional Policies':
+              instructional_policies.append(policy)
+          if policy.section.title == 'Personnel Policies':
+              personnel_policies.append(policy)
+          if policy.section.title == 'Student Policies':
+              student_policies.append(policy)
+      context['board_policies'] = board_policies
+      context['community_policies'] = community_policies
+      context['financial_policies'] = financial_policies
+      context['general_policies'] = general_policies
+      context['instructional_policies'] = instructional_policies
+      context['personnel_policies'] = personnel_policies
+      context['student_policies'] = student_policies
+          
+  #board_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Board Policies').order_by('section__lft','index')
+  #community_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Community Policies').order_by('section__lft','index')
+  #financial_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Financial Policies').order_by('section__lft','index')
+  #general_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='General Policies').order_by('section__lft','index')
+  #instructional_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Instructional Policies').order_by('section__lft','index')
+  #personnel_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Personnel Policies').order_by('section__lft','index')
+  #student_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Student Policies').order_by('section__lft','index')
   board_meeting_years = BoardMeetingYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
   board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1).filter(yearend=currentyear['currentyear']['short'])
-  return render(request, 'pages/board/boarddetail.html', {'page': page,'pageopts': pageopts,'board_policies': board_policies,'community_policies': community_policies,'financial_policies': financial_policies,'general_policies': general_policies,'instructional_policies': instructional_policies,'personnel_policies': personnel_policies,'student_policies': student_policies,'board_meeting_years': board_meeting_years,'board_meetings': board_meetings})
-  #board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1)
-  #board_meeting_years = {}
-  #board_meeting_years['years'] = {}
-  #for meeting in board_meetings:
-  #  if meeting.startdate.month >= 7:
-  #    year = meeting.startdate.year + 1
-  #    year_string =  'School Year: ' + str(meeting.startdate.year) + '-' + str(meeting.startdate.year + 1)[2:]
-  #  else:
-  #    year = meeting.startdate.year
-  #    year_string =  'School Year: ' + str(meeting.startdate.year - 1) + '-' + str(meeting.startdate.year)[2:]
-  #  board_meeting_years['years'][year] = year_string
-  #currentdate = datetime.now()
-  #if currentdate.month >= 7:
-  #  board_meeting_years['current'] = currentdate.year + 1
-  #else:
-  #  board_meeting_years['current'] = currentdate.year
-  #return render(request, 'board/boarddetail.html', {'page': page,'pageopts': pageopts, 'board_subpages': board_subpages, 'board_policies': board_policies, 'community_policies': community_policies, 'financial_policies': financial_policies, 'general_policies': general_policies, 'instructional_policies': instructional_policies, 'personnel_policies': personnel_policies, 'student_policies': student_policies, 'board_meeting_years': board_meeting_years, 'board_meetings': board_meetings})
+  context['board_meeting_years'] = board_meeting_years
+  context['board_meetings'] = board_meetings
+  return render(request, 'pages/board/boarddetail.html', context)
 
 def BoardMeetingYearArchive(request):
     page = get_object_or_404(BoardMeetingYear, url=request.path)

@@ -151,11 +151,9 @@
     </div>
     {% endif %}
     {% if request.path == '/board-of-education/policies/' %}
-    {% if board_policies %}
+    {% if board_policies or community_policies or financial_policies or general_policies or instructional_policies or personnel_policies or student_policies %}
     <div class="row">
-      <div id="board_policies" class="scrollspy">
-        <h2>Board Policies</h2>
-        <p class="policydescription">{{ board_policies.0.section.description }}</p>
+      <div>
         <table class="board_policies mobileblock">
           <thead>
             <tr>
@@ -165,149 +163,62 @@
               <th class="rowaction">Contacts</th>
             </tr>
           </thead>
-          <tbody>
+          {% if board_policies %}
+          <tbody id="board_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Board Policies ({{ board_policies.0.section.description }})</td>
             {% for policy in board_policies %}
             {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
-        </table>
-      </div>
-    </div>
-    {% endif %}
-    {% if community_policies %}
-    <div class="row">
-      <div id="community_policies" class="scrollspy">
-        <h2>Community Policies</h2>
-        <p class="policydescription">{{ community_policies.0.section.description }}</p>
-        <table class="board_policies mobileblock">
-          <thead>
-            <tr>
-              <th class="policyindex">Index</th>
-              <th>Policy Title</th>
-              <th class="rowaction">Documents</th>
-              <th class="rowaction">Contacts</th>
-            </tr>
-          </thead>
-          <tbody>
+          {% endif %}
+          {% if community_policies %}
+          <tbody id="community_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Community Policies ({{ community_policies.0.section.description }})</td>
             {% for policy in community_policies %}
             {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
-        </table>
-      </div>
-    </div>
-    {% endif %}
-    {% if financial_policies %}
-    <div class="row">
-      <div id="financial_policies" class="scrollspy">
-        <h2>Financial Policies</h2>
-        <p class="policydescription">{{ financial_policies.0.section.description }}</p>
-        <table class="board_policies mobileblock">
-          <thead>
-            <tr>
-              <th class="policyindex">Index</th>
-              <th>Policy Title</th>
-              <th class="rowaction">Documents</th>
-              <th class="rowaction">Contacts</th>
-            </tr>
-          </thead>
-          <tbody>
+          {% endif %}
+          {% if financial_policies %}
+          <tbody id="financial_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Financial Policies ({{ financial_policies.0.section.description }})</td>
             {% for policy in financial_policies %}
             {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
-        </table>
-      </div>
-    </div>
-    {% endif %}
-    {% if general_policies %}
-    <div class="row">
-      <div id="general_policies" class="scrollspy">
-        <h2>General Policies</h2>
-        <p class="policydescription">{{ general_policies.0.section.description }}</p>
-        <table class="board_policies mobileblock">
-          <thead>
-            <tr>
-              <th class="policyindex">Index</th>
-              <th>Policy Title</th>
-              <th class="rowaction">Documents</th>
-              <th class="rowaction">Contacts</th>
-            </tr>
-          </thead>
-          <tbody>
+          {% endif %}
+          {% if general_policies %}
+          <tbody id="general_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">General Policies ({{ general_policies.0.section.description }})</td>
             {% for policy in general_policies %}
             {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
-        </table>
-      </div>
-    </div>
-    {% endif %}
-    {% if instructional_policies %}
-    <div class="row">
-      <div id="instructional_policies" class="scrollspy">
-        <h2>Instructional Policies</h2>
-        <p class="policydescription">{{ instructional_policies.0.section.description }}</p>
-        <table class="board_policies mobileblock">
-          <thead>
-            <tr>
-              <th class="policyindex">Index</th>
-              <th>Policy Title</th>
-              <th class="rowaction">Documents</th>
-              <th class="rowaction">Contacts</th>
-            </tr>
-          </thead>
-          <tbody>
+          {% endif %}
+          {% if instructional_policies %}
+          <tbody id="instructional_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Instructional Policies ({{ instructional_policies.0.section.description }})</td>
             {% for policy in instructional_policies %}
             {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
-        </table>
-      </div>
-    </div>
-    {% endif %}
-    {% if personnel_policies %}
-    <div class="row">
-      <div id="personnel_policies" class="scrollspy">
-        <h2>Personnel Policies</h2>
-        <p class="policydescription">{{ personnel_policies.0.section.description }}</p>
-        <table class="board_policies mobileblock">
-          <thead>
-            <tr>
-              <th class="policyindex">Index</th>
-              <th>Policy Title</th>
-              <th class="rowaction">Documents</th>
-              <th class="rowaction">Contacts</th>
-            </tr>
-          </thead>
-          <tbody>
+          {% endif %}
+          {% if personnel_policies %}
+          <tbody id="personnel_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Personnel Policies ({{ personnel_policies.0.section.description }})</td>
             {% for policy in personnel_policies %}
             {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
-        </table>
-      </div>
-    </div>
-    {% endif %}
-    {% if student_policies %}
-    <div class="row">
-      <div id="student_policies" class="scrollspy">
-        <h2>Student Policies</h2>
-        <p class="policydescription">{{ student_policies.0.section.description }}</p>
-        <table class="board_policies mobileblock">
-          <thead>
-            <tr>
-              <th class="policyindex">Index</th>
-              <th>Policy Title</th>
-              <th class="rowaction">Documents</th>
-              <th class="rowaction">Contacts</th>
-            </tr>
-          </thead>
-          <tbody>
+          {% endif %}
+          {% if student_policies %}
+          <tbody id="student_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Student Policies ({{ student_policies.0.section.description }})</td>
             {% for policy in student_policies %}
             {% include "pages/board/policytable.html" %}
             {% endfor %}
           </tbody>
+          {% endif %}
         </table>
       </div>
     </div>
