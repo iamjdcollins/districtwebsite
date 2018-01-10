@@ -876,12 +876,6 @@ def contactmessagesave(self, *args, **kwargs):
     self.has_permissions = True
   else:
     self.has_permissions = False
-  #Send Confirm Email
-  if not self.confirm_sent:
-      self.confirm_sent = contactmessage_confirm(self)
-  #Send Message
-  if not self.message_sent:
-      self.message_sent = contactmessage_message(self)
   # Save the item
   super(self._meta.model, self).save(*args, **kwargs)
   if urlchanged:
