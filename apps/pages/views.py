@@ -4,8 +4,7 @@ from django.http import HttpResponse
 from django.template import Context, Template, RequestContext
 from django.db.models import Prefetch
 from django.utils import timezone
-
-# Create your views here.
+from django.contrib import messages
 
 from django.http import HttpResponse
 
@@ -449,6 +448,7 @@ def contact(request):
             post.update_user = user
             post.searchable = False
             post.save()
+            messages.success(request, 'Thank you for contacting us. Someone will get back to you shortly.')
             return redirect(post.parent.url)
     else:
         form = ContactMessageForm()
