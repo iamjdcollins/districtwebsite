@@ -1425,7 +1425,7 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
            fields += ['url']
       return fields
 
-  inlines = [ContentBannerInline,StaffInline,ResourceLinkInline,DocumentInline,BoardPolicyInline,BoardMeetingInline,SubPageInline,]
+  inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,BoardPolicyInline,BoardMeetingInline,SubPageInline,]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -1437,6 +1437,16 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
               while 'deleted' in inline.fields:
                   inline.fields.remove('deleted')
           if isinstance(inline,ContentBannerInline):
+              if obj.url == '/board-of-education/policies/':
+                  continue
+              if obj.url == '/board-of-education/board-meetings/':
+                  continue
+          if isinstance(inline,ActionButtonInline):
+              if obj.url == '/board-of-education/policies/':
+                  continue
+              if obj.url == '/board-of-education/board-meetings/':
+                  continue
+          if isinstance(inline,AdministratorInline):
               if obj.url == '/board-of-education/policies/':
                   continue
               if obj.url == '/board-of-education/board-meetings/':
