@@ -1442,17 +1442,17 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
               if obj.url == '/board-of-education/board-meetings/':
                   continue
           if isinstance(inline,StaffInline):
-               if obj.url == '/board-of-education/policies/':
+              if obj.url == '/board-of-education/policies/':
                   continue
               if obj.url == '/board-of-education/board-meetings/':
                   continue
           if isinstance(inline,ResourceLinkInline):
-               if obj.url == '/board-of-education/policies/':
+              if obj.url == '/board-of-education/policies/':
                   continue
               if obj.url == '/board-of-education/board-meetings/':
                   continue
           if isinstance(inline,DocumentInline):
-               if obj.url == '/board-of-education/policies/':
+              if obj.url == '/board-of-education/policies/':
                   continue
               if obj.url == '/board-of-education/board-meetings/':
                   continue
@@ -1463,7 +1463,7 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
               if not obj.url == '/board-of-education/board-meetings/':
                   continue
           if isinstance(inline,SubPageInline):
-               if obj.url == '/board-of-education/policies/':
+              if obj.url == '/board-of-education/policies/':
                   continue
               if obj.url == '/board-of-education/board-meetings/':
                   continue
