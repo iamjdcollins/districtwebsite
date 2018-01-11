@@ -368,7 +368,8 @@ $(document).ready(function(){
         target: null,
         remove: false
         };
-	$('.card .schoolcard .card-content').matchHeight(options);
+	$('.card .schoolcard .card-image').matchHeight(options);
+        $('.card .schoolcard .card-content').matchHeight(options);
   });
   $(".mainnav-mobile").modaal({
     type: 'inline',
