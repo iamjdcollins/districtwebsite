@@ -202,7 +202,7 @@ body {top:0 !important;}
   @extend .btn;
   display: block;
   width: 100%;
-  border-radius: unset;
+  border-radius: 0;
   border-top: solid 1px $slcschools-grey-lighten-1;
 }
 .modal-title, .modal-desc{
@@ -259,7 +259,7 @@ body {top:0 !important;}
   //background-color: transparent !important;
   background: #002f4f !important;
   position: absolute;
-  border-radius: unset;
+  border-radius: 0;
 }
 .modaal-close:hover, .modaal-close:focus{
   background-color: #ca2027 !important;
@@ -339,7 +339,7 @@ no-sr{
   padding-bottom: 17px;
   word-wrap: normal;
   white-space: normal;
-  height: unset;
+  height: auto;
 }
 .material-icons.right {
     float: right;
@@ -611,7 +611,7 @@ ul ul{
 }
 .righttoc .card{
   background: transparent none repeat scroll 0% 0%;
-  box-shadow: unset;
+  box-shadow: none;
 }
 .righttoc .card-content{
   background: white;
