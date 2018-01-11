@@ -743,7 +743,7 @@ class BoardMeetingExhibitInline(EditLinkToInlineObject, admin.TabularInline):
     ordering = ['title',]
     extra = 0
     min_num = 0
-    max_num = 20
+    max_num = 50
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
@@ -775,7 +775,7 @@ class BoardMeetingAgendaItemInline(EditLinkToInlineObject, admin.TabularInline):
     ordering = ['title',]
     extra = 0
     min_num = 0
-    max_num = 1
+    max_num = 50 
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
