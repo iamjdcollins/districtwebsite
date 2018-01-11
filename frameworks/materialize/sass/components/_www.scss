@@ -609,8 +609,13 @@ ul ul{
   overflow: hidden !important;
   -ms-overflow-style: none;
 }
+.righttoc .card-title{
+  position: relative;
+  margin: -24px;
+  padding: 10px;
+  font-size: 1.25em;
+}
 .righttoc .pinned{
-  overflow-y: scroll !important;
   height: 100%;
   padding-right: 100%;
   width: 10000px;

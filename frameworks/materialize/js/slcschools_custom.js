@@ -316,9 +316,17 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
 };
 
+tocResize = function(){
+  $('.righttoc .card.pin-top').css('overflow-y','auto').css('width',$('.righttoc').width()).css('padding-left',0).css('padding-right',0).css('max-height',$(window).height() - ($('.sidebar-first').offset().top - $(window).scrollTop() + 7.5))
+  $('.righttoc .card.pinned').css('overflow-y','auto').css('width',$('.righttoc').width()).css('padding-left',0).css('padding-right',0).css('max-height',$(window).height() - $('.authenticated').height() - 15)
+}
+window.onresize = function(event){
+  tocResize();
+}
 $(document).ready(function(){
   $("a").each( function( index, item){ if ( window.location.hostname !== item.hostname) { console.log('Adding ' + item.hostname); $(item).attr('target', '_blank') }});
   $('.actionbuttons a').matchHeight();
+  tocResize();
   $('.authenticated').pushpin({
       top: $('.preheader.wrapper').offset().top,
       bottom: Infinity,

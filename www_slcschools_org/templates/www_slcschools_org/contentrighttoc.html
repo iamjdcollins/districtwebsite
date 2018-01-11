@@ -19,10 +19,10 @@
 {% endblock %}{% endcomment %}
 
 {% block main %}
-<div class="content wrapper flex">
+<div class="content wrapper flex1">
   <div class="row">
     <div class="col s12 m4 push-m8 l3 push-l9 righttoc hide-on-small-only">
-      <div class="sidebar-first">
+      <div class="sidebar-first card">
         {% block sidebar_first %}
         {% endblock %}
       </div>
@@ -44,6 +44,7 @@ $(document).ready(function(){
       bottom: $(document).height() - ($("footer").height() + $('.sidebar-first').height()),
       offset: $('.authenticated.wrapper').height(),
     });
+    tocResize();
     $('.mobile-table-of-contents').pushpin({
       top: $('.content.wrapper .main').offset().top,
       bottom: Infinity,
