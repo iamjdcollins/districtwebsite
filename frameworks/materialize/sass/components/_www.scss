@@ -609,6 +609,13 @@ ul ul{
   overflow: hidden !important;
   -ms-overflow-style: none;
 }
+.righttoc .card{
+  background: transparent none repeat scroll 0% 0%;
+  box-shadow: unset;
+}
+.righttoc .card-content{
+  background: white;
+}
 .righttoc .card-title{
   position: relative;
   margin: -24px;

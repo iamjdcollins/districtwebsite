@@ -9,9 +9,9 @@
 {% endblock %}
 
 {% block sidebar_first %}
-<div class="card-content ">
-  <div class="card-title slcschools-grey lighten-1 white-text">Contents:</div>
-  <a href="#" class="btn-large btn-large-wrap btn-stretch">Contact Us</a>
+<div class="card-content z-depth-1">
+  <div class="card-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{page.primary_contact.pk}}" class="btn-large btn-large-wrap btn-stretch pagefeedback">Contact Us</a>
   <div class="table-of-contents">
     <ul>
       <li><a href="#about">About</a></li>
