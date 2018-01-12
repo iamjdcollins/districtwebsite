@@ -15,7 +15,6 @@
   <div class="table-of-contents">
     <ul>
       <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
       {% if page.directoryentries_schooladministrator_node.all %}
       <li><a href="#administration">Administration</a></li>
       {% endif %}
@@ -67,7 +66,6 @@
     <select id="toc" class="browser-default z-depth-1">
       <option value="#!" disabled selected style="display:none;">Table of Contents</option>
       <option value="#about">About</option>
-      <option value="#contact">Contact</option>
       {% if page.directoryentries_schooladministrator_node.all %}
       <option value="#administration">Administration</option>
       {% endif %}
@@ -88,11 +86,6 @@
         <div class="body">
           {{page.body|safe}}
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div id="contact" class="scrollspy">
-        {% include "www_slcschools_org/contact_block.html" %}
       </div>
     </div>
     {% if page.schooladministrators %}

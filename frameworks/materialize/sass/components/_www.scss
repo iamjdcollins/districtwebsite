@@ -713,6 +713,12 @@ ul ul{
 .card.primarycontact{
   background-color: #f5f5f6 !important
 }
+.card.primarycontact address{
+  display: inline;
+}
+.card.primarycontact .collection-item {
+    padding-right: 40px;
+}
 .card.connected {
     margin-bottom: -1rem;
 }

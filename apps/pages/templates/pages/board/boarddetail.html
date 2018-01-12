@@ -17,9 +17,6 @@
       {% if page.body %}
       <li><a href="#about">About</a></li>
       {% endif %}
-      {% if page.building_location or page.main_phone or page.main_fax %}
-      <li><a href="#contact">Contact</a></li>
-      {% endif %}
       {% if request.path == '/board-of-education/policies/' %}
       {% if board_policies %}
       <li><a href="#board_policies">Board Policies ({{ board_policies|length }})</a></li>
@@ -110,9 +107,6 @@
       {% if page.body %}
       <option value="#about">About</option>
       {% endif %}
-      {% if page.building_location or page.main_phone or page.main_fax %}
-      <option value="#contact">Contact</option>
-      {% endif %}
       {% if  page.directoryentries_boardmember_node.all or page.directoryentries_studentboardmember_node.all%}
       <option value="#members">Board Members</option>
       {% endif %}
@@ -141,13 +135,6 @@
         <div class="body">
           {{page.body|safe}}
         </div>
-      </div>
-    </div>
-    {% endif %}
-    {% if page.building_location or page.main_phone or page.main_fax %}
-    <div class="row">
-      <div id="contact" class="scrollspy">
-        {% include "www_slcschools_org/contact_block.html" %}
       </div>
     </div>
     {% endif %}

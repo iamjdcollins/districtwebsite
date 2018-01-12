@@ -64,9 +64,6 @@
       {% if board.body %}
       <option value="#about">About</option>
       {% endif %}
-      {% if board.building_location or board.main_phone or board.main_fax %}
-      <option value="#contact">Contact</option>
-      {% endif %}
       {% if  board.board_boardmember_board.all %}
       <option value="#members">Board Members</option>
       {% endif %}

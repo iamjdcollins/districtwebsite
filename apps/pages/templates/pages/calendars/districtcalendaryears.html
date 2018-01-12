@@ -17,9 +17,6 @@
       {% if page.body %}
       <li><a href="#about">About</a></li>
       {% endif %}
-      {% if page.building_location or page.main_phone or page.main_fax %}
-      <li><a href="#contact">Contact</a></li>
-      {% endif %}
       <li><a href="#districtcalendarevents">District Calendar Events</a></li>
       <li><a href="/calendars/guidelines-for-developing-calendar-options/">Parameters for District Calendars</a></li>
     </ul>
@@ -63,9 +60,6 @@
       {% if page.body %}
       <option value="#about">About</option>
       {% endif %}
-      {% if page.building_location or page.main_phone or page.main_fax %}
-      <option value="#contact">Contact</option>
-      {% endif %}
     </select>
   </div>
   <div id="main" class="card-content">
@@ -76,13 +70,6 @@
         <div class="body">
           {{page.body|safe|relink}}
         </div>
-      </div>
-    </div>
-    {% endif %}
-    {% if page.building_location or page.main_phone or page.main_fax %}
-    <div class="row">
-      <div id="contact" class="scrollspy">
-        {% include "www_slcschools_org/contact_block.html" %}
       </div>
     </div>
     {% endif %}
