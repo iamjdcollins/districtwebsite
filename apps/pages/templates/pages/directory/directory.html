@@ -87,7 +87,7 @@ function myFunction() {
 }
 var dataSet = [
   {% for person in people %}
-  ["{{ person.last_name  }}, {{ person.first_name }}","{% if person.job_title %}{{ person.job_title }}{% endif %}","{% if person.department %}<a href=\"{{ person.department.url }}\">{{ person.department.node_title }}</a>{% endif %}",'<a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{person.pk}}" class="btn-flat right narrow pagefeedback"><span class="material-icons" aria-hidden="true">&#xE163;</span><span class="sr-only">Send {{ person.first_name }} {{ person.last_name }} a Message</span></a>'],
+  ["{{ person.last_name  }}, {{ person.first_name }}","{% if person.job_title %}{{ person.job_title }}{% endif %}","{% if person.department %}<a href=\"{{ person.department.url }}\">{{ person.department.node_title }}</a>{% endif %}",'<a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{person.pk}}" class="btn-flat right narrow pagefeedback uninit"><span class="material-icons" aria-hidden="true">&#xE163;</span><span class="sr-only">Send {{ person.first_name }} {{ person.last_name }} a Message</span></a>'],
   {% endfor %}
 ];
 directoryTable = $('#searchTable').DataTable({
@@ -106,22 +106,7 @@ directoryTable = $('#searchTable').DataTable({
   },
   responsive: true,
   'drawCallback': function( settings) {
-    $(".pagefeedback").modaal({
-      type: 'ajax',
-      custom_class: 'modaal-pagefeedback',
-      after_callback_delay: 300,
-      after_open: function(modal){
-        $(modal).find('.modaal-focus').each(function(index,element){
-          if(index === 0){
-            $(element).removeAttr('aria-label')
-            $(element).attr('aria-labelledby','pagefeedbacktitle')
-            $(element).attr('aria-describedby','pagefeedbackdesc')
-            $(element).focus()
-          }
-        });
-        $.when( $('select').material_select() ).then( materialSelectLabel() );
-      },
-    });
+    initializeAjaxModals();
   }
 });
 $('#tableSearch').keyup(function(){

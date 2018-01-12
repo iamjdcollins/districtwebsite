@@ -322,6 +322,25 @@ tocResize = function(){
     $('.righttoc .card.pinned').css('overflow-y','auto').css('width',$('.righttoc').width()).css('padding','2px 2px 5px 2px').css('max-height',$(window).height() - $('.authenticated').height() - 15)
   }
 }
+initializeAjaxModals = function(){
+  $(".pagefeedback").modaal({
+    type: 'ajax',
+    custom_class: 'modaal-pagefeedback',
+    after_callback_delay: 300,
+    after_open: function(modal){
+      $(modal).find('.modaal-focus').each(function(index,element){
+        if(index === 0){
+          $(element).removeAttr('aria-label')
+          $(element).attr('aria-labelledby','pagefeedbacktitle')
+          $(element).attr('aria-describedby','pagefeedbackdesc')
+          $(element).focus()
+        }
+      });
+      $.when( $('select').material_select() ).then( materialSelectLabel() );
+    },
+  });
+  $(".pagefeedback").removeClass('uninit');
+}
 window.onresize = function(event){
   tocResize();
 }
@@ -429,29 +448,7 @@ $(document).ready(function(){
       });
     },
   });
-  $(".pagefeedback").modaal({
-    type: 'ajax',
-    custom_class: 'modaal-pagefeedback',
-    after_callback_delay: 300,
-    after_open: function(modal){
-      $(modal).find('.modaal-focus').each(function(index,element){
-        if(index === 0){
-          $(element).removeAttr('aria-label')
-          $(element).attr('aria-labelledby','pagefeedbacktitle')
-          $(element).attr('aria-describedby','pagefeedbackdesc')
-          $(element).focus()
-        }
-      });
-      $.when( $('select').material_select() ).then( materialSelectLabel() );
-      //$(modal).find('.modal-content').children().first().each(function(index,element){
-      //  if(index === 0){
-      //    element.focus()
-      //    console.log('Setting focus to ' + element)
-      //    console.log('Curent focus is on ' + document.activeElement)
-      //  }
-      //});
-    },
-  });
+  initializeAjaxModals();
   $("#editpagemodaal").attr('href', $("#editpagemodaal").attr('href') + '?next=' + btoa(window.location))
   $("#editpagemodaal").modaal({
     type: 'iframe',

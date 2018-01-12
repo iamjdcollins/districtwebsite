@@ -75,7 +75,7 @@
               <td class="title">{% if person.job_title %}{{ person.job_title }}{% endif %}</td>
               <td class="department">{% if person.department %}<a href="{{ person.department.url }}">{{ person.department.node_title }}</a>{% endif %}</td>
               <td class=contact rowaction">
-                <a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{person.pk}}" class="btn-flat right narrow pagefeedback">
+                <a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{person.pk}}" class="btn-flat right narrow pagefeedback uninit">
                   <span class="material-icons" aria-hidden="true">&#xE163;</span>
                   <span class="sr-only">Send {{ person.first_name }} {{ person.last_name }} a Message</span>
                 </a>
