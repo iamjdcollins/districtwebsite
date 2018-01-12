@@ -15,13 +15,20 @@
           {% elif pageopts.model_name == 'department' or pageopts.model_name == 'subpage' %}
           <strong>{{ admin.employee.job_title }}</strong> <br />
           {% endif %}
+          {% if admin.precinct %}
+          <strong>Precinct: </strong>{{ admin.precinct }}<br>
+          {% endif %}
+          {% if admin.street_address %}
+          <span class="material-icons tiny" aria-hidden="true">&#xE55F;</span> {{ admin.street_address }}<br>
+          <span class="material-icons tiny blank" aria-hidden="true"></span> {{ admin.city.title }}, {{admin.state.title}} {{admin.zipcode.title}}<br>
+          {% endif %}
           {% if admin.phone %}
           <a href="tel:+{{admin.phone|slice:"0:1"}}-{{admin.phone|slice:"1:4"}}-{{admin.phone|slice:"4:7"}}-{{admin.phone|slice:"7:11"}}">
-            <i class="material-icons tiny black-text">&#xE0CD;</i> {{admin.phone|slice:"1:4"}}.{{admin.phone|slice:"4:7"}}.{{admin.phone|slice:"7:11"}}
-          </a>
+            <span class="material-icons tiny black-text" aria-hidden="true">&#xE0CD;</span> {{admin.phone|slice:"1:4"}}.{{admin.phone|slice:"4:7"}}.{{admin.phone|slice:"7:11"}}
+          </a><br>
           {% endif %}
-          <br/>
-          <a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{admin.employee.pk}}" class="btn narrow pagefeedback">
+          <br>
+          <a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{admin.employee.pk}}" class="btn btn-wrap pagefeedback">
             <span class="material-icons left" aria-hidden="true">&#xE163;</span><span aria-hidden="true">Send me a message</span>
             <span class="sr-only">Send {{ admin.employee.first_name }} {{ admin.employee.last_name }} a Message</span>
           </a>

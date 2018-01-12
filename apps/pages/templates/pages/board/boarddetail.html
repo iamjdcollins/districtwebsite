@@ -262,8 +262,9 @@
     <div class="row">
       <div id="members" class="scrollspy contactcardlist">
         <h2>Board Members</h2>
-        {% for member in page.directoryentries_boardmember_node.all %}
-        <div class="card horizontal">
+        {% for admin in page.directoryentries_boardmember_node.all %}
+        {% include "www_slcschools_org/admindirectorylist.html" %}
+        <!--<div class="card horizontal">
           <div class="card-image">
             {% for profilepicture in member.employee.images_profilepicture_node.all %}
             <img src="{{profilepicture.image_file.url}}" alt="{{profilepicture.alttext}}"/>
@@ -287,7 +288,7 @@
               </a>
             </div>
           </div>
-        </div>
+        </div>-->
         {% endfor %}
         {% for member in page.directoryentries_studentboardmember_node.all %}
         <div class="card horizontal">
