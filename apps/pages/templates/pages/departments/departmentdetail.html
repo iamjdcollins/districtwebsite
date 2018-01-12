@@ -9,49 +9,49 @@
 {% endblock %}
 
 {% block sidebar_first %}
-<div class="card-content z-depth-1">
-  <div class="card-title slcschools-grey lighten-1 white-text">Table of Contents</div>
-  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit">Contact Us</a>
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
   <div class="table-of-contents">
     <ul>
       {% if page.body != '' and page.body is not None %}
-      <li><a href="#about">About</a></li>
+      <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
       {% endif %}
       {% if page.directoryentries_administrator_node.all %}
-      <li><a href="#administration">Administration</a></li>
+      <li><a href="#administration" onclick="$('.inlinemodal').modaal('close');">Administration</a></li>
       {% endif %}
       {% if page.directoryentries_staff_node.all or page.departments_departmentsubpagestaff_department.all%}
-      <li><a href="#staff">Staff</a></li>
+      <li><a href="#staff" onclick="$('.inlinemodal').modaal('close');">Staff</a></li>
       {% endif %}
       {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
-      <li><a href="#resourcelinks">Resources</a></li>
+      <li><a href="#resourcelinks" onclick="$('.inlinemodal').modaal('close');">Resources</a></li>
       {% endif %}
       {% if  page.content_type == 'department' and page.parent.content_type == 'department' or department_children %}
-      <li><a href="#relateddepartments">Departments / Programs</a></li>
+      <li><a href="#relateddepartments" onclick="$('.inlinemodal').modaal('close');">Departments / Programs</a></li>
       {% endif %}
       {% if page.pages_subpage_node.all %}
-      <li><a href="#pages">Pages</a></li>
+      <li><a href="#pages" onclick="$('.inlinemodal').modaal('close');">Pages</a></li>
       <ul>
       {% for department_subpage in page.pages_subpage_node.all %}
-        <li><a href="{{ department_subpage.url }}" >{{ department_subpage.title }}</a></li>
+        <li><a href="{{ department_subpage.url }}"onclick="$('.inlinemodal').modaal('close');" >{{ department_subpage.title }}</a></li>
       {% endfor %}
       </ul>
       {% endif %}
       {% if request.path == '/departments/communications-and-community-relations/district-logo/' %}
       {% if districtlogos.primary %}
-      <li><a href="#primary">Primary Logo</a></li>
+      <li><a href="#primary" onclick="$('.inlinemodal').modaal('close');">Primary Logo</a></li>
       {% endif %}
       {% if districtlogos.primaryrev %}
-      <li><a href="#primaryrev">Primary Logo Reversed</a></li>
+      <li><a href="#primaryrev" onclick="$('.inlinemodal').modaal('close');">Primary Logo Reversed</a></li>
       {% endif %}
       {% if districtlogos.secondary %}
-      <li><a href="#secondary">Secondary Logo</a></li>
+      <li><a href="#secondary" onclick="$('.inlinemodal').modaal('close');">Secondary Logo</a></li>
       {% endif %}
       {% if districtlogos.secondaryrev %}
-      <li><a href="#secondaryrev">Secondary Logo Reversed</a></li>
+      <li><a href="#secondaryrev" onclick="$('.inlinemodal').modaal('close');">Secondary Logo Reversed</a></li>
       {% endif %}
       {% if districtlogos.wordmark %}
-      <li><a href="#wordmark">Wordmark</a></li>
+      <li><a href="#wordmark" onclick="$('.inlinemodal').modaal('close');">Wordmark</a></li>
       {% endif %}
       {% endif %}
     </ul>
@@ -74,49 +74,7 @@
 </div>
 {% endif %}
 <div class="card">
-  <div class="mobile-table-of-contents hide-on-med-and-up">
-    <select class="browser-default z-depth-1">
-      <option value="#!" disabled selected style="display:none;">Table of Contents</option>
-      {% if page.body != '' and page.body is not None %}
-      <option value="#about">About</option>
-      {% endif %}
-      {% if page.directoryentries_administrator_node.all %}
-      <option value="#administration">Administration</option>
-      {% endif %}
-      {% if page.directoryentries_staff_node.all or page.departments_departmentsubpagestaff_department.all%}
-      <option value="#staff">Staff</option>
-      {% endif %}
-      {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
-      <option value="#resourcelinks">Resources</option>
-      {% endif %}
-      {% if  page.content_type == 'department' and page.parent.content_type == 'department' or department_children %}
-      <option value="#relateddepartments">Departments / Programs</option>
-      {% endif %}
-      {% if page.pages_subpage_node.all %}
-      <option value="#pages">Pages</option>
-      {% for department_subpage in page.pages_subpage_node.all %}
-      <option class="page" value="{{ department_subpage.url }}" >-- {{ department_subpage.title }}</option>
-      {% endfor %}
-      {% endif %}
-      {% if request.path == '/departments/communications-and-community-relations/district-logo/' %}
-      {% if districtlogos.primary %}
-      <option value="#primary">Primary Logo</option>
-      {% endif %}
-      {% if districtlogos.primaryrev %}
-      <option value="#primaryrev">Primary Logo Reversed</option>
-      {% endif %}
-      {% if districtlogos.secondary %}
-      <option value="#secondary">Secondary Logo</option>
-      {% endif %}
-      {% if districtlogos.secondaryrev %}
-      <option value="#secondaryrev">Secondary Logo Reversed</option>
-      {% endif %}
-      {% if districtlogos.wordmark %}
-      <option value="#wordmark">Wordmark</option>
-      {% endif %}
-      {% endif %}
-    </select>
-  </div>
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit">Table of Contents</a>
   <div id="main" class="card-content">
     <h1>{{page.title}}</h1>
     {% include "www_slcschools_org/actionbuttons.html" %}

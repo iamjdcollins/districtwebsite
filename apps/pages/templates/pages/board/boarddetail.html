@@ -9,60 +9,60 @@
 {% endblock %}
 
 {% block sidebar_first %}
-<div class="card-content z-depth-1">
-  <div class="card-title slcschools-grey lighten-1 white-text">Table of Contents</div>
-  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit">Contact Us</a>
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
   <div class="table-of-contents">
     <ul>
       {% if page.body %}
-      <li><a href="#about">About</a></li>
+      <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
       {% endif %}
       {% if request.path == '/board-of-education/policies/' %}
       {% if board_policies %}
-      <li><a href="#board_policies">Board Policies ({{ board_policies|length }})</a></li>
+      <li><a href="#board_policies" onclick="$('.inlinemodal').modaal('close');">Board Policies ({{ board_policies|length }})</a></li>
       {% endif %}
       {% if community_policies %}
-      <li><a href="#community_policies">Community Policies ({{ community_policies|length }})</a></li>
+      <li><a href="#community_policies" onclick="$('.inlinemodal').modaal('close');">Community Policies ({{ community_policies|length }})</a></li>
       {% endif %}
       {% if financial_policies %}
-      <li><a href="#financial_policies">Financial Policies ({{ financial_policies|length }})</a></li>
+      <li><a href="#financial_policies" onclick="$('.inlinemodal').modaal('close');">Financial Policies ({{ financial_policies|length }})</a></li>
       {% endif %}
       {% if general_policies %}
-      <li><a href="#general_policies">General Policies ({{ general_policies|length }})</a></li>
+      <li><a href="#general_policies" onclick="$('.inlinemodal').modaal('close');">General Policies ({{ general_policies|length }})</a></li>
       {% endif %}
       {% if instructional_policies %}
-      <li><a href="#instructional_policies">Instructional Policies ({{ instructional_policies|length }})</a></li>
+      <li><a href="#instructional_policies" onclick="$('.inlinemodal').modaal('close');">Instructional Policies ({{ instructional_policies|length }})</a></li>
       {% endif %}
       {% if personnel_policies %}
-      <li><a href="#personnel_policies">Personnel Policies ({{ personnel_policies|length }})</a></li>
+      <li><a href="#personnel_policies" onclick="$('.inlinemodal').modaal('close');">Personnel Policies ({{ personnel_policies|length }})</a></li>
       {% endif %}
       {% if student_policies %}
-      <li><a href="#student_policies">Student Policies ({{ student_policies|length }})</a></li>
+      <li><a href="#student_policies" onclick="$('.inlinemodal').modaal('close');">Student Policies ({{ student_policies|length }})</a></li>
       {% endif %}
       {% endif %}
       {% if request.path == '/board-of-education/board-meetings/' %}
-      <li><a href="#board_meetings">Board Meetings</a></li>
+      <li><a href="#board_meetings" onclick="$('.inlinemodal').modaal('close');">Board Meetings</a></li>
       {% endif %}
       {% if  page.directoryentries_boardmember_node.all or page.directoryentries_studentboardmember_node.all%}
-      <li><a href="#members">Board Members</a></li>
+      <li><a href="#members" onclick="$('.inlinemodal').modaal('close');">Board Members</a></li>
       {% endif %}
       {% if page.mission_statement %}
-      <li><a href="#mission">Mission Statement</a></li>
+      <li><a href="#mission" onclick="$('.inlinemodal').modaal('close');">Mission Statement</a></li>
       {% endif %}
       {% if page.vision_statement %}
-      <li><a href="#vision">Vision Statement</a></li>
+      <li><a href="#vision" onclick="$('.inlinemodal').modaal('close');">Vision Statement</a></li>
       {% endif %}
       {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
-      <li><a href="#resourcelinks">Resources</a></li>
+      <li><a href="#resourcelinks" onclick="$('.inlinemodal').modaal('close');">Resources</a></li>
       {% endif %}
       {% if page.pages_boardsubpage_node.all or page.pages_subpage_node.all %}
-      <li><a href="#pages">Pages</a></li>
+      <li><a href="#pages" onclick="$('.inlinemodal').modaal('close');">Pages</a></li>
       <ul>
       {% for board_subpage in page.pages_boardsubpage_node.all %}
-        <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}">{{ board_subpage.title }}</a></li>
+        <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}" onclick="$('.inlinemodal').modaal('close');">{{ board_subpage.title }}</a></li>
       {% endfor %}
       {% for board_subpage in page.pages_subpage_node.all %}
-        <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}">{{ board_subpage.title }}</a></li>
+        <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}" onclick="$('.inlinemodal').modaal('close');">{{ board_subpage.title }}</a></li>
       {% endfor %}
       </ul>
       {% endif %}
@@ -101,32 +101,7 @@
 </div>
 {% endif %}
 <div class="card">
-  <div class="mobile-table-of-contents hide-on-med-and-up">
-    <select class="browser-default z-depth-1">
-      <option value="#!" disabled selected style="display:none;">Table of Contents</option>
-      {% if page.body %}
-      <option value="#about">About</option>
-      {% endif %}
-      {% if  page.directoryentries_boardmember_node.all or page.directoryentries_studentboardmember_node.all%}
-      <option value="#members">Board Members</option>
-      {% endif %}
-      {% if page.mission_statement %}
-      <option value="#mission">Mission Statement</option>
-      {% endif %}
-      {% if page.vision_statement %}
-      <option value="#vision">Vision Statement</option>
-      {% endif %}
-      {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
-      <option value="#resourcelinks">Resources</option>
-      {% endif %}
-      {% if board_subpages %}
-      <option value="#pages">Pages</option>
-      {% for board_subpage in board_subpages %}
-      <option class="page" value="{{ board_subpage.url }}" title="{{ board_subpage.title }}">-- {{ board_subpage.title }}</option>
-      {% endfor %}
-      {% endif %}
-    </select>
-  </div>
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit">Table of Contents</a>
   <div id="main" class="card-content">
     <h1>{{page.title}}</h1>
     {% if page.body %}

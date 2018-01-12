@@ -185,7 +185,7 @@ a.gflag:hover {background-image:url('http://joomla-gtranslate.googlecode.com/svn
 body {top:0 !important;}
 #google_translate_element2 {display:none!important;}
 
-a.pagefeedback.uninit{
+a.inlinemodal.uninit, a.pagefeedback.uninit{
   display: none;
 }
 /* Menu Modaals */
@@ -217,7 +217,7 @@ a.pagefeedback.uninit{
   visibility: visible;
 }
 .modaal-wrapper .modal-title {
-  margin: -30px -30px 0px -30px;
+  margin: -30px -30px 10px -30px;
   padding: 5px 40px 5px 10px;
   line-height: 30px;
   color: white;
@@ -682,7 +682,6 @@ ul ul{
 .mobile-table-of-contents.pinned {
   top: 0px;
   width: 100%;
-  background-color: white;
   z-index:3;
   left: 0px;
   margin-top: 0px !important;

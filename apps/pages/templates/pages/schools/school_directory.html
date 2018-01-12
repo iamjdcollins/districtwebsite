@@ -9,14 +9,14 @@
 {% endblock %}
 
 {% block sidebar_first %}
-<div class="card-content z-depth-1">
-  <div class="card-title slcschools-grey lighten-1 white-text">Table of Contents</div>
-  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit">Contact Us</a>
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
   <div class="table-of-contents">
     <ul>
-      <li><a href="#schools">{{schools.0.schooltype }} ({{ schools|length }})</a></li>
-      <li><a href="/schools/school-handbooks/">School Handbooks</a></li>
-      <li><a href="/schools/district-demographics/">District Demographics</a></li>
+      <li><a href="#schools" onclick="$('.inlinemodal').modaal('close');">{{schools.0.schooltype }} ({{ schools|length }})</a></li>
+      <li><a href="/schools/school-handbooks/" onclick="$('.inlinemodal').modaal('close');">School Handbooks</a></li>
+      <li><a href="/schools/district-demographics/" onclick="$('.inlinemodal').modaal('close');">District Demographics</a></li>
     </ul>
   </div>
 </div>
@@ -26,15 +26,7 @@
 
 {% block content %}
 <div class="card">
-  <div class="mobile-table-of-contents hide-on-med-and-up">
-    <select id="toc" class="browser-default z-depth-1">
-      <option value="#!" disabled selected style="display:none;">Table of Contents</option>
-      <option value="#schools">{{schools.0.parent}} ({{ schools|length }})</option>
-      <option value="/schools/school-handbooks/">School Handbooks</option>
-      <option value="/schools/district-demographics/">District Demographics</option>
-    </select>
-    <label for="toc" class="outofview">Table of Contents</label>
-  </div>
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit">Table of Contents</a>
   <div class="card-content">
     <h1>{{ page.title }} Directory</h1>
     <form class="textfieldboxes" action="javascript:void(0);" onsubmit="myFunction(); return false;">

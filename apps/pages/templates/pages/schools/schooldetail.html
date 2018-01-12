@@ -9,20 +9,20 @@
 {% endblock %}
 
 {% block sidebar_first %}
-<div class="card-content z-depth-1">
-  <div class="card-title slcschools-grey lighten-1 white-text">Table of Contents</div>
-  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit">Contact Us</a>
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
   <div class="table-of-contents">
     <ul>
-      <li><a href="#about">About</a></li>
+      <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
       {% if page.directoryentries_schooladministrator_node.all %}
-      <li><a href="#administration">Administration</a></li>
+      <li><a href="#administration" onclick="$('.inlinemodal').modaal('close');">Administration</a></li>
       {% endif %}
       {% if page.scc_url or page.links_resourcelink_node.all or page.documents_document_node.all %}
-      <li><a href="#resourcelinks">Resource Links</a></li>
+      <li><a href="#resourcelinks" onclick="$('.inlinemodal').modaal('close');">Resource Links</a></li>
       {% endif %}
       {% if page.boundary_map %}
-      <li><a href="#boundarymap">Boundary Map</a></li>
+      <li><a href="#boundarymap" onclick="$('.inlinemodal').modaal('close');">Boundary Map</a></li>
       {% endif %}
     </ul>
   </div>
@@ -62,22 +62,7 @@
 </div>
 {% endif %}
 <div class="card">
-  <div class="mobile-table-of-contents hide-on-med-and-up">
-    <select id="toc" class="browser-default z-depth-1">
-      <option value="#!" disabled selected style="display:none;">Table of Contents</option>
-      <option value="#about">About</option>
-      {% if page.directoryentries_schooladministrator_node.all %}
-      <option value="#administration">Administration</option>
-      {% endif %}
-      {% if page.scc_url or page.links_resourcelink_node.all or page.documents_document_node.all %}
-      <option value="#resourcelinks">Resource Links</option>
-      {% endif %}
-      {% if page.boundary_map %}
-      <option value="#boundarymap">Boundary Map</option>
-      {% endif %}
-    </select>
-    <label for="toc" class="outofview">Table of Contents</label>
-  </div>  
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit">Table of Contents</a>
   <div class="card-content">
     <h1>{{page.title}}</h1>
     <div class="row">

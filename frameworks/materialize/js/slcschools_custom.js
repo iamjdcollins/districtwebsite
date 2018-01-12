@@ -341,6 +341,25 @@ initializeAjaxModals = function(){
   });
   $(".pagefeedback").removeClass('uninit');
 }
+initializeInlineModals = function(){
+  $(".inlinemodal").modaal({
+    type: 'inline',
+    custom_class: 'modaal-inlinemodal',
+    after_callback_delay: 300,
+    //after_open: function(modal){
+    //  $(modal).find('.modaal-focus').each(function(index,element){
+    //    if(index === 0){
+    //      $(element).removeAttr('aria-label')
+    //      $(element).attr('aria-labelledby','pagefeedbacktitle')
+    //      $(element).attr('aria-describedby','pagefeedbackdesc')
+    //      $(element).focus()
+    //    }
+    //  });
+    //  $.when( $('select').material_select() ).then( materialSelectLabel() );
+    //},
+  });
+  $(".inlinemodal").removeClass('uninit');
+}
 window.onresize = function(event){
   tocResize();
 }
@@ -448,6 +467,7 @@ $(document).ready(function(){
       });
     },
   });
+  initializeInlineModals();
   initializeAjaxModals();
   $("#editpagemodaal").attr('href', $("#editpagemodaal").attr('href') + '?next=' + btoa(window.location))
   $("#editpagemodaal").modaal({

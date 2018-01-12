@@ -9,9 +9,9 @@
 {% endblock %}
 
 {% block sidebar_first %}
-<div class="card-content z-depth-1">
-  <div class="card-title slcschools-grey lighten-1 white-text">Table of Contents</div>
-  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit">Contact Us</a>
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
   <div class="table-of-contents">
     <ul>
     </ul>
@@ -21,12 +21,7 @@
 
 {% block content %}
 <div class="card">
-  <div class="mobile-table-of-contents hide-on-med-and-up">
-    <select class="browser-default z-depth-1">
-      <option value="#!" disabled selected style="display:none;">Table of Contents</option>
-      <option value="#departments">Departments ({{ departments|length }})</option>
-    </select>
-  </div>
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit">Table of Contents</a>
   <div id="main" class="card-content">
     <h1>{{ page.title }}</h1>
     <div id="years" class="scrollspy">

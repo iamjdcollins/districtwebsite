@@ -9,20 +9,20 @@
 {% endblock %}
 
 {% block sidebar_first %}
-<div class="card-content z-depth-1">
-  <div class="card-title slcschools-grey lighten-1 white-text">Table of Contents</div>
-  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit">Contact Us</a>
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
   <div class="table-of-contents">
     <ul>
       {% if page.body %}
-      <li><a href="#about">About</a></li>
+      <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
       {% endif %}
       {% for month in newsmonths %}
       {% if month.news %}
-      <li><a href="#{{ month.month|lower }}">{{ month.month }} ({{ month.news|length }})</a></li>
+      <li><a href="#{{ month.month|lower }}" onclick="$('.inlinemodal').modaal('close');">{{ month.month }} ({{ month.news|length }})</a></li>
       {% endif %}
       {% endfor %}
-      <li><a href="/news/">Other Years</a></li>
+      <li><a href="/news/" onclick="$('.inlinemodal').modaal('close');">Other Years</a></li>
     </ul>
   </div>
 </div>
@@ -58,29 +58,7 @@
 </div>
 {% endif %}
 <div class="card">
-  <div class="mobile-table-of-contents hide-on-med-and-up">
-    <select class="browser-default z-depth-1">
-      <option value="#!" disabled selected style="display:none;">Table of Contents</option>
-      {% if board.body %}
-      <option value="#about">About</option>
-      {% endif %}
-      {% if  board.board_boardmember_board.all %}
-      <option value="#members">Board Members</option>
-      {% endif %}
-      {% if board.mission_statement %}
-      <option value="#mission">Mission Statement</option>
-      {% endif %}
-      {% if board.vision_statement %}
-      <option value="#vision">Vision Statement</option>
-      {% endif %}
-      {% if board_subpages %}
-      <option value="#pages">Pages</option>
-      {% for board_subpage in board_subpages %}
-      <option class="page" value="{{ board_subpage.url }}" title="{{ board_subpage.title }}">-- {{ board_subpage.title }}</option>
-      {% endfor %}
-      {% endif %}
-    </select>
-  </div>
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit">Table of Contents</a>
   <div id="main" class="card-content">
     <h1>News {{page.title}}</h1>
     {% if page.body %}

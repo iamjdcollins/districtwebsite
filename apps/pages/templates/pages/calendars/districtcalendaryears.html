@@ -9,16 +9,16 @@
 {% endblock %}
 
 {% block sidebar_first %}
-<div class="card-content z-depth-1">
-  <div class="card-title slcschools-grey lighten-1 white-text">Table of Contents</div>
-  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit">Contact Us</a>
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
   <div class="table-of-contents">
     <ul>
       {% if page.body %}
-      <li><a href="#about">About</a></li>
+      <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
       {% endif %}
-      <li><a href="#districtcalendarevents">District Calendar Events</a></li>
-      <li><a href="/calendars/guidelines-for-developing-calendar-options/">Parameters for District Calendars</a></li>
+      <li><a href="#districtcalendarevents" onclick="$('.inlinemodal').modaal('close');">District Calendar Events</a></li>
+      <li><a href="/calendars/guidelines-for-developing-calendar-options/" onclick="$('.inlinemodal').modaal('close');">Parameters for District Calendars</a></li>
     </ul>
   </div>
 </div>
@@ -54,14 +54,7 @@
 </div>
 {% endif %}
 <div class="card">
-  <div class="mobile-table-of-contents hide-on-med-and-up">
-    <select class="browser-default z-depth-1">
-      <option value="#!" disabled selected style="display:none;">Table of Contents</option>
-      {% if page.body %}
-      <option value="#about">About</option>
-      {% endif %}
-    </select>
-  </div>
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit">Table of Contents</a>
   <div id="main" class="card-content">
     <h1>District Calendar: {{page.title}}</h1>
     {% if page.body %}
