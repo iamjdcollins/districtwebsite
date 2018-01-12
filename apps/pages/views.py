@@ -471,42 +471,50 @@ def BoardMeetingYearArchive(request):
     board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path).order_by('-startdate')
     return render(request, 'pages/board/boardmeetingyears.html', {'page': page, 'pageopts': pageopts,'board_meeting_years': board_meeting_years,'board_meetings': board_meetings})
 
+def contactmessage_post(request):
+    form = ContactMessageForm(request.POST)
+    if form.is_valid():
+        if request.user.is_anonymous:
+            user = User.objects.get(username='AnonymousUser')
+        else:
+            user = User.objects.get(pk=request.user.pk)
+        post = form.save(commit=False)
+        message_parent = Node.objects.get(pk=post.parent.pk)
+        if post.primary_contact == '':
+            post.primary_contact = message_parent.primary_contact
+        post.create_user = user
+        post.update_user = user
+        post.searchable = False
+        post.save()
+        messages.success(request, 'Thank you for contacting us. Someone will get back to you shortly.')
+        return post
+
+def contactmessage_get(request):
+    form = ContactMessageForm()
+    try:
+        if request.GET['pid']:
+            form.fields['parent'].initial = request.GET['pid']
+    except:
+        form.fields['parent'].initial = apps.common.functions.get_contactpage()
+    try:
+        if request.GET['cid']:
+            form.fields['primary_contact'].initial = request.GET['cid']
+    except:
+        try:
+            form.fields['primary_contact'].initial = str(Node.objects.get(pk=form.fields['parent'].initial).primary_contact.pk)
+        except:
+            form.fields['primary_contact'].initial = str(User.objects.get(username='webmaster@slcschools.org').pk)
+    return form
+
 def contact(request):
     template = 'pages/contact/contact-us.html'
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
     if request.method == "POST":
-        form = ContactMessageForm(request.POST)
-        if form.is_valid():
-            if request.user.is_anonymous:
-                user = User.objects.get(username='AnonymousUser')
-            else:
-                user = User.objects.get(pk=request.user.pk)
-            post = form.save(commit=False)
-            message_parent = Node.objects.get(pk=post.parent.pk)
-            if post.primary_contact == '':
-                post.primary_contact = message_parent.primary_contact
-            post.create_user = user
-            post.update_user = user
-            post.searchable = False
-            post.save()
-            messages.success(request, 'Thank you for contacting us. Someone will get back to you shortly.')
-            return redirect(post.parent.url)
+        post = contactmessage_post(request)
+        return redirect(post.parent.url)
     else:
-        form = ContactMessageForm()
-
-        # Set parent initial value
-        try:
-            if request.GET['pid']:
-                form.fields['parent'].initial = request.GET['pid']
-        except:
-                form.fields['parent'].initial = apps.common.functions.get_contactpage()
-        # Set parent initial value
-        try:
-            if request.GET['cid']:
-                form.fields['primary_contact'].initial = request.GET['cid']
-        except:
-                form.fields['primary_contact'].initial = ''
+        form = contactmessage_get(request)
     return render(request, template, {'page': page,'pageopts': pageopts,'form': form,})
 
 def contact_inline(request):
@@ -514,34 +522,8 @@ def contact_inline(request):
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
     if request.method == "POST":
-        form = ContactMessageForm(request.POST)
-        if form.is_valid():
-            if request.user.is_anonymous:
-                user = User.objects.get(username='AnonymousUser')
-            else:
-                user = User.objects.get(pk=request.user.pk)
-            post = form.save(commit=False)
-            message_parent = Node.objects.get(pk=post.parent.pk)
-            if post.primary_contact == '':
-                post.primary_contact = message_parent.primary_contact
-            post.create_user = user
-            post.update_user = user
-            post.searchable = False
-            post.save()
-            return redirect(post.parent.url)
+        post = contactmessage_post(request)
+        return redirect(post.parent.url)
     else:
-        form = ContactMessageForm()
-
-        # Set parent initial value
-        try:
-            if request.GET['pid']:
-                form.fields['parent'].initial = request.GET['pid']
-        except:
-                form.fields['parent'].initial = apps.common.functions.get_contactpage()
-        # Set parent initial value
-        try:
-            if request.GET['cid']:
-                form.fields['primary_contact'].initial = request.GET['cid']
-        except:
-                form.fields['primary_contact'].initial = ''
+        form = contactmessage_get(request)
     return render(request, template, {'page': page,'pageopts': pageopts,'form': form,})
