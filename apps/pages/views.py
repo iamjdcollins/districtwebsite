@@ -508,22 +508,26 @@ def contactmessage_get(request):
 
 def contact(request):
     template = 'pages/contact/contact-us.html'
-    page = get_object_or_404(Page, url=request.path)
-    pageopts = page._meta
+    context = {}
+    context['page'] = get_object_or_404(Page, url=request.path)
+    context['pageopts'] = context['page']._meta
     if request.method == "POST":
         post = contactmessage_post(request)
         return redirect(post.parent.url)
     else:
-        form = contactmessage_get(request)
-    return render(request, template, {'page': page,'pageopts': pageopts,'form': form,})
+        context['form'] = contactmessage_get(request)
+        context['from_page'] = apps.common.functions.nodefindobject(Node.objects.get(pk=context['form'].fields['parent'].initial))
+    return render(request, template, context)
 
 def contact_inline(request):
     template = 'pages/contact/contact-us-inline.html'
-    page = get_object_or_404(Page, url=request.path)
-    pageopts = page._meta
+    context = {}
+    context['page'] = get_object_or_404(Page, url=request.path)
+    context['pageopts'] = context['page']._meta
     if request.method == "POST":
         post = contactmessage_post(request)
         return redirect(post.parent.url)
     else:
-        form = contactmessage_get(request)
-    return render(request, template, {'page': page,'pageopts': pageopts,'form': form,})
+        context['form'] = contactmessage_get(request)
+        context['from_page'] = apps.common.functions.nodefindobject(Node.objects.get(pk=context['form'].fields['parent'].initial))
+    return render(request, template, context)

@@ -1,0 +1,29 @@
+<div class="card primarycontact">
+  <div class="card-content">
+    <div class="collection">
+      {% if from_page.building_location %}
+      <a href="{{from_page.building_location.google_place}}" class="collection-item">
+        <div class="schooladdress">
+          <span class="title">Address: </span>
+          <address class="schooladdress">
+            {{from_page.building_location.street_address}}, {{from_page.building_location.location_city}}, {{from_page.building_location.location_state}} {{from_page.building_location.location_zipcode}}
+          </address>
+        </div>
+        <span class="material-icons secondary-content absolute-right small" aria-hidden="True">&#xE55F;</span>
+      </a>
+      {% endif %}
+      {% if from_page.main_phone %}
+      <a href="tel:+{{from_page.main_phone|slice:"0:1"}}-{{from_page.main_phone|slice:"1:4"}}-{{from_page.main_phone|slice:"4:7"}}-{{from_page.main_phone|slice:"7:11"}}" class="collection-item">
+        <div class="mainphone"><span class="title">Phone: </span>{{from_page.main_phone|slice:"1:4"}}.{{from_page.main_phone|slice:"4:7"}}.{{from_page.main_phone|slice:"7:11"}}</div>
+        <span class="material-icons secondary-content absolute-right small" aria-hidden="True">&#xE0CD;</span>
+      </a>
+      {% endif %}
+      {% if from_page.main_fax %}
+      <a href="#" onclick="return false;" class="collection-item">
+        <div class="mainfax"><span class="title">Fax: </span>{{from_page.main_fax|slice:"1:4"}}.{{from_page.main_fax|slice:"4:7"}}.{{from_page.main_fax|slice:"7:11"}}</div>
+        <span class="material-icons secondary-content absolute-right small">&#xE8AD;</span>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
