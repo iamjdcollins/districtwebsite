@@ -317,8 +317,10 @@ var getUrlParameter = function getUrlParameter(sParam) {
 };
 
 tocResize = function(){
-  $('.righttoc .card.pin-top').css('overflow-y','auto').css('width',$('.righttoc').width()).css('padding','2px 2px 5px 2px').css('max-height',$(window).height() - ($('.sidebar-first').offset().top - $(window).scrollTop() + 7.5))
-  $('.righttoc .card.pinned').css('overflow-y','auto').css('width',$('.righttoc').width()).css('padding','2px 2px 5px 2px').css('max-height',$(window).height() - $('.authenticated').height() - 15)
+  if( $('.righttoc').length >= 1 ){
+    $('.righttoc .card.pin-top').css('overflow-y','auto').css('width',$('.righttoc').width()).css('padding','2px 2px 5px 2px').css('max-height',$(window).height() - ($('.sidebar-first').offset().top - $(window).scrollTop() + 7.5))
+    $('.righttoc .card.pinned').css('overflow-y','auto').css('width',$('.righttoc').width()).css('padding','2px 2px 5px 2px').css('max-height',$(window).height() - $('.authenticated').height() - 15)
+  }
 }
 window.onresize = function(event){
   tocResize();
