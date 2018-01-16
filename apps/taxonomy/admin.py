@@ -1,7 +1,7 @@
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
 from mptt.admin import MPTTModelAdmin
-from .models import Location, City, State, Zipcode, Language, TranslationType, SchoolType, OpenEnrollmentStatus, BoardPrecinct, BoardMeetingType, BoardPolicySection, DistrictCalendarEventCategory, DistrictLogoGroup, DistrictLogoStyleVariation
+from .models import Location, City, State, Zipcode, Language, TranslationType, SchoolType, OpenEnrollmentStatus, BoardPrecinct, BoardMeetingType, BoardPolicySection, DistrictCalendarEventCategory, DistrictLogoGroup, DistrictLogoStyleVariation, SchoolOption
 
 class LocationAdmin(MPTTModelAdmin,GuardedModelAdmin):
   pass
@@ -45,6 +45,9 @@ class DistrictLogoGroupAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class DistrictLogoStyleVariationAdmin(MPTTModelAdmin,GuardedModelAdmin):
   pass
 
+class SchoolOptionAdmin(MPTTModelAdmin, GuardedModelAdmin):
+  pass
+
 admin.site.register(Location, LocationAdmin)
 admin.site.register(City, CityAdmin)
 admin.site.register(State, StateAdmin)
@@ -59,3 +62,4 @@ admin.site.register(BoardPolicySection, BoardPolicySectionAdmin)
 admin.site.register(DistrictCalendarEventCategory, DistrictCalendarEventCategoryAdmin)
 admin.site.register(DistrictLogoGroup, DistrictLogoGroupAdmin)
 admin.site.register(DistrictLogoStyleVariation, DistrictLogoStyleVariationAdmin)
+admin.site.register(SchoolOption, SchoolOptionAdmin)

@@ -343,3 +343,25 @@ class DistrictLogoStyleVariation(Taxonomy):
 
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
+
+class SchoolOption(Taxonomy):
+
+    PARENT_URL = '/taxonomy/school-options/'
+
+    title = models.CharField(max_length=200, unique=True, help_text='',verbose_name='School Option')
+
+    schooloption_taxonomy_node = models.OneToOneField(Taxonomy, db_column='schooloption_taxonomy_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
+
+    class Meta:
+        db_table = 'taxonomy_schooloption'
+        get_latest_by = 'update_date'
+        permissions = (('trash_schooloption', 'Can soft delete school option'),('restore_schooloption', 'Can restore school option'))
+        verbose_name = 'School Option'
+        verbose_name_plural = 'School Options'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    save = apps.common.functions.taxonomysave
+    delete = apps.common.functions.modeltrash
