@@ -1,0 +1,14 @@
+{% if school.schooloptions.all or page.schooloptions.all %}
+<p>The learning options available at {% if school.title %}{{ school.title }}{% else %}{{ page.title }}{% endif %} include:</p>
+<ul class="browser-default">
+  {% for option in school.schooloptions.all %}
+  <li class="{{option.pk}}">{{ option.title }}</li>
+  {% endfor %}
+  {% for option in page.schooloptions.all %}
+  <li class="{{option.pk}}">{{ option.title }}</li>
+  {% endfor %}
+</ul>
+<p><a href="http://www.yourbestchoice.org/programs-and-options/" target="_blank">Click here</a> for written descriptions of the options listed above.</p> 
+{% else %}
+<p>Learning options not listed at this time. Please check back soon.</p>
+{% endif %}

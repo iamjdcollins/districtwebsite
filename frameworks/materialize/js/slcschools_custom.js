@@ -259,6 +259,7 @@ function modaalAdminPageLoad(){
   }
 }
 function materialSelectLabel(){
+  return
   console.log('Running  materialSelectLabel')
   $('.input-field .select-wrapper').each(function(index,element){
     $element = element

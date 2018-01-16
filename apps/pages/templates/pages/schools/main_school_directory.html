@@ -34,13 +34,24 @@
   <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit"><span aria-hidden="true" class="material-icons left">&#xE8EF;</span><span>Table of Contents / Contact</span></a>
   <div class="card-content">
     <h1>{{page.title}} Directory</h1>
-    <form class="textfieldboxes" action="javascript:void(0);" onsubmit="myFunction(); return false;">
-      <div class="input-field">
-        <input class="autocomplete" onkeyup="myFunction()" title="Search Schools" id="schoolsfilter" type="text">
-        <label for="schoolsfilter">Search Schools</label>
-        <button type="submit" class="btn tableSearchSubmit white-text" name="tableSearchSubmit"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
-      </div>
-    </form>
+    <div class="row">
+      <form class="textfieldboxes" action="javascript:void(0);" onsubmit="myFunction(); return false;">
+        <div class="input-field col s12 m6">
+          <input class="autocomplete" onkeyup="myFunction()" title="Search Schools" id="schoolsfilter" type="text">
+          <label for="schoolsfilter">Search Schools</label>
+          <button type="submit" class="btn tableSearchSubmit white-text" name="tableSearchSubmit"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
+        </div>
+        <div class="input-field col s12 m6">
+          <select id="learningoptionsfilter" multiple onchange="myFunction();">
+            <option value="" disabled selected>Select Learning Options</option>
+            {% for option in learningoptions %}
+            <option value="{{option.pk}}">{{ option.title }}</option>
+            {% endfor %}
+          </select>
+          <label for="learningoptionsfilter" class="sr-only">Filter Learning Options</label>
+        </div>
+      </form>
+    </div>
     <div id="elementaryschools" class="scrollspy filterpoint">
       <h2>Elementary Schools</h2>
       <div class="row">
@@ -102,15 +113,33 @@
 <script>
 function myFunction() {
   var input, filter, filterpoint;
+  $('.filterpoint').removeClass('hide');
   input = document.getElementById("schoolsfilter");
   filter = input.value.toUpperCase();
+  learningoptioninput = document.getElementById("learningoptionsfilter");
+  learningoptions = $(learningoptioninput).val();
   school = document.getElementsByClassName("filterpoint");
   for (i = 0; i < school.length; i++) {
-      if (school[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-        school[i].style.display = "";
+      visible = true
+      if( learningoptions.length > 0 ){
+        visible = false
+        b = 0
+        while(visible == false && b <= learningoptions.length){
+          if( $(school[i]).find('li.' + learningoptions[b]).length > 0 ){
+            visible = true
+          }
+          b += 1
+        }
+      }
+      if ( filter && visible && school[i].innerHTML.toUpperCase().indexOf(filter) <= -1) {
+        visible = false
+      }
+
+      if(visible) {
+        $(school[i]).removeClass('hide');
       } else {
-        school[i].style.display = "none";
-      }       
+        $(school[i]).addClass('hide');
+      }
   }
   bLazy.revalidate()
 }

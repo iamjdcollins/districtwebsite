@@ -11,7 +11,7 @@ from django.http import HttpResponse
 import apps.common.functions
 from apps.objects.models import Node, User
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear,SuperintendentMessage,SuperintendentMessageYear
-from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct, BoardPolicySection, SchoolType
+from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct, BoardPolicySection, SchoolType, SchoolOption
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo
 from apps.directoryentries.models import Staff, SchoolAdministrator, Administrator,  BoardMember, StudentBoardMember, BoardPolicyAdmin
 from apps.links.models import ResourceLink, ActionButton
@@ -104,7 +104,7 @@ def schools(request):
     context = {}
     context['page'] = get_object_or_404(Page, url=request.path)
     context['pageopts'] = context['page']._meta
-    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
+    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','schooloptions','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('schooloptions',queryset=SchoolOption.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
     context['elementary_schools_directory'] = []
     context['k8_schools_directory'] = []
     context['middle_schools_directory'] = []
@@ -124,7 +124,7 @@ def schools(request):
             context['charter_schools_directory'].append(school)
         if school.schooltype.title == 'Community Learning Centers':
             context['community_learning_centers_directory'].append(school)
-  
+    context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title') 
     result = render(request, 'pages/schools/main_school_directory.html', context)
     return result
 
@@ -132,11 +132,12 @@ def elementaryschools(request):
     context = {}
     context['page'] = get_object_or_404(Page, url=request.path)
     context['pageopts'] = context['page']._meta
-    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
+    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','schooloptions','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('schooloptions',queryset=SchoolOption.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
     context['schools'] = []
     for school in schools:
         if school.schooltype.title == 'Elementary Schools':
             context['schools'].append(school)
+    context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
 
@@ -144,11 +145,12 @@ def k8schools(request):
     context = {}
     context['page'] = get_object_or_404(Page, url=request.path)
     context['pageopts'] = context['page']._meta
-    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
+    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','schooloptions','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('schooloptions',queryset=SchoolOption.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
     context['schools'] = []
     for school in schools:
         if school.schooltype.title == 'K-8 Schools':
             context['schools'].append(school)
+    context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
 
@@ -156,11 +158,12 @@ def middleschools(request):
     context = {}
     context['page'] = get_object_or_404(Page, url=request.path)
     context['pageopts'] = context['page']._meta
-    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
+    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','schooloptions','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('schooloptions',queryset=SchoolOption.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
     context['schools'] = []
     for school in schools:
         if school.schooltype.title == 'Middle Schools':
             context['schools'].append(school)
+    context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
 
@@ -168,11 +171,12 @@ def highschools(request):
     context = {}
     context['page'] = get_object_or_404(Page, url=request.path)
     context['pageopts'] = context['page']._meta
-    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
+    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','schooloptions','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('schooloptions',queryset=SchoolOption.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
     context['schools'] = []
     for school in schools:
         if school.schooltype.title == 'High Schools':
             context['schools'].append(school)
+    context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
 
@@ -180,11 +184,12 @@ def charterschools(request):
     context = {}
     context['page'] = get_object_or_404(Page, url=request.path)
     context['pageopts'] = context['page']._meta
-    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
+    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','schooloptions','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('schooloptions',queryset=SchoolOption.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
     context['schools'] = []
     for school in schools:
         if school.schooltype.title == 'Charter Schools':
             context['schools'].append(school)
+    context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
 
@@ -192,11 +197,12 @@ def communitylearningcenters(request):
     context = {}
     context['page'] = get_object_or_404(Page, url=request.path)
     context['pageopts'] = context['page']._meta
-    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
+    schools = School.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','title','building_location','schooltype','schooloptions','website_url','scc_url','calendar_url','donate_url','boundary_map','url','main_phone').prefetch_related(Prefetch('schooltype',queryset=SchoolType.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('schooloptions',queryset=SchoolOption.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('building_location',queryset=Location.objects.only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.only('title')),Prefetch('location_state', queryset = State.objects.only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.only('title')))),Prefetch('images_thumbnail_node', queryset = Thumbnail.objects.only('image_file','alttext','related_node_id')))
     context['schools'] = []
     for school in schools:
         if school.schooltype.title == 'Community Learning Centers':
             context['schools'].append(school)
+    context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
 

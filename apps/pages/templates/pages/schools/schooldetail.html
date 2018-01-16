@@ -15,6 +15,9 @@
   <div class="table-of-contents">
     <ul>
       <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
+      {% if page.schooloptions.all %}
+      <li><a href="#learningoptions" onclick="$('.inlinemodal').modaal('close');">Learning Options</a></li>
+      {% endif %}
       {% if page.directoryentries_schooladministrator_node.all %}
       <li><a href="#administration" onclick="$('.inlinemodal').modaal('close');">Administration</a></li>
       {% endif %}
@@ -73,6 +76,11 @@
         </div>
       </div>
     </div>
+    {% if page.schooloptions.all %}
+    <div id="learningoptions" class="row scrollspy learningoptions">
+      {% include "pages/schools/school_learning_options.html" %}
+    </div>
+    {% endif %}
     {% if page.schooladministrators %}
     <div class="row">
       <div id="administration" class="scrollspy contactcardlist">

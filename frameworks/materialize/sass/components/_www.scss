@@ -952,7 +952,10 @@ html.js #backtotop{
 /* Forms */
 .textfieldboxes .select-wrapper span.caret {
   right: 16px;
-  z-index: 9999999999;
+  z-index: 9;
+}
+.nocaret .caret{
+  display: none !important;
 }
 .textfieldboxes input {
   background: #f0f0f0 !important;
