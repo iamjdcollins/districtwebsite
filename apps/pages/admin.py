@@ -1202,7 +1202,7 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
   form = make_ajax_form(School,{'primary_contact': 'employee'},SchoolAdminForm)
 
   def get_fields(self, request, obj=None):
-      fields = ['title', 'body','building_location','main_phone','main_fax','enrollment','openenrollmentstatus','schooltype','website_url','scc_url','calendar_url','donate_url','boundary_map','primary_contact',['update_user','update_date',],['create_user','create_date',],]
+      fields = ['title', 'body','building_location','main_phone','main_fax','enrollment','openenrollmentstatus','schooltype','schooloptions','website_url','scc_url','calendar_url','donate_url','boundary_map','primary_contact',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
           fields += ['published','searchable','parent',]
           if obj:

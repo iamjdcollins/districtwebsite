@@ -7,7 +7,7 @@ import apps.common.functions
 from apps.objects.models import Node, Page as BasePage
 from apps.pages.help import PageHelp
 from django.contrib.auth import get_permission_codename
-from apps.taxonomy.models import Location, SchoolType, OpenEnrollmentStatus
+from apps.taxonomy.models import Location, SchoolType, OpenEnrollmentStatus, SchoolOption
 from apps.images.models import Thumbnail, PageBanner, ContentBanner
 from apps.directoryentries.models import SchoolAdministrator
 from django.utils import timezone
@@ -58,6 +58,7 @@ class School(BasePage):
   donate_url = models.URLField(max_length=2048, help_text="", null=True, blank=True, verbose_name="School Donation URL")
   boundary_map = models.URLField(max_length=2048, help_text='', null=True, blank=True)
   openenrollmentstatus = models.ForeignKey(OpenEnrollmentStatus, null=True, blank=True, to_field='openenrollmentstatus_taxonomy_node', on_delete=models.PROTECT, limit_choices_to={'deleted': False,}, help_text='', related_name='pages_school_openenrollmentstatus')
+  schooloptions = models.ManyToManyField(SchoolOption, blank=True, related_name='pages_school_schooloptions', verbose_name='School Options')
 
   school_page_node = models.OneToOneField(BasePage, db_column='school_page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
