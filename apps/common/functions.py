@@ -42,7 +42,7 @@ def contactmessage_confirm(self):
 def contactmessage_message(self):
     email = EmailMessage(
         'WEBSITE CONTACT: ' + self.message_subject,
-        '<p>From: ' + self.your_name + '</p><br><p>' + self.your_message + '</p>',
+        '<p><strong>From:</strong> ' + self.your_name + '</p><p><strong>Page:</strong> <a href="https://www.slcschools.org' + self.parent.url + '">https://www.slcschools.org' + self.parent.url + '</a><p><strong>Message:</strong> <br>' + self.your_message + '</p>',
         'Salt Lake City School District <webmaster@slcschools.org>',
         [self.primary_contact.email],
         bcc=['webmaster@slcschools.org'],
