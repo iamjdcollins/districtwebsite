@@ -7,6 +7,9 @@
 {{ object.openenrollmentstatus.title }}
 {{ object.schooltype.title }}
 {{ object.scc_url }}
+{% for option in object.schooloptions.all %}
+  {{ option.title }}
+{% endfor %}
 {% for image in object.images_thumbnail_node.all %}
     {{ image.title }}
     {{ image.alttext }}
