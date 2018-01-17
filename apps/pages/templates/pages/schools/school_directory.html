@@ -72,6 +72,9 @@ function myFunction() {
   filter = input.value.toUpperCase();
   learningoptioninput = document.getElementById("learningoptionsfilter");
   learningoptions = $(learningoptioninput).val();
+  if( learningoptions === null ){
+      learningoptions = []
+  }
   school = document.getElementsByClassName("filterpoint");
   for (i = 0; i < school.length; i++) {
       visible = true
@@ -96,7 +99,12 @@ function myFunction() {
       }
   }
   bLazy.revalidate();
-  schoolCardMatchHeight();
+  $.fn.matchHeight._update()
 }
+$(document).ready(function(){
+  $('.select-wrapper .select-dropdown input:checked').removeAttr('checked').trigger('click');
+  $('.select-wrapper').trigger('click');
+});
 </script>
+
 {% endblock %}
