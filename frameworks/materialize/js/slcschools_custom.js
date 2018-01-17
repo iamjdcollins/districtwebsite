@@ -300,7 +300,11 @@ $(window).scroll(function() {
     }
 });
 
-var bLazy = new Blazy();
+var bLazy = new Blazy({
+  success: function(ele){
+    $.fn.matchHeight._update()
+  }
+});
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
