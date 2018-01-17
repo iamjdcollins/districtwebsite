@@ -376,6 +376,11 @@ initializeInlineModals = function(){
   });
   $(".inlinemodal").removeClass('uninit');
 }
+stickyActionPush = function(){
+  $('.sticky-action-push').each(function(index, element){
+    $(element).css('height',$($(element).closest('.card')).find('.card-action').outerHeight())
+  });
+}
 window.onresize = function(event){
   tocResize();
 }
@@ -533,4 +538,5 @@ $(document).ready(function(){
   if(window.location.hash){
     $('[href=' + window.location.hash + ']').trigger('click')
   }
+  stickyActionPush();
 });
