@@ -377,7 +377,7 @@ initializeInlineModals = function(){
   $(".inlinemodal").removeClass('uninit');
 }
 stickyActionPush = function(){
-  $('.sticky-action-push').each(function(index, element){
+  $('.card-reveal .sticky-action-push').each(function(index, element){
     $(element).css('height',$($(element).closest('.card')).find('.card-action').outerHeight())
   });
 }
