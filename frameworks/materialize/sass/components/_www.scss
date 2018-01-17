@@ -638,6 +638,9 @@ ul ul{
   padding-right: 100%;
   width: 10000px;
 }
+.card-title .clickthrough{
+  pointer-events: none;
+}
 .btn-stretch{
   width: 100%;
 }
