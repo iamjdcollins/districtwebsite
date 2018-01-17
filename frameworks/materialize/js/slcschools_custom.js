@@ -323,6 +323,17 @@ tocResize = function(){
     $('.righttoc .card.pinned').css('overflow-y','auto').css('width',$('.righttoc').width()).css('padding','2px 2px 5px 2px').css('max-height',$(window).height() - $('.authenticated').height() - 15)
   }
 }
+schoolCardMatchHeight = function(){
+  options = {
+  byRow: true,
+  property: 'height',
+  target: null,
+  remove: false
+  };
+  $('.card .schoolcard .card-image').matchHeight(options);
+  $('.card .schoolcard .card-content').matchHeight(options);
+}
+
 initializeAjaxModals = function(){
   $(".pagefeedback").modaal({
     type: 'ajax',
@@ -410,16 +421,7 @@ $(document).ready(function(){
         return false;
     });
   $('.tooltipped').tooltip({delay: 50});
-  $(function() {
-        options = {
-        byRow: true,
-        property: 'height',
-        target: null,
-        remove: false
-        };
-	$('.card .schoolcard .card-image').matchHeight(options);
-        $('.card .schoolcard .card-content').matchHeight(options);
-  });
+  schoolCardMatchHeight();
   $(".mainnav-mobile").modaal({
     type: 'inline',
     fullscreen: 'true',
