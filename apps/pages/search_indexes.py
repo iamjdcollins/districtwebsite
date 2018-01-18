@@ -3,6 +3,7 @@ from .models import Page, School, Department, SubPage, Board, BoardSubPage
 
 class PageIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
 
     def get_model(self):
         return Page
@@ -12,6 +13,7 @@ class PageIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SchoolIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
 
     def get_model(self):
         return School
@@ -21,6 +23,7 @@ class SchoolIndex(indexes.SearchIndex, indexes.Indexable):
 
 class DepartmentIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
 
     def get_model(self):
         return Department
@@ -30,6 +33,7 @@ class DepartmentIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SubPageIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
 
     def get_model(self):
         return SubPage
@@ -39,6 +43,7 @@ class SubPageIndex(indexes.SearchIndex, indexes.Indexable):
 
 class BoardIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
 
     def get_model(self):
         return Board
@@ -48,6 +53,7 @@ class BoardIndex(indexes.SearchIndex, indexes.Indexable):
 
 class BoardSubPageIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
 
     def get_model(self):
         return BoardSubPage

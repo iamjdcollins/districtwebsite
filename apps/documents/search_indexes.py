@@ -1,0 +1,114 @@
+from django.template import loader
+from haystack import indexes
+import textract
+from .models import Policy, AdministrativeProcedure, SupportingDocument, BoardMeetingMinutes, BoardMeetingAgenda
+
+class PolicyIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
+
+    def get_model(self):
+        return Policy
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.filter(deleted=0).filter(published=1).filter(searchable=1)
+
+    def prepare(self, obj):
+        data = super(PolicyIndex, self).prepare(obj)
+        extracted = ''
+        for file in obj.files_file_node.filter(deleted=0).filter(published=1):
+            try:
+                extracted += str(textract.process(file.file_file.path))
+            except:
+                pass
+        t = loader.select_template(('search/indexes/documents/policy_text.txt',))
+        data['text'] = t.render({'object': obj, 'extracted': extracted})
+        return data
+
+class AdministrativeProcedureIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
+
+    def get_model(self):
+        return AdministrativeProcedure
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.filter(deleted=0).filter(published=1).filter(searchable=1)
+
+    def prepare(self, obj):
+        data = super(AdministrativeProcedureIndex, self).prepare(obj)
+        extracted = ''
+        for file in obj.files_file_node.filter(deleted=0).filter(published=1):
+            try:
+                extracted += str(textract.process(file.file_file.path))
+            except:
+                pass
+        t = loader.select_template(('search/indexes/documents/administrativeprocedure_text.txt',))
+        data['text'] = t.render({'object': obj, 'extracted': extracted})
+        return data
+
+class SupportingDocumentIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
+
+    def get_model(self):
+        return SupportingDocument
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.filter(deleted=0).filter(published=1).filter(searchable=1)
+
+    def prepare(self, obj):
+        data = super(SupportingDocumentIndex, self).prepare(obj)
+        extracted = ''
+        for file in obj.files_file_node.filter(deleted=0).filter(published=1):
+            try:
+                extracted += str(textract.process(file.file_file.path))
+            except:
+                pass
+        t = loader.select_template(('search/indexes/documents/supportingdocument_text.txt',))
+        data['text'] = t.render({'object': obj, 'extracted': extracted})
+        return data
+
+class BoardMeetingMinutesIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
+
+    def get_model(self):
+        return BoardMeetingMinutes
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.filter(deleted=0).filter(published=1).filter(searchable=1)
+
+    def prepare(self, obj):
+        data = super(BoardMeetingMinutesIndex, self).prepare(obj)
+        extracted = ''
+        for file in obj.files_file_node.filter(deleted=0).filter(published=1):
+            try:
+                extracted += str(textract.process(file.file_file.path))
+            except:
+                pass
+        t = loader.select_template(('search/indexes/documents/boardmeetingminutes_text.txt',))
+        data['text'] = t.render({'object': obj, 'extracted': extracted})
+        return data
+
+class BoardMeetingAgendaIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+    render = indexes.CharField(use_template=True)
+
+    def get_model(self):
+        return BoardMeetingAgenda
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.filter(deleted=0).filter(published=1).filter(searchable=1)
+
+    def prepare(self, obj):
+        data = super(BoardMeetingAgendaIndex, self).prepare(obj)
+        extracted = ''
+        for file in obj.files_file_node.filter(deleted=0).filter(published=1):
+            try:
+                extracted += str(textract.process(file.file_file.path))
+            except:
+                pass
+        t = loader.select_template(('search/indexes/documents/boardmeetingagenda_text.txt',))
+        data['text'] = t.render({'object': obj, 'extracted': extracted})
+        return data

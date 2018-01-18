@@ -275,6 +275,24 @@ a.inlinemodal.uninit, a.pagefeedback.uninit{
   right: 18px !important;
   left: initial !important;
 }
+/* Search */
+.search-results .result {
+  position: relative;
+}
+.result-type {
+  font-size: 1.25em;
+  padding: 5px;
+  background-color: #4685aa !important;
+  color: white;
+}
+.result-content {
+  width: auto;
+  padding: 5px;
+}
+.search-results .result-title {
+  font-size: 1.25em;
+  padding: 5px;
+}
 /* Screen Readers */
 .sr-only {
   position: absolute;

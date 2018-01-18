@@ -23,7 +23,7 @@
     </form>
     <h1>Search Results</h1>
     {% if query %}
-        <div class="districtnews">
+        <div class="search-results">
           {% for result in page.object_list %}
           {% if result.render %}
           {{ result.render|safe }}
