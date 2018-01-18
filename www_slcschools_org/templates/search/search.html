@@ -25,6 +25,9 @@
     {% if query %}
         <div class="districtnews">
           {% for result in page.object_list %}
+          {% if result.render %}
+          {{ result.render|safe }}
+          {% else %}
           <div class="row">
             <div class="col s12 m4 l3 xl2 article-thumb" >
               {% if result.object.images_newsthumbnail_node.all %}
@@ -45,7 +48,7 @@
             </div>
             <a href="{{ result.object.url }}" class="btn-flat right" hreflang="en"><span class="sr-only">Read more about {{ result.object.title }}</span><span aria-hidden="true">Read More</span></a>
           </div>
-          <!--<p><a href="{{ result.object.url }}">{{ result.object.title }}</a></p>-->
+          {% endif %}
           {% empty %}
           <p>No results found.</p>
           {% endfor %}
