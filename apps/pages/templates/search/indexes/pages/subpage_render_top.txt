@@ -3,5 +3,5 @@
   <span>Subpage for {{ object.parent.node_title }}</span>
 </div>
 <div class="result-content">
-  <span class="result-title"><strong>Title: </strong>{{ object.title }}</span>
+  <span><strong>Title: </strong>{{ object.title }}</span>
 </div>
