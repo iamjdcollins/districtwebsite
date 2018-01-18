@@ -292,6 +292,14 @@ color: #ca2027;
 .result-content {
   width: auto;
   padding: 5px;
+  font-size: 1.15em;
+  @extend .slcschools-teal-text; 
+}
+.result-highlight{
+  padding: 5px;
+}
+.result-content strong{
+  color: black;
 }
 .search-results .result-title {
   font-size: 1.25em;
