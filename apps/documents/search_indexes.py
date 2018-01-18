@@ -43,7 +43,7 @@ class AdministrativeProcedureIndex(indexes.SearchIndex, indexes.Indexable):
         extracted = ''
         for file in obj.files_file_node.filter(deleted=0).filter(published=1):
             try:
-                extracted += str(textract.process(file.file_file.path))
+                extracted += textract.process(file.file_file.path).decode('utf-8')
             except:
                 pass
         t = loader.select_template(('search/indexes/documents/administrativeprocedure_text.txt',))
@@ -66,7 +66,7 @@ class SupportingDocumentIndex(indexes.SearchIndex, indexes.Indexable):
         extracted = ''
         for file in obj.files_file_node.filter(deleted=0).filter(published=1):
             try:
-                extracted += str(textract.process(file.file_file.path))
+                extracted += textract.process(file.file_file.path).decode('utf-8')
             except:
                 pass
         t = loader.select_template(('search/indexes/documents/supportingdocument_text.txt',))
@@ -89,7 +89,7 @@ class BoardMeetingMinutesIndex(indexes.SearchIndex, indexes.Indexable):
         extracted = ''
         for file in obj.files_file_node.filter(deleted=0).filter(published=1):
             try:
-                extracted += str(textract.process(file.file_file.path))
+                extracted += textract.process(file.file_file.path).decode('utf-8')
             except:
                 pass
         t = loader.select_template(('search/indexes/documents/boardmeetingminutes_text.txt',))
@@ -112,7 +112,7 @@ class BoardMeetingAgendaIndex(indexes.SearchIndex, indexes.Indexable):
         extracted = ''
         for file in obj.files_file_node.filter(deleted=0).filter(published=1):
             try:
-                extracted += str(textract.process(file.file_file.path))
+                extracted += textract.process(file.file_file.path).decode('utf-8')
             except:
                 pass
         t = loader.select_template(('search/indexes/documents/boardmeetingagenda_text.txt',))
