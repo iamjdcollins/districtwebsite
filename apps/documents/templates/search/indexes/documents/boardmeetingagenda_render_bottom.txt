@@ -1,0 +1,15 @@
+<div class="result-action" style="clear: both;">
+  {% if object.files_file_node.all|length == 1 %}
+  {% for file in object.files_file_node.all %}
+  <a href="{{ file.file_file.url }}" class="btn-flat right" target="_blank">
+    <span class="sr-only">Open {{ object.title }}</span>
+    <span aria-hidden="true">Open Agenda</span>
+  </a>
+  {% endfor %}
+  {% elif object.files_file_node.all|length > 1 %}
+  <a href="{{ object.parent.parent.url }}#{{ object.pk }}" class="btn-flat right">
+    <span class="sr-only">Select language for {{ object.title }}</span>
+    <span aria-hidden="true">Select Language</span>
+  </a>
+  {% endif %}
+</div>

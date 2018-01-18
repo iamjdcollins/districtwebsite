@@ -1,11 +1,13 @@
 from django.template import loader
 from haystack import indexes
 import textract
+from ast import literal_eval
 from .models import Policy, AdministrativeProcedure, SupportingDocument, BoardMeetingMinutes, BoardMeetingAgenda
 
 class PolicyIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    render = indexes.CharField(use_template=True)
+    render_top = indexes.CharField(use_template=True)
+    render_bottom = indexes.CharField(use_template=True)
 
     def get_model(self):
         return Policy
@@ -18,7 +20,7 @@ class PolicyIndex(indexes.SearchIndex, indexes.Indexable):
         extracted = ''
         for file in obj.files_file_node.filter(deleted=0).filter(published=1):
             try:
-                extracted += str(textract.process(file.file_file.path))
+                extracted += textract.process(file.file_file.path).decode('utf-8')
             except:
                 pass
         t = loader.select_template(('search/indexes/documents/policy_text.txt',))
@@ -27,7 +29,8 @@ class PolicyIndex(indexes.SearchIndex, indexes.Indexable):
 
 class AdministrativeProcedureIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    render = indexes.CharField(use_template=True)
+    render_top = indexes.CharField(use_template=True)
+    render_bottom = indexes.CharField(use_template=True)
 
     def get_model(self):
         return AdministrativeProcedure
@@ -49,7 +52,8 @@ class AdministrativeProcedureIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SupportingDocumentIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    render = indexes.CharField(use_template=True)
+    render_top = indexes.CharField(use_template=True)
+    render_bottom = indexes.CharField(use_template=True)
 
     def get_model(self):
         return SupportingDocument
@@ -71,7 +75,8 @@ class SupportingDocumentIndex(indexes.SearchIndex, indexes.Indexable):
 
 class BoardMeetingMinutesIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    render = indexes.CharField(use_template=True)
+    render_top = indexes.CharField(use_template=True)
+    render_bottom = indexes.CharField(use_template=True)
 
     def get_model(self):
         return BoardMeetingMinutes
@@ -93,7 +98,8 @@ class BoardMeetingMinutesIndex(indexes.SearchIndex, indexes.Indexable):
 
 class BoardMeetingAgendaIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    render = indexes.CharField(use_template=True)
+    render_top = indexes.CharField(use_template=True)
+    render_bottom = indexes.CharField(use_template=True)
 
     def get_model(self):
         return BoardMeetingAgenda

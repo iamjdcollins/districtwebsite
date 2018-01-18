@@ -1,0 +1,8 @@
+<div class="result-type boardmeetingagenda">
+  <span class="material-icons result-icon left"></span>
+  <span>Board Meeting Agenda</span>
+</div>
+<div class="result-content">
+  <span ><strong>Board Meeting Date: </strong>{{ object.parent.event.boardmeeting.startdate|date:"M. d, Y g:i" }}</span><br>
+  <span ><strong>Board Meeting Type: </strong>{% for type in object.parent.event.boardmeeting.meeting_type.all %}{% if not forloop.first %},{% endif %}{{ type.title }}{% endfor %}</span>
+</div>

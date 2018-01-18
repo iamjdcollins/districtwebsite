@@ -1,2 +1,4 @@
 {{ obj.title }}
+{% spaceless %}
 {{ extracted|striptags|safe }}
+{% endspaceless %}

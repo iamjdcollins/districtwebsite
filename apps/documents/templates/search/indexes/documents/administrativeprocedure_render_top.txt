@@ -1,0 +1,8 @@
+<div class="result-type administrativeprocedure">
+  <span class="material-icons result-icon left"></span>
+  <span>Administrative Procedure</span>
+</div>
+<div class="result-content">
+  <span><strong>Policy: </strong>{{ object.parent.document.boardpolicy.section.section_prefix }}-{{ object.parent.document.boardpolicy.index }} {{ object.parent.document.boardpolicy.policy_title }}</span><br>
+  <span><strong>Policy Group: </strong>{{ object.parent.document.boardpolicy.section.title }}</span>
+</div>

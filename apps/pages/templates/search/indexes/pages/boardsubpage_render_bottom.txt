@@ -1,0 +1,6 @@
+<div class="result-action" style="clear: both;">
+  <a href="{{ object.url }}" class="btn-flat right">
+    <span class="sr-only">Go To {{ object.title }}</span>
+    <span aria-hidden="true">Go To</span>
+  </a>
+</div>

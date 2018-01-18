@@ -1,6 +1,6 @@
 {{ object.title }}
 {{ object.short_description }}
-{{ object.body }}
+{{ object.body|striptags|safe }}
 {{ object.building_location.title }}
 {{ object.building_location.street_address }}
 {{ object.main_phone }}
