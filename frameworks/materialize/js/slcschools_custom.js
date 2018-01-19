@@ -509,31 +509,33 @@ $(document).ready(function(){
     },
   });
   $("#editpagemodaal").removeClass('hide')
-  $(".document-inline").modaal({
-    type: 'inline',
-    custom_class: 'modaal-document-inline',
-    width: 300,
-    after_callback_delay: 300,
-    after_open: function(modal){
-      $(modal).find('.modal-title').each(function(index,element){
-        if(index === 0){
-          title = element.id
-        }
-      });
-      $(modal).find('.modal-desc').each(function(index,element){
-        if(index === 0){
-          desc = element.id
-        }
-      });
-      $(modal).find('.modaal-focus').each(function(index,element){
-        if(index === 0){
-          $(element).removeAttr('aria-label')
-          $(element).attr('aria-labelledby',title)
-          $(element).attr('aria-describedby',desc)
-          $(element).focus()
-        }
-      });
-    },
+  $('.document-inline').each(function(index,element){
+    $('[href=' + $(element).attr('href') + ']').modaal({
+      type: 'inline',
+      custom_class: 'modaal-document-inline',
+      width: 300,
+      after_callback_delay: 300,
+      after_open: function(modal){
+        $(modal).find('.modal-title').each(function(index,element){
+          if(index === 0){
+            title = element.id
+          }
+        });
+        $(modal).find('.modal-desc').each(function(index,element){
+          if(index === 0){
+            desc = element.id
+          }
+        });
+        $(modal).find('.modaal-focus').each(function(index,element){
+          if(index === 0){
+            $(element).removeAttr('aria-label')
+            $(element).attr('aria-labelledby',title)
+            $(element).attr('aria-describedby',desc)
+            $(element).focus()
+          }
+        });
+      },
+    });
   });
   if(window.location.hash){
     $('[href=' + window.location.hash + ']').trigger('click')
