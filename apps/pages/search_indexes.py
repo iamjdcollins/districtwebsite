@@ -3,6 +3,9 @@ from .models import Page, School, Department, SubPage, Board, BoardSubPage
 
 class PageIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 
@@ -14,6 +17,9 @@ class PageIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SchoolIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 
@@ -25,6 +31,9 @@ class SchoolIndex(indexes.SearchIndex, indexes.Indexable):
 
 class DepartmentIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 
@@ -36,6 +45,9 @@ class DepartmentIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SubPageIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 
@@ -47,6 +59,9 @@ class SubPageIndex(indexes.SearchIndex, indexes.Indexable):
 
 class BoardIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 
@@ -58,6 +73,9 @@ class BoardIndex(indexes.SearchIndex, indexes.Indexable):
 
 class BoardSubPageIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 

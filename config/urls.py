@@ -4,6 +4,8 @@ from django.contrib import admin
 from ajax_select import urls as ajax_select_urls
 import apps.thirdparty.django_saml2_auth.django_saml2_auth.views
 from django.contrib.auth.views import logout
+from apps.common.classes import CustomSearchView, CustomSearchForm
+from haystack.views import SearchView
 
 urlpatterns = [
 url(r'^saml_login/', include('apps.thirdparty.django_saml2_auth.django_saml2_auth.urls')),
@@ -18,7 +20,7 @@ urlpatterns +=[
 
 # Search Results
 urlpatterns +=[
-    url(r'^search/results/', include('haystack.urls')),
+    url(r'^search/results/', CustomSearchView(form_class=CustomSearchForm), name="haystack_search"),
 ]
 
 #Board App

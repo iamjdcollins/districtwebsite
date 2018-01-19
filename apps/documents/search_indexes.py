@@ -6,6 +6,9 @@ from .models import Policy, AdministrativeProcedure, SupportingDocument, BoardMe
 
 class PolicyIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 
@@ -29,6 +32,9 @@ class PolicyIndex(indexes.SearchIndex, indexes.Indexable):
 
 class AdministrativeProcedureIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 
@@ -52,6 +58,9 @@ class AdministrativeProcedureIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SupportingDocumentIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 
@@ -75,6 +84,9 @@ class SupportingDocumentIndex(indexes.SearchIndex, indexes.Indexable):
 
 class BoardMeetingMinutesIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 
@@ -98,6 +110,9 @@ class BoardMeetingMinutesIndex(indexes.SearchIndex, indexes.Indexable):
 
 class BoardMeetingAgendaIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    url = indexes.CharField(model_attr='url',boost=1.125)
+    node_type = indexes.CharField(model_attr='node_type',boost=1.125)
+    content_type = indexes.CharField(model_attr='content_type',boost=1.125)
     render_top = indexes.CharField(use_template=True)
     render_bottom = indexes.CharField(use_template=True)
 

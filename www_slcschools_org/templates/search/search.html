@@ -29,6 +29,7 @@
           <div class="row">
             <div class="result">
               {{ result.render_top|safe }}
+              {{ result.score }}
               <div class="result-highlight">
                 {% highlight result.text with query max_length 400 %}
               </div>
