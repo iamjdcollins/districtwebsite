@@ -4,12 +4,14 @@ import uuid
 from mptt.models import MPTTModel, TreeForeignKey
 from apps.common.functions import get_webmaster
 from django.contrib.auth.models import AbstractUser
+from django.contrib.sites.models import Site
 
 class Node(MPTTModel):
 
   HAS_PERMISSIONS = False
 
   uuid = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False,)
+  site = models.ForeignKey(Site, blank=True, null=True, on_delete=models.CASCADE)
   node_title = models.CharField(max_length=200,)
   parent = TreeForeignKey('self', null=True, blank=True, related_name='objects_node_parent', db_index=True)
   url = models.CharField(max_length=2000, unique=True, db_index=True)

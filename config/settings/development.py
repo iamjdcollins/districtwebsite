@@ -4,7 +4,7 @@ DEBUG = True
 
 SAML2_AUTH['ASSERTION_URL'] = 'https://www-dev.slcschools.org'
 
-ALLOWED_HOSTS = ['www-dev.slcschools.org',]
+ALLOWED_HOSTS = ['www-dev.slcschools.org','horizonte-dev.slcschools.org',]
 
 # Required for Django Debug Toolbar
 INTERNAL_IPS='127.0.0.1'
