@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from multisite import SiteID
+
+# Django Multisite SiteID
+SITE_ID = SiteID(default=1)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,6 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'multisite',
     'haystack',
     'apps.thirdparty.django_saml2_auth',
     'guardian',
@@ -88,6 +94,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'multisite.middleware.DynamicSiteMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -184,7 +191,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': 'unix:/var/run/memcached/memcached.sock',
-    }
+    },
 }
 
 SLCSD_LDAP_USER = os.environ['SLCSD_LDAP_USER']
@@ -241,3 +248,6 @@ HAYSTACK_CONNECTIONS = {
         'ADMIN_URL': 'http://127.0.0.1:8983/solr/admin/cores',
     },
 }
+
+CACHE_MULTISITE_ALIAS = 'default'
+CACHE_MULTISITE_KEY_PREFIX = 'multisite'
