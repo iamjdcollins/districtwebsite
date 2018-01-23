@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ajax_select',
     'adminsortable2',
+    'apps.dashboard',
     'www_slcschools_org',
     'apps.objects',
     'apps.taxonomy',

@@ -13,6 +13,12 @@ url(r'^accounts/login/$', apps.thirdparty.django_saml2_auth.django_saml2_auth.vi
 url(r'^accounts/logout/$', logout,{'next_page': 'https://adfs.slcschools.org/adfs/ls/?wa=wsignout1.0&wreply=https://www.slcschools.org/'})
 ]
 
+#Dashboard App
+
+urlpatterns +=[
+    url(r'^manage/', include('apps.dashboard.urls', namespace='dashboard')),
+]
+
 #Pages App
 urlpatterns +=[
   url(r'', include('apps.pages.urls', namespace='pages')),
