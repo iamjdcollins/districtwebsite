@@ -11,10 +11,10 @@ class Node(MPTTModel):
   HAS_PERMISSIONS = False
 
   uuid = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False,)
-  site = models.ForeignKey(Site, blank=True, null=True, on_delete=models.CASCADE)
+  site = models.ForeignKey(Site, blank=False, null=False, on_delete=models.CASCADE, db_index=True)
   node_title = models.CharField(max_length=200,)
   parent = TreeForeignKey('self', null=True, blank=True, related_name='objects_node_parent', db_index=True)
-  url = models.CharField(max_length=2000, unique=True, db_index=True)
+  url = models.CharField(max_length=2000, db_index=True)
   node_type = models.CharField(max_length=200, editable=False, null=True, blank=True, db_index=True)
   content_type = models.CharField(max_length=200, editable=False, null=True, blank=True, db_index=True)
   menu_item = models.BooleanField(default=False, db_index=True)
@@ -34,7 +34,7 @@ class Node(MPTTModel):
     get_latest_by = 'create_date'
     verbose_name = 'Node'
     verbose_name_plural = 'Nodes'
-    #unique_together = (('parent', 'node_title'),)
+    unique_together = (('site', 'url'),)
 
   def __str__(self):
     return self.node_title
