@@ -70,7 +70,7 @@ def _get_saml_client(domain):
     f.write(_urllib.urlopen(settings.SAML2_AUTH['METADATA_AUTO_CONF_URL']).read())
     f.close()
     saml_settings = {
-        'entityid': 'https://www2.slcschools.org',
+        'entityid': domain,
         'metadata': {
             'local': [f.name],
         },
