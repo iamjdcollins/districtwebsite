@@ -52,7 +52,7 @@ urlpatterns += [
     url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^jet/', include('jet.urls', 'jet')),
     #url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
-    url(r'^admin/', admin.site.urls),
+    url(r'^backend/', admin.site.urls),
 ]
 
 if settings.DEBUG:
