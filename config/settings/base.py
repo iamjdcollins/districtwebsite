@@ -96,6 +96,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'multisite.middleware.DynamicSiteMiddleware',
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
+    'apps.common.middleware.DynamicDataDir',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -182,7 +183,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-DATA_DIR = '/srv/nginx/www_slcschools_org'
+DATA_DIR = '/srv/nginx/schools.slcschools.org'
 MEDIA_URL = '/'
 MEDIA_ROOT = os.path.join(DATA_DIR)
 STATIC_URL = '/static/'
