@@ -922,6 +922,7 @@ def save_formset(self, request, form, formset, change):
     for obj in formset.new_objects:
         obj.create_user = request.user
         obj.update_user = request.user
+        obj.site = request.site
         obj.primary_contact = request.user
         obj.save()
     for obj in formset.changed_objects:
@@ -932,6 +933,8 @@ def save_model(self, request, obj, form, change):
     if getattr(obj, 'create_user', None) is None:
         obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super(self.__class__,self).save_model(request, obj, form, change)
 
 def response_change(self, request, obj):
