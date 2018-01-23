@@ -1135,6 +1135,7 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   
   def get_queryset(self, request):
    qs = super().get_queryset(request)
+   qs = qs.filter(site=request.site.pk)
    if request.user.is_superuser:
      return qs
    if request.user.has_perm('pages.restore_page'):
@@ -1172,6 +1173,7 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -1182,6 +1184,8 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+      obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -1241,6 +1245,7 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -1251,6 +1256,8 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -1310,6 +1317,7 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -1320,6 +1328,8 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -1379,6 +1389,7 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -1389,6 +1400,8 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -1489,6 +1502,7 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -1499,6 +1513,8 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -1545,6 +1561,7 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -1555,6 +1572,8 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -1601,6 +1620,7 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -1611,6 +1631,8 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -1656,6 +1678,7 @@ class SuperintendentMessageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -1666,6 +1689,8 @@ class SuperintendentMessageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -1712,6 +1737,7 @@ class SuperintendentMessageYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -1722,6 +1748,8 @@ class SuperintendentMessageYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -1804,6 +1832,7 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -1814,6 +1843,8 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -1897,6 +1928,7 @@ class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -1907,6 +1939,8 @@ class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
@@ -1988,6 +2022,7 @@ class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -1998,6 +2033,8 @@ class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
@@ -2079,6 +2116,7 @@ class AdministrativeProcedureAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -2089,6 +2127,8 @@ class AdministrativeProcedureAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
@@ -2170,6 +2210,7 @@ class SupportingDocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -2180,6 +2221,8 @@ class SupportingDocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
@@ -2232,6 +2275,7 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -2242,6 +2286,8 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -2288,6 +2334,7 @@ class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
     for obj in formset.new_objects:
       obj.create_user = request.user
       obj.update_user = request.user
+      obj.site = request.site
       obj.primary_contact = request.user
       obj.save()
     for obj in formset.changed_objects:
@@ -2298,6 +2345,8 @@ class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
     if getattr(obj, 'create_user', None) is None:
       obj.create_user = request.user
     obj.update_user = request.user
+    if getattr(obj, 'site', None) is None:
+        obj.site = request.site
     super().save_model(request, obj, form, change)
 
   response_change = apps.common.functions.response_change
@@ -2380,6 +2429,7 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -2390,6 +2440,8 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
@@ -2469,6 +2521,7 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -2479,6 +2532,8 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
@@ -2560,6 +2615,7 @@ class BoardMeetingAgendaAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -2570,6 +2626,8 @@ class BoardMeetingAgendaAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
@@ -2651,6 +2709,7 @@ class BoardMeetingMinutesAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -2661,6 +2720,8 @@ class BoardMeetingMinutesAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
@@ -2742,6 +2803,7 @@ class BoardMeetingAudioAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -2752,6 +2814,8 @@ class BoardMeetingAudioAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
@@ -2833,6 +2897,7 @@ class BoardMeetingVideoAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -2843,6 +2908,8 @@ class BoardMeetingVideoAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
@@ -2925,6 +2992,7 @@ class BoardMeetingExhibitAdmin(MPTTModelAdmin,GuardedModelAdmin):
         for obj in formset.new_objects:
             obj.create_user = request.user
             obj.update_user = request.user
+            obj.site = request.site
             obj.primary_contact = request.user
             obj.save()
         for obj in formset.changed_objects:
@@ -2935,6 +3003,8 @@ class BoardMeetingExhibitAdmin(MPTTModelAdmin,GuardedModelAdmin):
         if getattr(obj, 'create_user', None) is None:
             obj.create_user = request.user
         obj.update_user = request.user
+        if getattr(obj, 'site', None) is None:
+            obj.site = request.site
         super().save_model(request, obj, form, change)
 
     response_change = apps.common.functions.response_change
