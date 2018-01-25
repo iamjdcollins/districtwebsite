@@ -66,9 +66,11 @@ INSTALLED_APPS = [
     'apps.thirdparty.django_saml2_auth',
     'guardian',
     'mptt',
+    'pipeline',
     'ckeditor',
     'ajax_select',
     'adminsortable2',
+    'apps.cmstemplates',
     'apps.dashboard',
     'www_slcschools_org',
     'apps.objects',
@@ -186,6 +188,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
+
 DATA_DIR = '/srv/nginx/schools.slcschools.org'
 MEDIA_URL = '/'
 MEDIA_ROOT = os.path.join(DATA_DIR)
@@ -256,3 +266,67 @@ HAYSTACK_CONNECTIONS = {
 
 CACHE_MULTISITE_ALIAS = 'default'
 CACHE_MULTISITE_KEY_PREFIX = 'multisite'
+
+# CMSTEMPLATES
+
+CMSTEMPLATES = {
+    'css': {
+      'frameworks': {
+          'materialize': [
+              'cmstemplates/src/frameworks/materialize/sass/materialize.scss',
+          ],
+      },
+      'fonts': {
+          'md': [
+              'cmstemplates/src/fonts/md/md.css',
+          ],
+      },
+      'templates': {
+          'global': [
+              'cmstemplates/src/templates/global/sass/global.scss',
+          ],
+          'dashboard': [
+              'cmstemplates/src/templates/dashboard/sass/dashboard.scss',
+          ],
+      },
+      'themes': {
+          'dashboard-standard': [
+              'cmstemplates/src/themes/dashboard-standard/sass/dashboard-standard.scss',
+          ],
+      },
+    },
+    'javascript': {
+        'jquery211': [
+            'cmstemplates/src/js/jquery/jquery.2.1.1.js',
+        ],
+        'materialize': [
+            'cmstemplates/src/frameworks/materialize/js/bin/materialize.js',
+        ],
+        'dashboard': [
+            'cmstemplates/src/js/templates/dashboard/dashboard.js',
+        ],
+    },
+}
+
+# Django Pipeline
+
+PIPELINE = {
+    'COMPILERS': (
+        'libsasscompiler.LibSassCompiler',
+    ),
+    'CSS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
+    'STYLESHEETS': {
+        'dashboard-standard': {
+            'source_filenames': CMSTEMPLATES['css']['frameworks']['materialize'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['dashboard'] + CMSTEMPLATES['css']['themes']['dashboard-standard'],
+            'output_filename': 'cmstemplates/build/dashboard-standard/dashboard-standard.min.css',
+        },
+      
+    },
+    'JAVASCRIPT': {
+        'dashboard-standard': {
+            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['materialize'] + CMSTEMPLATES['javascript']['dashboard'],
+            'output_filename': 'cmstemplates/build/dashboard-standard/dashboard-standard.min.js',
+        },
+    },
+}
