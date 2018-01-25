@@ -260,7 +260,6 @@ function modaalAdminPageLoad(){
 }
 function materialSelectLabel(){
   return
-  console.log('Running  materialSelectLabel')
   $('.input-field .select-wrapper').each(function(index,element){
     $element = element
     $($element).find('label').remove()
@@ -385,7 +384,7 @@ window.onresize = function(event){
   tocResize();
 }
 $(document).ready(function(){
-  $("a").each( function( index, item){ if ( window.location.hostname !== item.hostname) { console.log('Adding ' + item.hostname); $(item).attr('target', '_blank') }});
+  $("a").each( function( index, item){ if ( window.location.hostname !== item.hostname) { $(item).attr('target', '_blank') }});
   $('.actionbuttons a').matchHeight();
   tocResize();
   $('.authenticated').pushpin({
