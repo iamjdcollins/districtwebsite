@@ -1,0 +1,56 @@
+html, body{
+  height: 100%;
+}
+body{
+  position: relative;
+  min-height: 100%;
+}
+.row.nomargins{
+  margin: 0;
+}
+#pushfooter.wrapper{
+  min-height: 100%;
+  padding-bottom: 0px;
+  overflow: auto;
+}
+.header.wrapper{
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+}
+.dashboard-menu {
+  padding: 0;
+  margin: 0;
+}
+.dashboard-menu li {
+  display: inline;
+}
+.dashboard-menu li a {
+  display: inline-block;
+  font-size: 1.25em;
+  padding: 15px;
+}
+.dashboard-menu li .dropdown-content li{
+  display: block;
+}
+#siteslist{
+  visibility: hidden;
+}
+.leftmenu {
+  width: 70px;
+  height: 100%;
+  background: #263238;
+  position: fixed;
+  top: 57px;
+  padding-top: 10px;
+  z-index: 1;
+}
+.leftmenu ul li a{
+  text-align: center;
+  display: block;
+  font-size: 40px;
+}
+.leftmenuoffset {
+  padding-left: 85px !important;
+  padding-top: 67px !important;
+}

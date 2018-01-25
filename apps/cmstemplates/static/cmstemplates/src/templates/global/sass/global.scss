@@ -1,0 +1,26 @@
+.skipto {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px);
+  overflow: hidden;
+  height: 1px;
+}
+.skipto:active, .skipto:focus, .skipto:hover {
+  position: static !important;
+  clip: auto;
+  overflow: visible;
+  height: auto;
+}
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+[class^="md-"]::before, [class*=" md-"]::before {
+  top: 3px;
+  position: relative;
+}
