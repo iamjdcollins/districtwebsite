@@ -48,7 +48,7 @@
       <div id="{{ audio.pk }}-title" class="modal-title">Board Audio Recording</div>
       <p id="{{ audio.pk }}-desc" class="modal-desc">Click play below to listen to the board audio recording. You can close this dialog by pressing escape at any time.</p>
       {% for file in audio.files_audiofile_node.all %}
-       <audio controls>
+       <audio controls preload="none">
          <source src="{{file.file_file.url}}" type="audio/mpeg">
          <a href="{{file.file_file.url}}">Your browser does not support the audio element. Click here to download</a>
        </audio> 
