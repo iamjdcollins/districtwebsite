@@ -22,8 +22,11 @@ from apps.users.models import Employee
 from apps.contactmessages.forms import ContactMessageForm
 
 def home(request):
-  page = get_object_or_404(Page, url='/home/')
-  pageopts = page._meta
+  try:
+      page = apps.common.functions.nodefindobject(Node.objects.filter(site=request.site.pk).get(url='/home/'))
+      pageopts = page._meta
+  except:
+      return HttpResponse('This page is not setup yet.')
   supermessage = SuperintendentMessage.objects.filter(deleted=0).filter(published=1).order_by('-author_date').only('title','author_date','summary','url')[:1]
   news = News.objects.all().filter(deleted=0).filter(published=1).order_by('-pinned','-author_date').only('title','author_date','summary','url').prefetch_related(Prefetch('images_newsthumbnail_node', queryset = NewsThumbnail.objects.only('image_file','alttext','related_node_id')))[0:5]
   result = render(request, 'pages/home.html', {'page': page,'pageopts': pageopts,'news': news,'supermessage':supermessage})
