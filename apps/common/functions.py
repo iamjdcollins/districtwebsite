@@ -212,13 +212,6 @@ def usersave(self, *args, **kwargs):
     except Node.DoesNotExist:
       pass
   # Track URL Changes
-  # urlchanged = False
-  # parent_url = self.parent.url if self.parent else self.PARENT_URL
-  #if self.url != urlclean_remdoubleslashes('/' + parent_url + '/' +  urlclean_objname(str(self.email).split('@', 1)[0]) + '/'):
-  #  oldurl = self.url 
-  #  self.url = urlclean_remdoubleslashes('/' + parent_url + '/' +  urlclean_objname(str(self.email).split('@', 1)[0]) + '/')
-  #  if not is_new:
-  #    urlchanged = True
   urlchanged = False
   parent_url = self.parent.url if self.parent else ''
   oldurl = self.url
@@ -227,13 +220,11 @@ def usersave(self, *args, **kwargs):
     print('URL Changed: ' + oldurl + ' is now ' + self.url)
     if not is_new:
       urlchanged = True
-  # Set Username
-  if self.username:
-    self.node_title = self.username
+  # Set the node_title for the node
+  self.node_title = self.title
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.user_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # Does this item have permissions?
   if self.HAS_PERMISSIONS:
@@ -303,7 +294,6 @@ def pagesave(self, *args, **kwargs):
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.page_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # if not self.menu_title:
   #   self.menu_title = self.title
@@ -359,7 +349,6 @@ def taxonomysave(self, *args, **kwargs):
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.taxonomy_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # Does this item have permissions?
   if self.HAS_PERMISSIONS:
@@ -429,7 +418,6 @@ def imagesave(self, *args, **kwargs):
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.image_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # Does this item have permissions?
   if self.HAS_PERMISSIONS:
@@ -490,7 +478,6 @@ def directoryentrysave(self, *args, **kwargs):
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.image_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # Does this item have permissions?
   if self.HAS_PERMISSIONS:
@@ -542,7 +529,6 @@ def linksave(self, *args, **kwargs):
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.link_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # Does this item have permissions?
   if self.HAS_PERMISSIONS:
@@ -616,7 +602,6 @@ def filesave(self, *args, **kwargs):
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.link_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # Does this item have permissions?
   if self.HAS_PERMISSIONS:
@@ -690,7 +675,6 @@ def documentsave(self, *args, **kwargs):
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.link_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # Does this item have permissions?
   if self.HAS_PERMISSIONS:
@@ -768,7 +752,6 @@ def eventsave(self, *args, **kwargs):
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.link_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # Set Event School Year and Year End fields
   self.schoolyear = str(currentyear(self.startdate)['currentyear']['long'])
@@ -825,7 +808,6 @@ def faqsave(self, *args, **kwargs):
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.image_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # Does this item have permissions?
   if self.HAS_PERMISSIONS:
@@ -879,7 +861,6 @@ def contactmessagesave(self, *args, **kwargs):
   # Set the node type
   self.node_type = self._meta.app_label
   # Set the content type
-  self.image_type = self._meta.model_name
   self.content_type = self._meta.model_name
   # Does this item have permissions?
   if self.HAS_PERMISSIONS:

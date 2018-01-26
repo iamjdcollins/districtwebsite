@@ -40,7 +40,6 @@ class Node(MPTTModel):
     return self.node_title
 
 class User(AbstractUser, Node):
-  user_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   user_node = models.OneToOneField(Node, db_column='user_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
@@ -52,7 +51,6 @@ class User(AbstractUser, Node):
     default_manager_name = 'objects'
 
 class Page(Node):
-  page_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   page_node = models.OneToOneField(Node, db_column='page_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
@@ -64,7 +62,6 @@ class Page(Node):
     default_manager_name = 'objects'
 
 class Taxonomy(Node):
-  taxonomy_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   taxonomy_node = models.OneToOneField(Node, db_column='taxonomy_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
@@ -76,7 +73,6 @@ class Taxonomy(Node):
     default_manager_name = 'objects'
 
 class Image(Node):
-  image_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   image_node = models.OneToOneField(Node, db_column='image_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
@@ -88,7 +84,6 @@ class Image(Node):
     default_manager_name = 'objects'
 
 class DirectoryEntry(Node):
-  directoryentry_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   directoryentry_node = models.OneToOneField(Node, db_column='directoryentry_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
@@ -100,7 +95,6 @@ class DirectoryEntry(Node):
     default_manager_name = 'objects'
 
 class Link(Node):
-  link_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   link_node = models.OneToOneField(Node, db_column='link_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
@@ -112,7 +106,6 @@ class Link(Node):
     default_manager_name = 'objects'
 
 class File(Node):
-  file_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   file_node = models.OneToOneField(Node, db_column='file_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
@@ -124,7 +117,6 @@ class File(Node):
     default_manager_name = 'objects'
 
 class Document(Node):
-  document_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   document_node = models.OneToOneField(Node, db_column='document_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
@@ -136,7 +128,6 @@ class Document(Node):
     default_manager_name = 'objects'
 
 class Event(Node):
-  event_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   event_node = models.OneToOneField(Node, db_column='event_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
@@ -148,7 +139,6 @@ class Event(Node):
     default_manager_name = 'objects'
 
 class FAQ(Node):
-  faq_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   faq_node = models.OneToOneField(Node, db_column='faq_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
@@ -160,7 +150,6 @@ class FAQ(Node):
     default_manager_name = 'objects'
 
 class ContactMessage(Node):
-  contactmessagae_type = models.CharField(max_length=200, editable=False, null=True, blank=True)
 
   contactmessage_node = models.OneToOneField(Node, db_column='contactmessage_node', on_delete=models.CASCADE, parent_link=True,editable=False,)
 
