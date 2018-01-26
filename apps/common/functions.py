@@ -204,7 +204,7 @@ def usersave(self, *args, **kwargs):
   if self.uuid is None:
     self.uuid = uuid.uuid4()
   # Force Title
-  self.title = self.force_title(self)
+  self.title = self.force_title()
   #Force Parent
   if self.PARENT_URL:
     try:
