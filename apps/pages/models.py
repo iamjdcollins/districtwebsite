@@ -45,6 +45,9 @@ class Page(BasePage):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
 
@@ -178,6 +181,9 @@ class School(BasePage):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
 
@@ -257,6 +263,9 @@ class Department(BasePage):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
 
@@ -335,6 +344,9 @@ class Board(BasePage):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
@@ -424,6 +436,9 @@ class BoardSubPage(BasePage):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
 
@@ -466,6 +481,9 @@ class BoardMeetingYear(BasePage):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
 
@@ -505,6 +523,9 @@ class NewsYear(BasePage):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
@@ -562,6 +583,9 @@ class News(BasePage):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
 
@@ -605,6 +629,10 @@ class SuperintendentMessageYear(BasePage):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return 'Superintendent\'s Message ' + \
+            self.author_date.strftime('%Y-%m-%d')
 
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
@@ -666,6 +694,9 @@ class SuperintendentMessage(BasePage):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
@@ -751,6 +782,9 @@ class SubPage(BasePage):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash
 
@@ -794,6 +828,9 @@ class DistrictCalendarYear(BasePage):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.pagesave
     delete = apps.common.functions.modeltrash

@@ -49,6 +49,9 @@ class SchoolAdministrator(DirectoryEntry):
         verbose_name_plural = 'School Administrators'
         default_manager_name = 'objects'
 
+    def force_title(self):
+        return self.employee.title
+
     save = apps.common.functions.directoryentrysave
     delete = apps.common.functions.modeltrash
 
@@ -105,6 +108,9 @@ class Administrator(DirectoryEntry):
         verbose_name_plural = 'Administrators'
         default_manager_name = 'objects'
 
+    def force_title(self):
+        return self.employee.title
+
     save = apps.common.functions.directoryentrysave
     delete = apps.common.functions.modeltrash
 
@@ -160,6 +166,9 @@ class Staff(DirectoryEntry):
         verbose_name = 'Staff'
         verbose_name_plural = 'Staff'
         default_manager_name = 'objects'
+
+    def force_title(self):
+        return self.employee.title
 
     save = apps.common.functions.directoryentrysave
     delete = apps.common.functions.modeltrash
@@ -250,6 +259,9 @@ class BoardMember(DirectoryEntry):
         verbose_name_plural = 'Board Members'
         default_manager_name = 'objects'
 
+    def force_title(self):
+        return self.employee.title
+
     save = apps.common.functions.directoryentrysave
     delete = apps.common.functions.modeltrash
 
@@ -316,6 +328,9 @@ class StudentBoardMember(DirectoryEntry):
         verbose_name_plural = 'Student Board Members'
         default_manager_name = 'objects'
 
+    def force_title(self):
+        return 'Student Board Member'
+
     save = apps.common.functions.directoryentrysave
     delete = apps.common.functions.modeltrash
 
@@ -355,6 +370,9 @@ class BoardPolicyAdmin(DirectoryEntry):
         verbose_name = 'Board Policy Administrator'
         verbose_name_plural = 'Board Policy Administrators'
         default_manager_name = 'objects'
+
+    def force_title(self):
+        return self.employee.title
 
     save = apps.common.functions.directoryentrysave
     delete = apps.common.functions.modeltrash

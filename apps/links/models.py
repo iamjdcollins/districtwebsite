@@ -48,6 +48,9 @@ class ResourceLink(Link):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.linksave
     delete = apps.common.functions.modeltrash
 
@@ -96,6 +99,9 @@ class ActionButton(Link):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.linksave
     delete = apps.common.functions.modeltrash

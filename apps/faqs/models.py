@@ -62,5 +62,8 @@ class FAQ(BaseFAQ):
     def __str__(self):
         return self.question
 
+    def force_title(self):
+        return str(self.uuid)
+
     save = apps.common.functions.faqsave
     delete = apps.common.functions.modeltrash

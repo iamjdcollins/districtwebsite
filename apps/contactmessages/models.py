@@ -76,5 +76,8 @@ class ContactMessage(BaseContactMessage):
     def __str__(self):
         return self.message_subject
 
+    def force_title(self):
+        return str(self.uuid)
+
     save = apps.common.functions.contactmessagesave
     delete = apps.common.functions.modeltrash

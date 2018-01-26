@@ -54,6 +54,9 @@ class Thumbnail(Image):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.imagesave
     delete = apps.common.functions.modeltrash
 
@@ -106,6 +109,9 @@ class NewsThumbnail(Image):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.imagesave
     delete = apps.common.functions.modeltrash
@@ -160,6 +166,9 @@ class PageBanner(Image):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.imagesave
     delete = apps.common.functions.modeltrash
@@ -225,6 +234,9 @@ class ContentBanner(Image):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.imagesave
     delete = apps.common.functions.modeltrash
 
@@ -278,6 +290,9 @@ class ProfilePicture(Image):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.imagesave
     delete = apps.common.functions.modeltrash
@@ -333,6 +348,9 @@ class DistrictLogoGIF(Image):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.imagesave
     delete = apps.common.functions.modeltrash
 
@@ -386,6 +404,9 @@ class DistrictLogoJPG(Image):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.imagesave
     delete = apps.common.functions.modeltrash
@@ -441,6 +462,9 @@ class DistrictLogoPNG(Image):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.imagesave
     delete = apps.common.functions.modeltrash
 
@@ -494,6 +518,9 @@ class DistrictLogoTIF(Image):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.imagesave
     delete = apps.common.functions.modeltrash
@@ -556,6 +583,10 @@ class DistrictLogo(Image):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.district_logo_group.title + \
+            ' ' + self.district_logo_style_variation.title
 
     save = apps.common.functions.imagesave
     delete = apps.common.functions.modeltrash

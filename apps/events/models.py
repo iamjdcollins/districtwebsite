@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 import apps.common.functions as commonfunctions
 from apps.objects.models import Node, Event as BaseEvent
 from apps.taxonomy.models import Location, BoardMeetingType, \
@@ -101,6 +102,11 @@ class BoardMeeting(BaseEvent):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return timezone.localtime(
+            self.originaldate).strftime(
+            '%Y%m%d-%H%M') + '-' + str(self.originalinstance)
 
     save = commonfunctions.eventsave
     delete = commonfunctions.modeltrash
@@ -219,6 +225,11 @@ class DistrictCalendarEvent(BaseEvent):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return timezone.localtime(
+            self.originaldate).strftime(
+            '%Y%m%d-%H%M') + '-' + str(self.originalinstance)
 
     save = commonfunctions.eventsave
     delete = commonfunctions.modeltrash

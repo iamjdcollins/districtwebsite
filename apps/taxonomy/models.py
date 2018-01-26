@@ -81,6 +81,9 @@ class Location(Taxonomy):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
@@ -118,6 +121,9 @@ class City(Taxonomy):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
@@ -157,6 +163,9 @@ class State(Taxonomy):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
@@ -194,6 +203,9 @@ class Zipcode(Taxonomy):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
@@ -257,6 +269,9 @@ class Language(Taxonomy):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
@@ -296,6 +311,9 @@ class TranslationType(Taxonomy):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
@@ -332,6 +350,9 @@ class SchoolType(Taxonomy):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
@@ -371,6 +392,9 @@ class OpenEnrollmentStatus(Taxonomy):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
@@ -409,6 +433,9 @@ class SchoolAdministratorType(Taxonomy):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
@@ -445,6 +472,9 @@ class BoardPrecinct(Taxonomy):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
@@ -480,6 +510,9 @@ class BoardMeetingType(Taxonomy):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
@@ -530,6 +563,9 @@ class BoardPolicySection(Taxonomy):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
@@ -574,6 +610,9 @@ class DistrictCalendarEventCategory(Taxonomy):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
@@ -610,6 +649,9 @@ class DistrictLogoGroup(Taxonomy):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
@@ -649,6 +691,9 @@ class DistrictLogoStyleVariation(Taxonomy):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash
 
@@ -685,6 +730,9 @@ class SchoolOption(Taxonomy):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.taxonomysave
     delete = apps.common.functions.modeltrash

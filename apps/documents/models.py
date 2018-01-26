@@ -1,3 +1,4 @@
+import re
 from django.db import models
 import apps.common.functions
 from apps.objects.models import Node, Document as BaseDocument
@@ -52,6 +53,9 @@ class Document(BaseDocument):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
@@ -117,6 +121,9 @@ class BoardPolicy(BaseDocument):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.section.section_prefix + '-' + str(self.index)
+
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
 
@@ -159,6 +166,9 @@ class Policy(BaseDocument):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.parent.node_title + ' Policy'
 
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
@@ -204,6 +214,9 @@ class AdministrativeProcedure(BaseDocument):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.parent.node_title + ' AP'
 
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
@@ -255,6 +268,15 @@ class SupportingDocument(BaseDocument):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        if ((not self.document_title) and self.title) \
+                or self.title != self.node_title:
+            self.document_title = \
+                re.sub(r'^' + re.escape(
+                    self.parent.node_title
+                ) + '[ ]?', '', self.title).strip()
+        return self.parent.node_title + ' ' + self.document_title
+
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
 
@@ -299,6 +321,9 @@ class BoardMeetingAgenda(BaseDocument):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.parent.node_title + ' Agenda'
 
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
@@ -345,6 +370,9 @@ class BoardMeetingMinutes(BaseDocument):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.parent.node_title + ' Minutes'
+
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
 
@@ -388,6 +416,9 @@ class BoardMeetingAudio(BaseDocument):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.parent.node_title + ' Audio'
+
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
 
@@ -430,6 +461,9 @@ class BoardMeetingVideo(BaseDocument):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.parent.node_title + ' Video'
 
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
@@ -476,6 +510,9 @@ class BoardMeetingExhibit(BaseDocument):
     def __str__(self):
         return self.title
 
+    def force_title(self):
+        return self.title if self.title else ''
+
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash
 
@@ -520,6 +557,9 @@ class BoardMeetingAgendaItem(BaseDocument):
 
     def __str__(self):
         return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
 
     save = apps.common.functions.documentsave
     delete = apps.common.functions.modeltrash

@@ -56,6 +56,9 @@ class File(BaseFile):
         verbose_name_plural = 'Files'
         default_manager_name = 'objects'
 
+    def force_title(self):
+        return self.parent.node_title + ' (' + self.file_language.title + ')'
+
     save = apps.common.functions.filesave
     delete = apps.common.functions.modeltrash
 
@@ -102,6 +105,9 @@ class AudioFile(BaseFile):
         verbose_name_plural = 'Audio Files'
         default_manager_name = 'objects'
 
+    def force_title(self):
+        return self.parent.node_title
+
     save = apps.common.functions.filesave
     delete = apps.common.functions.modeltrash
 
@@ -147,6 +153,9 @@ class VideoFile(BaseFile):
         verbose_name = 'Video File'
         verbose_name_plural = 'Video Files'
         default_manager_name = 'objects'
+
+    def force_title(self):
+        return self.parent.node_title
 
     save = apps.common.functions.filesave
     delete = apps.common.functions.modeltrash
