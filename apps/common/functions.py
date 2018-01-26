@@ -203,6 +203,8 @@ def usersave(self, *args, **kwargs):
   # Set UUID if None
   if self.uuid is None:
     self.uuid = uuid.uuid4()
+  # Force Title
+  self.title = self.force_title(self)
   #Force Parent
   if self.PARENT_URL:
     try:
@@ -210,11 +212,19 @@ def usersave(self, *args, **kwargs):
     except Node.DoesNotExist:
       pass
   # Track URL Changes
+  # urlchanged = False
+  # parent_url = self.parent.url if self.parent else self.PARENT_URL
+  #if self.url != urlclean_remdoubleslashes('/' + parent_url + '/' +  urlclean_objname(str(self.email).split('@', 1)[0]) + '/'):
+  #  oldurl = self.url 
+  #  self.url = urlclean_remdoubleslashes('/' + parent_url + '/' +  urlclean_objname(str(self.email).split('@', 1)[0]) + '/')
+  #  if not is_new:
+  #    urlchanged = True
   urlchanged = False
-  parent_url = self.parent.url if self.parent else self.PARENT_URL
-  if self.url != urlclean_remdoubleslashes('/' + parent_url + '/' +  urlclean_objname(str(self.email).split('@', 1)[0]) + '/'):
-    oldurl = self.url 
-    self.url = urlclean_remdoubleslashes('/' + parent_url + '/' +  urlclean_objname(str(self.email).split('@', 1)[0]) + '/')
+  parent_url = self.parent.url if self.parent else ''
+  oldurl = self.url
+  if self.url != urlclean_remdoubleslashes('/' + parent_url + '/' + is_deleted + urlclean_objname(self.title) + '/'):
+    self.url = urlclean_remdoubleslashes('/' + parent_url + '/' + is_deleted + urlclean_objname(self.title) + '/')
+    print('URL Changed: ' + oldurl + ' is now ' + self.url)
     if not is_new:
       urlchanged = True
   # Set Username
