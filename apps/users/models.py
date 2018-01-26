@@ -9,8 +9,6 @@ class Employee(User):
 
     title = models.CharField(
         max_length=200,
-        null=True,
-        blank=True,
         help_text='',
         db_index=True,
     )
@@ -64,8 +62,6 @@ class System(User):
 
     title = models.CharField(
         max_length=200,
-        null=True,
-        blank=True,
         help_text='',
         db_index=True,
     )
