@@ -37,6 +37,12 @@ class Node(MPTTModel):
       max_length=2000,
       db_index=True,
     )
+    slug = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+        db_index=True,
+    )
     node_type = models.CharField(
         max_length=200,
         editable=False,
