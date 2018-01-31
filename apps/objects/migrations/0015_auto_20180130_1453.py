@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('objects', '0014_node_slug'),
-        ('users', '0005_auto_20180125_2233'),
+        ('users', '0006_auto_20180131_1434'),
     ]
 
     operations = [

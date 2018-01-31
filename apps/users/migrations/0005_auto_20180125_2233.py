@@ -4,13 +4,6 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 
-def set_user_title(apps, schema_editor):
-    Employee = apps.get_model('users','employee')
-    System = apps.get_model('users','system')
-    for employee in Employee.objects.all():
-        employee.save()
-    for system in System.objects.all():
-        system.save()
 
 class Migration(migrations.Migration):
 
@@ -29,5 +22,4 @@ class Migration(migrations.Migration):
             name='title',
             field=models.CharField(blank=True, db_index=True, max_length=200, null=True),
         ),
-        migrations.RunPython(set_user_title),
     ]
