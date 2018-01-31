@@ -418,7 +418,7 @@ class ActionButtonInline(SortableInlineAdminMixin, admin.TabularInline):
   model = ActionButton
   form = ActionButtonInlineForm
   fk_name = 'parent'
-  fields = ['title', 'link_url','update_user','update_date',]
+  fields = ['title', 'link_url','update_user','update_date','published',]
   readonly_fields = ['update_user','update_date',]
   extra = 0
   min_num = 0
@@ -449,7 +449,7 @@ class DocumentInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.Tab
   model = Document
   form = DocumentInlineForm
   fk_name = 'parent'
-  fields = ['title','update_user','update_date','edit_link',]
+  fields = ['title','update_user','update_date','edit_link','published',]
   readonly_fields = ['update_user','update_date','edit_link',]
   extra = 0 
   min_num = 0
