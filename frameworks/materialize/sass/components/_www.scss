@@ -944,6 +944,18 @@ nav.yearnav span.caret {
   line-height: 10px;
   z-index: 3;
 }
+.yearnav .filter-button {
+  border: none;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 43px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #00587b;
+  line-height: 25px;
+  box-shadow: none !important;
+}
 footer{
   min-height: 100px;
   margin-top: -100px;
