@@ -3,8 +3,11 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
+from django.contrib.sites.apps import SitesConfig
+from django.contrib.sites.management import create_default_site
 
 def default_domain(apps, schema_editor):
+    create_default_site(SitesConfig)
     Site = apps.get_model('sites','Site')
     Alias = apps.get_model('multisite','Alias')
     site = Site.objects.get(pk=1)

@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('sites', '0002_alter_domain_unique'),
-        ('www_slcschools_org', '0001_initial),
+        ('www_slcschools_org', '0001_initial'),
         ('objects', '0009_contactmessage'),
     ]
 
