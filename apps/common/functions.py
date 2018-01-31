@@ -44,15 +44,22 @@ def contactmessage_confirm(self):
 def contactmessage_message(self):
     email = EmailMessage(
         'WEBSITE CONTACT: ' + self.message_subject,
-        ('<p><strong>From:</strong> ' + self.your_name + '</p>'
-         '<p><strong>Page:</strong> <a href="https://www.slcschools.org' +
-         self.parent.url + '">https://www.slcschools.org' + self.parent.url +
-         '</a><p><strong>Message:</strong> <br>' + self.your_message + '</p>'),
-        'Salt Lake City School District <webmaster@slcschools.org>',
+        ('<p><strong>From:</strong> {0}</p><p><strong>Page:</strong> '
+         '<a href="https://www.slcschools.org{1}">https://www.slcschools.org'
+         '{1}</a></p><p><strong>Message:</strong><br>{2}</p>').format(
+            self.your_name,
+            self.parent.url,
+            self.your_message
+            ),
+        '{0} <{1}>'.format(self.your_name, self.your_email),
         [self.primary_contact.email],
         bcc=['webmaster@slcschools.org'],
         reply_to=[self.your_email],
-        headers={'Message-ID': str(self.pk) + '-' + str(uuid.uuid4())[0:8]},
+        headers={
+            'Message-ID': str(self.pk) + '-' + str(uuid.uuid4())[0:8],
+            'Sender': ('Salt Lake City School District'
+                       '<webmaster@slcschools.org>'),
+            },
     )
     email.content_subtype = 'html'
     try:
