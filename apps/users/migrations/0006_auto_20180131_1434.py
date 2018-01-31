@@ -9,10 +9,10 @@ def set_user_title(apps, schema_editor):
     Employee = apps.get_model('users','employee')
     System = apps.get_model('users','system')
     for employee in Employee.objects.all():
-        employee.title = employee.force_title()
+        employee.title = str(employee.email).split('@', 1)[0]
         employee.save()
     for system in System.objects.all():
-        system.title = system.force_title()
+        system.title = str(system.email).split('@', 1)[0]
         system.save()
 
 class Migration(migrations.Migration):
