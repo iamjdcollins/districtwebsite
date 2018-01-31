@@ -1,15 +1,18 @@
 from django.db import models
+import apps.common.functions as commonfunctions
 from apps.objects.models import Node, DirectoryEntry
 from apps.users.models import Employee
 from apps.taxonomy.models import SchoolAdministratorType, City, State, \
     Zipcode, BoardPrecinct
-import apps.common.functions
 from apps.taxonomy.models import Location
 
 
 class SchoolAdministrator(DirectoryEntry):
+
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/directory/schooladministrator/'
+    URL_PREFIX = '/schooladministrators/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -52,13 +55,16 @@ class SchoolAdministrator(DirectoryEntry):
     def force_title(self):
         return self.employee.title
 
-    save = apps.common.functions.directoryentrysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class Administrator(DirectoryEntry):
+
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/directory/administrator/'
+    URL_PREFIX = '/administrators/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -111,13 +117,16 @@ class Administrator(DirectoryEntry):
     def force_title(self):
         return self.employee.title
 
-    save = apps.common.functions.directoryentrysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class Staff(DirectoryEntry):
+
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/directory/staff/'
+    URL_PREFIX = '/staff/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -170,13 +179,16 @@ class Staff(DirectoryEntry):
     def force_title(self):
         return self.employee.title
 
-    save = apps.common.functions.directoryentrysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardMember(DirectoryEntry):
+
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/directory/boardmember/'
+    URL_PREFIX = '/boardmembers/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -262,13 +274,16 @@ class BoardMember(DirectoryEntry):
     def force_title(self):
         return self.employee.title
 
-    save = apps.common.functions.directoryentrysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class StudentBoardMember(DirectoryEntry):
+
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/directory/studentboardmember/'
+    URL_PREFIX = '/studentboardmember/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -331,13 +346,16 @@ class StudentBoardMember(DirectoryEntry):
     def force_title(self):
         return 'Student Board Member'
 
-    save = apps.common.functions.directoryentrysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardPolicyAdmin(DirectoryEntry):
+
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/directory/boardpolicyadmin/'
+    URL_PREFIX = '/boardpolicyadmins/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -374,5 +392,5 @@ class BoardPolicyAdmin(DirectoryEntry):
     def force_title(self):
         return self.employee.title
 
-    save = apps.common.functions.directoryentrysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash

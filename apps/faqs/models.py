@@ -1,13 +1,15 @@
 from django.db import models
 from ckeditor.fields import RichTextField
-import apps.common.functions
+import apps.common.functions as commonfunctions
 from apps.objects.models import Node, FAQ as BaseFAQ
 
 
 class FAQ(BaseFAQ):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = '/faqs/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -65,5 +67,5 @@ class FAQ(BaseFAQ):
     def force_title(self):
         return str(self.uuid)
 
-    save = apps.common.functions.faqsave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash

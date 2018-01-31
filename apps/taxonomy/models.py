@@ -1,11 +1,14 @@
 from django.db import models
-import apps.common.functions
+import apps.common.functions as commonfunctions
 from apps.objects.models import Taxonomy
 
 
 class Location(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/locations/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         db_column='location',
@@ -84,13 +87,16 @@ class Location(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class City(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/cities/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         db_column='city',
@@ -125,13 +131,16 @@ class City(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class State(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/states/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         db_column='state',
@@ -166,13 +175,16 @@ class State(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class Zipcode(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/zipcodes/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         db_column='zipcode',
@@ -207,13 +219,16 @@ class Zipcode(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class Language(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/languages/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         db_column='language',
@@ -272,13 +287,16 @@ class Language(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class TranslationType(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/translation-types/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         db_column='translationtype',
@@ -314,13 +332,16 @@ class TranslationType(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class SchoolType(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/school-types/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -354,13 +375,16 @@ class SchoolType(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class OpenEnrollmentStatus(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/open-enrollment-statuses/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -395,13 +419,16 @@ class OpenEnrollmentStatus(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class SchoolAdministratorType(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/school-administrator-types/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -436,13 +463,16 @@ class SchoolAdministratorType(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardPrecinct(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/board-precinct/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -475,13 +505,16 @@ class BoardPrecinct(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardMeetingType(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/board-meeting-type/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -514,13 +547,16 @@ class BoardMeetingType(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardPolicySection(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/board-policy-section/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -566,13 +602,16 @@ class BoardPolicySection(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class DistrictCalendarEventCategory(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/district-calendar-event-categories/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -613,13 +652,16 @@ class DistrictCalendarEventCategory(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class DistrictLogoGroup(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/district-logo-groups/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -653,13 +695,16 @@ class DistrictLogoGroup(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class DistrictLogoStyleVariation(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/district-logo-style-variations/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -694,13 +739,16 @@ class DistrictLogoStyleVariation(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class SchoolOption(Taxonomy):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/taxonomy/school-options/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -734,5 +782,5 @@ class SchoolOption(Taxonomy):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.taxonomysave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash

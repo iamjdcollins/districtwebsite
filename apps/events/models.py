@@ -9,9 +9,10 @@ from apps.pages.models import BoardMeetingYear, DistrictCalendarYear
 
 class BoardMeeting(BaseEvent):
 
+    PARENT_TYPE = BoardMeetingYear
     PARENT_URL = ''
     URL_PREFIX = ''
-    PARENT_TYPE = BoardMeetingYear
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -108,15 +109,27 @@ class BoardMeeting(BaseEvent):
             self.originaldate).strftime(
             '%Y%m%d-%H%M') + '-' + str(self.originalinstance)
 
-    save = commonfunctions.eventsave
+    def create_parent(self, creator):
+        currentyear = commonfunctions.currentyear(self.startdate)
+        parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL)
+        obj, created = self.PARENT_TYPE.objects.get_or_create(
+            title=currentyear['currentyear']['long'],
+            yearend=currentyear['currentyear']['short'],
+            parent=parent,
+            defaults={'create_user': creator, 'update_user': creator},
+        )
+        return obj
+
+    save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
 
 class DistrictCalendarEvent(BaseEvent):
 
+    PARENT_TYPE = DistrictCalendarYear
     PARENT_URL = ''
     URL_PREFIX = ''
-    PARENT_TYPE = DistrictCalendarYear
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -231,5 +244,16 @@ class DistrictCalendarEvent(BaseEvent):
             self.originaldate).strftime(
             '%Y%m%d-%H%M') + '-' + str(self.originalinstance)
 
-    save = commonfunctions.eventsave
+    def create_parent(self, creator):
+        currentyear = commonfunctions.currentyear(self.startdate)
+        parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL)
+        obj, created = self.PARENT_TYPE.objects.get_or_create(
+            title=currentyear['currentyear']['long'],
+            yearend=currentyear['currentyear']['short'],
+            parent=parent,
+            defaults={'create_user': creator, 'update_user': creator},
+        )
+        return obj
+
+    save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash

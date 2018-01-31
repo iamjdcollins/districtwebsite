@@ -1,14 +1,16 @@
 import re
 from django.db import models
-import apps.common.functions
+import apps.common.functions as commonfunctions
 from apps.objects.models import Node, Document as BaseDocument
 from apps.taxonomy.models import BoardPolicySection
 
 
 class Document(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/documents/document/'
+    URL_PREFIX = '/documents/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -57,14 +59,22 @@ class Document(BaseDocument):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}-{1}'.format(
+            file.parent.slug,
+            file.slug
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardPolicy(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -124,14 +134,16 @@ class BoardPolicy(BaseDocument):
     def force_title(self):
         return self.section.section_prefix + '-' + str(self.index)
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class Policy(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -170,14 +182,22 @@ class Policy(BaseDocument):
     def force_title(self):
         return self.parent.node_title + ' Policy'
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}-{1}'.format(
+            file.parent.slug,
+            file.slug
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class AdministrativeProcedure(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -218,14 +238,22 @@ class AdministrativeProcedure(BaseDocument):
     def force_title(self):
         return self.parent.node_title + ' AP'
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}-{1}'.format(
+            file.parent.slug,
+            file.slug
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class SupportingDocument(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -277,14 +305,22 @@ class SupportingDocument(BaseDocument):
                 ) + '[ ]?', '', self.title).strip()
         return self.parent.node_title + ' ' + self.document_title
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}-{1}'.format(
+            file.parent.slug,
+            file.slug
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardMeetingAgenda(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -323,16 +359,25 @@ class BoardMeetingAgenda(BaseDocument):
         return self.title
 
     def force_title(self):
-        return self.parent.node_title + ' Agenda'
+        return 'Agenda'
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}-{1}-{2}'.format(
+            file.parent.parent.slug,
+            file.parent.slug,
+            file.slug
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardMeetingMinutes(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -371,16 +416,25 @@ class BoardMeetingMinutes(BaseDocument):
         return self.title
 
     def force_title(self):
-        return self.parent.node_title + ' Minutes'
+        return 'Minutes'
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}-{1}-{2}'.format(
+            file.parent.parent.slug,
+            file.parent.slug,
+            file.slug
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardMeetingAudio(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -417,16 +471,24 @@ class BoardMeetingAudio(BaseDocument):
         return self.title
 
     def force_title(self):
-        return self.parent.node_title + ' Audio'
+        return 'Audio'
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}-{1}'.format(
+            file.parent.parent.slug,
+            file.parent.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardMeetingVideo(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -463,16 +525,24 @@ class BoardMeetingVideo(BaseDocument):
         return self.title
 
     def force_title(self):
-        return self.parent.node_title + ' Video'
+        return 'Video'
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}-{1}'.format(
+            file.parent.parent.slug,
+            file.parent.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardMeetingExhibit(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -513,14 +583,22 @@ class BoardMeetingExhibit(BaseDocument):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}-{1}'.format(
+            file.parent.slug,
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardMeetingAgendaItem(BaseDocument):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -561,5 +639,11 @@ class BoardMeetingAgendaItem(BaseDocument):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.documentsave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}-{1}'.format(
+            file.parent.slug,
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash

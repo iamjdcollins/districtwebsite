@@ -1,13 +1,15 @@
 from django.db import models
-import apps.common.functions
+import apps.common.functions as commonfunctions
 from apps.objects.models import Node, File as BaseFile
 from apps.taxonomy.models import Language
 
 
 class File(BaseFile):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -15,7 +17,7 @@ class File(BaseFile):
     )
     file_file = models.FileField(
         max_length=2000,
-        upload_to=apps.common.functions.file_upload_to,
+        upload_to=commonfunctions.file_upload_to,
         verbose_name='File',
         help_text='',
     )
@@ -57,16 +59,18 @@ class File(BaseFile):
         default_manager_name = 'objects'
 
     def force_title(self):
-        return self.parent.node_title + ' (' + self.file_language.title + ')'
+        return self.file_language.title
 
-    save = apps.common.functions.filesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class AudioFile(BaseFile):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -74,7 +78,7 @@ class AudioFile(BaseFile):
     )
     file_file = models.FileField(
         max_length=2000,
-        upload_to=apps.common.functions.file_upload_to,
+        upload_to=commonfunctions.file_upload_to,
         verbose_name='File',
         help_text='',
     )
@@ -106,16 +110,18 @@ class AudioFile(BaseFile):
         default_manager_name = 'objects'
 
     def force_title(self):
-        return self.parent.node_title
+        return self._meta.model_name
 
-    save = apps.common.functions.filesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class VideoFile(BaseFile):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -123,7 +129,7 @@ class VideoFile(BaseFile):
     )
     file_file = models.FileField(
         max_length=2000,
-        upload_to=apps.common.functions.file_upload_to,
+        upload_to=commonfunctions.file_upload_to,
         verbose_name='File',
         help_text='',
     )
@@ -155,7 +161,7 @@ class VideoFile(BaseFile):
         default_manager_name = 'objects'
 
     def force_title(self):
-        return self.parent.node_title
+        return self._meta.model_name
 
-    save = apps.common.functions.filesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash

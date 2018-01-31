@@ -1,6 +1,6 @@
 from django.db import models
 from ckeditor.fields import RichTextField
-import apps.common.functions
+import apps.common.functions as commonfunctions
 from apps.objects.models import Node, Page as BasePage
 from apps.pages.help import PageHelp
 from apps.taxonomy.models import Location, SchoolType, OpenEnrollmentStatus, \
@@ -10,6 +10,9 @@ from django.utils import timezone
 
 class Page(BasePage):
 
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = ''
     HAS_PERMISSIONS = True
 
     title = models.CharField(
@@ -48,12 +51,15 @@ class Page(BasePage):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class School(BasePage):
 
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = ''
     HAS_PERMISSIONS = True
 
     THUMBNAILS = True
@@ -184,12 +190,15 @@ class School(BasePage):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class Department(BasePage):
 
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = ''
     HAS_PERMISSIONS = True
 
     CONTENTBANNER = True
@@ -266,12 +275,15 @@ class Department(BasePage):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class Board(BasePage):
 
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = ''
     HAS_PERMISSIONS = True
 
     CONTENTBANNER = True
@@ -348,12 +360,15 @@ class Board(BasePage):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardSubPage(BasePage):
 
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = ''
     HAS_PERMISSIONS = True
 
     CONTENTBANNER = True
@@ -439,13 +454,16 @@ class BoardSubPage(BasePage):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class BoardMeetingYear(BasePage):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/board-of-education/board-meetings/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -484,11 +502,16 @@ class BoardMeetingYear(BasePage):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class NewsYear(BasePage):
+
+    PARENT_TYPE = ''
+    PARENT_URL = '/news/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -527,13 +550,16 @@ class NewsYear(BasePage):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class News(BasePage):
 
     PARENT_TYPE = NewsYear
+    PARENT_URL = ''
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -586,13 +612,27 @@ class News(BasePage):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    def create_parent(self, creator):
+        currentyear = commonfunctions.currentyear(self.author_date)
+        parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL)
+        obj, created = self.PARENT_TYPE.objects.get_or_create(
+            title=currentyear['currentyear']['long'],
+            yearend=currentyear['currentyear']['short'],
+            parent=parent,
+            defaults={'create_user': creator, 'update_user': creator},
+        )
+        return obj
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class SuperintendentMessageYear(BasePage):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/departments/superintendents-office/superintendents-message/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -631,16 +671,18 @@ class SuperintendentMessageYear(BasePage):
         return self.title
 
     def force_title(self):
-        return 'Superintendent\'s Message ' + \
-            self.author_date.strftime('%Y-%m-%d')
+        return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class SuperintendentMessage(BasePage):
 
     PARENT_TYPE = SuperintendentMessageYear
+    PARENT_URL = ''
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -696,13 +738,30 @@ class SuperintendentMessage(BasePage):
         return self.title
 
     def force_title(self):
-        return self.title if self.title else ''
+        return 'Superintendent\'s Message ' + \
+            self.author_date.strftime('%Y-%m-%d')
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    def create_parent(self, creator):
+        currentyear = commonfunctions.currentyear(self.author_date)
+        parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL)
+        obj, created = self.PARENT_TYPE.objects.get_or_create(
+            title=currentyear['currentyear']['long'],
+            yearend=currentyear['currentyear']['short'],
+            parent=parent,
+            defaults={'create_user': creator, 'update_user': creator},
+        )
+        return obj
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class SubPage(BasePage):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     CONTENTBANNER = True
     STAFF = True
@@ -785,13 +844,16 @@ class SubPage(BasePage):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class DistrictCalendarYear(BasePage):
 
+    PARENT_TYPE = ''
     PARENT_URL = '/calendars/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -832,5 +894,5 @@ class DistrictCalendarYear(BasePage):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.pagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash

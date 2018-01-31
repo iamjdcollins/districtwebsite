@@ -1,13 +1,15 @@
 from django.db import models
-import apps.common.functions
+import apps.common.functions as commonfunctions
 from apps.objects.models import Node, Image
 from apps.taxonomy.models import DistrictLogoGroup, DistrictLogoStyleVariation
 
 
 class Thumbnail(Image):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/images/thumbnails/'
+    URL_PREFIX = '/thumbnails/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -15,7 +17,7 @@ class Thumbnail(Image):
     )
     image_file = models.ImageField(
         max_length=2000,
-        upload_to=apps.common.functions.image_upload_to,
+        upload_to=commonfunctions.image_upload_to,
         verbose_name='Image',
         help_text='',
     )
@@ -57,21 +59,28 @@ class Thumbnail(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.imagesave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class NewsThumbnail(Image):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/images/newsthumbnails/'
+    URL_PREFIX = '/newsthumbnails/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
         help_text='',)
     image_file = models.ImageField(
         max_length=2000,
-        upload_to=apps.common.functions.image_upload_to,
+        upload_to=commonfunctions.image_upload_to,
         verbose_name='Image',
         help_text='',
     )
@@ -113,14 +122,21 @@ class NewsThumbnail(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.imagesave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class PageBanner(Image):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/images/pagebanners/'
+    URL_PREFIX = '/pagebanners/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -128,7 +144,7 @@ class PageBanner(Image):
     )
     image_file = models.ImageField(
         max_length=2000,
-        upload_to=apps.common.functions.image_upload_to,
+        upload_to=commonfunctions.image_upload_to,
         verbose_name='Image',
         help_text='',
     )
@@ -170,14 +186,21 @@ class PageBanner(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.imagesave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class ContentBanner(Image):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/images/contentbanners/'
+    URL_PREFIX = '/contentbanners/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -185,7 +208,7 @@ class ContentBanner(Image):
     )
     image_file = models.ImageField(
         max_length=2000,
-        upload_to=apps.common.functions.image_upload_to,
+        upload_to=commonfunctions.image_upload_to,
         verbose_name='Image',
         help_text='',
     )
@@ -237,14 +260,21 @@ class ContentBanner(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.imagesave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class ProfilePicture(Image):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/images/profilepictures/'
+    URL_PREFIX = '/profilepictures/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -252,7 +282,7 @@ class ProfilePicture(Image):
     )
     image_file = models.ImageField(
         max_length=2000,
-        upload_to=apps.common.functions.image_upload_to,
+        upload_to=commonfunctions.image_upload_to,
         verbose_name='Image',
         help_text='',
     )
@@ -294,14 +324,21 @@ class ProfilePicture(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.imagesave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class DistrictLogoGIF(Image):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/images/districtlogosgifs/'
+    URL_PREFIX = '/districtlogosgifs/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -309,7 +346,7 @@ class DistrictLogoGIF(Image):
     )
     image_file = models.ImageField(
         max_length=2000,
-        upload_to=apps.common.functions.image_upload_to,
+        upload_to=commonfunctions.image_upload_to,
         verbose_name='Image',
         help_text='',
     )
@@ -351,14 +388,21 @@ class DistrictLogoGIF(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.imagesave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class DistrictLogoJPG(Image):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/images/districtlogosjpgs/'
+    URL_PREFIX = '/districtlogosjpgs/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -366,7 +410,7 @@ class DistrictLogoJPG(Image):
     )
     image_file = models.ImageField(
         max_length=2000,
-        upload_to=apps.common.functions.image_upload_to,
+        upload_to=commonfunctions.image_upload_to,
         verbose_name='Image',
         help_text='',
     )
@@ -408,14 +452,21 @@ class DistrictLogoJPG(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.imagesave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class DistrictLogoPNG(Image):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/images/districtlogospngs/'
+    URL_PREFIX = '/districtlogospngs/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -423,7 +474,7 @@ class DistrictLogoPNG(Image):
     )
     image_file = models.ImageField(
         max_length=2000,
-        upload_to=apps.common.functions.image_upload_to,
+        upload_to=commonfunctions.image_upload_to,
         verbose_name='Image',
         help_text='',
     )
@@ -465,14 +516,21 @@ class DistrictLogoPNG(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.imagesave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class DistrictLogoTIF(Image):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/images/districtlogostifs/'
+    URL_PREFIX = '/districtlogostifs/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -480,7 +538,7 @@ class DistrictLogoTIF(Image):
     )
     image_file = models.ImageField(
         max_length=2000,
-        upload_to=apps.common.functions.image_upload_to,
+        upload_to=commonfunctions.image_upload_to,
         verbose_name='Image',
         help_text='',
     )
@@ -522,14 +580,21 @@ class DistrictLogoTIF(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.imagesave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class DistrictLogo(Image):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -588,5 +653,10 @@ class DistrictLogo(Image):
         return self.district_logo_group.title + \
             ' ' + self.district_logo_style_variation.title
 
-    save = apps.common.functions.imagesave
-    delete = apps.common.functions.modeltrash
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash

@@ -1,12 +1,14 @@
 from django.db import models
-import apps.common.functions
+import apps.common.functions as commonfunctions
 from apps.objects.models import Node, Link
 
 
 class ResourceLink(Link):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = ''
+    URL_PREFIX = '/resourcelinks/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(max_length=200, help_text='')
     link_url = models.CharField(max_length=2000, db_index=True)
@@ -51,14 +53,16 @@ class ResourceLink(Link):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.linksave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class ActionButton(Link):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
     URL_PREFIX = '/actionbuttons/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(max_length=200, help_text='')
     link_url = models.CharField(max_length=2000, db_index=True)
@@ -103,5 +107,5 @@ class ActionButton(Link):
     def force_title(self):
         return self.title if self.title else ''
 
-    save = apps.common.functions.linksave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash

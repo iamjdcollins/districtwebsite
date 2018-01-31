@@ -1,11 +1,15 @@
 from django.db import models
 from django.db.models import Q
-import apps.common.functions
+import apps.common.functions as commonfunctions
 from apps.objects.models import Node, User
 
 
 class Employee(User):
+
+    PARENT_TYPE = ''
     PARENT_URL = '/accounts/employees/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = True
 
     title = models.CharField(
         max_length=200,
@@ -53,12 +57,16 @@ class Employee(User):
     def force_title(self):
         return str(self.email).split('@', 1)[0]
 
-    save = apps.common.functions.usersave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
 
 
 class System(User):
+
+    PARENT_TYPE = ''
     PARENT_URL = '/accounts/system/'
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -83,5 +91,5 @@ class System(User):
     def force_title(self):
         return str(self.email).split('@', 1)[0]
 
-    save = apps.common.functions.usersave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash

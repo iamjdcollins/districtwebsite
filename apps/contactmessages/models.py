@@ -1,12 +1,14 @@
 from django.db import models
-import apps.common.functions
+import apps.common.functions as commonfunctions
 from apps.objects.models import Node, ContactMessage as BaseContactMessage
 
 
 class ContactMessage(BaseContactMessage):
 
+    PARENT_TYPE = ''
     PARENT_URL = ''
-    URL_PREFIX = '/contact-message/'
+    URL_PREFIX = '/contactmessages/'
+    HAS_PERMISSIONS = False
 
     title = models.CharField(
         max_length=200,
@@ -79,5 +81,5 @@ class ContactMessage(BaseContactMessage):
     def force_title(self):
         return str(self.uuid)
 
-    save = apps.common.functions.contactmessagesave
-    delete = apps.common.functions.modeltrash
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
