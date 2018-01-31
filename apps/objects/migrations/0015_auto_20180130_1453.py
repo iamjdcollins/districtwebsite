@@ -8,7 +8,7 @@ import apps.common.functions as commonfunctions
 
 def saveall(apps, schema_editor):
     Node = apps.get_model('objects','node')
-    for node in Node.objects.all().order_by('level'):
+    for node in Node.objects.filter(node_type__isnull=False).filter(content_type__isnull=False).order_by('level'):
         object = commonfunctions.nodefindobject(node)
         object.save()
 
