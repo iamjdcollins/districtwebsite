@@ -17,6 +17,7 @@
       {% if page.body %}
       <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
       {% endif %}
+      <li><a class="yearnav" href="#yearnav" onclick="$('.inlinemodal').modaal('close');">Select School Year</a></li>
       <li><a href="#districtcalendarevents" onclick="$('.inlinemodal').modaal('close');">District Calendar Events</a></li>
       <li><a href="/calendars/guidelines-for-developing-calendar-options/" onclick="$('.inlinemodal').modaal('close');">Parameters for District Calendars</a></li>
     </ul>
@@ -70,9 +71,13 @@
       <div id="districtcalendarevents" class="scrollspy">
         {% if districtcalendaryears %}
         <nav class="yearnav">
-          <a class="yearnav" href="#yearnav">
-            <span class="currentyear">{{page.title}}</span>
+          <a class="yearnav nocaret" href="#yearnav">
+            <span class="currentyear">School Year: {{page.title}}</span>
             <span class="caret">▼</span>
+            <button class="btn filter-button white-text">
+              <span class="sr-only">Filter by school year</span>
+              <span class="material-icons no-sr notranslate" aria-hidden="true">&#xE152;</span>
+            </button>
           </a>
         </nav>
         <div id="yearnav" class="hide">
