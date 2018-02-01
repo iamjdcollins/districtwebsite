@@ -1179,3 +1179,7 @@ select.browser-default.withprefixicon{
   height: 45px;
 }
 }
+// Must be last rule
+body {
+  display: block;
+}
