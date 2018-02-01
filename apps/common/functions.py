@@ -71,7 +71,8 @@ def contactmessage_message(self):
 
 def urlchanged_email(self, oldurl):
     email = EmailMessage(
-        'Website URL Changed',
+        'Website URL Changed App {0} Type {1}'.format(
+                self.node_type, self.content_type),
         ('<p><strong>Previous URL:</strong> ' + oldurl + '</p>'
          '<p><strong>New URL:</strong> ' + self.url + '</p>'),
         'Salt Lake City School District <webmaster@slcschools.org>',
@@ -89,7 +90,8 @@ def urlchanged_email(self, oldurl):
 
 def filepath_email(self, oldpath, newpath):
     email = EmailMessage(
-        'File Path Changed',
+        'File Path Changed: App {0} Type {1}'.format(
+                self.parent.node_type, self.parent.content_type),
         ('<p><strong>Previous Path:</strong> ' + oldpath + '</p>'
          '<p><strong>New Path:</strong> ' + newpath + '</p>'),
         'Salt Lake City School District <webmaster@slcschools.org>',
@@ -1169,7 +1171,9 @@ def clearcache(object):
 
 
 def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
+    # formset.save() returns instances but
+    # I do not need them so I am not storing them.
+    formset.save(commit=False)
     for obj in formset.deleted_objects:
         obj.delete()
     for obj in formset.new_objects:

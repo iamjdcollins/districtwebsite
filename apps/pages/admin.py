@@ -25,14 +25,25 @@ import apps.common.functions
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 
+
 class ProfilePictureInline(admin.StackedInline):
     model = ProfilePicture
     fk_name = 'parent'
-    fields = ['title','image_file','alttext','update_user','update_date',]
-    readonly_fields = ['update_user','update_date',]
+    fields = [
+        'title',
+        'image_file',
+        'alttext',
+        'update_user',
+        'update_date',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+    ]
     extra = 0
     min_num = 1
     max_num = 1
+
 
 class ThumbnailInline(admin.TabularInline):
   model = Thumbnail
@@ -2159,20 +2170,6 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
     save_formset = apps.common.functions.save_formset
-
-    # def save_formset(self, request, form, formset, change):
-    #     instances = formset.save(commit=False)
-    #     raise Exception(dir(formset))
-    #     for obj in formset.new_objects:
-    #         obj.create_user = request.user
-    #         obj.update_user = request.user
-    #         obj.site = request.site
-    #         obj.primary_contact = request.user
-    #         obj.save()
-    #     for obj in formset.changed_objects:
-    #         obj[0].update_user = request.user
-    #         obj[0].save()
-
     save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
@@ -2891,9 +2888,9 @@ class DistrictLogoAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     def get_list_filter(self, request):
         if request.user.has_perm('documents.restore_document'):
-            return (DeletedListFilter,'published')
+            return (DeletedListFilter, 'published')
         else:
-            return ['published',]
+            return ['published', ]
 
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
@@ -2902,7 +2899,7 @@ class DistrictLogoAdmin(MPTTModelAdmin,GuardedModelAdmin):
     save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
-# Register your models here.
+
 admin.site.register(Page, PageAdmin)
 admin.site.register(School, SchoolAdmin)
 admin.site.register(Department, DepartmentAdmin)
@@ -2911,23 +2908,23 @@ admin.site.register(News, NewsAdmin)
 admin.site.register(NewsYear, NewsYearAdmin)
 admin.site.register(SuperintendentMessage, SuperintendentMessageAdmin)
 admin.site.register(SuperintendentMessageYear, SuperintendentMessageYearAdmin)
-admin.site.register(Document,DocumentAdmin)
-admin.site.register(BoardPolicy,BoardPolicyAdmin)
-admin.site.register(Policy,PolicyAdmin)
-admin.site.register(AdministrativeProcedure,AdministrativeProcedureAdmin)
-admin.site.register(SupportingDocument,SupportingDocumentAdmin)
-admin.site.register(BoardMeetingAgenda,BoardMeetingAgendaAdmin)
-admin.site.register(BoardMeetingMinutes,BoardMeetingMinutesAdmin)
-admin.site.register(BoardMeetingAudio,BoardMeetingAudioAdmin)
-admin.site.register(BoardMeetingVideo,BoardMeetingVideoAdmin)
-admin.site.register(BoardMeetingExhibit,BoardMeetingExhibitAdmin)
-admin.site.register(BoardMeetingAgendaItem,BoardMeetingAgendaItemAdmin)
-admin.site.register(SubPage,SubPageAdmin)
+admin.site.register(Document, DocumentAdmin)
+admin.site.register(BoardPolicy, BoardPolicyAdmin)
+admin.site.register(Policy, PolicyAdmin)
+admin.site.register(AdministrativeProcedure, AdministrativeProcedureAdmin)
+admin.site.register(SupportingDocument, SupportingDocumentAdmin)
+admin.site.register(BoardMeetingAgenda, BoardMeetingAgendaAdmin)
+admin.site.register(BoardMeetingMinutes, BoardMeetingMinutesAdmin)
+admin.site.register(BoardMeetingAudio, BoardMeetingAudioAdmin)
+admin.site.register(BoardMeetingVideo, BoardMeetingVideoAdmin)
+admin.site.register(BoardMeetingExhibit, BoardMeetingExhibitAdmin)
+admin.site.register(BoardMeetingAgendaItem, BoardMeetingAgendaItemAdmin)
+admin.site.register(SubPage, SubPageAdmin)
 admin.site.register(StudentBoardMember, StudentBoardMemberAdmin)
 admin.site.register(BoardSubPage, BoardSubPageAdmin)
 admin.site.register(BoardMeeting, BoardMeetingAdmin)
 admin.site.register(BoardMeetingYear, BoardMeetingYearAdmin)
 admin.site.register(FAQ, FAQAdmin)
-admin.site.register(DistrictCalendarYear,DistrictCalendarYearAdmin)
-admin.site.register(DistrictCalendarEvent,DistrictCalendarEventAdmin)
-admin.site.register(DistrictLogo,DistrictLogoAdmin)
+admin.site.register(DistrictCalendarYear, DistrictCalendarYearAdmin)
+admin.site.register(DistrictCalendarEvent, DistrictCalendarEventAdmin)
+admin.site.register(DistrictLogo, DistrictLogoAdmin)
