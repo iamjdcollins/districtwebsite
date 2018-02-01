@@ -7,15 +7,17 @@ import apps.common.functions as commonfunctions
 
 
 def saveall(apps, schema_editor):
-    Node = apps.get_model('objects','node')
-    for node in Node.objects.filter(node_type__isnull=False).filter(content_type__isnull=False).order_by('level'):
+    Node = apps.get_model('objects', 'node')
+    for node in Node.objects.filter(node_type__isnull=False).filter(
+            content_type__isnull=False).order_by('level', 'create_date'):
         object = commonfunctions.nodefindobject(node)
         object.save()
+
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('objects', '0014_node_slug'),
+        ('objects', '0014_slug_sluginstance'),
         ('users', '0006_auto_20180131_1434'),
     ]
 

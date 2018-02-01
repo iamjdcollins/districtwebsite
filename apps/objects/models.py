@@ -43,6 +43,11 @@ class Node(MPTTModel):
         blank=True,
         db_index=True,
     )
+    sluginstance = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        db_index=True,
+    )
     node_type = models.CharField(
         max_length=200,
         editable=False,

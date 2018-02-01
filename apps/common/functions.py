@@ -233,7 +233,7 @@ def has_delete_permission_inline(self, request, obj=None):
 
 def modeltrash(self, *args, **kwargs):
     if self.deleted == 0:
-        self.deleted = 1
+        self.deleted = True
         self.save()
     else:
         if self.url:
@@ -321,32 +321,32 @@ def modelsave(self, *args, **kwargs):
     # Force Title
     self.title = self.force_title()
     # Set Slug
-    if not self.slug:
+    if not self.slug or not self.sluginstance:
         self.slug = urlclean_objname(self.title)
+        self.sluginstance = 0
     # Set URL
     urlchanged = False
     parent_url = self.parent.url if self.parent else self.PARENT_URL
     oldurl = self.url
-    self.url = urlclean_remdoubleslashes('/{0}/{1}/{2}{3}/'.format(
+    self.url = urlclean_remdoubleslashes('/{0}/{1}/{2}{3}{4}/'.format(
         parent_url,
         self.URL_PREFIX,
         is_deleted,
-        urlclean_objname(self.slug)
+        urlclean_objname(self.slug),
+        '' if self.sluginstance == 0 else '-{0}'.format(self.sluginstance),
         )
     )
-    count = 1
     while Node.objects.filter(site=self.site).filter(url=self.url).exclude(
             pk=self.pk).count() >= 1:
-        baseslug = urlclean_objname(self.title)
-        self.slug = '{0}-{1}'.format(baseslug, str(count))
-        self.url = urlclean_remdoubleslashes('/{0}/{1}/{2}{3}/'.format(
+        self.sluginstance += 1
+        self.url = urlclean_remdoubleslashes('/{0}/{1}/{2}{3}{4}/'.format(
             parent_url,
             self.URL_PREFIX,
             is_deleted,
-            urlclean_objname(self.slug)
+            urlclean_objname(self.slug),
+            '' if self.sluginstance == 0 else '-{0}'.format(self.sluginstance),
             )
         )
-        count += 1
     if not is_new and (oldurl != self.url):
         urlchanged = True
         urlchanged_email(self, oldurl)
@@ -1181,6 +1181,7 @@ def save_formset(self, request, form, formset, change):
     for obj in formset.changed_objects:
         obj[0].update_user = request.user
         obj[0].save()
+    formset.save_m2m()
 
 
 def save_model(self, request, obj, form, change):

@@ -1165,29 +1165,8 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-      obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class SchoolAdminForm(forms.ModelForm):
@@ -1237,29 +1216,8 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class DepartmentAdminForm(forms.ModelForm):
@@ -1309,29 +1267,8 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class BoardAdminForm(forms.ModelForm):
@@ -1381,29 +1318,8 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class BoardSubPageAdminForm(forms.ModelForm):
@@ -1494,29 +1410,8 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -1553,29 +1448,8 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -1612,29 +1486,8 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class SuperintendentMessageAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -1670,29 +1523,8 @@ class SuperintendentMessageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class SuperintendentMessageYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -1729,29 +1561,8 @@ class SuperintendentMessageYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -1824,29 +1635,8 @@ class DocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -1920,29 +1710,8 @@ class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2014,29 +1783,8 @@ class PolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 class AdministrativeProcedureAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2108,29 +1856,8 @@ class AdministrativeProcedureAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 class SupportingDocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2202,29 +1929,8 @@ class SupportingDocumentAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2267,29 +1973,8 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2326,29 +2011,8 @@ class StudentBoardMemberAdmin(MPTTModelAdmin,GuardedModelAdmin):
   has_change_permission = apps.common.functions.has_change_permission
   has_add_permission = apps.common.functions.has_add_permission
   has_delete_permission = apps.common.functions.has_delete_permission
-
-  def save_formset(self, request, form, formset, change):
-    instances = formset.save(commit=False)
-    for obj in formset.deleted_objects:
-      obj.delete()
-    for obj in formset.new_objects:
-      obj.create_user = request.user
-      obj.update_user = request.user
-      obj.site = request.site
-      obj.primary_contact = request.user
-      obj.save()
-    for obj in formset.changed_objects:
-      obj[0].update_user = request.user
-      obj[0].save()
-
-  def save_model(self, request, obj, form, change):
-    if getattr(obj, 'create_user', None) is None:
-      obj.create_user = request.user
-    obj.update_user = request.user
-    if getattr(obj, 'site', None) is None:
-        obj.site = request.site
-    super().save_model(request, obj, form, change)
-
+  save_formset = apps.common.functions.save_formset
+  save_model = apps.common.functions.save_model
   response_change = apps.common.functions.response_change
 
 class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2421,29 +2085,8 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2515,27 +2158,22 @@ class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
+    save_formset = apps.common.functions.save_formset
 
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=True)
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
+    # def save_formset(self, request, form, formset, change):
+    #     instances = formset.save(commit=False)
+    #     raise Exception(dir(formset))
+    #     for obj in formset.new_objects:
+    #         obj.create_user = request.user
+    #         obj.update_user = request.user
+    #         obj.site = request.site
+    #         obj.primary_contact = request.user
+    #         obj.save()
+    #     for obj in formset.changed_objects:
+    #         obj[0].update_user = request.user
+    #         obj[0].save()
 
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 class BoardMeetingAgendaAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2607,29 +2245,8 @@ class BoardMeetingAgendaAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 class BoardMeetingMinutesAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2701,29 +2318,8 @@ class BoardMeetingMinutesAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 class BoardMeetingAudioAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2795,29 +2391,8 @@ class BoardMeetingAudioAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 class BoardMeetingVideoAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -2889,29 +2464,8 @@ class BoardMeetingVideoAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 
@@ -2984,29 +2538,8 @@ class BoardMeetingExhibitAdmin(MPTTModelAdmin,GuardedModelAdmin):
     has_change_permission = apps.common.functions.has_change_permission
     has_add_permission = apps.common.functions.has_add_permission
     has_delete_permission = apps.common.functions.has_delete_permission
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in formset.deleted_objects:
-            obj.delete()
-        for obj in formset.new_objects:
-            obj.create_user = request.user
-            obj.update_user = request.user
-            obj.site = request.site
-            obj.primary_contact = request.user
-            obj.save()
-        for obj in formset.changed_objects:
-            obj[0].update_user = request.user
-            obj[0].save()
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'create_user', None) is None:
-            obj.create_user = request.user
-        obj.update_user = request.user
-        if getattr(obj, 'site', None) is None:
-            obj.site = request.site
-        super().save_model(request, obj, form, change)
-
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
 class BoardMeetingAgendaItemAdmin(MPTTModelAdmin,GuardedModelAdmin):
