@@ -429,7 +429,9 @@ def modelsave(self, *args, **kwargs):
         oldpath = '{0}/{1}'.format(settings.MEDIA_ROOT, currentname)
         newpath = '{0}/{1}'.format(settings.MEDIA_ROOT, newname)
         silentmove_media(oldpath, newpath)
-        filepath_email(self, oldpath, newpath)
+        # Commenting file moves because newly uploaded files
+        # think they are moving on upload.
+        # filepath_email(self, oldpath, newpath)
     clearcache(self)
 
 # def usersave(self, *args, **kwargs):
