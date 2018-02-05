@@ -40,7 +40,7 @@ def directory_department(item,departments):
     return None
 
 def importUser(item, account, departments,all_adult_staff,website_managers):
-  site = Site.objects.get(domani='www.slcschools.org')
+  site = Site.objects.get(domain='www.slcschools.org')
   obj, created = Employee.objects.get_or_create(uuid=uuid.UUID(str(item.objectGUID)), defaults={'email':'tempemail@slcschools.org','url':'/tempemail', 'site': site  })
   obj.username = str(item.userPrincipalName).lower()
   obj.first_name = item.givenName
