@@ -219,8 +219,7 @@ a.inlinemodal.uninit, a.pagefeedback.uninit{
   visibility: none;
 }
 .modaal-wrapper.modaal-inline .modal-title, .modaal-wrapper.modaal-inline .modal-desc,
-.modaal-wrapper.modaal-ajax .modal-title, .modaal-wrapper.modaal-ajax .modal-desc,
-.modaal-wrapper.modaal-iframe .modal-title, .modaal-wrapper.modaal-iframe .modal-desc{
+.modaal-wrapper.modaal-ajax .modal-title, .modaal-wrapper.modaal-ajax .modal-desc{
   display: block;
   visibility: visible;
 }
@@ -284,12 +283,12 @@ a.inlinemodal.uninit, a.pagefeedback.uninit{
   background-color: #ca2027 !important;
 }
 .modaal-inline .modaal-close:hover::after, .modaal-inline .modaal-close:hover::before, .modaal-inline .modaal-close:focus::after, .modaal-inline .modaal-close:focus::before,
-.modaal-ajax .modaal-close:hover::after, .modaal-ajax .modaal-close:hover::before, .modaal-ajax .modaal-close:focus::after, .modaal-ajax .modaal-close:focus::before
+.modaal-ajax .modaal-close:hover::after, .modaal-ajax .modaal-close:hover::before, .modaal-ajax .modaal-close:focus::after, .modaal-ajax .modaal-close:focus::before,
 .modaal-iframe .modaal-close:hover::after, .modaal-iframe .modaal-close:hover::before, .modaal-iframe .modaal-close:focus::after, .modaal-iframe .modaal-close:focus::before{
   background-color: #fff !important;
 }
 .modaal-inline .modaal-close::after, .modaal-inline .modaal-close::before,
-.modaal-ajax .modaal-close::after, .modaal-ajax .modaal-close::before
+.modaal-ajax .modaal-close::after, .modaal-ajax .modaal-close::before,
 .modaal-iframe .modaal-close::after, .modaal-iframe .modaal-close::before{
   top: 9px !important;
   right: 18px !important;
