@@ -17,6 +17,13 @@
       {% if page.body %}
       <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
       {% endif %}
+      {% if page.images_photogallery_node.all %}
+      {% if pages.images_photogallery_node.count > 1 %}
+      <li><a href="#photogallery" onclick="$('.inlinemodal').modaal('close');">Photo Galleries</a></li>
+      {% else %}
+      <li><a href="#photogallery" onclick="$('.inlinemodal').modaal('close');">Photo Gallery</a></li>
+      {% endif %}
+      {% endif %}
     </ul>
   </div>
 </div>
@@ -62,6 +69,29 @@
           {{page.body|safe}}
         </div>
       </div>
+      {% if page.images_photogallery_node.all %}
+      <div id="photogallery" class="scrollspy">
+        {% if pages.images_photogallery_node.count > 1 %}
+        <h2>Photo Galleries</h2>
+        {% else %}
+        <h2>Photo Gallery</h2>
+        {% endif %}
+        {% for gallery in page.images_photogallery_node.all %}
+        {% if pages.images_photogallery_node.count > 1 %}
+        <h3>{{ gallery.title }}</h3>
+        {% endif %}
+        <div class="grid" data-isotope='{ "itemSelector": ".grid-item", "layoutMode": "masonry", "percentPosition": true, "masonry": { "columnWidth": ".grid-sizer" } }'>
+          {% for image in gallery.images_photogalleryimage_node.all %}
+          <div class="grid-sizer"></div>
+          <a href="{{ image.image_file.url }}" rel="{{ gallery.pk }}" class="photogallery">
+            <span class="sr-only">Open the photo gallery: {{ gallery.title }}</span>
+            <img src="{{ image.isotope.url }}" alt="{{ image.alttext }}" class="responsive-img grid-item">
+          </a>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
     {% endif %}
   </div>
