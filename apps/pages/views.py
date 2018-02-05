@@ -493,6 +493,7 @@ def contactmessage_post(request):
             post.primary_contact = message_parent.primary_contact
         post.create_user = user
         post.update_user = user
+        post.site = request.site
         post.searchable = False
         post.save()
         messages.success(request, 'Thank you for contacting us. Someone will get back to you shortly.')
