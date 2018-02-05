@@ -195,6 +195,9 @@ a.inlinemodal.uninit, a.pagefeedback.uninit{
 .modaal-overlay{
   z-index: 12 !important;
 }
+.modaal-wrapper.modaal-image .modaal-container {
+    background: transparent;
+}
 .modaal-mainmenu .modaal-container, .modaal-fulltranslationlist .modaal-container, .modaal-yearnav .modaal-container{
   background-color: $slcschools-grey-lighten-1;
 }
@@ -208,15 +211,22 @@ a.inlinemodal.uninit, a.pagefeedback.uninit{
   border-radius: 0;
   border-top: solid 1px $slcschools-grey-lighten-1;
 }
-.modal-title, .modal-desc{
+#mainnav .modal-title, #mainnav .modal-desc,
+.modaal-inline .modal-title, .modaal-inline .modal-desc,
+.modaal-ajax .modal-title, .modaal-ajax .modal-desc,
+.modaal-iframe .modal-title, .modaal-iframe .modal-desc{
   display: none;
   visibility: none;
 }
-.modaal-wrapper .modal-title, .modaal-wrapper .modal-desc{
+.modaal-wrapper.modaal-inline .modal-title, .modaal-wrapper.modaal-inline .modal-desc,
+.modaal-wrapper.modaal-ajax .modal-title, .modaal-wrapper.modaal-ajax .modal-desc,
+.modaal-wrapper.modaal-iframe .modal-title, .modaal-wrapper.modaal-iframe .modal-desc{
   display: block;
   visibility: visible;
 }
-.modaal-wrapper .modal-title {
+.modaal-wrapper.modaal-inline .modal-title,
+.modaal-wrapper.modaal-ajax .modal-title,
+.modaal-wrapper.modaal-iframe .modal-title {
   margin: -30px -30px 10px -30px;
   padding: 5px 40px 5px 10px;
   line-height: 30px;
@@ -245,7 +255,9 @@ a.inlinemodal.uninit, a.pagefeedback.uninit{
   width: 0px;
   color: transparent !important
 }
-.modaal-wrapper .modal-desc {
+.modaal-wrapper.modaal-inline .modal-desc,
+.modaal-wrapper.modaal-ajax .modal-desc,
+.modaal-wrapper.modaal-iframe .modal-desc, {
   margin: 0px -30px 0px -30px;
   padding: 14px 30px 15px 30px;
   background: #fff;
@@ -253,7 +265,9 @@ a.inlinemodal.uninit, a.pagefeedback.uninit{
 .modaal-wrapper audio, .modaal-wrapper video{
   width: 100%
 }
-.modaal-close {
+.modaal-inline .modaal-close,
+.modaal-ajax .modaal-close,
+.modaal-iframe .modaal-close {
   right: 0px !important;
   top: 0px !important;
   color: white;
@@ -264,13 +278,19 @@ a.inlinemodal.uninit, a.pagefeedback.uninit{
   position: absolute;
   border-radius: 0;
 }
-.modaal-close:hover, .modaal-close:focus{
+.modaal-inline .modaal-close:hover, .modaal-inline .modaal-close:focus,
+.modaal-ajax .modaal-close:hover, .modaal-ajax .modaal-close:focus,
+.modaal-iframe .modaal-close:hover, .modaal-iframe .modaal-close:focus{
   background-color: #ca2027 !important;
 }
-.modaal-close:hover::after, .modaal-close:hover::before, .modaal-close:focus::after, .modaal-close:focus::before{
+.modaal-inline .modaal-close:hover::after, .modaal-inline .modaal-close:hover::before, .modaal-inline .modaal-close:focus::after, .modaal-inline .modaal-close:focus::before,
+.modaal-ajax .modaal-close:hover::after, .modaal-ajax .modaal-close:hover::before, .modaal-ajax .modaal-close:focus::after, .modaal-ajax .modaal-close:focus::before
+.modaal-iframe .modaal-close:hover::after, .modaal-iframe .modaal-close:hover::before, .modaal-iframe .modaal-close:focus::after, .modaal-iframe .modaal-close:focus::before{
   background-color: #fff !important;
 }
-.modaal-close::after, .modaal-close::before{
+.modaal-inline .modaal-close::after, .modaal-inline .modaal-close::before,
+.modaal-ajax .modaal-close::after, .modaal-ajax .modaal-close::before
+.modaal-iframe .modaal-close::after, .modaal-iframe .modaal-close::before{
   top: 9px !important;
   right: 18px !important;
   left: initial !important;
@@ -1160,9 +1180,16 @@ select.browser-default.withprefixicon{
 }
 @media #{$small-and-down} {
 // styles for small screens and down
+.grid-sizer, .grid-item{
+  width: 50%;
+}
 }
 @media #{$medium-and-up} {
 // styles for medium screens and larger
+.grid-sizer, .grid-item{
+  width: 33.333333%;
+}
+
 }
 @media #{$medium-and-down} {
 // styles for medium screens and down
@@ -1171,6 +1198,9 @@ select.browser-default.withprefixicon{
 // styles for large screens and up
 .tableSearchSubmit {
   height: 43px;
+}
+.grid-sizer, .grid-item{
+  width: 20%;
 }
 }
 @media #{$extra-large-and-up} {
