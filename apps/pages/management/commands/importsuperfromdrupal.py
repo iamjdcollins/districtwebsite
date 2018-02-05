@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
+from django.contrib.sites.models import Site
 import urllib.request
 import json
 import pytz
@@ -13,6 +14,7 @@ from apps.objects.models import User
 import apps.common.functions
 
 class Command(BaseCommand):
+  site = Site.objects.get(domain='www.slcschools.org')
   host = 'https://www1.slcschools.org'
   req = urllib.request.Request(host + '/rest/supermessages')
   resp = urllib.request.urlopen(req,timeout=600)
@@ -25,7 +27,7 @@ class Command(BaseCommand):
     body = article['body']
     summary = article['body_1']
     author_date = timezone.datetime(int(article['created_1']),int(article['created_2']), int(article['created_3']), hour=int(article['created_4']), minute=int(article['created_5']), tzinfo=timezone.utc)
-    message, created = SuperintendentMessage.objects.get_or_create(uuid=article_uuid, defaults={'author_date':author_date,'deleted':0,'create_user':webmaster,'update_user':webmaster,'published':1,'url':'/tempnewsurl'})
+    message, created = SuperintendentMessage.objects.get_or_create(uuid=article_uuid, defaults={'author_date':author_date,'deleted':0,'create_user':webmaster,'update_user':webmaster,'published':1,'url':'/tempnewsurl', 'site': site })
     message.body=body
     message.summary=summary
     message.author_date=author_date
@@ -36,7 +38,7 @@ class Command(BaseCommand):
     message.save()
     print(message)
     if article['field_article_image'] != '':
-      newsthumbimage, created = NewsThumbnail.objects.get_or_create(uuid=uuid.uuid5(message.uuid, article['field_article_image']), defaults={'related_node':message.page_node,'title':message.title + ' Thumbnail','deleted':0,'create_user':webmaster,'update_user':webmaster, 'published':1,'url':'/tempnewsthumburl','parent':message.page_node})
+      newsthumbimage, created = NewsThumbnail.objects.get_or_create(uuid=uuid.uuid5(message.uuid, article['field_article_image']), defaults={'related_node':message.page_node,'title':message.title + ' Thumbnail','deleted':0,'create_user':webmaster,'update_user':webmaster, 'published':1,'url':'/tempnewsthumburl','parent':message.page_node, 'site': site})
       newsthumbimage.related_node = message.page_node
       newsthumbimage.title = message.title + ' Thumbnail'
       newsthumbimage.deleted = 0
