@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db.models import Q
+from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand, CommandError
 from ldap3 import Connection, Server, ANONYMOUS, SIMPLE, SYNC, ASYNC, ALL, NTLM
 from apps.users.models import Employee, System
@@ -39,7 +40,8 @@ def directory_department(item,departments):
     return None
 
 def importUser(item, account, departments,all_adult_staff,website_managers):
-  obj, created = Employee.objects.get_or_create(uuid=uuid.UUID(str(item.objectGUID)), defaults={'email':'tempemail@slcschools.org','url':'/tempemail'})
+  site = Site.objects.get(domani='www.slcschools.org')
+  obj, created = Employee.objects.get_or_create(uuid=uuid.UUID(str(item.objectGUID)), defaults={'email':'tempemail@slcschools.org','url':'/tempemail', 'site': site  })
   obj.username = str(item.userPrincipalName).lower()
   obj.first_name = item.givenName
   obj.last_name = item.sn
