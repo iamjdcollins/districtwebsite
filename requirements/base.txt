@@ -40,3 +40,7 @@ tldextract==2.2.0
 django-pipeline==1.6.14
 libsass==0.13.6 
 libsasscompiler==0.1.5
+# Django Image Kit
+django-appconf==1.0.2
+django-imagekit==4.0.2
+pilkit==2.0

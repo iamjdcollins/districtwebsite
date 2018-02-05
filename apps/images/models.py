@@ -1,4 +1,6 @@
 from django.db import models
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill, ResizeToFit
 import apps.common.functions as commonfunctions
 from apps.objects.models import Node, Image
 from apps.taxonomy.models import DistrictLogoGroup, DistrictLogoStyleVariation
@@ -652,6 +654,145 @@ class DistrictLogo(Image):
     def force_title(self):
         return self.district_logo_group.title + \
             ' ' + self.district_logo_style_variation.title
+
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class PhotoGallery(Image):
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/photogallery/'
+    HAS_PERMISSIONS = False
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+    )
+
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='images_photogallery_node',
+    )
+
+    photogallery_image_node = models.OneToOneField(
+        Image,
+        db_column='photogallery_image_node',
+        on_delete=models.CASCADE,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'images_photogallery'
+        ordering = ['inline_order', ]
+        get_latest_by = 'update_date'
+        permissions = (
+            ('trash_photogallery', 'Can soft delete photo gallery'),
+            ('restore_photogallery', 'Can restore photo gallery'),
+        )
+        verbose_name = 'Photo Gallery'
+        verbose_name_plural = 'Photo Galleries'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    def force_title(self):
+        return '{0}'.format(
+                self.title,
+            )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class PhotoGalleryImage(Image):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/photogalleryimage/'
+    HAS_PERMISSIONS = False
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+    )
+    image_file = models.ImageField(
+        max_length=2000,
+        upload_to=commonfunctions.image_upload_to,
+        verbose_name='Image',
+        help_text='',
+    )
+    thumbnail = ImageSpecField(
+        source='image_file',
+        processors=[ResizeToFill(100, 100)],
+        format='JPEG',
+        options={'quality': 90},
+    )
+    isotope = ImageSpecField(
+        source='image_file',
+        processors=[ResizeToFit(width=320)],
+        format='JPEG',
+        options={'quality': 90},
+    )
+    alttext = models.CharField(
+        max_length=200,
+        verbose_name='Alternative Text',
+        help_text='',
+    )
+
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='images_photogalleryimage_node',
+    )
+
+    photogallery_image_node = models.OneToOneField(
+        Image,
+        db_column='photogalleryimage_image_node',
+        on_delete=models.CASCADE,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'images_photogalleryimage'
+        ordering = ['inline_order', ]
+        get_latest_by = 'update_date'
+        permissions = (
+            ('trash_photogalleryimage', 'Can soft delete photo gallery image'),
+            ('restore_photogalleryimage', 'Can restore photo gallery image'),
+        )
+        verbose_name = 'Photo Gallery Image'
+        verbose_name_plural = 'Photo Gallery Images'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    def force_title(self):
+        return '{0}'.format(
+                self.title,
+            )
 
     def file_name(self, file):
         return '{0}'.format(

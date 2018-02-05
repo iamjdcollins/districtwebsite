@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ajax_select',
     'adminsortable2',
+    'imagekit',
     'apps.cmstemplates',
     'apps.dashboard',
     'www_slcschools_org',
