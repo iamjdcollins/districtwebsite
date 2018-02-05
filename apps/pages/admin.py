@@ -12,7 +12,7 @@ from apps.common.classes import DeletedListFilter, EditLinkToInlineObject
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear, SuperintendentMessage,SuperintendentMessageYear
-from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo, DistrictLogoGIF, DistrictLogoJPG, DistrictLogoPNG, DistrictLogoTIF
+from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo, DistrictLogoGIF, DistrictLogoJPG, DistrictLogoPNG, DistrictLogoTIF, PhotoGallery, PhotoGalleryImage
 from apps.directoryentries.models import SchoolAdministrator, Administrator, Staff, BoardMember, StudentBoardMember, BoardPolicyAdmin
 from apps.links.models import ResourceLink, ActionButton
 from apps.documents.models import Document, BoardPolicy, Policy, AdministrativeProcedure, SupportingDocument, BoardMeetingAgenda, BoardMeetingMinutes, BoardMeetingAudio, BoardMeetingVideo, BoardMeetingExhibit, BoardMeetingAgendaItem
@@ -178,25 +178,172 @@ class DistrictLogoInline(EditLinkToInlineObject, admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-class NewsThumbnailInline(admin.TabularInline):
-  model = NewsThumbnail
-  fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
-  extra = 0
-  min_num = 0
-  max_num = 1
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class NewsInlineForm(forms.ModelForm):
+    class Meta:
+        model = News
+        fields = ['title', 'pinned', 'author_date', ]
+
+    def __init__(self, *args, **kwargs):
+        super(NewsInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['title'].disabled = True
+
+
+class NewsInline(EditLinkToInlineObject, admin.TabularInline):
+    model = News
+    form = NewsInlineForm
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'pinned',
+        'author_date',
+        'update_user',
+        'update_date',
+        'edit_link',
+        ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        ]
+    ordering = ['author_date', ]
+    extra = 0
+    min_num = 0
+    max_num = 300
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('{0}.{1}'.format(
+                self.model._meta.model_name,
+                get_permission_codename('restore', self.model._meta))):
+            return qs
+        return qs.filter(deleted=0)
+
+
+class PhotoGalleryInlineForm(forms.ModelForm):
+    class Meta:
+        model = PhotoGallery
+        fields = ['title', ]
+
+    def __init__(self, *args, **kwargs):
+        super(PhotoGalleryInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['title'].disabled = True
+
+
+class PhotoGalleryInline(EditLinkToInlineObject,
+                         SortableInlineAdminMixin, admin.TabularInline):
+    model = PhotoGallery
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('{0}.{1}'.format(
+                self.model._meta.model_name,
+                get_permission_codename('restore', self.model._meta))):
+            return qs
+        return qs.filter(deleted=0)
+
+
+class PhotoGalleryImageInlineForm(forms.ModelForm):
+    class Meta:
+        model = PhotoGalleryImage
+        fields = ['title', 'image_file', 'alttext', ]
+
+    def __init__(self, *args, **kwargs):
+        super(PhotoGalleryImageInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['title'].disabled = True
+
+
+class PhotoGalleryImageInline(SortableInlineAdminMixin, admin.TabularInline):
+    model = PhotoGalleryImage
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'image_file',
+        'alttext',
+        'update_user',
+        'update_date',
+        ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        ]
+    extra = 0
+    min_num = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('{0}.{1}'.format(
+                self.model._meta.model_name,
+                get_permission_codename('restore', self.model._meta))):
+            return qs
+        return qs.filter(deleted=0)
+
+
+class NewsThumbnailInline(admin.TabularInline):
+    model = NewsThumbnail
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'image_file',
+        'alttext',
+        'update_user',
+        'update_date',
+        ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('{0}.{1}'.format(
+                self.model._meta.model_name,
+                get_permission_codename('restore', self.model._meta))):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class ContentBannerInline(SortableInlineAdminMixin, admin.TabularInline):
   model = ContentBanner
@@ -895,7 +1042,7 @@ class VideoFileInline(admin.TabularInline):
 class SubPageInlineForm(forms.ModelForm):
     class Meta:
         model = SubPage
-        fields = ['title',]
+        fields = ['title', ]
 
     def __init__(self, *args, **kwargs):
         super(SubPageInlineForm, self).__init__(*args, **kwargs)
@@ -1443,7 +1590,7 @@ class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
            fields += ['url']
       return fields
 
-  inlines = [NewsThumbnailInline,ContentBannerInline,]
+  inlines = [NewsThumbnailInline, ContentBannerInline, PhotoGalleryInline, ]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -1481,7 +1628,7 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
            fields += ['url']
       return fields
 
-  inlines = []
+  inlines = [NewsInline, ]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -2900,6 +3047,79 @@ class DistrictLogoAdmin(MPTTModelAdmin,GuardedModelAdmin):
     response_change = apps.common.functions.response_change
 
 
+class PhotoGalleryAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+    inlines = [PhotoGalleryImageInline, ]
+
+    def get_formsets_with_inlines(self, request, obj=None):
+        for inline in self.get_inline_instances(request, obj):
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
+            yield inline.get_formset(request, obj), inline
+
+
+    def get_fields(self, request, obj=None):
+        fields = ['title',['update_user','update_date',],['create_user','create_date',],]
+        if request.user.is_superuser:
+            fields += ['published', 'searchable', 'parent']
+            if obj:
+                fields += ['url']
+        return fields
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = ['title','update_user','update_date','create_user','create_date',]
+        if request.user.is_superuser:
+            fields.remove('title')
+            if obj:
+             fields += ['url']
+        return fields
+
+    def get_list_display(self,request):
+        if request.user.has_perm('documents.restore_document'):
+            return ['title','update_date','update_user','published','deleted']
+        else:
+            return ['title','update_date','update_user','published']
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('documents.restore_document'):
+            return qs
+        return qs.filter(deleted=0)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        if request.user.has_perm('documents.trash_document'):
+            actions['trash_selected'] = (trash_selected,'trash_selected',trash_selected.short_description)
+        if request.user.has_perm('documents.restore_document'):
+            actions['restore_selected'] = (restore_selected,'restore_selected',restore_selected.short_description)
+        if request.user.has_perm('documents.change_document'):
+            actions['publish_selected'] = (publish_selected, 'publish_selected', publish_selected.short_description)
+            actions['unpublish_selected'] = (unpublish_selected, 'unpublish_selected', unpublish_selected.short_description)
+        return actions
+
+    def get_list_filter(self, request):
+        if request.user.has_perm('documents.restore_document'):
+            return (DeletedListFilter, 'published')
+        else:
+            return ['published', ]
+
+    has_change_permission = apps.common.functions.has_change_permission
+    has_add_permission = apps.common.functions.has_add_permission
+    has_delete_permission = apps.common.functions.has_delete_permission
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
+    response_change = apps.common.functions.response_change
+
+
 admin.site.register(Page, PageAdmin)
 admin.site.register(School, SchoolAdmin)
 admin.site.register(Department, DepartmentAdmin)
@@ -2928,3 +3148,4 @@ admin.site.register(FAQ, FAQAdmin)
 admin.site.register(DistrictCalendarYear, DistrictCalendarYearAdmin)
 admin.site.register(DistrictCalendarEvent, DistrictCalendarEventAdmin)
 admin.site.register(DistrictLogo, DistrictLogoAdmin)
+admin.site.register(PhotoGallery, PhotoGalleryAdmin)
