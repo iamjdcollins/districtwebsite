@@ -1179,6 +1179,9 @@ select.browser-default.withprefixicon{
 }
 @media #{$small-and-down} {
 // styles for small screens and down
+.preheader ul li a {
+  font-size: .95em;
+}
 .grid-sizer, .grid-item{
   width: 50%;
 }
