@@ -375,7 +375,7 @@ class SchoolAdministratorInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['employee'].disabled = True
 
-class SchoolAdministratorInline(admin.TabularInline):
+class SchoolAdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
   model = SchoolAdministrator
   fk_name = 'parent'
   fields = ['employee', 'schooladministratortype','update_user','update_date',]
@@ -1358,7 +1358,7 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
            fields += ['url']
       return fields
 
-  inlines = [ThumbnailInline, ContentBannerInline,SchoolAdministratorInline,ResourceLinkInline,DocumentInline,]
+  inlines = [ThumbnailInline, ContentBannerInline, SchoolAdministratorInline, ResourceLinkInline, DocumentInline,]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -1366,9 +1366,9 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
           if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
               if not 'deleted' in inline.fields:
                   inline.fields.append('deleted')
-              else:
-                  while 'deleted' in inline.fields:
-                      inline.fields.remove('deleted')
+          else:
+              while 'deleted' in inline.fields:
+                  inline.fields.remove('deleted')
           yield inline.get_formset(request, obj), inline
 
   has_change_permission = apps.common.functions.has_change_permission

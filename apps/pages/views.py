@@ -11,7 +11,7 @@ from django.http import HttpResponse
 import apps.common.functions
 from apps.objects.models import Node, User
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear,SuperintendentMessage,SuperintendentMessageYear
-from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct, BoardPolicySection, SchoolType, SchoolOption
+from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct, BoardPolicySection, SchoolType, SchoolOption, SchoolAdministratorType
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo
 from apps.directoryentries.models import Staff, SchoolAdministrator, Administrator,  BoardMember, StudentBoardMember, BoardPolicyAdmin
 from apps.links.models import ResourceLink, ActionButton
@@ -20,6 +20,80 @@ from apps.files.models import File
 from apps.events.models import BoardMeeting, DistrictCalendarEvent
 from apps.users.models import Employee
 from apps.contactmessages.forms import ContactMessageForm
+
+
+def prefetch_schooladministrators_detail(qs):
+    prefetchqs = (SchoolAdministrator
+                  .objects
+                  .filter(deleted=False)
+                  .filter(published=True)
+                  .order_by('inline_order')
+                  .only(
+                    'pk',
+                    'employee',
+                    'schooladministratortype',
+                    'inline_order',
+                    'related_node',
+                    )
+                  .prefetch_related(
+                    Prefetch(
+                        'employee',
+                        queryset=(
+                            Employee
+                            .objects
+                            .filter(is_active=True)
+                            .filter(is_staff=True)
+                            .only(
+                                'pk',
+                                'last_name',
+                                'first_name',
+                                'email',
+                                'job_title',
+                                )
+                            .prefetch_related(
+                                Prefetch(
+                                    'images_profilepicture_node',
+                                    queryset=(
+                                        ProfilePicture
+                                        .objects
+                                        .filter(deleted=0)
+                                        .filter(published=1)
+                                        .only(
+                                            'pk',
+                                            'title',
+                                            'image_file',
+                                            'alttext',
+                                            'related_node',
+                                            )
+                                        ),
+                                    )
+                                )
+                            ),
+                        ),
+                    )
+                  .prefetch_related(
+                    Prefetch(
+                        'schooladministratortype',
+                        queryset=(
+                            SchoolAdministratorType
+                            .objects
+                            .filter(deleted=False)
+                            .filter(published=True)
+                            .only(
+                                'pk',
+                                'title',
+                                )
+                            ),
+                        ),
+                    )
+                  )
+    return qs.prefetch_related(
+        Prefetch(
+            'directoryentries_schooladministrator_node',
+            queryset=prefetchqs,
+        )
+    )
+
 
 def home(request):
   try:
@@ -81,20 +155,6 @@ def NewsYearArchive(request):
             newsmonths[10]['news'].append(item)
         if item.author_date.month == 7:
             newsmonths[11]['news'].append(item)
-    #newsmonths = [
-    #    {'month': 'June', 'news': News.objects.filter(author_date__month=6).filter(parent__url=request.path).filter(deleted=0).filter(published=1)},
-    #    {'month': 'May', 'news': News.objects.filter(author_date__month=5).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #    {'month': 'April', 'news': News.objects.filter(author_date__month=4).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #    {'month': 'March', 'news': News.objects.filter(author_date__month=3).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #    {'month': 'February', 'news': News.objects.filter(author_date__month=2).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #    {'month': 'January', 'news': News.objects.filter(author_date__month=1).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #    {'month': 'December', 'news': News.objects.filter(author_date__month=12).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #    {'month': 'November', 'news': News.objects.filter(author_date__month=11).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #    {'month': 'October', 'news': News.objects.filter(author_date__month=10).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #    {'month': 'September', 'news': News.objects.filter(author_date__month=9).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #    {'month': 'August', 'news': News.objects.filter(author_date__month=8).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #    {'month': 'July', 'news': News.objects.filter(author_date__month=7).filter(parent__url=request.path).filter(deleted=0).filter(published=1),},
-    #]
     return render(request, 'pages/news/yeararchive.html', {'page': page, 'pageopts': pageopts, 'news': news, 'newsmonths': newsmonths})
 
 def NewsArticleDetail(request):
@@ -219,12 +279,27 @@ def district_demographics(request):
     pageopts = page._meta
     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
+
 def schooldetail(request):
-  page = get_object_or_404(School, url=request.path)
-  pageopts = page._meta
-  return render(request, 'pages/schools/schooldetail.html', {'page': page,'pageopts': pageopts,})
-  result = Template( template.content ).render(context=RequestContext(request, {'page': page,'pageopts': pageopts,}))
-  return HttpResponse(result)
+    page = (
+        School
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .filter(url=request.path)
+        )
+    page = prefetch_schooladministrators_detail(page)
+    page = page.first()
+    pageopts = page._meta
+    return render(
+        request,
+        'pages/schools/schooldetail.html',
+        {
+            'page': page,
+            'pageopts': pageopts,
+        }
+        )
+
 
 def departments(request):
   page = get_object_or_404(Page, url=request.path)
@@ -459,14 +534,6 @@ def boarddetail(request):
       context['instructional_policies'] = instructional_policies
       context['personnel_policies'] = personnel_policies
       context['student_policies'] = student_policies
-          
-  #board_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Board Policies').order_by('section__lft','index')
-  #community_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Community Policies').order_by('section__lft','index')
-  #financial_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Financial Policies').order_by('section__lft','index')
-  #general_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='General Policies').order_by('section__lft','index')
-  #instructional_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Instructional Policies').order_by('section__lft','index')
-  #personnel_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Personnel Policies').order_by('section__lft','index')
-  #student_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).filter(section__title='Student Policies').order_by('section__lft','index')
   board_meeting_years = BoardMeetingYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
   board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1).filter(yearend=currentyear['currentyear']['short'])
   context['board_meeting_years'] = board_meeting_years
@@ -516,6 +583,7 @@ def contactmessage_get(request):
             form.fields['primary_contact'].initial = str(User.objects.get(username='webmaster@slcschools.org').pk)
     return form
 
+
 def contact(request):
     template = 'pages/contact/contact-us.html'
     context = {}
@@ -528,6 +596,7 @@ def contact(request):
         context['form'] = contactmessage_get(request)
         context['from_page'] = apps.common.functions.nodefindobject(Node.objects.get(pk=context['form'].fields['parent'].initial))
     return render(request, template, context)
+
 
 def contact_inline(request):
     template = 'pages/contact/contact-us-inline.html'

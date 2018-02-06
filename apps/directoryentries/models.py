@@ -45,8 +45,18 @@ class SchoolAdministrator(DirectoryEntry):
         editable=False,
     )
 
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
     class Meta:
         db_table = 'directoryenties_schooladministrator'
+        ordering = [
+            'inline_order',
+        ]
         get_latest_by = 'create_date'
         verbose_name = 'School Administrator'
         verbose_name_plural = 'School Administrators'
