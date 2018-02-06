@@ -17,12 +17,12 @@
       {% if page.body %}
       <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
       {% endif %}
+      <li><a class="yearnav" href="#yearnav" onclick="$('.inlinemodal').modaal('close');">Select School Year</a></li>
       {% for month in newsmonths %}
       {% if month.news %}
       <li><a href="#{{ month.month|lower }}" onclick="$('.inlinemodal').modaal('close');">{{ month.month }} ({{ month.news|length }})</a></li>
       {% endif %}
       {% endfor %}
-      <li><a href="/news/" onclick="$('.inlinemodal').modaal('close');">Other Years</a></li>
     </ul>
   </div>
 </div>
@@ -71,6 +71,25 @@
       </div>
     </div>
     {% endif %}
+    {% if newsyears %}
+    <nav class="yearnav">
+      <a class="yearnav nocaret" href="#yearnav">
+        <span class="currentyear">School Year: {{page.title}}</span>
+        <span class="caret">▼</span>
+        <button class="btn filter-button white-text">
+          <span class="sr-only">Filter by school year</span>
+          <span class="material-icons no-sr notranslate" aria-hidden="true">&#xE152;</span>
+        </button>
+      </a>
+    </nav>
+    <div id="yearnav" class="hide">
+      <ul>
+        {% for year in newsyears %}
+        <li><a href="../{{year.title}}/">{{year.title}}</a></li> 
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
     {% if news %}
     <div class="row">
     {% for month in newsmonths %}
@@ -101,6 +120,10 @@
       </div>
     {% endif %}
     {% endfor %}
+    </div>
+    {% else %}
+    <div class="row">
+      <p>We do not have any news for this year yet. Please select another school year or check back soon.</p>
     </div>
     {% endif %}
   </div>

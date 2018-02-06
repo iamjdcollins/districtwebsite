@@ -107,6 +107,18 @@ def home(request):
   return result
 
 def news(request):
+    currentyear = apps.common.functions.currentyear()
+    if request.path == '/news/':
+        try:
+            year = NewsYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
+        except NewsYear.DoesNotExist:
+            news, created = News.objects.get_or_create(title='tempnews', site=request.site)
+            if created:
+                news.save()
+                news.delete()
+                news.delete()
+            year = NewsYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
+        return redirect(year.url)
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
     newsyears = NewsYear.objects.all().order_by('-yearend')
@@ -115,6 +127,7 @@ def news(request):
 def NewsYearArchive(request):
     page = NewsYear.objects.filter(url=request.path).first()
     pageopts = page._meta
+    newsyears = NewsYear.objects.all().order_by('-yearend')
     news = News.objects.filter(parent__url=request.path).filter(deleted=0).filter(published=1).only('title','author_date','summary','url').prefetch_related(Prefetch('images_newsthumbnail_node', queryset = NewsThumbnail.objects.only('image_file','alttext','related_node_id')))
     newsmonths = [
         {'month': 'June', 'news': [],},
@@ -155,7 +168,7 @@ def NewsYearArchive(request):
             newsmonths[10]['news'].append(item)
         if item.author_date.month == 7:
             newsmonths[11]['news'].append(item)
-    return render(request, 'pages/news/yeararchive.html', {'page': page, 'pageopts': pageopts, 'news': news, 'newsmonths': newsmonths})
+    return render(request, 'pages/news/yeararchive.html', {'page': page, 'pageopts': pageopts, 'newsyears': newsyears, 'news': news, 'newsmonths': newsmonths})
 
 def NewsArticleDetail(request):
     pages =  News.objects.filter(published=1).filter(deleted=0)
@@ -444,14 +457,14 @@ def calendars(request):
     currentyear = apps.common.functions.currentyear()
     if request.path == '/calendars/':
         try:
-            year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'])
+            year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
         except DistrictCalendarYear.DoesNotExist:
-            event, created = DistrictCalendarEvent.objects.get_or_create(startdate=timezone.now())
+            event, created = DistrictCalendarEvent.objects.get_or_create(startdate=timezone.now(), site=request.site)
             if created:
                 event.save()
                 event.delete()
                 event.delete()
-            year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'])
+            year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
         return redirect(year.url)
     page = get_object_or_404(Page, url=request.path)
     pageopts = page._meta
@@ -484,14 +497,14 @@ def boarddetail(request):
   currentyear = apps.common.functions.currentyear()
   if request.path == '/board-of-education/board-meetings/':
       try:
-          year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'])
+          year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
       except BoardMeetingYear.DoesNotExist:
-          meeting, created = BoardMeeting.objects.get_or_create(startdate=timezone.now())
+          meeting, created = BoardMeeting.objects.get_or_create(startdate=timezone.now(), site=request.site)
           if created:
               meeting.save()
               meeting.delete()
               meeting.delete() 
-          year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'])
+          year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
       return redirect(year.url)
   board = Board.objects.filter(url=request.path).only('pk','title','body','building_location','main_phone','main_fax','mission_statement','vision_statement').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_contentbanner_node', queryset = ContentBanner.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')),Prefetch('directoryentries_boardmember_node',queryset=BoardMember.objects.filter(deleted=0).filter(published=1).order_by('precinct__title').only('employee','precinct','phone','street_address','city','state','zipcode','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('last_name','first_name','email').prefetch_related(Prefetch('images_profilepicture_node',ProfilePicture.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')))),Prefetch('precinct', queryset = BoardPrecinct.objects.filter(deleted=0).filter(published=1).only('pk','title').order_by('title')),Prefetch('city', queryset = City.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('state', queryset = State.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('pk','title')))),Prefetch('directoryentries_studentboardmember_node',queryset=StudentBoardMember.objects.filter(deleted=0).filter(published=1).order_by('title').only('first_name','last_name','phone','building_location','related_node').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_profilepicture_node',ProfilePicture.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id'))))).first()
   boardsubpage = BoardSubPage.objects.filter(url=request.path).first()

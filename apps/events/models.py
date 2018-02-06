@@ -116,7 +116,11 @@ class BoardMeeting(BaseEvent):
             title=currentyear['currentyear']['long'],
             yearend=currentyear['currentyear']['short'],
             parent=parent,
-            defaults={'create_user': creator, 'update_user': creator},
+            defaults={
+                'create_user': creator,
+                'update_user': creator,
+                'site': self.site,
+            },
         )
         return obj
 
@@ -251,7 +255,11 @@ class DistrictCalendarEvent(BaseEvent):
             title=currentyear['currentyear']['long'],
             yearend=currentyear['currentyear']['short'],
             parent=parent,
-            defaults={'create_user': creator, 'update_user': creator},
+            defaults={
+                'create_user': creator,
+                'update_user': creator,
+                'site': self.site,
+            },
         )
         return obj
 
