@@ -1559,10 +1559,7 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
               if not obj.url == '/board-of-education/board-meetings/':
                   continue
           if isinstance(inline,SubPageInline):
-              if obj.url == '/board-of-education/policies/':
-                  continue
-              if obj.url == '/board-of-education/board-meetings/':
-                  continue
+              pass
           yield inline.get_formset(request, obj), inline
 
   has_change_permission = apps.common.functions.has_change_permission
