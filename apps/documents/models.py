@@ -94,6 +94,21 @@ class BoardPolicy(BaseDocument):
     index = models.IntegerField(
         verbose_name='Policy Section Number',
     )
+    subcommittee_review = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name='Subcommitte Meeting Review',
+    )
+    boardmeeting_review = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name='Anticipated Board Meeting Review',
+    )
+    last_approved = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name='Last Approved',
+    )
     related_node = models.ForeignKey(
         Node,
         blank=True,

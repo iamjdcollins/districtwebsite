@@ -650,6 +650,33 @@ class BoardPolicyInline(EditLinkToInlineObject, admin.TabularInline):
   has_change_permission = apps.common.functions.has_change_permission_inline
   has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+
+class BoardPolicyReviewInlineForm(forms.ModelForm):
+    class Meta:
+        model = BoardPolicy
+        fields = ['title','subcommittee_review','boardmeeting_review','last_approved',]
+
+    def __init__(self, *args, **kwargs):
+        super(BoardPolicyReviewInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            pass
+
+class BoardPolicyReviewInline(EditLinkToInlineObject, admin.TabularInline):
+  model = BoardPolicy
+  form = BoardPolicyReviewInlineForm
+  verbose_name = 'Board Policy Review Schedule'
+  verbose_name_plural = 'Board Policy Review Schedule'
+  fk_name = 'parent'
+  fields = ['title','subcommittee_review','boardmeeting_review','last_approved','update_user','update_date','edit_link',]
+  readonly_fields = ['title','update_user','update_date','edit_link',]
+  ordering = ['subcommittee_review','section__lft','index',]
+  extra = 0
+  min_num = 0
+  max_num = 100
+  has_add_permission = apps.common.functions.has_add_permission_inline
+  has_change_permission = apps.common.functions.has_change_permission_inline
+  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
   def get_queryset(self, request):
       qs = super().get_queryset(request)
       if request.user.is_superuser:
@@ -1511,7 +1538,7 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
            fields += ['url']
       return fields
 
-  inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,BoardPolicyInline,BoardMeetingInline,SubPageInline,]
+  inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,BoardPolicyInline,BoardPolicyReviewInline,BoardMeetingInline,SubPageInline,]
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -1553,6 +1580,9 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
               if obj.url == '/board-of-education/board-meetings/':
                   continue
           if isinstance(inline,BoardPolicyInline):
+              if not obj.url == '/board-of-education/policies/':
+                  continue
+          if isinstance(inline, BoardPolicyReviewInline):
               if not obj.url == '/board-of-education/policies/':
                   continue
           if isinstance(inline,BoardMeetingInline):
@@ -1811,7 +1841,7 @@ class BoardPolicyAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 
     def get_fields(self, request, obj=None):
-        fields = ['title','section','index',['update_user','update_date',],['create_user','create_date',],]
+        fields = ['title','section','index','subcommittee_review','boardmeeting_review','last_approved',['update_user','update_date',],['create_user','create_date',],]
         if request.user.is_superuser:
             fields += ['published','searchable','parent',]
             if obj:

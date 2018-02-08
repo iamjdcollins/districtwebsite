@@ -56,15 +56,12 @@
       <li><a href="#resourcelinks" onclick="$('.inlinemodal').modaal('close');">Resources</a></li>
       {% endif %}
       {% if page.pages_boardsubpage_node.all or page.pages_subpage_node.all %}
-      <li><a href="#pages" onclick="$('.inlinemodal').modaal('close');">Pages</a></li>
-      <ul>
       {% for board_subpage in page.pages_boardsubpage_node.all %}
-        <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}" onclick="$('.inlinemodal').modaal('close');">{{ board_subpage.title }}</a></li>
+      <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}" onclick="$('.inlinemodal').modaal('close');">{{ board_subpage.title }}</a></li>
       {% endfor %}
       {% for board_subpage in page.pages_subpage_node.all %}
-        <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}" onclick="$('.inlinemodal').modaal('close');">{{ board_subpage.title }}</a></li>
+      <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}" onclick="$('.inlinemodal').modaal('close');">{{ board_subpage.title }}</a></li>
       {% endfor %}
-      </ul>
       {% endif %}
     </ul>
   </div>

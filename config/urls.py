@@ -19,36 +19,10 @@ urlpatterns +=[
     url(r'^manage/', include('apps.dashboard.urls', namespace='dashboard')),
 ]
 
-#Pages App
-urlpatterns +=[
-  url(r'', include('apps.pages.urls', namespace='pages')),
-]
-
 # Search Results
 urlpatterns +=[
     url(r'^search/results/', CustomSearchView(form_class=CustomSearchForm), name="haystack_search"),
 ]
-
-#Board App
-#urlpatterns += [
-#    url(r'^board-of-education/', include('apps.board.urls', namespace='board')),
-#]
-
-
-#Schools App
-#urlpatterns += [
-#   url(r'^schools/', include('apps.schools.urls', namespace='schools')),
-#]
-
-#Departments App
-#urlpatterns += [
-#    url(r'^departments/', include('apps.departments.urls', namespace='departments')),
-#]
-
-#News App
-#urlpatterns += [
-#  url(r'^news/', include('apps.news.urls', namespace='news')),
-#]
 
 admin.site.site_header = 'Salt Lake City School District'
 admin.site.index_title = ('Salt Lake City School District')
@@ -66,3 +40,8 @@ if settings.DEBUG:
     urlpatterns = [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+# Pages App Should be last since it matches all urls at the end.
+urlpatterns += [
+  url(r'', include('apps.pages.urls', namespace='pages')),
+]

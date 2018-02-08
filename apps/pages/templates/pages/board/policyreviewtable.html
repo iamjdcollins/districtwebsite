@@ -1,0 +1,27 @@
+<div class="row">
+  <div id="policy_review" class="scrollspy">
+  	<table>
+    	<thead>
+      	<tr>
+      	  <th class="policyindex">Index</th>
+      	  <th>Policy Title</th>
+      	  <th>Last Approved</th>
+      	</tr>
+    	</thead>
+      {% for key, group in policy_review.items %}
+      <tbody>
+        <tr>
+          <td class="slcschools-grey white-text" colspan="3">Subcommittee Meeting: {{ group.subcommittee_review }}<br>Anticipated Board Meeting: {{ group.boardmeeting_review }}</td>
+        </tr>
+        {% for policy in group.policies %}
+        <tr>
+          <td>{{ policy.section.section_prefix }}-{{ policy.index }}</td>
+          <td>{{ policy.policy_title }}</td>
+          <td>{{ policy.last_approved }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      {% endfor %}
+  	</table>
+  </div>
+</div>

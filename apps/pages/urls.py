@@ -38,6 +38,5 @@ urlpatterns = [
   url(r'^employees/$', views.employees, name='employees'),
   url(r'^contact-us/$', views.contact, name='contact'),
   url(r'^contact-us/inline/$', views.contact_inline, name='contact_inline'),
-  # url(r'^temp/$', views.temp, name='temp'),
+  url(r'^(?:[a-z0-9-]+\/)+$', views.node_lookup, name='node_lookup'),
 ]
-

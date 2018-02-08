@@ -1,14 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template import Context, Template, RequestContext
 from django.db.models import Prefetch
 from django.utils import timezone
 from django.contrib import messages
-
+from django.apps import apps
 from django.http import HttpResponse
-
-import apps.common.functions
+from collections import OrderedDict
+import apps.common.functions as commonfunctions
 from apps.objects.models import Node, User
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear,SuperintendentMessage,SuperintendentMessageYear
 from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct, BoardPolicySection, SchoolType, SchoolOption, SchoolAdministratorType
@@ -95,9 +95,122 @@ def prefetch_schooladministrators_detail(qs):
     )
 
 
+def prefetch_documents_detail(qs):
+    prefetchqs = (
+        Document
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .order_by('inline_order')
+        .only(
+            'pk',
+            'title',
+            'inline_order',
+            'related_node'
+            )
+        .prefetch_related(
+            Prefetch(
+                'files_file_node',
+                queryset=(
+                    File
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .order_by(
+                        'file_language__lft',
+                        'file_language__title',
+                        )
+                    .only(
+                        'title',
+                        'file_file',
+                        'file_language',
+                        'related_node',
+                        )
+                    .prefetch_related(
+                        Prefetch(
+                            'file_language',
+                            queryset=(
+                                Language
+                                .objects
+                                .filter(deleted=0)
+                                .filter(published=1)
+                                .only('title')
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    return qs.prefetch_related(
+        Prefetch(
+            'documents_document_node',
+            queryset=prefetchqs,
+        )
+    )
+
+
+def add_additional_context(request, context):
+    if request.path == '/board-of-education/policies/policy-review-schedule/':
+        context['policy_review'] = OrderedDict()
+        policy_review = (
+            BoardPolicy
+            .objects
+            .filter(deleted=0)
+            .filter(published=1)
+            .exclude(subcommittee_review=None)
+            .exclude(boardmeeting_review=None)
+            .order_by(
+                'subcommittee_review',
+                'section__lft',
+                'index')
+            .only(
+                'pk',
+                'policy_title',
+                'index',
+                'section',
+                'subcommittee_review',
+                'boardmeeting_review',
+                'last_approved',
+                'related_node',
+                )
+            .prefetch_related(
+                Prefetch(
+                    'section',
+                    queryset=(
+                        BoardPolicySection
+                        .objects
+                        .filter(deleted=0)
+                        .filter(published=1)
+                        .only(
+                            'pk',
+                            'section_prefix',
+                            )
+                        )
+                    )
+                )
+            )
+        for policy in policy_review:
+            strdate = '{0}{1}'.format(
+                policy.subcommittee_review.strftime('%Y%m%d'),
+                policy.boardmeeting_review.strftime('%Y%m%d'),
+                )
+            if strdate not in context['policy_review']:
+                context['policy_review'][strdate] = {}
+                context['policy_review'][strdate]['subcommittee_review'] = (
+                    policy.subcommittee_review.strftime('%m/%d/%Y')
+                    )
+                context['policy_review'][strdate]['boardmeeting_review'] = (
+                    policy.boardmeeting_review.strftime('%m/%d/%Y')
+                    )
+                context['policy_review'][strdate]['policies'] = []
+            context['policy_review'][strdate]['policies'].append(policy)
+    return context
+
+
 def home(request):
   try:
-      page = apps.common.functions.nodefindobject(Node.objects.filter(site=request.site.pk).get(url='/home/'))
+      page = commonfunctions.nodefindobject(Node.objects.filter(site=request.site.pk).get(url='/home/'))
       pageopts = page._meta
   except:
       return HttpResponse('This page is not setup yet.')
@@ -107,7 +220,7 @@ def home(request):
   return result
 
 def news(request):
-    currentyear = apps.common.functions.currentyear()
+    currentyear = commonfunctions.currentyear()
     if request.path == '/news/':
         try:
             year = NewsYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
@@ -372,7 +485,7 @@ def departmentdetail(request):
     return render(request, template, context)
 
 def superintendents_message(request):
-    currentyear = apps.common.functions.currentyear()
+    currentyear = commonfunctions.currentyear()
     if request.path == '/departments/superintendents-office/superintendents-message/':
         try:
             year = SuperintendentMessageYear.objects.get(title=currentyear['currentyear']['long'])
@@ -454,7 +567,7 @@ def directory_letter(request, letter):
     return render(request, 'pages/directory/directory_letter.html', {'page': page,'pageopts': pageopts, 'people': people})
 
 def calendars(request):
-    currentyear = apps.common.functions.currentyear()
+    currentyear = commonfunctions.currentyear()
     if request.path == '/calendars/':
         try:
             year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
@@ -493,8 +606,12 @@ def search(request):
     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
 def boarddetail(request):
+  if request.path == '/board-of-education/board-meetings/notice-of-meetings-scheduled/':
+    return node_lookup(request)
+  if request.path == '/board-of-education/policies/policy-review-schedule/':
+    return node_lookup(request)
   context = {}
-  currentyear = apps.common.functions.currentyear()
+  currentyear = commonfunctions.currentyear()
   if request.path == '/board-of-education/board-meetings/':
       try:
           year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
@@ -585,7 +702,7 @@ def contactmessage_get(request):
         if request.GET['pid']:
             form.fields['parent'].initial = request.GET['pid']
     except:
-        form.fields['parent'].initial = apps.common.functions.get_contactpage()
+        form.fields['parent'].initial = commonfunctions.get_contactpage()
     try:
         if request.GET['cid']:
             form.fields['primary_contact'].initial = request.GET['cid']
@@ -607,7 +724,7 @@ def contact(request):
         return redirect(post.parent.url)
     else:
         context['form'] = contactmessage_get(request)
-        context['from_page'] = apps.common.functions.nodefindobject(Node.objects.get(pk=context['form'].fields['parent'].initial))
+        context['from_page'] = commonfunctions.nodefindobject(Node.objects.get(pk=context['form'].fields['parent'].initial))
     return render(request, template, context)
 
 
@@ -621,5 +738,29 @@ def contact_inline(request):
         return redirect(post.parent.url)
     else:
         context['form'] = contactmessage_get(request)
-        context['from_page'] = apps.common.functions.nodefindobject(Node.objects.get(pk=context['form'].fields['parent'].initial))
+        context['from_page'] = commonfunctions.nodefindobject(Node.objects.get(pk=context['form'].fields['parent'].initial))
     return render(request, template, context)
+
+
+def node_lookup(request):
+    try:
+        node = Node.objects.get(url=request.path, site=request.site)
+    except Node.DoesNotExist:
+        raise Http404('Page not found.')
+    Model = apps.get_model(node.node_type, node.content_type)
+    if node.node_type == 'pages':
+        template = 'pages/page.html'
+        context = {}
+        context['page'] = (Model
+                           .objects
+                           .filter(url=request.path)
+                           .filter(site=request.site)
+                           )
+        # Add prefetch function calls here
+        context['page'] = prefetch_documents_detail(context['page'])
+        # Add additional context here
+        context = add_additional_context(request, context)
+        # Change Queryset into object
+        context['page'] = context['page'].first()
+        context['pageopts'] = context['page']._meta
+        return render(request, template, context)
