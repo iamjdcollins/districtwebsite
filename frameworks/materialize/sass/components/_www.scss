@@ -188,6 +188,9 @@ body {top:0 !important;}
 a.inlinemodal.uninit, a.pagefeedback.uninit{
   display: none;
 }
+a:focus{
+  text-decoration: underline !important;
+}
 /* Menu Modaals */
 .modaal-wrapper{
   z-index: 13 !important;
@@ -342,6 +345,9 @@ nav .material-icons {
     height: 100px;
     line-height: 100px;
 }
+nav ul a:focus {
+  background-color: rgba(0,0,0,0.1);
+}
 .disabled.material-icons {
     color: #999;
 }
@@ -368,16 +374,16 @@ no-sr{
   background: rgb(200,32,38);
 }
 .action-5 a{
-  @extend .deep-orange, .darken-1;
+  background: #f4511e;
 }
 .action-6 a{
-  @extend .blue-grey, .darken-1;
+  background: #546e7a;
 }
 .action-7 a{
-  @extend .purple, .darken-1;
+  background: #8e24aa;
 }
 .action-8 a{
-  @extend .light-blue, .darken-1;
+  background: #039be5;
 }
 
 
@@ -613,7 +619,7 @@ ul ul{
 .preheader ul.shortcuts{
   text-align: right;
 }
-.preheader ul li a:hover{
+.preheader ul li a:hover, .preheader ul li a:focus{
   background-color: rgba(255,255,255,0.1);
 }
 .brand-logo {
@@ -1008,7 +1014,7 @@ footer h2{
 html.js #backtotop{
   display: none;
 }
-#backtotop:hover {
+#backtotop:hover, #backtotop:focus {
   background: rgba(225, 226, 225, 1) !important;
   color: #000 !important;
 }
