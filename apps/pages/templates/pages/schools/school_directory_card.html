@@ -1,6 +1,6 @@
 <div class="col s12 l4 filterpoint">
   <div class="card schoolcard sticky-action">
-    <div class="card-image">
+    <div class="card-image" style="padding-bottom: 78.125%; height: 0px;">
       {% for thumbnail in school.images_thumbnail_node.all %}
       <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.image_file.url }}" alt="{{ thumbnail.alttext }}" />
       {% endfor %}

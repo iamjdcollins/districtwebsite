@@ -336,12 +336,9 @@ $(window).scroll(function() {
 });
 
 var bLazy = new Blazy({
-  success: function(ele){
-    $.fn.matchHeight._update()
-  }
 });
 
-$.fn.matchHeight._throttle = 3000;
+$.fn.matchHeight._throttle = 25;
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -371,7 +368,6 @@ schoolCardMatchHeight = function(){
   target: null,
   remove: false
   };
-  $('.card .schoolcard .card-image').matchHeight(options);
   $('.card .schoolcard .card-content').matchHeight(options);
 }
 
