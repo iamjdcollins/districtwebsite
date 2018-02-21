@@ -51,7 +51,7 @@ def contactmessage_message(self):
             self.parent.url,
             self.your_message
             ),
-        '{0} <{1}>'.format(self.your_name, self.your_email),
+        '"{0}" <{1}>'.format(self.your_name, self.your_email),
         [self.primary_contact.email],
         bcc=['webmaster@slcschools.org'],
         reply_to=[self.your_email],
