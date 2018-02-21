@@ -51,13 +51,13 @@
 {% endblock %}{% endcomment %}
 
 {% block content %}
-{% if page.contentbanners %}
+{% if page.images_contentbanner_node.all %}
 <div class="card">
   <div class="unslider slcschools-grey darken-1">
     <ul class="slides">
-      {% for contentbanner in page.contentbanners %}
+      {% for bannerimage in page.images_contentbanner_node.all %}
       <li class="slide">
-        <img src="{{contentbanner.image_file.url}}" alt="{{contentbanner.alttext}}" />
+        <img src="{{bannerimage.image_file.url }}" alt="{{bannerimage.alttext}}" />
       </li>
       {% endfor %}
     </ul>
