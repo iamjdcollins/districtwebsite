@@ -766,7 +766,11 @@ ul ul{
     padding: 10px;
 }
 .card.card-alert.success {
-  @extend .green;
+  @extend .green, .darken-1;
+  color: white !important;
+}
+.card.card-alert.error{
+  @extend .red, .darken-1;
   color: white !important;
 }
 

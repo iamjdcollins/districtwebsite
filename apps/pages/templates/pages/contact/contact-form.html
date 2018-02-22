@@ -25,6 +25,12 @@
       {{ form.your_message }}
       <label for="{{ form.your_message.id_for_label}}">Your Message</label>
     </div>
+    <div class="input-field col s12 hide" aria-hidden="true">
+      <span class="material-icons prefix" aria-hidden="true">&#xE0C9;</span>
+      {{ form.our_message.errors }}
+      {{ form.our_message }}
+       <label for="{{ form.our_message.id_for_label}}">Our Message</label>
+    </div>
     {{ form.parent }}
     {{ form.primary_contact }}
     <button type="submit" {% if request.path == '/contact-us/inline/' %}onclick="$('.modaal-container').css('display','none');$('.modal-loading').css('display','block').css('z-index','9999')" {% endif %}class="modal-action modal-close waves-effect waves-green btn ">

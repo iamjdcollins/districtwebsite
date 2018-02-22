@@ -22,5 +22,5 @@ def linked(match,nodes=nodes_dict):
 
 @register.filter(name='relink',is_safe=True)
 def relink(value):
-    value = re.sub(r'<a class=\"relink\" data-id=\"([a-z0-9-]+)\">(.*?)</a>',linked,value)
+    value = re.sub(r'<a class=\"relink\" data-id=\"(.*)\">(.*?)</a>',linked,value)
     return mark_safe(value)

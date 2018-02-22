@@ -30,6 +30,11 @@ class ContactMessage(BaseContactMessage):
         max_length=2000,
         help_text='',
     )
+    our_message = models.TextField(
+        help_text='',
+        null=True,
+        blank=True,
+    )
     confirm_sent = models.BooleanField(
         default=False,
         db_index=True,
@@ -37,6 +42,23 @@ class ContactMessage(BaseContactMessage):
     message_sent = models.BooleanField(
         default=False,
         db_index=True,
+    )
+    remote_addr = models.CharField(
+        max_length=200,
+        help_text='',
+        null=True,
+        blank=True,
+    )
+    user_agent = models.TextField(
+        max_length=4000,
+        help_text='',
+        null=True,
+        blank=True,
+    )
+    http_headers = models.TextField(
+        help_text='',
+        null=True,
+        blank=True,
     )
     related_node = models.ForeignKey(
         Node,

@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.http import HttpResponse, Http404
@@ -692,8 +693,14 @@ def contactmessage_post(request):
         post.update_user = user
         post.site = request.site
         post.searchable = False
-        post.save()
-        messages.success(request, 'Thank you for contacting us. Someone will get back to you shortly.')
+        post.remote_addr = request.META['HTTP_X_FORWARDED_FOR']
+        post.user_agent = request.META['HTTP_USER_AGENT']
+        post.http_headers = json.dumps(request.META, default=str)
+        if not post.our_message:
+          post.save()
+          messages.success(request, 'Thank you for contacting us. Someone will get back to you shortly.')
+        else:
+          messages.error(request, 'Something was wrong with your message. Please try again.')
         return post
 
 def contactmessage_get(request):
