@@ -1048,6 +1048,9 @@ select.browser-default.withprefixicon{
   margin-left: 3em;
   width: calc(100% - 3rem);
 }
+.input-field .prefix ~ button {
+  margin-left: 3rem;
+}
 /* Alpha Filter */
 .row.alphafilter {
     padding-bottom: 10px;

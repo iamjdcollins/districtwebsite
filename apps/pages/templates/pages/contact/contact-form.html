@@ -33,15 +33,18 @@
     </div>
     {{ form.parent }}
     {{ form.primary_contact }}
-    <button type="submit" {% if request.path == '/contact-us/inline/' %}onclick="$('.modaal-container').css('display','none');$('.modal-loading').css('display','block').css('z-index','9999')" {% endif %}class="modal-action modal-close waves-effect waves-green btn ">
-      <span class="sr-only">Submit page feedback form.</span>
-      <span class="no-sr" aria-hidden="true">Submit</span>
-    </button>
-    {% if request.path == '/contact-us/inline/' %}
-    <a href="#" onclick="$('.pagefeedback').modaal('close'); return false;" class="modal-action modal-close waves-effect waves-green btn-flat ">
-      <span class="sr-only">Cancel page feedback form and close dialog.</span>
-      <span class="no-sr" aria-hidden="true">Cancel</span>
-    </a>
+    <div class="input-field col s12">
+      <span class="material-icons prefix" aria-hidden="true"></span>
+      <button type="submit" {% if request.path == '/contact-us/inline/' %}onclick="$('.modaal-container').css('display','none');$('.modal-loading').css('display','block').css('z-index','9999')" {% endif %}class="modal-action modal-close waves-effect waves-green btn ">
+        <span class="sr-only">Submit page feedback form.</span>
+        <span class="no-sr" aria-hidden="true">Submit</span>
+      </button>
+      {% if request.path == '/contact-us/inline/' %}
+      <a href="#" onclick="$('.pagefeedback').modaal('close'); return false;" class="modal-action modal-close waves-effect waves-green btn-flat ">
+        <span class="sr-only">Cancel page feedback form and close dialog.</span>
+        <span class="no-sr" aria-hidden="true">Cancel</span>
+      </a>
     {% endif %}
+    </div>
   </form>
 </div>
