@@ -1,5 +1,5 @@
 <div class="row">
-  <form class="col s12 focus" action="/contact-us/" method="post">
+  <form class="col s12 focus" action="/contact-us/" method="post" {% if request.path == '/contact-us/inline/' %}onclick="$('.modaal-container').css('display','none');$('.modal-loading').css('display','block').css('z-index','9999')" {% endif %}>
     {% csrf_token %}
     <div class="input-field col s12">
       <span class="material-icons prefix" aria-hidden="true">&#xE7FD;</span>
@@ -35,7 +35,7 @@
     {{ form.primary_contact }}
     <div class="input-field col s12">
       <span class="material-icons prefix" aria-hidden="true"></span>
-      <button type="submit" {% if request.path == '/contact-us/inline/' %}onclick="$('.modaal-container').css('display','none');$('.modal-loading').css('display','block').css('z-index','9999')" {% endif %}class="modal-action modal-close waves-effect waves-green btn ">
+      <button type="submit" class="modal-action modal-close waves-effect waves-green btn ">
         <span class="sr-only">Submit page feedback form.</span>
         <span class="no-sr" aria-hidden="true">Submit</span>
       </button>
