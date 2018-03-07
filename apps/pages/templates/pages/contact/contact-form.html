@@ -1,5 +1,5 @@
 <div class="row">
-  <form class="col s12 focus" action="/contact-us/" method="post" {% if request.path == '/contact-us/inline/' %}onclick="$('.modaal-container').css('display','none');$('.modal-loading').css('display','block').css('z-index','9999')" {% endif %}>
+  <form class="col s12 focus" action="/contact-us/" method="post" {% if request.path == '/contact-us/inline/' %}onsubmit="$('.modaal-container').css('display','none');$('.modal-loading').css('display','block').css('z-index','9999')" {% endif %}>
     {% csrf_token %}
     <div class="input-field col s12">
       <span class="material-icons prefix" aria-hidden="true">&#xE7FD;</span>
