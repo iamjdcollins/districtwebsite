@@ -151,6 +151,28 @@ def prefetch_documents_detail(qs):
     )
 
 
+def prefecth_resourcelinks_detail(qs):
+    prefetchqs = (
+        ResourceLink
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .only(
+            'pk',
+            'title',
+            'link_url',
+            'inline_order',
+            'related_node',
+        )
+    )
+    return qs.prefetch_related(
+        Prefetch(
+            'links_resourcelink_node',
+            queryset=prefetchqs,
+        )
+    )
+
+
 def add_additional_context(request, context):
     if request.path == '/board-of-education/policies/policy-review-schedule/':
         context['policy_review'] = OrderedDict()
@@ -596,10 +618,20 @@ def districtcalendaryearsarchive(request):
     districtcalendarevents = DistrictCalendarEvent.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path)
     return render(request, 'pages/calendars/districtcalendaryears.html', {'page': page, 'pageopts': pageopts,'districtcalendaryears': districtcalendaryears,'districtcalendarevents': districtcalendarevents})
 
+
 def employees(request):
-    page = get_object_or_404(Page, url=request.path)
+    page = (
+        Page
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .filter(url=request.path)
+        )
+    page = prefecth_resourcelinks_detail(page)
+    page = page.first()
     pageopts = page._meta
     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+
 
 def search(request):
     page = get_object_or_404(Page, url=request.path)
