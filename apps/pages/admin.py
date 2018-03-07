@@ -1080,7 +1080,7 @@ class SubPageInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.Tabu
     model = SubPage
     form = SubPageInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link', ]
+    fields = ['title','update_user','update_date','edit_link','published',]
     readonly_fields = ['update_user','update_date','edit_link',]
     extra = 0
     min_num = 0
