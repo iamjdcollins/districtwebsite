@@ -209,6 +209,16 @@ class BoardMember(DirectoryEntry):
         on_delete=models.CASCADE,
         related_name='directoryenties_boardmember_employee',
     )
+    is_president = models.BooleanField(
+        default=False,
+        db_index=True,
+        verbose_name='President',
+    )
+    is_vicepresident = models.BooleanField(
+        default=False,
+        db_index=True,
+        verbose_name='Vice President',
+    )
     precinct = models.ForeignKey(
         BoardPrecinct,
         on_delete=models.PROTECT,
@@ -257,6 +267,13 @@ class BoardMember(DirectoryEntry):
             'deleted': False,
         },
         help_text='',
+    )
+    term_ends = models.DateTimeField(
+        default=commonfunctions.december_thirty_first,
+        unique=False,
+        verbose_name="Term Ends",
+        null=True,
+        blank=True,
     )
     related_node = models.ForeignKey(
         Node,

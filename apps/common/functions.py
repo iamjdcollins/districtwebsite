@@ -277,6 +277,17 @@ def file_upload_to(instance, filename):
     return full_path
 
 
+def precinct_map_upload_to(instance, filename):
+    url = instance.url[1:]
+    title = urlclean_objname(instance.title + '-map')
+    original_file, original_extension = findfileext_media(filename)
+    extension = urlclean_fileext(original_extension)
+    full_path = '{0}{1}{2}'.format(url, title, extension)
+    if not instance.precinct_map._committed:
+        silentdelete_media(settings.MEDIA_ROOT + '/' + full_path)
+    return full_path
+
+
 # Save Content Functions
 
 def modelsave(self, *args, **kwargs):
@@ -1307,3 +1318,11 @@ def tomorrow_midnight():
     now += timedelta(hours=0-int(now.strftime('%H')))
     now += timedelta(minutes=0-int(now.strftime('%M')))
     return timezone.make_aware(now)
+
+
+def december_thirty_first():
+    now = timezone.datetime.strptime(
+        timezone.datetime.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
+    return timezone.make_aware(
+        timezone.datetime(now.year, 12, 31, 00, 00)
+        )

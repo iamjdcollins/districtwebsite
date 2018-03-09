@@ -23,11 +23,315 @@ from apps.users.models import Employee
 from apps.contactmessages.forms import ContactMessageForm
 
 
+def set_template(request, node):
+    if request.path == '/' or request.path == '/home/':
+        return 'pages/home.html'
+    if request.path == '/employees/':
+        return 'pages/pagedetail.html'
+    if request.path == '/schools/school-handbooks/':
+        return 'pages/pagedetail.html'
+    if request.path == '/schools/district-demographics/':
+        return 'pages/pagedetail.html'
+    if request.path == '/search/':
+        return 'pages/pagedetail.html'
+    if request.path == '/departments/superintendents-office/downloads/':
+        return 'pages/pagedetail.html'
+    if request.path == '/calendars/guidelines-for-developing-calendar-options/':
+        return 'pages/pagedetail.html'
+    if node.content_type == 'board' or node.content_type == 'boardsubpage':
+        return 'pages/board/boarddetail.html'
+    return 'pages/page.html'
+
+
+def redirect_request(request):
+    currentyear = commonfunctions.currentyear()
+    if request.path == '/board-of-education/board-meetings/':
+        try:
+            year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
+        except BoardMeetingYear.DoesNotExist:
+            meeting, created = BoardMeeting.objects.get_or_create(startdate=timezone.now(), site=request.site)
+            if created:
+                meeting.save()
+                meeting.delete()
+                meeting.delete() 
+            year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
+        return redirect(year.url)
+    if request.path == '/calendars/':
+        try:
+            year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
+        except DistrictCalendarYear.DoesNotExist:
+            event, created = DistrictCalendarEvent.objects.get_or_create(startdate=timezone.now(), site=request.site)
+            if created:
+                event.save()
+                event.delete()
+                event.delete()
+            year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
+        return redirect(year.url)
+    return None
+
+
+def prefetch_building_location_detail(qs):
+    prefetchqs = (
+        Location
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .only(
+            'street_address',
+            'location_city',
+            'location_state',
+            'location_zipcode',
+            'google_place',
+            )
+        .prefetch_related(
+            Prefetch(
+                'location_city',
+                queryset=(
+                    City
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .only('title')
+                    )
+                ),
+            Prefetch(
+                'location_state',
+                queryset=(
+                    State
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .only('title')
+                    )
+                ),
+            Prefetch(
+                'location_zipcode',
+                queryset=(
+                    Zipcode
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .only('title')
+                    )
+                )
+            )
+        )
+    return qs.prefetch_related(
+        Prefetch(
+            'building_location',
+            queryset=prefetchqs,
+        )
+    )
+
+
+def prefetch_boardmembers_detail(qs):
+    prefetchqs = (
+        BoardMember
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .filter(employee__is_active=True)
+        .filter(employee__is_staff=True)
+        .order_by('precinct__title')
+        .only(
+            'employee',
+            'is_president',
+            'is_vicepresident',
+            'precinct',
+            'phone',
+            'street_address',
+            'city',
+            'state',
+            'zipcode',
+            'term_ends',
+            'related_node',
+            )
+        .prefetch_related(
+            Prefetch(
+                'employee',
+                queryset=(
+                    Employee
+                    .objects
+                    .filter(is_active=1)
+                    .filter(is_staff=1)
+                    .only(
+                        'last_name',
+                        'first_name',
+                        'email',
+                        )
+                    .prefetch_related(
+                        Prefetch(
+                            'images_profilepicture_node',
+                            ProfilePicture.objects
+                            .filter(deleted=0)
+                            .filter(published=1)
+                            .only(
+                                'image_file',
+                                'alttext',
+                                'related_node_id',
+                                )
+                            )
+                        )
+                    )
+                ),
+            Prefetch(
+                'precinct',
+                queryset=(
+                    BoardPrecinct
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .only(
+                        'pk',
+                        'title',
+                        'precinct_map',
+                        )
+                    .order_by('title')
+                    )
+                ),
+            Prefetch(
+                'city',
+                queryset=(
+                    City
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .only(
+                        'pk',
+                        'title',
+                        )
+                    )
+                ),
+            Prefetch(
+                'state',
+                queryset=(
+                    State
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .only(
+                        'pk',
+                        'title',
+                        )
+                    )
+                ),
+            Prefetch(
+                'zipcode',
+                queryset=(
+                    Zipcode
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .only(
+                        'pk',
+                        'title',
+                        )
+                    )
+                )
+            )
+        )
+    return qs.prefetch_related(
+        Prefetch(
+            'directoryentries_boardmember_node',
+            queryset=prefetchqs,
+        )
+    )
+
+
+def prefetch_studentboardmember_detail(qs):
+    prefetchqs = (
+        StudentBoardMember
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .order_by('title')
+        .only(
+            'first_name',
+            'last_name',
+            'phone',
+            'building_location',
+            'related_node',
+            )
+        .prefetch_related(
+            Prefetch(
+                'building_location',
+                queryset=(
+                    Location
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .only(
+                        'street_address',
+                        'location_city',
+                        'location_state',
+                        'location_zipcode',
+                        'google_place',
+                        )
+                    .prefetch_related(
+                        Prefetch(
+                            'location_city',
+                            queryset=(
+                                City
+                                .objects
+                                .filter(deleted=0)
+                                .filter(published=1)
+                                .only('title')
+                                )
+                            ),
+                        Prefetch(
+                            'location_state',
+                            queryset=(
+                                State
+                                .objects
+                                .filter(deleted=0)
+                                .filter(published=1)
+                                .only('title')
+                                )
+                            ),
+                        Prefetch(
+                            'location_zipcode',
+                            queryset=(
+                                Zipcode
+                                .objects
+                                .filter(deleted=0)
+                                .filter(published=1)
+                                .only('title')
+                                )
+                            )
+                        )
+                    )
+                ),
+            Prefetch(
+                'images_profilepicture_node',
+                queryset=(
+                    ProfilePicture
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .only(
+                        'image_file',
+                        'alttext',
+                        'related_node_id',
+                        )
+                    )
+                )
+            )
+        )
+    return qs.prefetch_related(
+        Prefetch(
+            'directoryentries_studentboardmember_node',
+            queryset=prefetchqs,
+        )
+    )
+
+
 def prefetch_schooladministrators_detail(qs):
     prefetchqs = (SchoolAdministrator
                   .objects
                   .filter(deleted=False)
                   .filter(published=True)
+                  .filter(employee__is_active=True)
+                  .filter(employee__is_staff=True)
                   .order_by('inline_order')
                   .only(
                     'pk',
@@ -151,6 +455,48 @@ def prefetch_documents_detail(qs):
     )
 
 
+def prefetch_contentbanner_detail(qs):
+    prefetchqs = (
+        ContentBanner
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .only(
+            'image_file',
+            'alttext',
+            'related_node_id',
+            )
+        )
+    return qs.prefetch_related(
+        Prefetch(
+            'images_contentbanner_node',
+            queryset=prefetchqs,
+        )
+    )
+
+
+def prefecth_actionbuttons_detail(qs):
+    prefetchqs = (
+        ActionButton
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .only(
+            'pk',
+            'title',
+            'link_url',
+            'inline_order',
+            'related_node',
+        )
+    )
+    return qs.prefetch_related(
+        Prefetch(
+            'links_actionbutton_node',
+            queryset=prefetchqs,
+        )
+    )
+
+
 def prefecth_resourcelinks_detail(qs):
     prefetchqs = (
         ResourceLink
@@ -174,6 +520,91 @@ def prefecth_resourcelinks_detail(qs):
 
 
 def add_additional_context(request, context):
+    if request.path == '/' or request.path == '/home/':
+        context['supermessage'] = (
+            SuperintendentMessage
+            .objects
+            .filter(deleted=0)
+            .filter(published=1)
+            .order_by('-author_date')
+            .only(
+                'title',
+                'author_date',
+                'summary',
+                'url',
+                )[:1]
+            )
+        context['news'] = (
+            News
+            .objects
+            .filter(deleted=0)
+            .filter(published=1)
+            .order_by(
+                '-pinned',
+                '-author_date',
+                )
+            .only(
+                'title',
+                'author_date',
+                'summary',
+                'url',
+                )
+            .prefetch_related(
+                Prefetch(
+                    'images_newsthumbnail_node',
+                    queryset=(
+                        NewsThumbnail
+                        .objects
+                        .only(
+                            'image_file',
+                            'alttext',
+                            'related_node_id',
+                            )
+                        )
+                    )
+                )[0:5]
+            )
+
+    if request.path == '/board-of-education/policies/':
+        district_policies = (
+            BoardPolicy
+            .objects
+            .filter(deleted=0)
+            .filter(published=1)
+            .order_by('section__lft','index')
+            .only('pk','policy_title','index','section','related_node')
+            .prefetch_related(
+                Prefetch('section', queryset= BoardPolicySection.objects.filter(deleted=0).filter(published=1).only('pk','section_prefix','description')),Prefetch('directoryentries_boardpolicyadmin_node',queryset=BoardPolicyAdmin.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','employee','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('pk','last_name','first_name')))),Prefetch('documents_policy_node', queryset = Policy.objects.filter(deleted=0).filter(published=1).only('pk','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))),Prefetch('documents_administrativeprocedure_node', queryset = AdministrativeProcedure.objects.filter(deleted=0).filter(published=1).only('pk','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))),Prefetch('documents_supportingdocument_node', queryset = SupportingDocument.objects.filter(deleted=0).filter(published=1).only('pk','document_title','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))))
+            )
+        board_policies = []
+        community_policies = []
+        financial_policies = []
+        general_policies = []
+        instructional_policies = []
+        personnel_policies = []
+        student_policies = []
+        for policy in district_policies:
+            if policy.section.title == 'Board Policies':
+                board_policies.append(policy)
+            if policy.section.title == 'Community Policies':
+                community_policies.append(policy)
+            if policy.section.title == 'Financial Policies':
+                financial_policies.append(policy)
+            if policy.section.title == 'General Policies':
+                general_policies.append(policy)
+            if policy.section.title == 'Instructional Policies':
+                instructional_policies.append(policy)
+            if policy.section.title == 'Personnel Policies':
+                personnel_policies.append(policy)
+            if policy.section.title == 'Student Policies':
+                student_policies.append(policy)
+        context['board_policies'] = board_policies
+        context['community_policies'] = community_policies
+        context['financial_policies'] = financial_policies
+        context['general_policies'] = general_policies
+        context['instructional_policies'] = instructional_policies
+        context['personnel_policies'] = personnel_policies
+        context['student_policies'] = student_policies
     if request.path == '/board-of-education/policies/policy-review-schedule/':
         context['policy_review'] = OrderedDict()
         policy_review = (
@@ -231,16 +662,16 @@ def add_additional_context(request, context):
     return context
 
 
-def home(request):
-  try:
-      page = commonfunctions.nodefindobject(Node.objects.filter(site=request.site.pk).get(url='/home/'))
-      pageopts = page._meta
-  except:
-      return HttpResponse('This page is not setup yet.')
-  supermessage = SuperintendentMessage.objects.filter(deleted=0).filter(published=1).order_by('-author_date').only('title','author_date','summary','url')[:1]
-  news = News.objects.all().filter(deleted=0).filter(published=1).order_by('-pinned','-author_date').only('title','author_date','summary','url').prefetch_related(Prefetch('images_newsthumbnail_node', queryset = NewsThumbnail.objects.only('image_file','alttext','related_node_id')))[0:5]
-  result = render(request, 'pages/home.html', {'page': page,'pageopts': pageopts,'news': news,'supermessage':supermessage})
-  return result
+# def home(request):
+#   try:
+#       page = commonfunctions.nodefindobject(Node.objects.filter(site=request.site.pk).get(url='/home/'))
+#       pageopts = page._meta
+#   except:
+#       return HttpResponse('This page is not setup yet.')
+#   supermessage = SuperintendentMessage.objects.filter(deleted=0).filter(published=1).order_by('-author_date').only('title','author_date','summary','url')[:1]
+#   news = News.objects.all().filter(deleted=0).filter(published=1).order_by('-pinned','-author_date').only('title','author_date','summary','url').prefetch_related(Prefetch('images_newsthumbnail_node', queryset = NewsThumbnail.objects.only('image_file','alttext','related_node_id')))[0:5]
+#   result = render(request, 'pages/home.html', {'page': page,'pageopts': pageopts,'news': news,'supermessage':supermessage})
+#   return result
 
 def news(request):
     currentyear = commonfunctions.currentyear()
@@ -259,6 +690,7 @@ def news(request):
     pageopts = page._meta
     newsyears = NewsYear.objects.all().order_by('-yearend')
     return render(request, 'pages/news/newsyears.html', {'page': page,'pageopts': pageopts,'newsyears': newsyears})
+
 
 def NewsYearArchive(request):
     page = NewsYear.objects.filter(url=request.path).first()
@@ -306,11 +738,13 @@ def NewsYearArchive(request):
             newsmonths[11]['news'].append(item)
     return render(request, 'pages/news/yeararchive.html', {'page': page, 'pageopts': pageopts, 'newsyears': newsyears, 'news': news, 'newsmonths': newsmonths})
 
+
 def NewsArticleDetail(request):
     pages =  News.objects.filter(published=1).filter(deleted=0)
     page = get_object_or_404(pages, url=request.path)
     pageopts = page._meta
     return render(request, 'pages/news/articledetail.html', {'page': page, 'pageopts': pageopts})
+
 
 def schools(request):
     context = {}
@@ -340,6 +774,7 @@ def schools(request):
     result = render(request, 'pages/schools/main_school_directory.html', context)
     return result
 
+
 def elementaryschools(request):
     context = {}
     context['page'] = get_object_or_404(Page, url=request.path)
@@ -352,6 +787,7 @@ def elementaryschools(request):
     context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
+
 
 def k8schools(request):
     context = {}
@@ -366,6 +802,7 @@ def k8schools(request):
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
 
+
 def middleschools(request):
     context = {}
     context['page'] = get_object_or_404(Page, url=request.path)
@@ -378,6 +815,7 @@ def middleschools(request):
     context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
+
 
 def highschools(request):
     context = {}
@@ -392,6 +830,7 @@ def highschools(request):
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
 
+
 def charterschools(request):
     context = {}
     context['page'] = get_object_or_404(Page, url=request.path)
@@ -404,6 +843,7 @@ def charterschools(request):
     context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
+
 
 def communitylearningcenters(request):
     context = {}
@@ -418,15 +858,15 @@ def communitylearningcenters(request):
     result = render(request, 'pages/schools/school_directory.html', context)
     return result
 
-def school_handbooks(request):
-    page = get_object_or_404(Page, url=request.path)
-    pageopts = page._meta
-    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+# def school_handbooks(request):
+#     page = get_object_or_404(Page, url=request.path)
+#     pageopts = page._meta
+#     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
-def district_demographics(request):
-    page = get_object_or_404(Page, url=request.path)
-    pageopts = page._meta
-    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+# def district_demographics(request):
+#     page = get_object_or_404(Page, url=request.path)
+#     pageopts = page._meta
+#     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
 
 def schooldetail(request):
@@ -478,6 +918,8 @@ def departmentdetail(request):
     elif subpage:
         page = subpage
         context['page'] = page
+    else:
+        return node_lookup(request)
     pageopts = page._meta
     context['pageopts'] = pageopts
     department_children = Department.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path).order_by('title').only('pk','title','short_description','main_phone','building_location','content_type','menu_title','url').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))))
@@ -572,10 +1014,10 @@ def superintendents_message_detail(request):
     pageopts = page._meta
     return render(request, 'pages/news/articledetail.html', {'page': page, 'pageopts': pageopts})
 
-def superintendents_downloads(request):
-    page = get_object_or_404(Page, url=request.path)
-    pageopts = page._meta
-    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+# def superintendents_downloads(request):
+#     page = get_object_or_404(Page, url=request.path)
+#     pageopts = page._meta
+#     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
 def directory(request):
     page = get_object_or_404(Page, url=request.path)
@@ -589,27 +1031,27 @@ def directory_letter(request, letter):
     people = Employee.objects.filter(is_active=1).filter(is_staff=1).filter(in_directory=1).filter(last_name__istartswith=letter).order_by('last_name').only('pk','last_name','first_name','job_title','email','department').prefetch_related(Prefetch('department',queryset=Node.objects.only('node_title','url')))
     return render(request, 'pages/directory/directory_letter.html', {'page': page,'pageopts': pageopts, 'people': people})
 
-def calendars(request):
-    currentyear = commonfunctions.currentyear()
-    if request.path == '/calendars/':
-        try:
-            year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
-        except DistrictCalendarYear.DoesNotExist:
-            event, created = DistrictCalendarEvent.objects.get_or_create(startdate=timezone.now(), site=request.site)
-            if created:
-                event.save()
-                event.delete()
-                event.delete()
-            year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
-        return redirect(year.url)
-    page = get_object_or_404(Page, url=request.path)
-    pageopts = page._meta
-    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+# def calendars(request):
+#     currentyear = commonfunctions.currentyear()
+#     if request.path == '/calendars/':
+#         try:
+#             year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
+#         except DistrictCalendarYear.DoesNotExist:
+#             event, created = DistrictCalendarEvent.objects.get_or_create(startdate=timezone.now(), site=request.site)
+#             if created:
+#                 event.save()
+#                 event.delete()
+#                 event.delete()
+#             year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
+#         return redirect(year.url)
+#     page = get_object_or_404(Page, url=request.path)
+#     pageopts = page._meta
+#     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
-def calendarguide(request):
-    page = get_object_or_404(Page, url=request.path)
-    pageopts = page._meta
-    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+# def calendarguide(request):
+#     page = get_object_or_404(Page, url=request.path)
+#     pageopts = page._meta
+#     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
 def districtcalendaryearsarchive(request):
     page = get_object_or_404(DistrictCalendarYear, url=request.path)
@@ -619,89 +1061,90 @@ def districtcalendaryearsarchive(request):
     return render(request, 'pages/calendars/districtcalendaryears.html', {'page': page, 'pageopts': pageopts,'districtcalendaryears': districtcalendaryears,'districtcalendarevents': districtcalendarevents})
 
 
-def employees(request):
-    page = (
-        Page
-        .objects
-        .filter(deleted=0)
-        .filter(published=1)
-        .filter(url=request.path)
-        )
-    page = prefecth_resourcelinks_detail(page)
-    page = page.first()
-    pageopts = page._meta
-    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+# def employees(request):
+#     page = (
+#         Page
+#         .objects
+#         .filter(deleted=0)
+#         .filter(published=1)
+#         .filter(url=request.path)
+#         )
+#     page = prefecth_resourcelinks_detail(page)
+#     page = page.first()
+#     pageopts = page._meta
+#     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
 
-def search(request):
-    page = get_object_or_404(Page, url=request.path)
-    pageopts = page._meta
-    return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
+# def search(request):
+#     page = get_object_or_404(Page, url=request.path)
+#     pageopts = page._meta
+#     return render(request, 'pages/pagedetail.html', {'page': page,'pageopts': pageopts})
 
-def boarddetail(request):
-  if request.path == '/board-of-education/board-meetings/notice-of-meetings-scheduled/':
-    return node_lookup(request)
-  if request.path == '/board-of-education/policies/policy-review-schedule/':
-    return node_lookup(request)
-  context = {}
-  currentyear = commonfunctions.currentyear()
-  if request.path == '/board-of-education/board-meetings/':
-      try:
-          year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
-      except BoardMeetingYear.DoesNotExist:
-          meeting, created = BoardMeeting.objects.get_or_create(startdate=timezone.now(), site=request.site)
-          if created:
-              meeting.save()
-              meeting.delete()
-              meeting.delete() 
-          year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
-      return redirect(year.url)
-  board = Board.objects.filter(url=request.path).only('pk','title','body','building_location','main_phone','main_fax','mission_statement','vision_statement').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_contentbanner_node', queryset = ContentBanner.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')),Prefetch('directoryentries_boardmember_node',queryset=BoardMember.objects.filter(deleted=0).filter(published=1).order_by('precinct__title').only('employee','precinct','phone','street_address','city','state','zipcode','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('last_name','first_name','email').prefetch_related(Prefetch('images_profilepicture_node',ProfilePicture.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')))),Prefetch('precinct', queryset = BoardPrecinct.objects.filter(deleted=0).filter(published=1).only('pk','title').order_by('title')),Prefetch('city', queryset = City.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('state', queryset = State.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('pk','title')))),Prefetch('directoryentries_studentboardmember_node',queryset=StudentBoardMember.objects.filter(deleted=0).filter(published=1).order_by('title').only('first_name','last_name','phone','building_location','related_node').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_profilepicture_node',ProfilePicture.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id'))))).first()
-  boardsubpage = BoardSubPage.objects.filter(url=request.path).first()
-  if board:
-    page = board
-    context['page'] = page
-  elif boardsubpage:
-    page = boardsubpage
-    context['page'] = page
-  pageopts = page._meta
-  context['pageopts'] = pageopts
-  if request.path == '/board-of-education/policies/':
-      district_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).order_by('section__lft','index').only('pk','policy_title','index','section','related_node').prefetch_related(Prefetch('section', queryset= BoardPolicySection.objects.filter(deleted=0).filter(published=1).only('pk','section_prefix','description')),Prefetch('directoryentries_boardpolicyadmin_node',queryset=BoardPolicyAdmin.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','employee','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('pk','last_name','first_name')))),Prefetch('documents_policy_node', queryset = Policy.objects.filter(deleted=0).filter(published=1).only('pk','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))),Prefetch('documents_administrativeprocedure_node', queryset = AdministrativeProcedure.objects.filter(deleted=0).filter(published=1).only('pk','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))),Prefetch('documents_supportingdocument_node', queryset = SupportingDocument.objects.filter(deleted=0).filter(published=1).only('pk','document_title','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))))
-      board_policies = []
-      community_policies = []
-      financial_policies = []
-      general_policies = []
-      instructional_policies = []
-      personnel_policies = []
-      student_policies = []
-      for policy in district_policies:
-          if policy.section.title == 'Board Policies':
-              board_policies.append(policy)
-          if policy.section.title == 'Community Policies':
-              community_policies.append(policy)
-          if policy.section.title == 'Financial Policies':
-              financial_policies.append(policy)
-          if policy.section.title == 'General Policies':
-              general_policies.append(policy)
-          if policy.section.title == 'Instructional Policies':
-              instructional_policies.append(policy)
-          if policy.section.title == 'Personnel Policies':
-              personnel_policies.append(policy)
-          if policy.section.title == 'Student Policies':
-              student_policies.append(policy)
-      context['board_policies'] = board_policies
-      context['community_policies'] = community_policies
-      context['financial_policies'] = financial_policies
-      context['general_policies'] = general_policies
-      context['instructional_policies'] = instructional_policies
-      context['personnel_policies'] = personnel_policies
-      context['student_policies'] = student_policies
-  board_meeting_years = BoardMeetingYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
-  board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1).filter(yearend=currentyear['currentyear']['short'])
-  context['board_meeting_years'] = board_meeting_years
-  context['board_meetings'] = board_meetings
-  return render(request, 'pages/board/boarddetail.html', context)
+# def boarddetail(request):
+#   if request.path == '/board-of-education/board-meetings/notice-of-meetings-scheduled/':
+#     return node_lookup(request)
+#   if request.path == '/board-of-education/policies/policy-review-schedule/':
+#     return node_lookup(request)
+#   context = {}
+#   currentyear = commonfunctions.currentyear()
+#   if request.path == '/board-of-education/board-meetings/':
+#       try:
+#           year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
+#       except BoardMeetingYear.DoesNotExist:
+#           meeting, created = BoardMeeting.objects.get_or_create(startdate=timezone.now(), site=request.site)
+#           if created:
+#               meeting.save()
+#               meeting.delete()
+#               meeting.delete() 
+#           year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
+#       return redirect(year.url)
+#   board = Board.objects.filter(url=request.path).only('pk','title','body','building_location','main_phone','main_fax','mission_statement','vision_statement').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_contentbanner_node', queryset = ContentBanner.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')),Prefetch('directoryentries_boardmember_node',queryset=BoardMember.objects.filter(deleted=0).filter(published=1).order_by('precinct__title').only('employee','precinct','phone','street_address','city','state','zipcode','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('last_name','first_name','email').prefetch_related(Prefetch('images_profilepicture_node',ProfilePicture.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id')))),Prefetch('precinct', queryset = BoardPrecinct.objects.filter(deleted=0).filter(published=1).only('pk','title').order_by('title')),Prefetch('city', queryset = City.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('state', queryset = State.objects.filter(deleted=0).filter(published=1).only('pk','title')),Prefetch('zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('pk','title')))),Prefetch('directoryentries_studentboardmember_node',queryset=StudentBoardMember.objects.filter(deleted=0).filter(published=1).order_by('title').only('first_name','last_name','phone','building_location','related_node').prefetch_related(Prefetch('building_location',queryset=Location.objects.filter(deleted=0).filter(published=1).only('street_address','location_city','location_state','location_zipcode','google_place').prefetch_related(Prefetch('location_city', queryset = City.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_state', queryset = State.objects.filter(deleted=0).filter(published=1).only('title')),Prefetch('location_zipcode', queryset = Zipcode.objects.filter(deleted=0).filter(published=1).only('title')))),Prefetch('images_profilepicture_node',ProfilePicture.objects.filter(deleted=0).filter(published=1).only('image_file','alttext','related_node_id'))))).first()
+#   boardsubpage = BoardSubPage.objects.filter(url=request.path).first()
+#   if board:
+#     page = board
+#     context['page'] = page
+#   elif boardsubpage:
+#     page = boardsubpage
+#     context['page'] = page
+#   pageopts = page._meta
+#   context['pageopts'] = pageopts
+#   if request.path == '/board-of-education/policies/':
+#       district_policies = BoardPolicy.objects.filter(deleted=0).filter(published=1).order_by('section__lft','index').only('pk','policy_title','index','section','related_node').prefetch_related(Prefetch('section', queryset= BoardPolicySection.objects.filter(deleted=0).filter(published=1).only('pk','section_prefix','description')),Prefetch('directoryentries_boardpolicyadmin_node',queryset=BoardPolicyAdmin.objects.filter(deleted=0).filter(published=1).order_by('title').only('pk','employee','related_node').prefetch_related(Prefetch('employee',queryset=Employee.objects.filter(is_active=1).filter(is_staff=1).only('pk','last_name','first_name')))),Prefetch('documents_policy_node', queryset = Policy.objects.filter(deleted=0).filter(published=1).only('pk','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))),Prefetch('documents_administrativeprocedure_node', queryset = AdministrativeProcedure.objects.filter(deleted=0).filter(published=1).only('pk','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))),Prefetch('documents_supportingdocument_node', queryset = SupportingDocument.objects.filter(deleted=0).filter(published=1).only('pk','document_title','related_node').prefetch_related(Prefetch('files_file_node', queryset = File.objects.filter(deleted=0).filter(published=1).order_by('file_language__lft','file_language__title').only('title','file_file','file_language','related_node').prefetch_related(Prefetch('file_language',queryset=Language.objects.filter(deleted=0).filter(published=1).only('title')))))))
+#       board_policies = []
+#       community_policies = []
+#       financial_policies = []
+#       general_policies = []
+#       instructional_policies = []
+#       personnel_policies = []
+#       student_policies = []
+#       for policy in district_policies:
+#           if policy.section.title == 'Board Policies':
+#               board_policies.append(policy)
+#           if policy.section.title == 'Community Policies':
+#               community_policies.append(policy)
+#           if policy.section.title == 'Financial Policies':
+#               financial_policies.append(policy)
+#           if policy.section.title == 'General Policies':
+#               general_policies.append(policy)
+#           if policy.section.title == 'Instructional Policies':
+#               instructional_policies.append(policy)
+#           if policy.section.title == 'Personnel Policies':
+#               personnel_policies.append(policy)
+#           if policy.section.title == 'Student Policies':
+#               student_policies.append(policy)
+#       context['board_policies'] = board_policies
+#       context['community_policies'] = community_policies
+#       context['financial_policies'] = financial_policies
+#       context['general_policies'] = general_policies
+#       context['instructional_policies'] = instructional_policies
+#       context['personnel_policies'] = personnel_policies
+#       context['student_policies'] = student_policies
+#   board_meeting_years = BoardMeetingYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
+#   board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1).filter(yearend=currentyear['currentyear']['short'])
+#   context['board_meeting_years'] = board_meeting_years
+#   context['board_meetings'] = board_meetings
+#   return render(request, 'pages/board/boarddetail.html', context)
+
 
 def BoardMeetingYearArchive(request):
     page = get_object_or_404(BoardMeetingYear, url=request.path)
@@ -709,6 +1152,7 @@ def BoardMeetingYearArchive(request):
     board_meeting_years = BoardMeetingYear.objects.filter(deleted=0).filter(published=1).order_by('-yearend')
     board_meetings = BoardMeeting.objects.filter(deleted=0).filter(published=1).filter(parent__url=request.path).order_by('-startdate')
     return render(request, 'pages/board/boardmeetingyears.html', {'page': page, 'pageopts': pageopts,'board_meeting_years': board_meeting_years,'board_meetings': board_meetings})
+
 
 def contactmessage_post(request):
     form = ContactMessageForm(request.POST)
@@ -729,11 +1173,17 @@ def contactmessage_post(request):
         post.user_agent = request.META['HTTP_USER_AGENT']
         post.http_headers = json.dumps(request.META, default=str)
         if not post.our_message:
-          post.save()
-          messages.success(request, 'Thank you for contacting us. Someone will get back to you shortly.')
+            post.save()
+            messages.success(
+                request,
+                'Thank you for contacting us. '
+                'Someone will get back to you shortly.')
         else:
-          messages.error(request, 'Something was wrong with your message. Please try again.')
+            messages.error(
+                request,
+                'Something was wrong with your message. Please try again.')
         return post
+
 
 def contactmessage_get(request):
     form = ContactMessageForm()
@@ -782,20 +1232,35 @@ def contact_inline(request):
 
 
 def node_lookup(request):
+    if redirect_request(request) is not None:
+        return redirect_request(request)
     try:
-        node = Node.objects.get(url=request.path, site=request.site)
+        if request.path == '/':
+            node = Node.objects.get(url='/home/', site=request.site)
+        else:
+            node = Node.objects.get(url=request.path, site=request.site)
     except Node.DoesNotExist:
         raise Http404('Page not found.')
     Model = apps.get_model(node.node_type, node.content_type)
     if node.node_type == 'pages':
-        template = 'pages/page.html'
+        template = set_template(request, node)
         context = {}
         context['page'] = (Model
                            .objects
-                           .filter(url=request.path)
-                           .filter(site=request.site)
+                           .filter(pk=node.pk)
                            )
+        fields = context['page'].model._meta.get_fields(include_hidden=True)
         # Add prefetch function calls here
+        if 'building_location' in fields:
+            context['page'] = (
+                prefetch_building_location_detail(context['page'])
+                )
+        context['page'] = prefetch_contentbanner_detail(context['page'])
+        context['page'] = prefecth_actionbuttons_detail(context['page'])
+        context['page'] = prefetch_boardmembers_detail(context['page'])
+        context['page'] = prefetch_studentboardmember_detail(context['page'])
+        context['page'] = prefetch_schooladministrators_detail(context['page'])
+        context['page'] = prefecth_resourcelinks_detail(context['page'])
         context['page'] = prefetch_documents_detail(context['page'])
         # Add additional context here
         context = add_additional_context(request, context)

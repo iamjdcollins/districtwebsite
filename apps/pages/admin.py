@@ -506,7 +506,7 @@ class BoardMemberInlineForm(forms.ModelForm):
 class BoardMemberInline(admin.TabularInline):
   model = BoardMember
   fk_name = 'parent'
-  fields = ['employee','precinct','phone','street_address','city','state','zipcode','update_user','update_date',]
+  fields = ['employee','is_president','is_vicepresident','precinct','phone','street_address','city','state','zipcode','term_ends','update_user','update_date',]
   readonly_fields = ['update_user','update_date',]
   ordering = ['precinct__title',]
   extra = 0

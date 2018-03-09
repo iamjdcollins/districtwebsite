@@ -1,6 +1,7 @@
 from django.db import models
 import apps.common.functions as commonfunctions
 from apps.objects.models import Taxonomy
+import apps.taxonomy.help_text as apphelp
 
 
 class Location(Taxonomy):
@@ -478,6 +479,14 @@ class BoardPrecinct(Taxonomy):
         max_length=200,
         unique=True,
         help_text='',
+    )
+    precinct_map = models.FileField(
+        max_length=2000,
+        upload_to=commonfunctions.precinct_map_upload_to,
+        verbose_name='Precinct Map',
+        help_text=apphelp.BoardPrecinct.precinct_map,
+        null=True,
+        blank=True,
     )
 
     boardprecinct_taxonomy_node = models.OneToOneField(
