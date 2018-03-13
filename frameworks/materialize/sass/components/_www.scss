@@ -54,11 +54,11 @@ Material Icons
 
 @font-face {
   font-family: "md";
-  src:url("../fonts/md.eot");
-  src:url("../fonts/md.eot?#iefix") format("embedded-opentype"),
-    url("../fonts/md.woff") format("woff"),
-    url("../fonts/md.ttf") format("truetype"),
-    url("../fonts/md.svg#md") format("svg");
+  src:url("/static/cmstemplates/src/fonts/md/md.eot");
+  src:url("/static/cmstemplates/src/fonts/md/md.eot?#iefix") format("embedded-opentype"),
+    url("/static/cmstemplates/src/fonts/md/md.woff") format("woff"),
+    url("/static/cmstemplates/src/fonts/md/md.ttf") format("truetype"),
+    url("/static/cmstemplates/src/fonts/md/md.svg#md") format("svg");
   font-weight: normal;
   font-style: normal;
 
@@ -122,6 +122,36 @@ Material Icons
 }
 .md-openinnew:before {
   content: "\6b";
+}
+.md-menu:before {
+  content: "\6c";
+}
+.md-dashboard:before {
+  content: "\6d";
+}
+.md-google:before {
+  content: "\6e";
+}
+.md-image:before {
+  content: "\6f";
+}
+.md-robot:before {
+  content: "\70";
+}
+.md-settings:before {
+  content: "\71";
+}
+.md-chevron-down:before {
+  content: "\72";
+}
+.md-chevron-left:before {
+  content: "\73";
+}
+.md-chevron-right:before {
+  content: "\74";
+}
+.md-chevron-up:before {
+  content: "\75";
 }
 
 
@@ -1092,6 +1122,22 @@ select.browser-default.withprefixicon{
     color: #00587b !important;
 }*/
 /* Table Styles */
+
+.treegrid-expander {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  font-size: 20px !important;
+  font-size-adjust: none;
+}
+.treegrid-indent {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+}
 
 @media screen and (max-width: 760px){
   table.mobileblock, table.mobileblock thead, table.mobileblock tbody, table.mobileblock th, table.mobileblock td, table.mobileblock tr {

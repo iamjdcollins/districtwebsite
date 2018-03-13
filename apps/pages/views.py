@@ -34,6 +34,8 @@ def set_template(request, node):
         return 'pages/pagedetail.html'
     if request.path == '/search/':
         return 'pages/pagedetail.html'
+    if request.path == '/departments/department-structure/':
+        return 'pages/departments/departmentstructure.html'
     if request.path == '/departments/superintendents-office/downloads/':
         return 'pages/pagedetail.html'
     if request.path == '/calendars/guidelines-for-developing-calendar-options/':
@@ -563,6 +565,16 @@ def add_additional_context(request, context):
                         )
                     )
                 )[0:5]
+            )
+    if request.path == '/departments/department-structure/':
+        context['departments'] = (
+            prefetch_building_location_detail(
+                Department
+                .objects
+                .filter(deleted=0)
+                .filter(published=1)
+                .order_by('lft')
+                )
             )
 
     if request.path == '/board-of-education/policies/':
