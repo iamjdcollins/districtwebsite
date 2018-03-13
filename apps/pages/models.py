@@ -70,7 +70,14 @@ class School(BasePage):
         max_length=200,
         unique=True,
         help_text='',
-        db_index=True
+        db_index=True,
+    )
+    school_number = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text='',
+        db_index=True,
+        unique=True,
     )
     body = RichTextField(
         null=True,
