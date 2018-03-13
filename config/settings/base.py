@@ -255,6 +255,29 @@ CKEDITOR_CONFIGS = {
         'disableNativeSpellChecker': False,
         #'allowedContent': 'p h3 h4 h5 h6 strong em u s ol ul li table caption thead tbody tr th td hr br',
         'extraAllowedContent': 'a(!relink)[!data-id]',
+    },
+    'news': {
+        'toolbar': 'SLCSD',
+        'toolbar_SLCSD': [
+            ['Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Undo', 'Redo'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['NumberedList', 'BulletedList'],
+            #['Link', 'Unlink'],
+            ['Image'],
+            ['Table', 'HorizontalRule'],
+            ['Source'],
+            ['Departments',],
+        ],
+        'format_tags': 'p;h3;h4;h5;h6',
+        'autoGrow_bottomSpace': 10,
+        'autoGrow_maxHeight': 0,
+        'autoGrow_onStartup': True,
+        'extraPlugins': ','.join([
+            'autogrow','departments',
+        ]),
+        'disableNativeSpellChecker': False,
+        #'allowedContent': 'p h3 h4 h5 h6 strong em u s ol ul li table caption thead tbody tr th td hr br',
+        'extraAllowedContent': 'a(!relink)[!data-id]',
     }
 }
 HAYSTACK_CONNECTIONS = {
