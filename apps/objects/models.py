@@ -4,6 +4,8 @@ import uuid
 from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import AbstractUser
 from django.contrib.sites.models import Site
+from apps.common.functions import get_default_pagelayout
+from apps.dashboard.models import PageLayout
 
 
 class Node(MPTTModel):
@@ -25,6 +27,13 @@ class Node(MPTTModel):
     )
     node_title = models.CharField(
       max_length=200,
+    )
+    pagelayout = models.ForeignKey(
+        PageLayout,
+        blank=False,
+        null=False,
+        on_delete=models.PROTECT,
+        default=get_default_pagelayout,
     )
     parent = TreeForeignKey(
       'self',

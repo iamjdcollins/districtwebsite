@@ -1,0 +1,103 @@
+{% load static mptt_tags guardian_tags admin_urls object_permissions pipeline %}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <title>{% block title %}{% endblock %} | {{ request.site.dashboard_general_site.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        body {
+          display: none;
+        }
+    </style>
+    <script>
+      document.documentElement.className = document.documentElement.className.replace("no-js","js");
+    </script>
+  </head>
+  <body>
+    <div id="pushfooter" class="wrapper grey lighten-3">
+      <a href="#main" class="skipto">Skip to main content</a>
+      <div class="header wrapper white z-depth-1">
+        <div class="row nomargins">
+          <div class="col s12">
+            <ul class="dashboard-menu">
+              <li>
+                <a class="md-menu" href="#"><span class="sr-only">Menu</span></a>
+              </li>
+              <li>
+                <a id="siteslist-trigger" href="#" class="md-chevron-down dropdown-trigger" data-target="siteslist" href="#">
+                  <span class="sr-only">Select School</span>
+                  <span class="no-sr left truncate" style="">{{ host }}</span>
+                </a>
+                {% if sites %}
+                <ul id="siteslist" class="dropdown-content">
+                  {% for site in sites %}
+                  <li><a href="https://{{ site.domain }}{% url 'dashboard:baseurl' %}">{{ site.domain }}</a>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="main" class="main wrapper">
+        <div class="row">
+          <div class="leftmenu">
+            <ul>
+              {% if request.site.domain == 'schools.slcschools.org' %}
+              <li>
+                <a href="{% url 'dashboard:dashboard' %}" class="white-text">
+                  <span class="sr-only">Dashboard</span>
+                  <span class="no-sr md-dashboard" aria-hidden="True"></span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'dashboard:general' %}" class="white-text">
+                  <span class="sr-only">General Settings</span>
+                  <span class="no-sr md-settings" aria-hidden="True"></span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'dashboard:sites' %}" class="white-text">
+                  <span class="sr-only">Sites</span>
+                  <span class="no-sr md-building" aria-hidden="True"></span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'dashboard:templates' %}" class="white-text">
+                  <span class="sr-only">Templates</span>
+                  <span class="no-sr md-html5" aria-hidden="True"></span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'dashboard:pagelayouts' %}" class="white-text">
+                  <span class="sr-only">Page Layouts</span>
+                  <span class="no-sr md-code-tags" aria-hidden="True"></span>
+                </a>
+              </li>
+              {% else %}
+              <li>
+                <a href="{% url 'dashboard:dashboard' %}" class="white-text">
+                  <span class="sr-only">Dashboard</span>
+                  <span class="no-sr md-dashboard" aria-hidden="True"></span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'dashboard:general' %}" class="white-text">
+                  <span class="sr-only">General Settings</span>
+                  <span class="no-sr md-settings" aria-hidden="True"></span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+          <div class="leftmenuoffset col s12">
+            {% block maincontent %}{% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% javascript 'dashboard-standard' %}
+    {% stylesheet 'dashboard-standard' %}
+  </body>
+</html>

@@ -1,0 +1,107 @@
+{% extends "cmstemplates/www_slcschools_org/layouts/contentfullwidth.html" %}
+{% load static mptt_tags %}
+
+{% block title %}
+  {{ page.title }} 
+{% endblock %}
+
+{% block precontent %}
+{% endblock %}
+
+{% block sidebar_first %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div id="main" class="card-content">
+    <h1>{{ page.title }}</h1>
+    {% if page.body != '' and page.body is not None %}
+    <div class="row">
+      <div id="about" class="richtext scrollspy">
+        <h2 class="sr-only">About</h2>
+        <div class="body">
+          {{page.body|safe}}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if request.path == '/contact-us/' %}
+    {% include "pages/contact/contact-us.html" %}
+    {% endif %}
+    {% if request.path == '/search/' %}
+    <form class="textfieldboxes" action="/search/results/">
+      <div class="input-field">
+        <input id="tableSearch" name="q" class="autocomplete" title="Search This Website" type="text">
+        <label for="tableSearch" class="">Search This Website</label>
+        <button type="submit" class="btn tableSearchSubmit white-text"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
+      </div>
+    </form>
+    {% endif %}
+    {% if page.faqs_faq_node.all %}
+    <div class="row">
+      <div id="faqs">
+        <h2>Frequently Asked Questions</h2>
+        <ul class="collapsible" data-collapsible="accordion">
+          {% for faq in page.faqs_faq_node.all %}
+          <li>
+            <div class="collapsible-header">
+              <div class="faqquestion">{{ faq.question }}</div>
+              <div class="faqopen"><span class="material-icons right">&#xE5CF;</span></div>
+              <div class="faqclose"><span class="material-icons right">&#xE5CE;</span></div>
+            </div>
+            <div class="collapsible-body">
+              {% include "cmstemplates/www_slcschools_org/blocks/faqactionbuttons.html" %}
+              {{ faq.answer|safe }}
+              {% include "cmstemplates/www_slcschools_org/blocks/faqresources.html" %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+    {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
+    <div class="row">
+      <div id="resourcelinks" class="scrollspy">
+        <h2>Resources</h2>
+        <div class="collection">
+          {% for resourcelink in page.links_resourcelink_node.all %}
+          <a href="{{ resourcelink.link_url }}" class="collection-item">{{ resourcelink.title }} <span class="material-icons right">&#xE157;</span></a>
+          {% endfor %}
+          {% for document in page.documents_document_node.all %}
+          {% if document.files_file_node.all|length == 1 %}
+          {% for file in document.files_file_node.all %}
+          <a class="collection-item" href="{{ file.file_file.url }}" target="_blank">
+            <span class="sr-only">{{ document.title }}</span>
+            <span class="no-sr" aria-hidden="true">{{ document.title }} <span class="notranslate material-icons right">&#xE24D;</span></span>
+          </a>
+          {% endfor %}
+          {% elif document.files_file_node.all|length > 1 %}
+          <a href="#{{ document.pk }}" class="collection-item document-inline">{{ document.title }} <span class="material-icons right">&#xE24D;</span></a>
+          <div id="{{ document.pk }}" class="hide">
+            <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
+            <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
+            {% for file in document.files_file_node.all %}
+              <a class="btn stretch" href="{{ file.file_file.url }}" target="_blank">
+                  <span class="sr-only">{{ file.title }}</span>
+                  <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
+                </a>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {{ block.super }}
+</div>
+{% endblock %}
+
+{% block sidebar_second_s %}
+{% endblock %}
+
+{% block pagescript %}
+{{ block.super }}
+{% endblock %}

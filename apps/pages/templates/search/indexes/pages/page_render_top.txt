@@ -1,7 +1,4 @@
-<div class="result-type page">
-  <span class="material-icons result-icon left"></span>
-  <span>Page</span>
-</div>
 <div class="result-content">
-  <span><strong>Title: </strong>{{ object.title }}</span>
+  <a href="{{object.url}}"><span><strong>Title: </strong>{{ object.title }}</span></a><br>
+  <span><strong>Type: </strong>Page</span>
 </div>

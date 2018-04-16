@@ -422,7 +422,9 @@ window.onresize = function(event){
 }
 $(document).ready(function(){
   $("a").each( function( index, item){ if ( window.location.hostname !== item.hostname) { $(item).attr('target', '_blank') }});
-  $('.actionbuttons a').matchHeight();
+  $('.actionbuttons a').matchHeight({
+    byRow: false, 
+  });
   tocResize();
   $('.authenticated').pushpin({
       top: $('.preheader.wrapper').offset().top,

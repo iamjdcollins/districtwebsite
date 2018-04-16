@@ -1,7 +1,4 @@
-<div class="result-type board">
-  <span class="material-icons result-icon left"></span>
-  <span>Board of Education</span>
-</div>
 <div class="result-content">
-  <span><strong>Title: </strong>{{ object.title }}</span>
+  <a href="{{object.url}}"><span><strong>Title: </strong>{{ object.title }}</span></a><br>
+  <span><strong>Type: </strong>Board of Education</span>
 </div>

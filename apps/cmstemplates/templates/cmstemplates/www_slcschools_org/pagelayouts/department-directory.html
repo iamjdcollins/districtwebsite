@@ -1,0 +1,91 @@
+{% extends "cmstemplates/www_slcschools_org/layouts/contentrighttoc.html" %}
+{% load static mptt_tags %}
+
+{% block title %}
+  {{ page.title }} Directory
+{% endblock %}
+
+{% block precontent %}
+{% endblock %}
+
+{% block sidebar_first %}
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
+  <div class="table-of-contents">
+    <ul>
+      <li><a href="#departments" onclick="$('.inlinemodal').modaal('close');">Departments ({{ departments.departments|length }})</a></li>
+      <li><a href="#programs" onclick="$('.inlinemodal').modaal('close');">Sub-Departments, Programs, and Services ({{ departments.programs|length }})</a></li>
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit"><span aria-hidden="true" class="material-icons left">&#xE8EF;</span><span>Table of Contents / Contact</span></a>
+  <div id="main" class="card-content">
+    <h1>Alphabetical Directory</h1>
+    <form class="textfieldboxes" action="javascript:void(0);" onsubmit="myFunction(); return false;">
+      <div class="input-field">
+        <input class="autocomplete" onkeyup="myFunction()" title="Search Departments, Programs, and Services" id="tableSearch" type="text">
+        <label for="tableSearch">Search Departments, Programs, and Services</label>
+        <button type="submit" class="btn tableSearchSubmit white-text" name="tableSearchSubmit"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
+      </div>
+    </form>
+    <div>
+      <div class="row">
+        <table id="searchTable" class="striped highlight mobileblock">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+          <tbody id="departments" class="scrollspy searchTableBody">
+            <tr>
+              <td colspan="3" class="slcschools-grey white-text">Departments</td>
+            </tr>
+            {% for department in departments.departments %}
+            {% include "cmstemplates/www_slcschools_org/blocks/departmenttable.html" %}
+            {% endfor %}
+          </tbody>
+          <tbody id="programs" class="scrollspy searchTableBody">
+            <tr>
+              <td colspan="3" class="slcschools-grey white-text">Sub-Departments, Programs, and Services</td>
+            </tr>
+            {% for department in departments.programs %}
+            {% include "cmstemplates/www_slcschools_org/blocks/departmenttable.html" %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {{ block.super }}
+</div>
+{% endblock %}
+
+{% block sidebar_second_s %}
+{% endblock %}
+
+{% block pagescript %}
+{{ block.super }}
+<script>
+function myFunction() {
+  var input, filter, table, tbody, tr, td, i;
+  input = document.getElementById("tableSearch");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("searchTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+      if (tr[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }       
+  }
+}
+</script>
+{% endblock %}

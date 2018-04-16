@@ -1,0 +1,37 @@
+{% extends 'cmstemplates/dashboard/base.html' %}
+
+{% block title %}Add Site{% endblock %}
+
+{% block maincontent %}
+<div class="col s12">
+  <div class="card-panel">
+  	<div class="row">
+  	  <h1 class="col s12">Add Site</h1>
+    </div>
+    <div class="row">
+	  	<form class="col s12 focus" action="{% url 'dashboard:sitesadd' %}" method="post">
+		    {% csrf_token %}
+		    <div class="input-field col s12">
+		      <span class="md-building prefix" aria-hidden="true"></span>
+		      {{ sitesaddform.title.errors }}
+		      {{ sitesaddform.title }}
+		      <label for="{{ sitesaddform.title.id_for_label}}">Site Title</label>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-web prefix" aria-hidden="true"></span>
+		      {{ sitesaddform.primary_domain.errors }}
+		      {{ sitesaddform.primary_domain }}
+		      <label for="{{ sitesaddform.primary_domain.id_for_label}}">Primary Domain</label>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="material-icons prefix" aria-hidden="true"></span>
+		      <button type="submit" class="waves-effect waves-green btn">
+		        <span class="sr-only">Submit</span>
+		        <span class="no-sr" aria-hidden="true">Submit</span>
+		      </button>
+		    </div>
+		  </form>
+		</div>
+  </div>
+</div>
+{% endblock %}

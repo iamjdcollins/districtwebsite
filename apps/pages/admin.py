@@ -633,7 +633,6 @@ class BoardPolicyInlineForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(BoardPolicyInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
-            self.fields['policy_title'].disabled = True
             self.fields['section'].disabled = True
             self.fields['index'].disabled = True
 
@@ -1276,7 +1275,7 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   form = make_ajax_form(Page, {'primary_contact': 'employee'},PageAdminForm)
 
   def get_fields(self, request, obj=None):
-      fields = ['title', 'body','primary_contact',['update_user','update_date',],['create_user','create_date',],]
+      fields = ['title', 'pagelayout', 'body','primary_contact',['update_user','update_date',],['create_user','create_date',],]
       if request.user.is_superuser:
           fields += ['published','searchable','parent',]
           if obj:

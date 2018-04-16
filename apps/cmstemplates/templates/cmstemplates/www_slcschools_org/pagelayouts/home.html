@@ -1,0 +1,82 @@
+{% extends "cmstemplates/www_slcschools_org/layouts/contentsideright.html" %}
+
+{% block title %}
+  {{page.title}}
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block sidebar_first %}
+{% endblock %}
+{% block sidebar_second_mup %}
+<div class="card">
+  <div class="card-content">
+    <a href="http://www.saltlakeeducationfoundation.org/" target="_blank"><img alt="Salt Lake Education Foundation Logo" src="/static/www_slcschools_org/images/slef.jpg" style="width: 100%; height: auto;" /></a><hr>
+    <a class="twitter-timeline"  href="https://twitter.com/search?q=from%3A%40slcschools%2BOR%2Bfrom%3A%40Lexi_SLCSchools" data-widget-id="750398088280363008">Tweets about from:@slcschools+OR+from:@Lexi_SLCSchools</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block precontent %}
+{{ block.super }}
+{% include "cmstemplates/www_slcschools_org/blocks/actionbuttons.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-content">
+    <h1 class="outofview">Salt Lake City School District Home Page</h1>
+    <div class="row z-depth-1 districtnews">
+      {% for article in supermessage %}
+      <div class="row">
+        <div class="col s12 m4 l3 xl2 article-thumb" >
+          {% if article.images_newsthumbnail_node.all %}
+          {% for thumbnail in article.images_newsthumbnail_node.all %}
+          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.image_file.url }}" width="350" height="350" alt="{{ thumbnail.alttext }}" typeof="foaf:Image" class="img-responsive">
+          {% endfor %}
+          {% else %}
+          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/www_slcschools_org/images/cunningham.jpg" width="350" height="350" alt="Dr. Cunningham" typeof="foaf:Image" class="img-responsive">
+          {% endif %}
+        </div>
+        <div class="col s12 m8 l9 xl10">
+          <a href="{{ article.url }}" hreflang="en"><span class="news-title">{{ article.title }}</span></a>
+          <span class="postedon">Posted: {{ article.author_date|date:"D. m-d-Y - h:i A" }}</span>
+          {{ article.summary|truncatechars_html:400|safe }}
+        </div>
+        <a href="{{ article.url }}" class="btn-flat slcschools-teal lighten-1 white-text right" hreflang="en"><span class="sr-only">Read more about {{ article.title }}</span><span aria-hidden="true">Read More</span></a>
+      </div>
+      {% endfor %}
+      {% for article in news %}
+      <div class="row">
+        <div class="col s12 m4 l3 xl2 article-thumb" >
+          {% if article.images_newsthumbnail_node.all %}
+          {% for thumbnail in article.images_newsthumbnail_node.all %}
+          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.image_file.url }}" width="350" height="350" alt="{{ thumbnail.alttext }}" typeof="foaf:Image" class="img-responsive">
+          {% endfor %}
+          {% else %}
+          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/defaults/news/images/placeholder.png" width="350" height="350" alt="Salt Lake City School District Apple" typeof="foaf:Image" class="img-responsive">
+          {% endif %}
+        </div>
+        <div class="col s12 m8 l9 xl10">
+          <a href="{{ article.url }}" hreflang="en"><span class="news-title">{{ article.title }}</span></a>
+          <span class="postedon">Posted: {{ article.author_date|date:"D. m-d-Y - h:i A" }}</span>
+          {{ article.summary|truncatechars_html:400|safe }}
+        </div>
+        <a href="{{ article.url }}" class="btn-flat slcschools-teal lighten-1 white-text right" hreflang="en"><span class="sr-only">Read more about {{ article.title }}</span><span aria-hidden="true">Read More</span></a>
+      </div>
+      {% endfor %}
+      <a href="/news/{{ currentyear.long }}/" class="btn-large btn-stretch">Full News Archive</a>
+    </div>
+  </div>
+  {{ block.super }}
+</div> 
+{% endblock %}
+{% block sidebar_second_s %}
+<div class="card">
+  <div class="card-content">
+    <a href="http://www.saltlakeeducationfoundation.org/" target="_blank"><img alt="Salt Lake Education Foundation Logo" src="/static/www_slcschools_org/images/slef.jpg" style="width: 100%; height: auto;" /></a><hr>
+    <a class="twitter-timeline"  href="https://twitter.com/search?q=from%3A%40slcschools%2BOR%2Bfrom%3A%40Lexi_SLCSchools" data-widget-id="750398088280363008">Tweets about from:@slcschools+OR+from:@Lexi_SLCSchools</a>
+  </div>
+</div>
+{% endblock %}

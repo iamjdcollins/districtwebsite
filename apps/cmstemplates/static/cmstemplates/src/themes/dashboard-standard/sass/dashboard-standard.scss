@@ -1,3 +1,37 @@
 body {
   display: block;
 }
+.ckeditor .django-ckeditor-widget{
+  margin-left: 3rem;
+  width: 92%;
+  width: calc(100% - 3rem);
+}
+form label{
+	color: black !important;
+}
+.ckeditor, .django-ckeditor-widget {
+  padding-bottom: 8px;
+}
+.ckeditor label {
+  top: -10px;
+}
+.ckeditor.disabled .django-ckeditor-widget {
+  border: solid 1px grey;
+  padding: 10px;
+  background: #efefef;
+}
+.form-field-help{
+  margin-left: 3rem;
+  width: 92%;
+  width: calc(100% - 3rem);
+  font-size: .8em;
+  color: grey;
+  padding-bottom: 5px;
+}
+.form-field-help .help-icon{
+  position: absolute;
+  width: 20px;
+}
+.form-field-help .help-text{
+  margin-left: 20px;
+}

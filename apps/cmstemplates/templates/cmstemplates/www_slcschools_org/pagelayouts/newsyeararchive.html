@@ -1,0 +1,151 @@
+{% extends "cmstemplates/www_slcschools_org/layouts/contentrighttoc.html" %}
+{% load static mptt_tags %}
+
+{% block title %}
+  News {{page.title}}
+{% endblock %}
+
+{% block precontent %}
+{% endblock %}
+
+{% block sidebar_first %}
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
+  <div class="table-of-contents">
+    <ul>
+      {% if page.body %}
+      <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
+      {% endif %}
+      <li><a class="yearnav" href="#yearnav" onclick="$('.inlinemodal').modaal('close');">Select School Year</a></li>
+      {% for month in newsmonths %}
+      {% if month.news %}
+      <li><a href="#{{ month.month|lower }}" onclick="$('.inlinemodal').modaal('close');">{{ month.month }} ({{ month.news|length }})</a></li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% comment %}{% block breadcrumb %}
+<div class="row">
+  <nav class="slcschools-grey lighten-2">
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <a href="/" title="Home" class="breadcrumb">Home</a>
+        {% for item in BREADCRUMB %}
+        <a href="{{ item.url }}" title="{{ item.menu_title }}" class="breadcrumb">{{ item.menu_title }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </nav>
+</div>
+{% endblock %}{% endcomment %}
+
+{% block content %}
+{% if board.board_boardbannerimage_board.all %}
+<div class="card">
+  <div class="unslider slcschools-grey darken-1">
+    <ul class="slides">
+      {% for bannerimage in board.board_boardbannerimage_board.all %}
+      <li class="slide">
+        <img src="/{{bannerimage.image}}" alt="{{bannerimage.alttext}}" />
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+<div class="card">
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit"><span aria-hidden="true" class="material-icons left">&#xE8EF;</span><span>Table of Contents / Contact</span></a>
+  <div id="main" class="card-content">
+    <h1>News {{page.title}}</h1>
+    {% if page.body %}
+    <div class="row">
+      <div id="about" class="richtext scrollspy">
+        <h2>About</h2>
+        <div class="body">
+          {{page.body|safe}}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if newsyears %}
+    <nav class="yearnav">
+      <a class="yearnav nocaret" href="#yearnav">
+        <span class="currentyear">School Year: {{page.title}}</span>
+        <span class="caret">▼</span>
+        <button class="btn filter-button white-text">
+          <span class="sr-only">Filter by school year</span>
+          <span class="material-icons no-sr notranslate" aria-hidden="true">&#xE152;</span>
+        </button>
+      </a>
+    </nav>
+    <div id="yearnav" class="hide">
+      <ul>
+        {% for year in newsyears %}
+        <li><a href="../{{year.title}}/">{{year.title}}</a></li> 
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% if news %}
+    <div class="row">
+    {% for month in newsmonths %}
+    {% if month.news %}
+      <div id="{{ month.month|lower }}" class="scrollspy"">
+        <h2>{{ month.month }}</h2>
+        <div class="row z-depth-1 districtnews">
+        {% for article in month.news %}
+          <div class="row">
+            <div class="col s12 m4 l3 xl2 article-thumb" >
+              {% if article.images_newsthumbnail_node.all %}
+              {% for thumbnail in article.images_newsthumbnail_node.all %}
+              <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.image_file.url }}" width="350" height="350" alt="{{ thumbnail.alttext }}" typeof="foaf:Image" class="img-responsive">
+            {% endfor %}
+            {% else %}
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/defaults/news/images/placeholder.png" width="350" height="350" alt="Salt Lake City School District Apple" typeof="foaf:Image" class="img-responsive">
+            {% endif %}
+            </div>
+            <div class="col s12 m8 l9 xl10">
+              <a href="{{ article.url }}" hreflang="en"><span class="news-title">{{ article.title }}</span></a>
+              <span class="postedon">Posted: {{ article.author_date|date:"D. m-d-Y - h:i A" }}</span>
+              {{ article.summary|truncatechars_html:400|safe }}
+            </div>
+            <a href="{{ article.url }}" class="btn-flat slcschools-teal lighten-1 white-text right" hreflang="en"><span class="sr-only">Read more about {{ article.title }}</span><span aria-hidden="true">Read More</span></a>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    {% endfor %}
+    </div>
+    {% else %}
+    <div class="row">
+      <p>We do not have any news for this year yet. Please select another school year or check back soon.</p>
+    </div>
+    {% endif %}
+  </div>
+  {{ block.super }}
+</div>
+{% endblock %}
+
+{% block pagescript %}
+{{ block.super }}
+<script>
+$(document).ready(function(){
+  $("#schoolyearfilter").change(function(event) {
+    $year = $(this).find(":selected").val();
+    $("#board_meetings table tbody tr").each(function(){
+      if($(this).hasClass($year)){
+        $(this).removeClass('hide');
+      } else {
+        $(this).addClass('hide');
+      }
+    });
+  });
+  $("#schoolyearfilter").change();
+});
+</script>
+{% endblock %}

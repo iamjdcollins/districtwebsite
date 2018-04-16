@@ -1,5 +1,5 @@
 <div class="result-action" style="clear: both;">
-  <a href="{{ object.url }}" class="btn-flat right">
+  <a href="{{ object.url }}" class="btn-flat slcschools-teal lighten-1 white-text right">
     <span class="sr-only">Go to {{ object.title }}</span>
     <span aria-hidden="true">Go To</span>
   </a>

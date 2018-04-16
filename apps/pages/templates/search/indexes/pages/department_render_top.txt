@@ -1,11 +1,8 @@
-<div class="result-type {% if object.is_department %}department{% else %}program{% endif %}">
-  <span class="material-icons result-icon left"></span>
-  {% if object.is_department %}
-  <span>Department</span>
-  {% else %}
-  <span>Program / Service</span>
-  {% endif %}
-</div>
 <div class="result-content">
-  <span><strong>Title: </strong>{{ object.title }}</span>
+  <a href="{{object.url}}"><span><strong>Title: </strong>{{ object.title }}</span></a><br>
+  {% if object.is_department %}
+  <span><strong>Type: </strong>Department</span>
+  {% else %}
+  <span><strong>Type: </strong>Program / Service</span>
+  {% endif %}
 </div>

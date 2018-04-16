@@ -101,3 +101,39 @@
 .md-chevron-up:before {
   content: "\75";
 }
+.md-code-tags:before {
+  content: "\76";
+}
+.md-html5:before {
+  content: "\77";
+}
+.md-pencil:before {
+  content: "\78";
+}
+.md-plus:before {
+  content: "\79";
+}
+.md-web:before {
+  content: "\7a";
+}
+.md-menu-down:before {
+  content: "\41";
+}
+.md-menu-left:before {
+  content: "\42";
+}
+.md-menu-right:before {
+  content: "\43";
+}
+.md-menu-up:before {
+  content: "\44";
+}
+.md-exit:before {
+  content: "\45";
+}
+.md-accounts:before {
+  content: "\46";
+}
+.md-key:before {
+  content: "\47";
+}

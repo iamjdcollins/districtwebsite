@@ -1,7 +1,4 @@
-<div class="result-type subpage">
-  <span class="material-icons result-icon left"></span>
-  <span>Subpage for {{ object.parent.node_title }}</span>
-</div>
 <div class="result-content">
-  <span><strong>Title: </strong>{{ object.title }}</span>
+  <a href="{{object.url}}"><span><strong>Title: </strong>{{ object.title }}</span></a><br>
+  <span><strong>Type: </strong>Subpage for {{ object.parent.node_title }}</span>
 </div>

@@ -1,0 +1,133 @@
+{% extends "cmstemplates/www_slcschools_org/layouts/contentrighttoc.html" %}
+{% load static mptt_tags %}
+
+{% block title %}
+  {{page.title}}
+{% endblock %}
+
+{% block precontent %}
+{% endblock %}
+
+{% block sidebar_first %}
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
+  <div class="table-of-contents">
+    <ul>
+      <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
+      {% if page.schooloptions.all %}
+      <li><a href="#learningoptions" onclick="$('.inlinemodal').modaal('close');">Learning Options</a></li>
+      {% endif %}
+      {% if page.directoryentries_schooladministrator_node.all %}
+      <li><a href="#administration" onclick="$('.inlinemodal').modaal('close');">Administration</a></li>
+      {% endif %}
+      {% if page.scc_url or page.links_resourcelink_node.all or page.documents_document_node.all %}
+      <li><a href="#resourcelinks" onclick="$('.inlinemodal').modaal('close');">Resource Links</a></li>
+      {% endif %}
+      {% if page.boundary_map %}
+      <li><a href="#boundarymap" onclick="$('.inlinemodal').modaal('close');">Boundary Map</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% block sidebar_second_mup %}
+{% endblock %}
+
+{% comment %}{% block breadcrumb %}
+<div class="row">
+  <nav class="slcschools-grey lighten-2">
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <a href="/" title="Home" class="breadcrumb">Home</a>
+        {% for item in BREADCRUMB %}
+        <a href="{{ item.url }}" title="{{ item.menu_title }}" class="breadcrumb">{{ item.menu_title }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </nav>
+</div>
+{% endblock %}{% endcomment %}
+
+{% block content %}
+{% if page.images_contentbanner_node.all %}
+<div class="card">
+  <div class="unslider slcschools-grey darken-1">
+    <ul class="slides">
+      {% for bannerimage in page.images_contentbanner_node.all %}
+      <li class="slide">
+        <img src="{{bannerimage.image_file.url }}" alt="{{bannerimage.alttext}}" />
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+<div class="card">
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit"><span aria-hidden="true" class="material-icons left">&#xE8EF;</span><span>Table of Contents / Contact</span></a>
+  <div class="card-content">
+    <h1>{{page.title}}</h1>
+    <div class="row">
+      <div id="about" class="richtext scrollspy">
+        <h2 class="sr-only">About</h2>
+        <div class="body">
+          {{page.body|safe}}
+        </div>
+      </div>
+    </div>
+    {% if page.schooloptions.all %}
+    <div id="learningoptions" class="row scrollspy learningoptions">
+      {% include "cmstemplates/www_slcschools_org/blocks/school-learning-options.html" %}
+    </div>
+    {% endif %}
+    {% if page.directoryentries_schooladministrator_node.all %}
+    <div class="row">
+      <div id="administration" class="scrollspy contactcardlist">
+        <h2>Administration</h2>
+        {% for admin in page.directoryentries_schooladministrator_node.all %}
+        {% include "cmstemplates/www_slcschools_org/blocks/admindirectorylist.html" %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% if page.scc_url or page.links_resourcelink_node.all or page.documents_document_node.all %}
+    <div class="row">
+      <div id="resourcelinks" class="scrollspy">
+        <h2>Resource Links</h2>
+        <div class="collection">
+          {% if page.scc_url %}
+          <a href="{{ page.scc_url }}" title="School Community Council" class="collection-item">School Community Council <i class="material-icons right">&#xE157;</i></a>
+          {% endif %}
+          {% for resourcelink in page.links_resourcelink_node.all %}
+          <a href="{{ resourcelink.link_url }}" class="collection-item">{{ resourcelink.title }} <i class="material-icons right">&#xE157;</i></a>
+          {% endfor %}
+          {% for document in page.documents_document_node.all %}
+          <a href="#{{ document.pk }}" class="collection-item document-inline">{{ document.title }} <i class="material-icons right">&#xE157;</i></a>
+          <div id="{{ document.pk }}" class="hide">
+            <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
+            <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
+            {% for file in document.files_file_node.all %}
+              <a class="btn stretch" href="{{ file.file_file.url }}">
+                  <span class="sr-only">{{ file.title }}</span>
+                  <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
+                </a>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if page.boundary_map %}
+    <div class="row">
+      <div id="boundarymap" class="scrollspy">
+        <h2>Boundary Map</h2>
+        <iframe class="googlemap" width="850" height="500" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="{{ page.boundary_map }}"></iframe>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {{ block.super }}
+</div>
+{% endblock %}

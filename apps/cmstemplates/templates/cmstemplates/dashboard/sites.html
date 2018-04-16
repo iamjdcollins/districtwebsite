@@ -1,0 +1,37 @@
+{% extends 'cmstemplates/dashboard/base.html' %}
+
+{% block title %}Sites{% endblock %}
+
+{% block maincontent %}
+<div class="col s12">
+  <div class="card-panel">
+    <div class="row">
+      <h1 class="col s12">Sites</h1>
+    </div>
+    <div class="row">
+      <table>
+        <thead>
+          <tr>
+            <th>Site</th>
+            <th class="rowaction"><span class="sr-only">Edit</span><th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for site in sites %}
+          <tr>
+            <td><a href="/manage/dashboard/">{{ site.site.dashboard_general_site.title }}</a><br>{{ site.domain }}</td>
+            <td class="rowaction">
+              <a href="/manage/dashboard/">
+                <span class="sr-only">Edit {{ site.site.dashboard_general_site.title }}</span>
+                <span class="no-sr md-settings" aria-hidden="True"></span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="{% url 'dashboard:sitesadd' %}" class="btn-floating btn-large waves-effect waves-light" style="position: fixed; bottom: 15px; right: 15px;"><span class="md-plus"></span></a>
+    </div>
+  </div>
+</div>
+{% endblock %}

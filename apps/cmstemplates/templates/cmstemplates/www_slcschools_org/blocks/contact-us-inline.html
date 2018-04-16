@@ -1,0 +1,8 @@
+<div class="modal-content">
+        <div id="pagefeedbacktitle" class="modal-title">Send Us A Message</div>
+        <p id="pagefeedbackdesc" class="modal-desc sr-only">Please submit the form below to submit us a message. Thank you for taking the time to let us know how we are doing. You can close this dialog by pressing escape at any time.</p>
+  {%if from_page.building_location or from_page.main_phone or from_page.main_fax %}
+    {% include "cmstemplates/www_slcschools_org/blocks/contact-block-inline.html" %}
+  {% endif %}
+  {% include "cmstemplates/www_slcschools_org/blocks/contact-form.html" %}
+</div>

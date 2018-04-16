@@ -1,0 +1,73 @@
+{% extends "cmstemplates/www_slcschools_org/layouts/contentfullwidth.html" %}
+{% load static mptt_tags %}
+
+{% block title %}
+  {{ page.title }} 
+{% endblock %}
+
+{% block precontent %}
+{% endblock %}
+
+{% block sidebar_first %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div id="main" class="card-content">
+    <h1>{{ page.title }}</h1>
+    {% if page.body != '' and page.body is not None %}
+    <div class="row">
+      <div id="about" class="richtext scrollspy">
+        <h2 class="sr-only">About</h2>
+        <div class="body">
+          {{page.body|safe}}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if request.path == '/contact-us/' %}
+    {% include "cmstemplates/www_slcschools_org/blocks/contact-form.html" %}
+    {% endif %}
+    {% if request.path == '/search/' %}
+    <form class="textfieldboxes" action="/search/results/">
+      <div class="input-field">
+        <input id="tableSearch" name="q" class="autocomplete" title="Search This Website" type="text">
+        <label for="tableSearch" class="">Search This Website</label>
+        <button type="submit" class="btn tableSearchSubmit white-text"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
+      </div>
+    </form>
+    {% endif %}
+    {% if page.faqs_faq_node.all %}
+    <div class="row">
+      <div id="faqs">
+        <h2>Frequently Asked Questions</h2>
+        <ul class="collapsible" data-collapsible="accordion">
+          {% for faq in page.faqs_faq_node.all %}
+          <li>
+            <div class="collapsible-header">
+              <div class="faqquestion">{{ faq.question }}</div>
+              <div class="faqopen"><span class="material-icons right">&#xE5CF;</span></div>
+              <div class="faqclose"><span class="material-icons right">&#xE5CE;</span></div>
+            </div>
+            <div class="collapsible-body">
+              {% include "cmstemplates/www_slcschools_org/blocks/faqactionbuttons.html" %}
+              {{ faq.answer|safe }}
+              {% include "cmstemplates/www_slcschools_org/blocks/faqresources.html" %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {{ block.super }}
+</div>
+{% endblock %}
+
+{% block sidebar_second_s %}
+{% endblock %}
+
+{% block pagescript %}
+{{ block.super }}
+{% endblock %}

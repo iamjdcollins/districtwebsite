@@ -1,0 +1,119 @@
+{% extends "cmstemplates/www_slcschools_org/layouts/contentrighttoc.html" %}
+{% load static mptt_tags guardian_tags %}
+
+{% block title %}
+  News {{page.title}}
+{% endblock %}
+
+{% block precontent %}
+{% endblock %}
+
+{% block sidebar_first %}
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
+  <div class="table-of-contents">
+    <ul>
+      {% if page.body %}
+      <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
+      {% endif %}
+      {% if page.images_photogallery_node.all %}
+      {% if pages.images_photogallery_node.count > 1 %}
+      <li><a href="#photogallery" onclick="$('.inlinemodal').modaal('close');">Photo Galleries</a></li>
+      {% else %}
+      <li><a href="#photogallery" onclick="$('.inlinemodal').modaal('close');">Photo Gallery</a></li>
+      {% endif %}
+      {% endif %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% comment %}{% block breadcrumb %}
+<div class="row">
+  <nav class="slcschools-grey lighten-2">
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <a href="/" title="Home" class="breadcrumb">Home</a>
+        {% for item in BREADCRUMB %}
+        <a href="{{ item.url }}" title="{{ item.menu_title }}" class="breadcrumb">{{ item.menu_title }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </nav>
+</div>
+{% endblock %}{% endcomment %}
+
+{% block content %}
+{% if page.images_contentbanner_node.all %}
+<div class="card">
+  <div class="unslider slcschools-grey darken-1">
+    <ul class="slides">
+      {% for bannerimage in page.images_contentbanner_node.all %}
+      <li class="slide">
+        <img src="{{bannerimage.image_file.url }}" alt="{{bannerimage.alttext}}" />
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+<div class="card">
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit"><span aria-hidden="true" class="material-icons left">&#xE8EF;</span><span>Table of Contents / Contact</span></a>
+  <div id="main" class="card-content">
+    <h1>{{page.title}}</h1>
+    {% if page.body %}
+    <div class="row">
+      <div id="about" class="richtext scrollspy">
+        <div class="body">
+          {{page.body|safe}}
+        </div>
+      </div>
+      {% if page.images_photogallery_node.all %}
+      <div id="photogallery" class="scrollspy">
+        {% if pages.images_photogallery_node.count > 1 %}
+        <h2>Photo Galleries</h2>
+        {% else %}
+        <h2>Photo Gallery</h2>
+        {% endif %}
+        {% for gallery in page.images_photogallery_node.all %}
+        {% if pages.images_photogallery_node.count > 1 %}
+        <h3>{{ gallery.title }}</h3>
+        {% endif %}
+        <div class="grid" data-isotope='{ "itemSelector": ".grid-item", "layoutMode": "masonry", "percentPosition": true, "masonry": { "columnWidth": ".grid-sizer" } }'>
+          {% for image in gallery.images_photogalleryimage_node.all %}
+          <div class="grid-sizer"></div>
+          <a href="{{ image.image_file.url }}" rel="{{ gallery.pk }}" class="photogallery">
+            <span class="sr-only">Open the photo gallery: {{ gallery.title }}</span>
+            <img src="{{ image.isotope.url }}" alt="{{ image.alttext }}" class="responsive-img grid-item">
+          </a>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  {{ block.super }}
+</div>
+{% endblock %}
+
+{% block pagescript %}
+{{ block.super }}
+<script>
+$(document).ready(function(){
+  $("#schoolyearfilter").change(function(event) {
+    $year = $(this).find(":selected").val();
+    $("#board_meetings table tbody tr").each(function(){
+      if($(this).hasClass($year)){
+        $(this).removeClass('hide');
+      } else {
+        $(this).addClass('hide');
+      }
+    });
+  });
+  $("#schoolyearfilter").change();
+});
+</script>
+{% endblock %}

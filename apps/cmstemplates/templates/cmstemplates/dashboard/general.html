@@ -1,0 +1,83 @@
+{% extends 'cmstemplates/dashboard/base.html' %}
+{% load relink %}
+
+{% block title %}General Settings{% endblock %}
+
+{% block maincontent %}
+<div class="col s12">
+  <div class="card-panel">
+  	<div class="row">
+  	  <h1 class="col s12">General Settings</h1>
+    </div>
+    <div class="row">
+	  	<form class="col s12 focus" action="{% url 'dashboard:general' %}" method="post">
+		    {% csrf_token %}
+		    {{ generalsettingsform.media }}
+		    <div class="input-field col s12">
+		      <span class="md-building prefix" aria-hidden="true"></span>
+		      {{ generalsettingsform.title.errors }}
+		      {{ generalsettingsform.title }}
+		      <label for="{{ generalsettingsform.title.id_for_label}}">Site Title</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-robot"></div>
+		      	<div class="help-text">{{ generalsettingsform.title.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-html5 prefix" aria-hidden="true"></span>
+		      {{ generalsettingsform.template.errors }}
+		      {{ generalsettingsform.template }}
+		      <label for="{{ generalsettingsform.template.id_for_label}}">Template</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-robot"></div>
+		      	<div class="help-text">{{ generalsettingsform.template.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field ckeditor col s12">
+		      <span class="md-code-tags prefix" aria-hidden="true"></span>
+		      {{ generalsettingsform.nd_statement.errors }}
+		      {% if generalsettingsform.nd_statement.field.disabled %}
+		      <div class="ckeditor disabled">
+		      	<div class="django-ckeditor-widget">
+		      		{{ generalsettingsform.nd_statement.value|safe|relink }}
+				    </div>
+			    </div>
+		      {% else %}
+		      {{ generalsettingsform.nd_statement }}
+		      {% endif %}
+		      <label for="{{ generalsettingsform.nd_statement.id_for_label}}" class="active">Non-Discrimination Statement</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-robot"></div>
+		      	<div class="help-text">{{ generalsettingsform.nd_statement.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field ckeditor col s12">
+		      <span class="md-code-tags prefix" aria-hidden="true"></span>
+		      {{ generalsettingsform.ada_statement.errors }}
+		      {% if generalsettingsform.ada_statement.field.disabled %}
+		      <div class="ckeditor disabled">
+		      	<div class="django-ckeditor-widget">
+		      		{{ generalsettingsform.ada_statement.value|safe|relink }}
+				    </div>
+			    </div>
+		      {% else %}
+		      {{ generalsettingsform.ada_statement }}
+		      {% endif %}
+		      <label for="{{ generalsettingsform.ada_statement.id_for_label}}" class="active">Americans with Disabilities Act (ADA) Statement</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-robot"></div>
+		      	<div class="help-text">{{ generalsettingsform.ada_statement.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="material-icons prefix" aria-hidden="true"></span>
+		      <button type="submit" class="waves-effect waves-green btn">
+		        <span class="sr-only">Submit</span>
+		        <span class="no-sr" aria-hidden="true">Submit</span>
+		      </button>
+		    </div>
+		  </form>
+		</div>
+  </div>
+</div>
+{% endblock %}

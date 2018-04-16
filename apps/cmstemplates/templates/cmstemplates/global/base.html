@@ -1,0 +1,173 @@
+{% load static mptt_tags guardian_tags admin_urls object_permissions pipeline relink %}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <title>{% block title %}{% endblock %} | {{ request.site.dashboard_general_site.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="template" content="{{ request.site.dashboard_general_site.template.title }}" />
+    <meta name="pagelayout" content="{{ page.pagelayout.title }}" />
+    <style>
+        body {
+          display: none;
+        }
+    </style>
+    <script>
+      document.documentElement.className = document.documentElement.className.replace("no-js","js");
+    </script>
+  </head>
+  <body id="top">
+    <div class="pushfooter">
+      <a href="#main" class="skipto">Skip to main content</a>
+      {% if user.is_authenticated %}
+      <div class="authenticated wrapper">
+        <div class="pure-g">
+          <div class="col pure-u-1-2">
+            <a href="#" class="noZensmooth dropdown-button left pure-button narrow" data-activates="usermenu">
+              <span class="sr-only">Logged in as {{ request.user.first_name }}</span>
+              <span class="no-sr" aria-hidden="true">Hello, {{ request.user.first_name }}
+                <span class="md-menu-down no-sr" aria-hidden="true"></span>
+              </span>
+            </a>
+            <ul id="usermenu" class="z-depth-1 dropdown-content">
+              <li>
+                <a href="/accounts/logout/">
+                  <span class="sr-only">Logout of the website.</span>
+                  <span class="md-exit no-sr" aria-hidden="true"> Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col pure-u-1-2">
+            {% if pageopts %}
+            {% has_change_permissions request page as can_edit%}
+            {% if can_edit %}
+            <a id="editpagemodaal" href="{% url pageopts|admin_urlname:'change' page.pk %}" class="right pure-button narrow">
+              <span class="sr-only">Edit Page</span>
+              <span class="md-pencil no-sr" aria-hidden="true"> Edit Page</span>
+            </a>
+            {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="preheader wrapper">
+        <div class="pure-g">
+          <div class="col pure-u-1-2">
+            <ul class="translationlinks col s5 m4 l6">
+              {% for item in TRANSLATION_ITEMS|slice:":4" %}
+              <li class="{% if forloop.counter == 4 or forloop.counter == 3 %}hide-md{% endif %} hide-sm hide-xs">
+                <a href="#" class="noZensmooth pure-button narrow" onclick="doGTranslate('en|{{ item.language_code }}'); return false;">
+                  <span class="sr-only">Translate to {{ item.title }}</span>
+                  <span class="notranslate no-sr" aria-hidden="true">{{ item.native_language }}</span>
+                </a>
+              </li>
+              {% endfor %}
+              <li>
+                <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+                <label class="nav-trigger-label pure-button narrow md-chevron-left" for="nav-trigger">
+                    <span class="hide-sm hide-xs">
+                      <span class="sr-only">Open more translation languages menu (You can close the menu by pressing escape any time).</span>
+                      <span class="no-sr" aria-hidden="true">More</span>
+                    </span>
+                    <span class="hide-md hide-lg hide-xl">
+                      <span class="sr-only">Open more translation languages menu (You can close the menu by pressing escape any time).</span>
+                      <span class="no-sr" aria-hidden="true">Translate
+                        <span class="md-menu-down no-sr" aria-hidden="true"></span>
+                      </span>
+                    </span>
+                  </label>
+                <!-- <a href="#fulltranslationlist" class="noZensmooth fulltranslationlist pure-button narrow slideleft-button" data-activates="fulltranslationlist"> -->
+                
+                <!-- </a> -->
+                <!-- <div id="fulltranslationlist" class="slideleft-content"> -->
+                  <ul class="navigation">
+                    {% for item in TRANSLATION_ITEMS|dictsort:"title" %}
+                    <li class="nav-item">
+                      <a class="btn" href="#" class="noZensmooth" onclick="doGTranslate('en|{{ item.language_code }}'); $('.fulltranslationlist').modaal('close'); return false;" >
+                        <span class="sr-only">Translate to {{ item.title }}</span>
+                        <span class="notranslate no-sr" aria-hidden="true">{{ item.native_language }}</span>
+                      </a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                <!-- </div> -->
+              </li>
+            </ul>
+          </div>
+          <div class="col pure-u-1-2">
+            <ul class="shortcuts right col s7 m8 l6">
+              <li>
+                <a href="/" class="pure-button narrow">
+                  <span class="sr-only">Home page for {{ request.site.dashboard_general_site.title }}</span>
+                  <span class="md-home no-sr" aria-hidden="true"></span>
+                  <span class="hide-xs hide-sm hide-md no-sr" aria-hidden="true">Home</span>
+                </a>
+              </li>
+              <li>
+                <a href="tel:18015788599" class="pure-button narrow">
+                  <span class="sr-only">Main phone number: 801-578-8599</span>
+                  <span class="md-phone no-sr" aria-hidden="true"></span>
+                  <span class="hide-xs hide-sm hide-md no-sr" aria-hidden="true">801-578-8599</span>
+                </a>
+              </li>
+              <li>
+                <a href="/employees/" class="pure-button narrow">
+                  <span class="sr-only">Employee Dashboard (Requires Authentication).</span>
+                  <span class="md-accounts no-sr" aria-hidden="true"></span>
+                  <span class="hide-xs hide-sm hide-md no-sr" aria-hidden="true">Employees</span>
+                </a>
+              </li>
+              {% if not user.is_authenticated %}
+              <li>
+                <a href="/accounts/login/?next={{ request.path }}" class="pure-button narrow">
+                  <span class="sr-only">Login to this website.</span>
+                  <span class="md-key" aria-hidden="true"></span>
+                  <span class="hide-xs hide-sm hide-md no-sr" aria-hidden="true">Login</span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="header wrapper">
+      </div>
+      <div class="precontent wrapper">
+        {% block precontent %}
+        {% endblock %}
+      </div>
+      <div id="main" class="main wrapper">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+    <footer>
+      <div class="footer wrapper slcschools-grey">
+        <div class="pure-g">
+          <div class="col pure-u-md-1-2 pure-u-1">
+            <h2>Non-Discrimination Statement</h2>
+            {{ request.site.dashboard_general_site.nd_statement|safe|relink }}
+            <h2>Americans with Disabilities Act (ADA) Statement</h2>
+            {{ request.site.dashboard_general_site.ada_statement|safe|relink }}
+          </div>
+        </div>
+      </div>
+      <div class="footercopyright wrapper slcschools-grey darken-1">
+        <div class="pure-g">
+          <div class="col pure-u-1">
+            <p>© {{ request.site.dashboard_general_site.title }}{% if request.site.dashboard_general_site.primary_domain != 'www.slcschools.org' %} | Salt Lake City School District {% endif %}</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <a id="backtotop" class="slcschools-grey lighten-1 white-text" href="#top">
+      <span class="sr-only">Scroll back to the top of the page</span>
+      <span class="md-chevron-up no-sr" aria-hidden="true"></span>
+    </a>
+    <div id="google_translate_element2" class="hide"></div>
+    {% javascript 'material-standard' %}
+    {% stylesheet 'material-standard' %}
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
+  </body>
+</html>

@@ -1,0 +1,389 @@
+{% load static mptt_tags guardian_tags admin_urls object_permissions relink %}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <title>{% block title %}{% endblock %} | {{ request.site.dashboard_general_site.title }}</title>
+    <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        body {
+          display: none;
+        }
+    </style>
+    <script>
+      document.documentElement.className = document.documentElement.className.replace("no-js","js");
+    </script>
+  </head>
+  <body>
+    <div class="pushfooter slcschools-grey lighten-3">
+      <a href="#main" class="skipto">Skip to main content</a>
+      {% if user.is_authenticated %}
+      <div class="authenticated wrapper slcschools-grey white-text">
+        <div class="row">
+          <div class="col s6">
+            <ul id="usermenu" class="dropdown-content">
+              <li>
+                <a href="/accounts/logout/">
+                  <span class="sr-only">Logout of the website.</span>
+                  <span class="no-sr" aria-hidden="true">Logout
+                    <span class="material-icons left no-sr" aria-hidden="true">&#xE879;</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <a href="#" class="dropdown-button left btn btn-flat" data-activates="usermenu">
+              <span class="sr-only">Logged in user menu</span>
+              <span class="no-sr" aria-hidden="true">Hello, {{ request.user.first_name }}
+                <span class="material-icons no-sr right" aria-hidden="true">&#xE5C5;</span>
+              </span>
+            </a>
+          </div>
+          <div class="col s6">
+            {% if pageopts %}
+            {% has_change_permissions request page as can_edit%}
+            {% if can_edit %}
+            <a id="editpagemodaal" href="{% url pageopts|admin_urlname:'change' page.pk %}" class="right hide btn btn-flat">
+              <span class="sr-only">Edit Page</span>
+              <span class="no-sr" aria-hidden="true">Edit Page
+                <span class="material-icons left" aria-hidden="true">&#xE254;</span>
+              </span>
+            </a>
+            {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="preheader wrapper slcschools-teal darken-1 white-text">
+        <div class="row">
+          <ul class="translationlinks col s5 m4 l6">
+            {% for item in TRANSLATION_ITEMS|slice:":4" %}
+            <li class="{% if forloop.counter == 4 or forloop.counter == 3 %}hide-on-med-and-down{% endif %} hide-on-small-only">
+              <a href="#" onclick="doGTranslate('en|{{ item.language_code }}'); return false;">
+                <span class="sr-only">Translate to {{ item.title }}</span>
+                <span class="notranslate no-sr" aria-hidden="true">{{ item.native_language }}</span>
+              </a>
+            </li>
+            {% endfor %}
+            <li>
+              <a href="#fulltranslationlist" class="fulltranslationlist">
+                <span class="hide-on-small-only">
+                  <span class="sr-only">More Translation Languages</span>
+                  <span aria-hidden="true">More</span>
+                </span>
+                <span class="hide-on-med-and-up">
+                  <span class="sr-only">More Translation Languages</span>
+                  <span class="no-sr" aria-hidden="true">Translate
+                    <span class="material-icons no-sr" aria-hidden="true">&#xE5C5;</span>
+                  </span>
+                </span>
+              </a>
+            </li>
+          </ul>
+          <ul class="shortcuts col s7 m8 l6">
+            <li>
+              <a href="/">
+                <span class="sr-only">Home page for {{ request.site.dashboard_general_site.title }}</span>
+                <span class="material-icons no-sr" aria-hidden="true">&#xE88A;</span>
+                <span class="hide-on-med-and-down no-sr" aria-hidden="true">Home</span>
+              </a>
+            </li>
+            <li>
+              <a href="tel:18015788599">
+                <span class="sr-only">Main phone number: 801-578-8599</span>
+                <span class="material-icons no-sr" aria-hidden="true">&#xE0CD;</span>
+                <span class="hide-on-med-and-down no-sr" aria-hidden="true">801-578-8599</span>
+              </a>
+            </li>
+            <li>
+              <a href="/employees/">
+                <span class="sr-only">Employee Dashboard (Requires Authentication).</span>
+                <span class="material-icons no-sr" aria-hidden="true">&#xE7FB;</span>
+                <span class="hide-on-med-and-down no-sr" aria-hidden="true">Employees</span>
+              </a>
+            </li>
+            {% if not user.is_authenticated %}
+            <li>
+              <a href="/accounts/login/?next={{ request.path }}">
+                <span class="sr-only">Login to this website.</span>
+                <span class="material-icons" aria-hidden="true">&#xE0DA;</span>
+                <span class="hide-on-med-and-down no-sr" aria-hidden="true">Login</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+        <div id="fulltranslationlist" class="hide">
+          <div class="modal-content">
+            <div id="fulltranslationlisttitle" class="modal-title">Translation Language Options</div>
+            <p id="fulltranslationlistdesc" class="modal-desc sr-only">Please select your language from the list below. Please note that Salt Lake City School District uses Google Translate for your website translations. We cannot guarantee the accuracy of these translations. You can close this dialog by pressing escape at any time.</p>
+            <ul>
+              {% for item in TRANSLATION_ITEMS|dictsort:"title" %}
+              <li>
+                <a class="btn" href="#" onclick="doGTranslate('en|{{ item.language_code }}'); $('.fulltranslationlist').modaal('close'); return false;" >
+                  <span class="sr-only">Translate to {{ item.title }}</span>
+                  <span class="notranslate no-sr" aria-hidden="true">{{ item.native_language }}</span>
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="header wrapper">
+        <nav>
+          <div class="row">
+            <div class="col s12 nav-wrapper">
+              <a href="/">
+                <span class="sr-only">Home page for Salt Lake City School District</span>
+                <span class="brand-logo left"></span>
+              </a>
+<!--               <div id="mainnav-mobile" class="hide">
+                <ul>
+                {% for item in MENU_ITEMS %}
+                  {% if item.url in request.path  %}
+                  <li class="active"><a class="btn" href="{{ item.url }}">{{ item.menu_title }}</a></li>
+                  {% else %}
+                  <li class=""><a class="btn" href="{{ item.url }}">{{ item.menu_title }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                </ul>
+              </div> -->
+              <div id="mainnav" class="right hide-on-med-and-down">
+                <div id="mainnavtitle" class="modal-title">Main Menu</div>
+                <p id="mainnavdesc" class="modal-desc sr-only">You can close this dialog by pressing escape at any time.</p>
+                <ul>
+                  {% for item in MENU_ITEMS %}
+                    {% if item.url in request.path  %}
+                    <li class="active">
+                      <a href="{{ item.url }}">{{ item.menu_title|safe }}</a>
+                    </li>
+                    {% else %}
+                    <li class="">
+                      <a href="{{ item.url }}">{{ item.menu_title|safe }}</a>
+                    </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+              <div id="mainnav-mobile" class="right hide-on-large-only">
+                <ul>
+                  <li class="">
+                    <a class="mainnav-mobile" href="#mainnav">
+                      <span class="sr-only">Activate Mobile Menu</span>
+                      <span class="material-icons no-sr" aria-hidden="true">&#xE5D2;</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="precontent wrapper">
+        {% block precontent %}
+        <div class="unslider slcschools-grey darken-1">
+          <ul class="slides">
+            <li class="slide" data-nav="Second Slide">
+              <img src="/static/www_slcschools_org/images/concrete-seamless.jpg" alt="Pattern Background" height="500" width="1500">
+              <div class="row">
+                <div class="col s12">
+                  <div class="caption center-align" style="height:100%;left:0;">
+                    <span style="position: absolute;top: 0;left: 0px;width: 100%; height: 100%" class="slide-caption white-text">Wasatch Elementary students created holiday<br> cards for patients at LDS Hospital.</span>
+                    <a href="https://www.youtube.com/watch?v=sE9P6WfxHlA" style="position: absolute;top: 0px;left: 0px; height: 100%; width: 100%;" target="_blank"><span class="sr-only">Watch Video</span></a>
+                    <iframe src="https://www.youtube.com/embed/sE9P6WfxHlA?rel=0" allow="autoplay; encrypted-media" allowfullscreen="" style="height: 100%;width: 100%;" width="560" height="315" frameborder="0"></iframe>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="slide" data-nav="Third Slide">
+              <img src="/static/www_slcschools_org/images/snowman-background.jpg" alt="Snowman" height="500" width="1500">
+              <div class="row">
+                <div class="col s12">
+                  <div class="caption center-align" style="height:100%;left:0;">
+                    <span class="slide-caption" style="position: absolute;top: 0;left: 0px;width: 100%; height: 100%;">School Closure and Delayed Start Guidelines</span>
+                    <a href="/departments/communications-and-community-relations/guidelines-on-closures-delayed-starts-and-early-releases/" class="btn" style="position: absolute;top: 70%;left: 40%;">Click for Guidelines</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        {% endblock %}
+      </div>
+      <div class="breadcrumbs wrapper">
+        {% block breadcrumb %}
+        <div class="breadcrumbs wrapper">
+          <nav class="slcschools-grey">
+            <div class="row">
+              <div class="nav-wrapper">
+                <div class="col s12">
+                  <a href="/" class="breadcrumb">
+                    <span class="sr-only">Breadcrumb item: Home</span>
+                    <span class="no-sr" aria-hidden="true">Home</span>
+                  </a>
+                  {% for item in BREADCRUMB %}
+                  <a href="{{ item.url }}" class="breadcrumb">
+                    <span class="sr-only">Breadcrumb item: {{ item.node_title }}</span>
+                    <span class="no-sr" aria-hidden="true">{{ item.node_title }}</span>
+                  </a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+        {% endblock %}
+      </div>
+      <div id="main" class="main wrapper">
+      {% if messages %}
+      <div class="row">
+        <div class="col s12">
+          {% for message in messages %}
+          <div class="card card-alert {% if message.tags %}{{ message.tags }}{% endif %}">
+            <div class="card-content">
+              {{message}}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% block main %}
+        {% block sidebar_first %}
+        {% endblock %}
+        {% block sidebar_second_mup %}
+        {% endblock %}
+        {% block content %}
+        <div class="card-action">
+          <a class="btn-flat disabled narrow" aria-disabled="true">
+            <span class="sr-only">Page last updated {{ page.update_date|date:"F d, Y" }}</span>
+            <span class="material-icons left no-sr" aria-hidden="true">&#xE192;</span>
+            <span class="no-sr" aria-hidden="true">{{ page.update_date|date:"N d, Y" }}</span>
+          </a>
+          <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn-flat right narrow pagefeedback uninit">
+            <span class="material-icons left" aria-hidden="true">&#xE254;</span>
+            <span>Page Feedback</span>
+          </a>
+        </div>
+        {% endblock %}
+        {% block sidebar_second_s %}
+        {% endblock %}
+      {% endblock %}
+    </div>
+    </div>
+    <footer class="slcschools-grey white-text">
+      <div class="footer wrapper slcschools-grey">
+        <div class="row">
+          <div class="col m8">
+            <h2>Non-Discrimination Statement</h2>
+            {{ request.site.dashboard_general_site.nd_statement|safe|relink }}
+            <h2>Americans with Disabilities Act (ADA) Statement</h2>
+            {{ request.site.dashboard_general_site.ada_statement|safe|relink }}
+          </div>
+          <div class="col m4">
+            <h2>Contact</h2>
+            <p>
+              <a href="https://www.google.com/maps/place/Salt+Lake+City+School+District/@40.7667764,-111.8810118,17z/data=!3m1!4b1!4m5!3m4!1s0x8752f57295a6d677:0xb5e760c057c3086!8m2!3d40.7667724!4d-111.8788231" target="_blank" style="color:   #A3A3A3 !important;">
+                  <i class="material-icons tiny"></i> 440 East 100 South<br>
+                  <i class="material-icons tiny blank"></i> Salt Lake City, Utah 84111<br>
+              </a>
+              <a target="_blank" style="color:#A3A3A3 !important;" href="tel:18015788599">
+                <i class="material-icons tiny"></i> 801-578-8599
+              </a>
+            </p>
+            <a class="btn-large btn-stretch slcschools-teal white-text" href="/contact-us/">Send Us A Message</a>
+            <h2>Connect</h2>
+            <a class="socialicons" href="https://www.facebook.com/slcschools" target="_blank">
+              <span class="sr-only">Facebook</span>
+              <span class="md-facebook no-sr" aria-hidden="true"></span>
+            </a>
+            <a class="socialicons" href="https://twitter.com/slcschools" target="_blank">
+              <span class="sr-only">Twitter</span>
+              <span class="md-twitter no-sr" aria-hidden="true"></span>
+            </a>
+            <a class="socialicons" href="https://www.instagram.com/slcschools/" target="_blank">
+              <span class="sr-only">Instagram</span>
+              <span class="md-instagram no-sr" aria-hidden="true"></span>
+            </a>
+            <a class="socialicons" href="https://www.youtube.com/user/slcschools" target="_blank">
+              <span class="sr-only">YouTube</span>
+              <span class="md-youtube no-sr" aria-hidden="true"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footercopyright wrapper slcschools-grey darken-1">
+        <div class="row">
+          <div class="col s6">
+            <p>© {{ request.site.dashboard_general_site.title }}{% if request.site.dashboard_general_site.primary_domain != 'www.slcschools.org' %} | Salt Lake City School District {% endif %}</p>
+          </div>
+          <div class="col s6">
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div id="{{ page.uuid }}" class="hide">
+      <div class="modal-content">
+        <div id="pagefeedbacktitle" class="modal-title">Send Us A Message</div>
+        <p id="pagefeedbackdesc" class="modal-desc sr-only">Please submit the form below to submit us a message. Thank you for taking the time to let us know how we are doing. You can close this dialog by pressing escape at any time.</p>
+        <form class="col s12 focus">
+          <div class="input-field col s12">
+            <span class="material-icons prefix" aria-hidden="true">&#xE7FD;</span>
+            <input id="name" type="text" class="validate">
+            <label for="name">Name</label>
+          </div>
+          <div class="input-field col s12">
+            <span class="material-icons prefix" aria-hidden="true">&#xE0BE;</span>
+            <input id="email" type="email" class="validate">
+            <label for="email">Email</label>
+          </div>
+          <div class="input-field col s12">
+            <span class="material-icons prefix" aria-hidden="true">&#xE88E;</span>
+            <select id="feedbackconcerning" class="browser-default withprefixicon">
+              <option value="" disabled selected>Choose your option</option>
+              <option value="1">Question or Comment</option>
+              <option value="2">Incorrect Information</option>
+              <option value="3">Website Malfunction</option>
+            </select>
+            <label for="feedbackconcerning" class="active">Feedback Concerning</label>
+          </div>
+          <div class="input-field col s12">
+            <span class="material-icons prefix" aria-hidden="true">&#xE254;</span>
+            <input id="subject" type="text" class="validate">
+            <label for="subject">Subject</label>
+          </div>
+          <div class="input-field col s12">
+            <span class="material-icons prefix" aria-hidden="true">&#xE0C9;</span>
+            <textarea id="message" class="materialize-textarea"></textarea>
+            <label for="message">Message</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="#" onclick="return false;" class="modal-action modal-close waves-effect waves-green btn ">
+          <span class="sr-only">Submit page feedback form.</span>
+          <span class="no-sr" aria-hidden="true">Submit</span>
+        </a>
+        <a href="#" onclick="return false;" class="modal-action modal-close waves-effect waves-green btn-flat ">
+          <span class="sr-only">Cancel page feedback form and close dialog.</span>
+          <span class="no-sr" aria-hidden="true">Cancel</span>
+        </a>
+      </div>
+    </div>
+    <a id="backtotop" class="slcschools-grey lighten-1 white-text" href="#">
+      <span class="sr-only">Scroll back to the top of the page</span>
+      <span class="material-icons no-sr" aria-hidden="true">&#xE316;</span>
+    </a>
+    <img src="/static/www_slcschools_org/images/loadingspinner.gif" class="modal-loading" />
+    <div id="google_translate_element2"></div>
+    <script type="text/javascript" src="{% static "www_slcschools_org/js/materialize.min.js" %}"></script>
+    <script type="text/javascript">function googleTranslateElementInit2() {new google.translate.TranslateElement({pageLanguage: 'en',autoDisplay: false}, 'google_translate_element2');}</script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
+    <link type="text/css" rel="stylesheet" href="{% static "www_slcschools_org/css/materialize.min.css" %}"  media="screen,projection"/>
+    {% block pagescript %}
+    <script>textFit($('.unslider .slide-caption'))</script>
+    {% endblock %}
+  </body>
+</html>

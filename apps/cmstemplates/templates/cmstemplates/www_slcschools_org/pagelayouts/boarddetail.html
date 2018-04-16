@@ -1,0 +1,357 @@
+{% extends "cmstemplates/www_slcschools_org/layouts/contentrighttoc.html" %}
+{% load static mptt_tags %}
+
+{% block title %}
+  {{page.title}}
+{% endblock %}
+
+{% block precontent %}
+{% endblock %}
+
+{% block sidebar_first %}
+<div id="toc" class="card-content z-depth-1">
+  <div class="card-title modal-title slcschools-grey lighten-1 white-text">Table of Contents</div>
+  <a href="/contact-us/inline/?pid={{ page.uuid }}" class="btn btn-wrap btn-stretch pagefeedback uninit" onclick="$('.inlinemodal').modaal('close');">Contact Us</a>
+  <div class="table-of-contents">
+    <ul>
+      {% if page.body %}
+      <li><a href="#about" onclick="$('.inlinemodal').modaal('close');">About</a></li>
+      {% endif %}
+      {% if request.path == '/board-of-education/policies/' %}
+      {% if board_policies %}
+      <li><a href="#board_policies" onclick="$('.inlinemodal').modaal('close');">Board Policies ({{ board_policies|length }})</a></li>
+      {% endif %}
+      {% if community_policies %}
+      <li><a href="#community_policies" onclick="$('.inlinemodal').modaal('close');">Community Policies ({{ community_policies|length }})</a></li>
+      {% endif %}
+      {% if financial_policies %}
+      <li><a href="#financial_policies" onclick="$('.inlinemodal').modaal('close');">Financial Policies ({{ financial_policies|length }})</a></li>
+      {% endif %}
+      {% if general_policies %}
+      <li><a href="#general_policies" onclick="$('.inlinemodal').modaal('close');">General Policies ({{ general_policies|length }})</a></li>
+      {% endif %}
+      {% if instructional_policies %}
+      <li><a href="#instructional_policies" onclick="$('.inlinemodal').modaal('close');">Instructional Policies ({{ instructional_policies|length }})</a></li>
+      {% endif %}
+      {% if personnel_policies %}
+      <li><a href="#personnel_policies" onclick="$('.inlinemodal').modaal('close');">Personnel Policies ({{ personnel_policies|length }})</a></li>
+      {% endif %}
+      {% if student_policies %}
+      <li><a href="#student_policies" onclick="$('.inlinemodal').modaal('close');">Student Policies ({{ student_policies|length }})</a></li>
+      {% endif %}
+      {% endif %}
+      {% if request.path == '/board-of-education/board-meetings/' %}
+      <li><a href="#board_meetings" onclick="$('.inlinemodal').modaal('close');">Board Meetings</a></li>
+      {% endif %}
+      {% if  page.directoryentries_boardmember_node.all or page.directoryentries_studentboardmember_node.all%}
+      <li><a href="#members" onclick="$('.inlinemodal').modaal('close');">Board Members</a></li>
+      {% endif %}
+      {% if page.mission_statement %}
+      <li><a href="#mission" onclick="$('.inlinemodal').modaal('close');">Mission Statement</a></li>
+      {% endif %}
+      {% if page.vision_statement %}
+      <li><a href="#vision" onclick="$('.inlinemodal').modaal('close');">Vision Statement</a></li>
+      {% endif %}
+      {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
+      <li><a href="#resourcelinks" onclick="$('.inlinemodal').modaal('close');">Resources</a></li>
+      {% endif %}
+      {% if page.pages_boardsubpage_node.all or page.pages_subpage_node.all %}
+      {% for board_subpage in page.pages_boardsubpage_node.all %}
+      <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}" onclick="$('.inlinemodal').modaal('close');">{{ board_subpage.title }}</a></li>
+      {% endfor %}
+      {% for board_subpage in page.pages_subpage_node.all %}
+      <li><a href="{{ board_subpage.url }}" title="{{ board_subpage.title }}" onclick="$('.inlinemodal').modaal('close');">{{ board_subpage.title }}</a></li>
+      {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% comment %}{% block breadcrumb %}
+<div class="row">
+  <nav class="slcschools-grey lighten-2">
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <a href="/" title="Home" class="breadcrumb">Home</a>
+        {% for item in BREADCRUMB %}
+        <a href="{{ item.url }}" title="{{ item.menu_title }}" class="breadcrumb">{{ item.menu_title }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </nav>
+</div>
+{% endblock %}{% endcomment %}
+
+{% block content %}
+{% if page.images_contentbanner_node.all %}
+<div class="card">
+  <div class="unslider slcschools-grey darken-1">
+    <ul class="slides">
+      {% for banner in page.images_contentbanner_node.all %}
+      <li class="slide">
+        <img src="{{banner.image_file.url}}" alt="{{banner.alttext}}" />
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+<div class="card">
+  <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit"><span aria-hidden="true" class="material-icons left">&#xE8EF;</span><span>Table of Contents / Contact</span></a>
+  <div id="main" class="card-content">
+    <h1>{{page.title}}</h1>
+    {% if page.body %}
+    <div class="row">
+      <div id="about" class="richtext scrollspy">
+        <div class="body">
+          {{page.body|safe}}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if request.path == '/board-of-education/policies/' %}
+    <div class="row">
+  <div class="col s12">
+    <p><strong style="color: red">***Links on this page are all working but links inside these documents are being fixed. If you are are trying to open policy, administrative procedure, and other document links found inside one of these files you may need to instead open the link from this page not within the document.***</strong></p>
+  </div>
+</div>
+    {% if board_policies or community_policies or financial_policies or general_policies or instructional_policies or personnel_policies or student_policies %}
+    <div class="row">
+      <div>
+        <table class="board_policies mobileblock">
+          <thead>
+            <tr>
+              <th class="policyindex">Index</th>
+              <th>Policy Title</th>
+              <th class="rowaction">Documents</th>
+              <th class="rowaction">Contacts</th>
+            </tr>
+          </thead>
+          {% if board_policies %}
+          <tbody id="board_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Board Policies ({{ board_policies.0.section.description }})</td>
+            {% for policy in board_policies %}
+            {% include "cmstemplates/www_slcschools_org/blocks/policytable.html" %}
+            {% endfor %}
+          </tbody>
+          {% endif %}
+          {% if community_policies %}
+          <tbody id="community_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Community Policies ({{ community_policies.0.section.description }})</td>
+            {% for policy in community_policies %}
+            {% include "cmstemplates/www_slcschools_org/blocks/policytable.html" %}
+            {% endfor %}
+          </tbody>
+          {% endif %}
+          {% if financial_policies %}
+          <tbody id="financial_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Financial Policies ({{ financial_policies.0.section.description }})</td>
+            {% for policy in financial_policies %}
+            {% include "cmstemplates/www_slcschools_org/blocks/policytable.html" %}
+            {% endfor %}
+          </tbody>
+          {% endif %}
+          {% if general_policies %}
+          <tbody id="general_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">General Policies ({{ general_policies.0.section.description }})</td>
+            {% for policy in general_policies %}
+            {% include "cmstemplates/www_slcschools_org/blocks/policytable.html" %}
+            {% endfor %}
+          </tbody>
+          {% endif %}
+          {% if instructional_policies %}
+          <tbody id="instructional_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Instructional Policies ({{ instructional_policies.0.section.description }})</td>
+            {% for policy in instructional_policies %}
+            {% include "cmstemplates/www_slcschools_org/blocks/policytable.html" %}
+            {% endfor %}
+          </tbody>
+          {% endif %}
+          {% if personnel_policies %}
+          <tbody id="personnel_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Personnel Policies ({{ personnel_policies.0.section.description }})</td>
+            {% for policy in personnel_policies %}
+            {% include "cmstemplates/www_slcschools_org/blocks/policytable.html" %}
+            {% endfor %}
+          </tbody>
+          {% endif %}
+          {% if student_policies %}
+          <tbody id="student_policies" class="scrollspy">
+            <tr><td colspan="4" class="slcschools-grey white-text">Student Policies ({{ student_policies.0.section.description }})</td>
+            {% for policy in student_policies %}
+            {% include "cmstemplates/www_slcschools_org/blocks/policytable.html" %}
+            {% endfor %}
+          </tbody>
+          {% endif %}
+        </table>
+      </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% if request.path == '/board-of-education/board-meetings/' %}
+    {% if board_meetings %}
+    <div class="row">
+      <div id="board_meetings" class="scrollspy">
+        <form id="schoolyearfilter" class="textfieldboxes">
+          <select>
+            {% for year in board_meeting_years %}
+            <option value="{{ year.yearend }}" {% if currentyear.short == year.yearend %}selected="selected"{% endif %}>{{ year.title }}</option>
+            {% endfor %}
+          </select>
+        </form>
+        <table class="striped highlight mobileblock">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Location</th>
+              <th>Meeting Type</th>
+              <th class="center">Agenda</th>
+              <th class="center">Minutes</th>
+              <th class="center">Recordings</th>
+            </tr>
+          </thead>
+          <tbody>
+        {% for meeting in board_meetings %}
+        {% include "cmstemplates/www_slcschools_org/blocks/boardmeetingtable.html" %}
+        {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% if  page.directoryentries_boardmember_node.all or page.directoryentries_studentboardmember_node.all%}
+    <div class="row">
+      <div id="members" class="scrollspy contactcardlist">
+        <h2>Board Members</h2>
+        {% for admin in page.directoryentries_boardmember_node.all %}
+        {% include "cmstemplates/www_slcschools_org/blocks/admindirectorylist.html" %}
+        <!--<div class="card horizontal">
+          <div class="card-image">
+            {% for profilepicture in member.employee.images_profilepicture_node.all %}
+            <img src="{{profilepicture.image_file.url}}" alt="{{profilepicture.alttext}}"/>
+            {% empty %}
+            <img src="/users/images/placeholder.jpg" alt="No Profile Picture" />
+            {% endfor %}
+          </div>
+          <div class="card-stacked">
+            <div class="card-content">
+              <h5 class="contactcardname">{{ member.employee.first_name }} {{ member.employee.last_name }}</h5>
+              <strong>Precinct: </strong>{{ member.precinct }}<br>
+              <i class="material-icons tiny">&#xE55F;</i> {{ member.street_address }}<br>
+              <i class="material-icons tiny blank"></i> {{ member.city.title }}, {{member.state.title}} {{member.zipcode.title}}<br>
+               <a href="tel:+{{member.phone|slice:"0:1"}}-{{member.phone|slice:"1:4"}}-{{member.phone|slice:"4:7"}}-{{member.phone|slice:"7:11"}}">
+                <i class="material-icons tiny black-text">&#xE0CD;</i> {{member.phone|slice:"1:4"}}.{{member.phone|slice:"4:7"}}.{{member.phone|slice:"7:11"}}
+              </a>
+              <br/><br/>
+              <a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{member.employee.pk}}" class="btn narrow pagefeedback uninit">
+                <span class="material-icons left" aria-hidden="true">&#xE163;</span><span aria-hidden="true">Send me a message</span>
+                <span class="sr-only">Send {{ member.employee.first_name }} {{ member.employee.last_name }} a Message</span>
+              </a>
+            </div>
+          </div>
+        </div>-->
+        {% endfor %}
+        {% for member in page.directoryentries_studentboardmember_node.all %}
+        <div class="card horizontal">
+          <div class="card-image">
+            {% for profilepicture in member.images_profilepicture_node.all %}
+            <img src="{{profilepicture.image_file.url}}" alt="{{profilepicture.alttext}}"/>
+            {% empty %}
+            <img src="/users/images/placeholder.jpg" alt="No Profile Picture" />
+            {% endfor %}
+          </div>
+          <div class="card-stacked">
+            <div class="card-content">
+              <h5 class="contactcardname">{{ member.first_name }} {{ member.last_name }}</h5>
+              <strong>Student Board Member</strong><br>
+              <i class="material-icons tiny">&#xE55F;</i> {{ member.building_location.street_address }}<br>
+              <i class="material-icons tiny blank"></i> {{ member.building_location.location_city.title }}, {{member.building_location.location_state.title}} {{member.building_location.location_zipcode.title}}<br>
+               <a href="tel:+{{member.phone|slice:"0:1"}}-{{member.phone|slice:"1:4"}}-{{member.phone|slice:"4:7"}}-{{member.phone|slice:"7:11"}}">
+                <i class="material-icons tiny black-text">&#xE0CD;</i> {{member.phone|slice:"1:4"}}.{{member.phone|slice:"4:7"}}.{{member.phone|slice:"7:11"}}
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% if page.mission_statement %}
+    <div class="row">
+      <div id="mission" class="scrollspy">
+        <h2>Mission Statement</h2>
+        <blockquote>
+          {{page.mission_statement}}
+        </blockquote>
+      </div>
+    </div>
+    {% endif %}
+    {% if page.vision_statement %}
+    <div class="row">
+      <div id="vision" class="scrollspy">
+        <h2>Vision Statement</h2>
+        <blockquote>
+          {{page.vision_statement}}
+        </blockquote>
+      </div>
+    </div>
+    {% endif %}
+    {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
+    <div class="row">
+      <div id="resourcelinks" class="scrollspy">
+        <h2>Resources</h2>
+        <div class="collection">
+          {% for resourcelink in page.links_resourcelink_node.all %}
+          <a href="{{ resourcelink.link_url }}" class="collection-item">{{ resourcelink.title }} <span class="material-icons right">&#xE157;</span></a>
+          {% endfor %}
+          {% for document in page.documents_document_node.all %}
+          {% if document.files_file_node.all|length == 1 %}
+          {% for file in document.files_file_node.all %}
+          <a class="collection-item" href="{{ file.file_file.url }}" target="_blank">
+            <span class="sr-only">{{ document.title }}</span>
+            <span class="no-sr" aria-hidden="true">{{ document.title }} <span class="notranslate material-icons right">&#xE24D;</span></span>
+          </a>
+          {% endfor %}
+          {% elif document.files_file_node.all|length > 1 %}
+          <a href="#{{ document.pk }}" class="collection-item document-inline">{{ document.title }} <span class="material-icons right">&#xE24D;</span></a>
+          <div id="{{ document.pk }}" class="hide">
+            <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
+            <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
+            {% for file in document.files_file_node.all %}
+              <a class="btn stretch" href="{{ file.file_file.url }}" target="_blank">
+                  <span class="sr-only">{{ file.title }}</span>
+                  <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
+                </a>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {{ block.super }}
+</div>
+{% endblock %}
+
+{% block pagescript %}
+{{ block.super }}
+<script>
+$(document).ready(function(){
+  //$("#schoolyearfilter").change(function(event) {
+  //  $year = $(this).find(":selected").val();
+  //  $("#board_meetings table tbody tr").each(function(){
+  //    if($(this).hasClass($year)){
+  //      $(this).removeClass('hide');
+  //    } else {
+  //      $(this).addClass('hide');
+  //   }
+  //  });
+  //});
+  $("#schoolyearfilter").change();
+});
+</script>
+{% endblock %}
