@@ -21,7 +21,7 @@ urlpatterns +=[
 
 # Search Results
 urlpatterns +=[
-    url(r'^search/results/', CustomSearchView(form_class=CustomSearchForm), name="haystack_search"),
+    url(r'^search/results/', CustomSearchView.as_view(), name="haystack_search"),
 ]
 
 admin.site.site_header = 'Salt Lake City School District'
