@@ -1,7 +1,7 @@
 from django.contrib import admin
 from haystack.utils.highlighting import Highlighter
 from haystack.forms import SearchForm
-from haystack.views import SearchView
+from haystack.generic_views import SearchView
 from haystack.query import SearchQuerySet
 from haystack.query import SQ
 from haystack.inputs import AutoQuery
@@ -9,7 +9,7 @@ from ajax_select.lookup_channel import LookupChannel
 import uuid
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
-
+from django.views.generic.base import TemplateResponseMixin
 #Delete View
 from django.contrib.admin.exceptions import DisallowedModelAdminToField
 from django.contrib.admin.utils import get_deleted_objects, unquote
@@ -191,5 +191,13 @@ class CustomSearchForm(SearchForm):
 
         return sqs
 
-class CustomSearchView(SearchView):
-   pass
+class CustomSearchView(SearchView, TemplateResponseMixin):
+
+    form_class=CustomSearchForm
+
+    def get_template_names(self):
+        template_name='cmstemplates/{0}/pagelayouts/search-results.html'.format(
+            self.request.site.dashboard_general_site.template.namespace
+        )
+        return [template_name]
+
