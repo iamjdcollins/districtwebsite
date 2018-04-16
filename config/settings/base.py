@@ -299,6 +299,9 @@ CMSTEMPLATES = {
           'materialize': [
               'cmstemplates/src/frameworks/materialize/sass/materialize.scss',
           ],
+          'purecss': [
+              'cmstemplates/src/frameworks/purecss/pure-min.css',
+          ],
       },
       'fonts': {
           'md': [
@@ -312,11 +315,17 @@ CMSTEMPLATES = {
           'dashboard': [
               'cmstemplates/src/templates/dashboard/sass/dashboard.scss',
           ],
+          'material': [
+              'cmstemplates/src/templates/material/sass/material.scss',
+          ],
       },
       'themes': {
           'dashboard-standard': [
               'cmstemplates/src/themes/dashboard-standard/sass/dashboard-standard.scss',
           ],
+          'material-standard': [
+              'cmstemplates/src/themes/material-standard/sass/material-standard.scss',
+          ]
       },
     },
     'javascript': {
@@ -328,6 +337,9 @@ CMSTEMPLATES = {
         ],
         'dashboard': [
             'cmstemplates/src/js/templates/dashboard/dashboard.js',
+        ],
+        'material': [
+            'cmstemplates/src/js/templates/material/material.js',
         ],
     },
 }
@@ -345,12 +357,19 @@ PIPELINE = {
             'source_filenames': CMSTEMPLATES['css']['frameworks']['materialize'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['dashboard'] + CMSTEMPLATES['css']['themes']['dashboard-standard'],
             'output_filename': 'cmstemplates/build/dashboard-standard/dashboard-standard.min.css',
         },
-      
+        'material-standard': {
+            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['material'] + CMSTEMPLATES['css']['themes']['material-standard'],
+            'output_filename': 'cmstemplates/build/material-standard/material-standard.min.css',
+        },
     },
     'JAVASCRIPT': {
         'dashboard-standard': {
             'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['materialize'] + CMSTEMPLATES['javascript']['dashboard'],
             'output_filename': 'cmstemplates/build/dashboard-standard/dashboard-standard.min.js',
+        },
+        'material-standard': {
+            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] +  CMSTEMPLATES['javascript']['material'],
+            'output_filename': 'cmstemplates/build/material-standard/material-standard.min.js',
         },
     },
 }
