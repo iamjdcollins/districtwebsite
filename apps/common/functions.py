@@ -1278,6 +1278,18 @@ def get_webmaster(pk=True):
         return ''
 
 
+def get_default_pagelayout(pk=True):
+    PageLayout = apps.get_model('dashboard', 'pagelayout')
+    try:
+        layout = PageLayout.objects.get(title='Default')
+        if pk:
+            return layout.pk
+        else:
+            return layout
+    except PageLayout.DoesNotExist:
+        return ''
+
+
 def get_contactpage(pk=True):
     Node = apps.get_model('objects', 'node')
     try:
