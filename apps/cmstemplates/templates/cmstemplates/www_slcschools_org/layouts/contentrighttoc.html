@@ -40,13 +40,13 @@
 <script>
 $(document).ready(function(){
     $('.sidebar-first').pushpin({
-      top: $('.content.wrapper').offset().top - 60,
+      top: $('.content.wrapper').offset().top + $('.authenticated.wrapper').height() + $('.preheader.wrapper').height() + 100,
       bottom: $(document).height() - ($("footer").height() + $('.sidebar-first').height()),
       offset: $('.authenticated.wrapper').height() + $('.preheader.wrapper').height() + 60,
     });
     tocResize();
     $('.mobile-table-of-contents').pushpin({
-      top: $('.content.wrapper .main').offset().top - 60,
+      top: $('.content.wrapper').offset().top + $('.authenticated.wrapper').height() + $('.preheader.wrapper').height() + 100,
       bottom: Infinity,
       offset: $('.authenticated.wrapper').height() + $('.preheader.wrapper').height() + 60,
     });
