@@ -427,9 +427,19 @@ $(document).ready(function(){
   });
   tocResize();
   $('.authenticated').pushpin({
-      top: $('.preheader.wrapper').offset().top,
+      top: $('.authenticated.wrapper').height(),
       bottom: Infinity,
       offset: 0,
+  });
+  $('.preheader.wrapper').pushpin({
+      top: $('.authenticated.wrapper').height() + $('.preheader.wrapper').height(),
+      bottom: Infinity,
+      offset: $('.authenticated.wrapper').height(),
+  });
+  $('.header.wrapper').pushpin({
+      top: $('.authenticated.wrapper').height() + $('.preheader.wrapper').height() + $('.header.wrapper').height(),
+      bottom: Infinity,
+      offset: $('.authenticated.wrapper').height() + $('.preheader.wrapper').height(),
   });
   $('.scrollspy').scrollSpy({
     offset: 0,

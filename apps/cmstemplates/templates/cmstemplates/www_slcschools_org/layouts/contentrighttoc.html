@@ -40,15 +40,15 @@
 <script>
 $(document).ready(function(){
     $('.sidebar-first').pushpin({
-      top: $('.content.wrapper').offset().top,
+      top: $('.content.wrapper').offset().top - 60,
       bottom: $(document).height() - ($("footer").height() + $('.sidebar-first').height()),
-      offset: $('.authenticated.wrapper').height(),
+      offset: $('.authenticated.wrapper').height() + $('.preheader.wrapper').height() + 60,
     });
     tocResize();
     $('.mobile-table-of-contents').pushpin({
-      top: $('.content.wrapper .main').offset().top,
+      top: $('.content.wrapper .main').offset().top - 60,
       bottom: Infinity,
-      offset: $('.authenticated.wrapper').height(),
+      offset: $('.authenticated.wrapper').height() + $('.preheader.wrapper').height() + 60,
     });
     $(".mobile-table-of-contents select").change(function() {
       window.location = $(this).find("option:selected").val();

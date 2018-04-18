@@ -724,6 +724,28 @@ ul ul{
     width: 250px;
   }
 }
+.preheader.wrapper.pinned {
+  width: 100%;
+  z-index: 11;
+}
+.header.wrapper.pinned {
+  width: 100%;
+  z-index: 11;
+  height: 60px !important;
+}
+.header.wrapper.pinned nav {
+  height: 60px;
+  line-height: 60px;
+}
+.header.wrapper.pinned nav .material-icons {
+  line-height: 60px;
+  height: 60px;
+}
+.header.wrapper.pinned .brand-logo {
+  margin: 10px 0;
+  height: 40px;
+  width: 134px;
+}
 .slider .indicators .indicator-item.active{
   background-color: $slcschools-teal-lighten-1 !important;
 }
