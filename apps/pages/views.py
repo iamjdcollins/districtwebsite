@@ -1078,6 +1078,7 @@ def add_additional_context(request, context, node):
                 context['charter_schools_directory'].append(school)
             if school.schooltype.title == 'Community Learning Centers':
                 context['community_learning_centers_directory'].append(school)
+        context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
     if request.path == '/schools/elementary-schools/':
         schools = (
             School
