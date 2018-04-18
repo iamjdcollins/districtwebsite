@@ -174,6 +174,7 @@ class EditLinkToInlineObject(object):
         else:
             return ''
 
+
 class CustomSearchForm(SearchForm):
 
     def search(self):
@@ -191,6 +192,7 @@ class CustomSearchForm(SearchForm):
 
         return sqs
 
+
 class CustomSearchView(SearchView, TemplateResponseMixin):
 
     form_class=CustomSearchForm
@@ -200,4 +202,3 @@ class CustomSearchView(SearchView, TemplateResponseMixin):
             self.request.site.dashboard_general_site.template.namespace
         )
         return [template_name]
-
