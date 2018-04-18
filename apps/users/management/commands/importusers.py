@@ -61,6 +61,7 @@ def importUser(item, account, departments, all_adult_staff, website_managers):
     obj.job_title = job_title_titlecase(item)
     obj.department = directory_department(item,departments)
     obj.is_staff = True
+    obj.is_active = True
     if str(item.extensionAttribute1).lower().startswith('n-'):
         obj.non_employee = True
     else:
