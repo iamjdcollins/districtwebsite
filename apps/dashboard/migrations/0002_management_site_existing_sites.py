@@ -14,7 +14,7 @@ def create_management_site(apps, schema_editor):
     site.name = 'Website Management'
     site.save()
     alias, created = Alias.objects.get_or_create(
-        domain='websites-test.slcschools.org',
+        domain='websites-dev.slcschools.org',
         is_canonical=None,
         redirect_to_canonical=False,
         site=site
