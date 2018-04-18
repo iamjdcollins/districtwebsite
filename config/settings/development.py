@@ -3,7 +3,7 @@ from .base import *
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'schools-dev.slcschools.org',
+    'websites-dev.slcschools.org',
     'www-dev.slcschools.org',
     'horizonte-dev.slcschools.org',
 ]

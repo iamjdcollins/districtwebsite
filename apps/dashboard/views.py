@@ -163,7 +163,7 @@ class Sites(SAMLLoginRequiredMixin, TemplateView):
     template_name = 'cmstemplates/dashboard/sites.html'
 
     def get(self, request, *args, **kwargs):
-        if request.site.domain != 'schools.slcschools.org':
+        if request.site.domain != 'websites.slcschools.org':
             return BaseURL.as_view()(self.request)
         context = self.get_context_data()
         return self.render_to_response(context)
@@ -193,7 +193,7 @@ class SitesAdd(SAMLLoginRequiredMixin, TemplateView):
         return redirect('dashboard:sites')
 
     def get(self, request, *args, **kwargs):
-        if request.site.domain != 'schools.slcschools.org':
+        if request.site.domain != 'websites.slcschools.org':
             return BaseURL.as_view()(self.request)
         context = self.get_context_data()
         return self.render_to_response(context)
@@ -210,7 +210,7 @@ class Templates(SAMLLoginRequiredMixin, TemplateView):
     template_name = 'cmstemplates/dashboard/templates.html'
 
     def get(self, request, *args, **kwargs):
-        if request.site.domain != 'schools.slcschools.org':
+        if request.site.domain != 'websites.slcschools.org':
             return BaseURL.as_view()(self.request)
         context = self.get_context_data()
         return self.render_to_response(context)
@@ -241,7 +241,7 @@ class TemplatesAdd(SAMLLoginRequiredMixin, TemplateView):
         return redirect('dashboard:templates')
 
     def get(self, request, *args, **kwargs):
-        if request.site.domain != 'schools.slcschools.org':
+        if request.site.domain != 'websites.slcschools.org':
             return BaseURL.as_view()(self.request)
         context = self.get_context_data()
         return self.render_to_response(context)
@@ -258,7 +258,7 @@ class PageLayouts(SAMLLoginRequiredMixin, TemplateView):
     template_name = 'cmstemplates/dashboard/pagelayouts.html'
 
     def get(self, request, *args, **kwargs):
-        if request.site.domain != 'schools.slcschools.org':
+        if request.site.domain != 'websites.slcschools.org':
             return BaseURL.as_view()(self.request)
         context = self.get_context_data()
         return self.render_to_response(context)
@@ -289,7 +289,7 @@ class PageLayoutsAdd(SAMLLoginRequiredMixin, TemplateView):
         return redirect('dashboard:pagelayouts')
 
     def get(self, request, *args, **kwargs):
-        if request.site.domain != 'schools.slcschools.org':
+        if request.site.domain != 'websites.slcschools.org':
             return BaseURL.as_view()(self.request)
         context = self.get_context_data()
         return self.render_to_response(context)

@@ -239,7 +239,7 @@ class GeneralSettings(models.Model):
         if self.primary_domain and self.primary_domain != self.site.domain:
             self.site.domain = self.primary_domain
             self.site.save()
-        if self.primary_domain == 'schools.slcschools.org':
+        if self.primary_domain == 'websites.slcschools.org':
             for item in GeneralSettings.objects.exclude(pk=self.pk):
                 item.nd_statement = self.nd_statement
                 item.ada_statement = self.ada_statement

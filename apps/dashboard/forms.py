@@ -15,7 +15,7 @@ class GeneralSettingsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(GeneralSettingsForm, self).__init__(*args, **kwargs)
         self.fields['template'].empty_label = 'Select Template'
-        if kwargs['instance'].primary_domain != 'schools.slcschools.org':
+        if kwargs['instance'].primary_domain != 'websites.slcschools.org':
             self.fields['nd_statement'].widget = forms.Textarea()
             self.fields['nd_statement'].disabled = True
             self.fields['ada_statement'].widget = forms.Textarea()
