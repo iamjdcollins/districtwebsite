@@ -184,7 +184,10 @@
         {% block precontent %}
         <div class="unslider slcschools-grey darken-1">
           <ul class="slides">
-            <li class="slide" data-nav="Second Slide">
+            <li class="slide" data-nav="First Slide">
+              <img src="/static/www_slcschools_org/images/we-are-slcsd-2.jpg" alt="We are Salt Lake City School District" height="500" width="1500">
+            </li>
+            <!--<li class="slide" data-nav="Second Slide">
               <img src="/static/www_slcschools_org/images/concrete-seamless.jpg" alt="Pattern Background" height="500" width="1500">
               <div class="row">
                 <div class="col s12">
@@ -195,21 +198,20 @@
                   </div>
                 </div>
               </div>
-            </li>
-            <li class="slide" data-nav="Third Slide">
-              <img src="/static/www_slcschools_org/images/snowman-background.jpg" alt="Snowman" height="500" width="1500">
+            </li>-->
+            <li class="slide" data-nav="Graduation Slide">
+              <img src="/static/www_slcschools_org/images/graduation-banner2.jpg" alt="Graduation Image" height="500" width="1500">
               <div class="row">
                 <div class="col s12">
                   <div class="caption center-align" style="height:100%;left:0;">
-                    <span class="slide-caption" style="position: absolute;top: 0;left: 0px;width: 100%; height: 100%;">School Closure and Delayed Start Guidelines</span>
-                    <a href="/departments/communications-and-community-relations/guidelines-on-closures-delayed-starts-and-early-releases/" class="btn" style="position: absolute;top: 70%;left: 40%;">Click for Guidelines</a>
+                    <!--<span class="slide-caption" style="position: absolute;top: 0;left: 0px;width: 100%; height: 100%;">School Closure and Delayed Start Guidelines</span>-->
+                    <a href="/news/2017-18/high-school-graduations/" class="btn" style="position: absolute;top: 70%;left: 40%;">More Information</a>
                   </div>
                 </div>
               </div>
             </li>
           </ul>
         </div>
-
         {% endblock %}
       </div>
       <div class="breadcrumbs wrapper">
@@ -382,6 +384,7 @@
     <script type="text/javascript">function googleTranslateElementInit2() {new google.translate.TranslateElement({pageLanguage: 'en',autoDisplay: false}, 'google_translate_element2');}</script>
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
     <link type="text/css" rel="stylesheet" href="{% static "www_slcschools_org/css/materialize.min.css" %}"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="{% static "www_slcschools_org/css/print.css" %}"  media="print"/>
     {% block pagescript %}
     <script>textFit($('.unslider .slide-caption'))</script>
     {% endblock %}

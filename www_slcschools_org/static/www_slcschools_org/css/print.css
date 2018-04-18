@@ -1,0 +1,23 @@
+body{
+        display: block;
+}
+.skipto,
+.authenticated.wrapper,
+.preheader.wrapper,
+.header.wrapper,
+.precontent.wrapper,
+.breadcrumbs.wrapper,
+.sidebar-first,
+.main .mobile-table-of-contents,
+.main .card-action,
+.main .yearnav,
+footer,
+#backtotop,
+.hide,
+.sr-only,
+#google_translate_element2,
+.material-icons,
+.material-tooltip,
+.modal-loading{
+    display: none !important;
+}
