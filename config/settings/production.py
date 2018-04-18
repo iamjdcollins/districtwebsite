@@ -1,6 +1,11 @@
 from .base import *
 
-ALLOWED_HOSTS = ['www.slcschools.org','www2.slcschools.org',]
+ALLOWED_HOSTS = [
+    'websites.slcschools.org',
+    'www.slcschools.org',
+    'www2.slcschools.org',
+    'horizonte.slcschools.org',
+]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'slcschools-org.mail.protection.outlook.com'
