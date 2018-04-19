@@ -374,6 +374,9 @@ a:focus{
   right: 18px !important;
   left: initial !important;
 }
+#main iframe {
+  width: 100%;
+}
 /* Search */
 .search-results .result {
   position: relative;
