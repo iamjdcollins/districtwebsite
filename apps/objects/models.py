@@ -33,6 +33,7 @@ class Node(MPTTModel):
         blank=False,
         null=False,
         on_delete=models.PROTECT,
+        default=get_default_pagelayout,
     )
     parent = TreeForeignKey(
       'self',
