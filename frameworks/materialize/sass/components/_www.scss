@@ -377,6 +377,9 @@ a:focus{
 #main iframe {
   width: 100%;
 }
+.btn, .btn-large, .modaal-mainmenu ul li a, .modaal-fulltranslationlist ul li a, .modaal-yearnav ul li a, .btn-flat {
+  border-radius: 0;
+}
 /* Search */
 .search-results .result {
   position: relative;
