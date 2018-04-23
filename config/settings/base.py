@@ -263,7 +263,7 @@ CKEDITOR_CONFIGS = {
             ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
             ['NumberedList', 'BulletedList'],
             #['Link', 'Unlink'],
-            ['Image'],
+            ['Image', 'Iframe'],
             ['Table', 'HorizontalRule'],
             ['Source'],
             ['Departments',],
@@ -273,11 +273,11 @@ CKEDITOR_CONFIGS = {
         'autoGrow_maxHeight': 0,
         'autoGrow_onStartup': True,
         'extraPlugins': ','.join([
-            'autogrow','departments',
+            'autogrow', 'departments',
         ]),
         'disableNativeSpellChecker': False,
         #'allowedContent': 'p h3 h4 h5 h6 strong em u s ol ul li table caption thead tbody tr th td hr br',
-        'extraAllowedContent': 'a(!relink)[!data-id]',
+        'extraAllowedContent': 'a(!relink)[!data-id] iframe[*]',
     }
 }
 HAYSTACK_CONNECTIONS = {
