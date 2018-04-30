@@ -202,6 +202,7 @@ class NewsInline(EditLinkToInlineObject, admin.TabularInline):
         'update_user',
         'update_date',
         'edit_link',
+        'published',
         ]
     readonly_fields = [
         'update_user',
