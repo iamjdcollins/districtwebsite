@@ -429,46 +429,53 @@ def modelsave(self, *args, **kwargs):
     for field in self._meta.fields:
         if field.__class__ == RichTextField:
             field_value = getattr(self, field.name)
-            links = re.findall(r'<a .*?</a>', field_value)
-            for link in links:
-                url = re.search(
-                    r'(?:href)=\"(.*?)\"',
-                    link,
-                ).groups()[0]
-                data_processed = re.search(
-                    r'(?:data-processed)=\"(.*?)\"',
-                    link,
-                ).groups()[0]
-                if url != data_processed:
-                    url_parsed = urlparse(url)
+            if field_value:
+                links = re.findall(r'<a .*?</a>', field_value)
+                for link in links:
                     try:
-                        site = Alias.objects.get(domain=url_parsed.netloc).site
-                    except Alias.DoesNotExist:
-                        site = None
+                        url = re.search(
+                            r'(?:href)=\"(.*?)\"',
+                            link,
+                        ).groups()[0]
+                    except AttributeError:
+                        url = ''
                     try:
-                        if site:
-                            node = Node.objects.get(url=url_parsed.path, site=site)
-                        else:
+                        data_processed = re.search(
+                            r'(?:data-processed)=\"(.*?)\"',
+                            link,
+                        ).groups()[0]
+                    except AttributeError:
+                        data_processed = ''
+                    if url != data_processed:
+                        url_parsed = urlparse(url)
+                        try:
+                            site = Alias.objects.get(domain=url_parsed.netloc).site
+                        except Alias.DoesNotExist:
+                            site = None
+                        try:
+                            if site:
+                                node = Node.objects.get(url=url_parsed.path, site=site)
+                            else:
+                                node = None
+                        except Node.DoesNotExist:
                             node = None
-                    except Node.DoesNotExist:
-                        node = None
-                    rx = r'{0}'.format(link)
-                    # rr = re.sub(r'href=\"', 'data-id="', link)
-                    rr = link
-                    if node:
-                        rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(str(node.pk)), rr)
-                    else:
-                        rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(''), rr)
-                    # inlinelink = re.search('inlinelink', rr)
-                    # classes = re.search(r'<a.*?class=\"(.*?)\".*?>', rr).group(1).split(' ')
-                    # rr = re.sub(r'<a(.*?)class=\".*?\"(.*?)>', r'<a\1\2>', rr)
-                    # if inlinelink:
-                    #     rr = re.sub(r'<a ', '<a class="relink inlinelink" ', rr)
-                    # else:
-                    #     rr = re.sub(r'<a ', '<a class="relink" ', rr)
-                    rr = re.sub(r'data-processed=\".*?\"', 'data-processed="{0}"'.format(url), rr)
-                    rr = re.sub(r'[ ]+', ' ', rr)
-                    field_value = re.sub(re.escape(rx), rr, field_value)
+                        rx = r'{0}'.format(link)
+                        # rr = re.sub(r'href=\"', 'data-id="', link)
+                        rr = link
+                        if node:
+                            rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(str(node.pk)), rr)
+                        else:
+                            rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(''), rr)
+                        # inlinelink = re.search('inlinelink', rr)
+                        # classes = re.search(r'<a.*?class=\"(.*?)\".*?>', rr).group(1).split(' ')
+                        # rr = re.sub(r'<a(.*?)class=\".*?\"(.*?)>', r'<a\1\2>', rr)
+                        # if inlinelink:
+                        #     rr = re.sub(r'<a ', '<a class="relink inlinelink" ', rr)
+                        # else:
+                        #     rr = re.sub(r'<a ', '<a class="relink" ', rr)
+                        rr = re.sub(r'data-processed=\".*?\"', 'data-processed="{0}"'.format(url), rr)
+                        rr = re.sub(r'[ ]+', ' ', rr)
+                        field_value = re.sub(re.escape(rx), rr, field_value)
             setattr(self, field.name, field_value)
 
     # Save the item

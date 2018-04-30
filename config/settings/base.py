@@ -136,6 +136,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = None
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
