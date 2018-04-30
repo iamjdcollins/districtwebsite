@@ -2,6 +2,7 @@ import os
 import shutil
 import re
 import uuid
+from urllib.parse import urlparse
 from django.conf import settings
 from django.apps import apps
 from django.core.mail import EmailMessage
@@ -10,6 +11,7 @@ from guardian.shortcuts import get_perms
 from django.core.exceptions import FieldDoesNotExist
 from django.utils import timezone
 from datetime import timedelta
+from ckeditor.fields import RichTextField
 # Required for response change
 import base64
 from django.utils.translation import ugettext as _
@@ -299,6 +301,7 @@ def modelsave(self, *args, **kwargs):
         settings.STATIC_ROOT = os.path.join(settings.MEDIA_ROOT, 'static')
     Node = apps.get_model('objects', 'node')
     User = apps.get_model('objects', 'user')
+    Alias = apps.get_model('multisite', 'alias')
     # Is this a new instance?
     is_new = self._state.adding
     # Set deleted prefix
@@ -422,6 +425,52 @@ def modelsave(self, *args, **kwargs):
         self.has_permissions = True
     else:
         self.has_permissions = False
+    # Fix richtext anchor tags
+    for field in self._meta.fields:
+        if field.__class__ == RichTextField:
+            field_value = getattr(self, field.name)
+            links = re.findall(r'<a .*?</a>', field_value)
+            for link in links:
+                url = re.search(
+                    r'(?:href)=\"(.*?)\"',
+                    link,
+                ).groups()[0]
+                data_processed = re.search(
+                    r'(?:data-processed)=\"(.*?)\"',
+                    link,
+                ).groups()[0]
+                if url != data_processed:
+                    url_parsed = urlparse(url)
+                    try:
+                        site = Alias.objects.get(domain=url_parsed.netloc).site
+                    except Alias.DoesNotExist:
+                        site = None
+                    try:
+                        if site:
+                            node = Node.objects.get(url=url_parsed.path, site=site)
+                        else:
+                            node = None
+                    except Node.DoesNotExist:
+                        node = None
+                    rx = r'{0}'.format(link)
+                    # rr = re.sub(r'href=\"', 'data-id="', link)
+                    rr = link
+                    if node:
+                        rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(str(node.pk)), rr)
+                    else:
+                        rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(''), rr)
+                    # inlinelink = re.search('inlinelink', rr)
+                    # classes = re.search(r'<a.*?class=\"(.*?)\".*?>', rr).group(1).split(' ')
+                    # rr = re.sub(r'<a(.*?)class=\".*?\"(.*?)>', r'<a\1\2>', rr)
+                    # if inlinelink:
+                    #     rr = re.sub(r'<a ', '<a class="relink inlinelink" ', rr)
+                    # else:
+                    #     rr = re.sub(r'<a ', '<a class="relink" ', rr)
+                    rr = re.sub(r'data-processed=\".*?\"', 'data-processed="{0}"'.format(url), rr)
+                    rr = re.sub(r'[ ]+', ' ', rr)
+                    field_value = re.sub(re.escape(rx), rr, field_value)
+            setattr(self, field.name, field_value)
+
     # Save the item
     super(self._meta.model, self).save(*args, **kwargs)
     # Move Directories for children then parent.
