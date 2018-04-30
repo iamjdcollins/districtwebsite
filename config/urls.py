@@ -24,6 +24,11 @@ urlpatterns +=[
     url(r'^search/results/', CustomSearchView.as_view(), name="haystack_search"),
 ]
 
+# Media Library
+urlpatterns +=[
+    url(r'^medialibrary/', include('apps.medialibrary.urls', namespace='medialibrary')),
+]
+
 admin.site.site_header = 'Salt Lake City School District'
 admin.site.index_title = ('Salt Lake City School District')
 admin.site.site_title = ('Salt Lake City School District')
