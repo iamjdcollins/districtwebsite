@@ -201,7 +201,41 @@ Material Icons
 .md-facebook:before {
   content: "\4b";
 }
-
+a.relink{
+  display: none;
+}
+a.relink.active{
+  display: inline;
+}
+.inlineimage{
+  position: relative;
+}
+.inlineimage.fullcenter .inlineimage-img{
+  display: block;
+  margin: auto;
+}
+.inlineimage.fullstretch .inlineimage-img{
+  width: 100% !important;
+}
+.inlineimage.padleft{
+  padding-left: 20px;
+}
+.inlineimage.padright{
+  padding-right: 20px;
+}
+.inlineimage.padtop{
+  padding-top: 20px;
+}
+.inlineimage.padbottom{
+  padding-bottom: 20px;
+}
+.inlineimage a.active{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
 /* Unslider Styles */
 
 .unslider img{
@@ -244,6 +278,11 @@ Material Icons
 }
 .unslider .unslider-nav ol li.unslider-active {
     background-color: #4685aa !important;
+}
+.selfclear:after{
+  content: "";
+  display: table;
+  clear: both;
 }
 /* Modaal Styles */
 

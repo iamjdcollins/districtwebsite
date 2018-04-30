@@ -1,0 +1,35 @@
+.selfclear::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+img.responsive-img, video.responsive-video {
+  max-width: 100%;
+  height: auto;
+}
+.left {
+  float: left !important;
+}
+.right{
+  float: right !important;
+}
+.inlineimage.fullcenter .inlineimage-img{
+  display: block;
+  margin: auto;
+}
+.inlineimage.fullstretch .inlineimage-img{
+  width: 100% !important;
+}
+.inlineimage.padleft{
+  padding-left: 20px;
+}
+.inlineimage.padright{
+  padding-right: 20px;
+}
+.inlineimage.padtop{
+  padding-top: 20px;
+}
+.inlineimage.padbottom{
+  padding-bottom: 20px;
+}
+
