@@ -1600,16 +1600,7 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
   response_change = apps.common.functions.response_change
 
 
-class NewsAdminForm(forms.ModelForm):
-    body = forms.CharField(widget=CKEditorWidget(config_name='news'))
-    class Meta:
-        model = News
-        fields = ('body',)
-
-
 class NewsAdmin(MPTTModelAdmin,GuardedModelAdmin):
-
-  form = NewsAdminForm
 
   def get_fields(self, request, obj=None):
       fields = ['title','pinned','summary','body','author_date',['update_user','update_date',],['create_user','create_date',],]
