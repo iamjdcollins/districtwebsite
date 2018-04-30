@@ -1,5 +1,5 @@
 {% extends "cmstemplates/www_slcschools_org/layouts/contentrighttoc.html" %}
-{% load static mptt_tags guardian_tags %}
+{% load static mptt_tags guardian_tags relink %}
 
 {% block title %}
   News {{page.title}}
@@ -66,7 +66,7 @@
     <div class="row">
       <div id="about" class="richtext scrollspy">
         <div class="body">
-          {{page.body|safe}}
+          {{page.body|safe|relink}}
         </div>
       </div>
       {% if page.images_photogallery_node.all %}
