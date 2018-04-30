@@ -5,22 +5,30 @@ from apps.objects.models import Node
 
 register = template.Library()
 
-nodes = Node.objects.filter(node_type='pages').filter(content_type='department').only('pk','node_title','url')
+nodes = Node.objects.all().only('pk', 'node_title', 'url')
 nodes_dict = {}
 for node in nodes:
-    nodes_dict[str(node.pk)] = {'node_title': node.node_title,'url': node.url}
+    nodes_dict[str(node.pk)] = {'node_title': node.node_title, 'url': node.url}
 
-def linked(match,nodes=nodes_dict):
-    if match.group(1) in nodes:
-        title = nodes[match.group(1)]['node_title']
-        url = nodes[match.group(1)]['url']
+
+def linked(match, nodes=nodes_dict):
+    try:
+        id = re.search(r'data-id=\"(.*?)\"', match.group(1)).group(1)
+    except IndexError:
+        return ''
+    if id in nodes:
+        url = nodes[id]['url']
     else:
-        title = match.group(2)
-        url = match.group(1)
-    value = '<a href="' + url  + '" class="relink linked" data-id="' + match.group(1) + '">' + match.group(2) + '</a>'
+        url = False
+    value = match.group(1)
+    if url:
+        value = re.sub(r'href=\".*?\"', 'href="{0}"'.format(url), value)
+    value = re.sub(r'relink', 'relink linked', value)
+    value = '<a {0}</a>'.format(value)
     return value
 
-@register.filter(name='relink',is_safe=True)
+
+@register.filter(name='relink', is_safe=True)
 def relink(value):
-    value = re.sub(r'<a class=\"relink\" data-id=\"(.*)\">(.*?)</a>',linked,value)
+    value = re.sub(r'<a (.*?)</a>', linked, value)
     return mark_safe(value)
