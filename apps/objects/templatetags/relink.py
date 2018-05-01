@@ -12,18 +12,19 @@ for node in nodes:
 
 
 def linked(match, nodes=nodes_dict):
-    try:
-        id = re.search(r'data-id=\"(.*?)\"', match.group(1)).group(1)
-    except IndexError:
-        return ''
-    if id in nodes:
-        url = nodes[id]['url']
-    else:
-        url = False
     value = match.group(1)
-    if url:
-        value = re.sub(r'href=\".*?\"', 'href="{0}"'.format(url), value)
-    value = re.sub(r'relink', 'relink linked', value)
+    if re.search('relink', match.group(1)):
+        try:
+            id = re.search(r'data-id=\"(.*?)\"', match.group(1)).group(1)
+        except IndexError:
+            return ''
+        if id in nodes:
+            url = nodes[id]['url']
+        else:
+            url = False
+        if url:
+            value = re.sub(r'href=\".*?\"', 'href="{0}"'.format(url), value)
+        value = re.sub(r'relink', 'relink linked', value)
     value = '<a {0}</a>'.format(value)
     return value
 

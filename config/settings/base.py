@@ -16,6 +16,8 @@ from multisite import SiteID
 # Django Multisite SiteID
 SITE_ID = SiteID(default=1)
 
+ADMINS = [('Jordan Collins', 'jordan.collins@slcschools.org'),]
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
