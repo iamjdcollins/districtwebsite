@@ -2117,6 +2117,19 @@ def contactmessage_get(request):
             form.fields['primary_contact'].initial = str(Node.objects.get(pk=form.fields['parent'].initial).primary_contact.pk)
         except:
             form.fields['primary_contact'].initial = str(User.objects.get(username='webmaster@slcschools.org').pk)
+    try:
+        message_to = User.objects.get(
+            pk=form.fields['primary_contact'].initial
+        )
+    except User.DoesNotExist:
+        message_to = User.objects.get(
+            username='webmaster@slcschools.org',
+        )
+    form.fields['message_to'].initial = '{0} {1}'.format(
+        message_to.first_name,
+        message_to.last_name,
+    )
+    form.fields['message_to'].disabled = True
     return form
 
 

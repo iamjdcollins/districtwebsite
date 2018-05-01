@@ -46,10 +46,13 @@ def contactmessage_confirm(self):
 def contactmessage_message(self):
     email = EmailMessage(
         'WEBSITE CONTACT: ' + self.message_subject,
-        ('<p><strong>From:</strong> {0}</p><p><strong>Page:</strong> '
-         '<a href="https://www.slcschools.org{1}">https://www.slcschools.org'
-         '{1}</a></p><p><strong>Message:</strong><br>{2}</p>').format(
+        ('<p><strong>From:</strong> {0}: {1}</p>'
+         '<p><strong>To:</strong> {2}</p><p><strong>Page:</strong> '
+         '<a href="https://www.slcschools.org{3}">https://www.slcschools.org'
+         '{3}</a></p><p><strong>Message:</strong><br>{4}</p>').format(
             self.your_name,
+            self.your_email,
+            self.primary_contact.email,
             self.parent.url,
             self.your_message
             ),

@@ -14,6 +14,12 @@ class ContactMessage(BaseContactMessage):
         max_length=200,
         help_text='',
     )
+    message_to = models.CharField(
+        max_length=400,
+        null=True,
+        blank=True,
+        help_text='',
+    )
     your_name = models.CharField(
         max_length=200,
         help_text='',

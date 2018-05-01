@@ -3,6 +3,12 @@
     {% csrf_token %}
     <div class="input-field col s12">
       <span class="material-icons prefix" aria-hidden="true">&#xE7FD;</span>
+      {{ form.message_to.errors }}
+      {{ form.message_to }}
+      <label class="active" for="{{ form.message_to.id_for_label}}">Message To</label>
+    </div>
+    <div class="input-field col s12">
+      <span class="material-icons prefix" aria-hidden="true">&#xE7FD;</span>
       {{ form.your_name.errors }}
       {{ form.your_name }}
       <label for="{{ form.your_name.id_for_label}}">Your Name</label>

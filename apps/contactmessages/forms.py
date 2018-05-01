@@ -6,7 +6,16 @@ class ContactMessageForm(forms.ModelForm):
 
     class Meta:
         model = ContactMessage
-        fields = ('your_name', 'your_email', 'message_subject', 'your_message', 'our_message', 'parent','primary_contact',)
+        fields = (
+            'message_to',
+            'your_name',
+            'your_email',
+            'message_subject',
+            'your_message',
+            'our_message',
+            'parent',
+            'primary_contact',
+        )
 
     def __init__(self, *args, **kwargs):
         super(ContactMessageForm, self).__init__(*args, **kwargs)
