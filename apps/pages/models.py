@@ -579,7 +579,7 @@ class News(BasePage):
         help_text="",
     )
     summary = RichTextField(
-        max_length=400,
+        max_length=1000,
         null=True,
         blank=True,
         help_text="",
