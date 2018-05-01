@@ -2190,3 +2190,13 @@ def node_lookup(request):
         context['page'] = context['page'].first()
         context['pageopts'] = context['page']._meta
         return render(request, template, context)
+    if node.node_type == 'files':
+        item = (Model
+                .objects
+                .get(pk=node.pk)
+                )
+        response = HttpResponse()
+        response['Content-Type'] = ''
+        response['X-Accel-Redirect'] = item.file_file.url
+        response['Content-Disposition'] = 'filename=test.pdf'
+        return response
