@@ -102,9 +102,13 @@
               <strong>Date: </strong>{{ event.startdate|date:"l, F j, Y" }}
               {% endif %}
             </div>
-            {% if event.building_location %}
+            {% if event.building_location or event.non_district_location %}
             <div class="location">
-              <a href="{{ event.building_location.google_place }}"><span class="material-icons tiny black-text"></span>{{ event.building_location }}</a>
+              {% if event.non_district_location_google_place or event.building_location %}
+              <a href="{% if event.non_district_location_google_place %}{{ event.non_district_location_google_place }}{% else %}{{ event.building_location.google_place }}{% endif %}"><span class="material-icons tiny black-text"></span>{% if event.non_district_location %}{{ event.non_district_location }}{% else %}{{ event.building_location }}{% endif %}</a>
+              {% else %}
+              <span class="material-icons tiny black-text"></span> {{ event.non_district_location }}
+              {% endif %}
             </div>
             {% endif %}
           {% endfor %}
