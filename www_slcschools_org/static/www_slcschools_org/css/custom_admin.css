@@ -103,3 +103,6 @@ div.inline-group table.ui-sortable tr.form-row.has_original td.drag {
   clip: rect(0,0,0,0);
   border: 0;
 }
+.file-upload a {
+  display: none;
+}
