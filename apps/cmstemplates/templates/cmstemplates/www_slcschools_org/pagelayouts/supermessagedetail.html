@@ -51,7 +51,7 @@
     <ul class="slides">
       {% for bannerimage in page.images_contentbanner_node.all %}
       <li class="slide">
-        <img src="{{bannerimage.image_file.url }}" alt="{{bannerimage.alttext}}" />
+        <img src="{{bannerimage.url }}" alt="{{bannerimage.alttext}}" />
       </li>
       {% endfor %}
     </ul>
@@ -83,7 +83,7 @@
         <div class="grid" data-isotope='{ "itemSelector": ".grid-item", "layoutMode": "masonry", "percentPosition": true, "masonry": { "columnWidth": ".grid-sizer" } }'>
           {% for image in gallery.images_photogalleryimage_node.all %}
           <div class="grid-sizer"></div>
-          <a href="{{ image.image_file.url }}" rel="{{ gallery.pk }}" class="photogallery">
+          <a href="{{ image.url }}" rel="{{ gallery.pk }}" class="photogallery">
             <span class="sr-only">Open the photo gallery: {{ gallery.title }}</span>
             <img src="{{ image.isotope.url }}" alt="{{ image.alttext }}" class="responsive-img grid-item">
           </a>

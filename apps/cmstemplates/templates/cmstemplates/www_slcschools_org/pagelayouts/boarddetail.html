@@ -90,7 +90,7 @@
     <ul class="slides">
       {% for banner in page.images_contentbanner_node.all %}
       <li class="slide">
-        <img src="{{banner.image_file.url}}" alt="{{banner.alttext}}" />
+        <img src="{{banner.url}}" alt="{{banner.alttext}}" />
       </li>
       {% endfor %}
     </ul>
@@ -230,7 +230,7 @@
         <!--<div class="card horizontal">
           <div class="card-image">
             {% for profilepicture in member.employee.images_profilepicture_node.all %}
-            <img src="{{profilepicture.image_file.url}}" alt="{{profilepicture.alttext}}"/>
+            <img src="{{profilepicture.url}}" alt="{{profilepicture.alttext}}"/>
             {% empty %}
             <img src="/users/images/placeholder.jpg" alt="No Profile Picture" />
             {% endfor %}
@@ -257,7 +257,7 @@
         <div class="card horizontal">
           <div class="card-image">
             {% for profilepicture in member.images_profilepicture_node.all %}
-            <img src="{{profilepicture.image_file.url}}" alt="{{profilepicture.alttext}}"/>
+            <img src="{{profilepicture.url}}" alt="{{profilepicture.alttext}}"/>
             {% empty %}
             <img src="/users/images/placeholder.jpg" alt="No Profile Picture" />
             {% endfor %}
