@@ -259,26 +259,36 @@ def movechildren(self):
 
 # Upload Image Functions
 def image_upload_to(instance, filename):
-    url = instance.url[1:]
-    title = urlclean_objname(instance.file_name(instance))
     original_file, original_extension = findfileext_media(filename)
-    extension = urlclean_fileext(original_extension)
-    full_path = '{0}{1}{2}'.format(url, title, extension)
+    folder_path = '{0}/{1}'.format(
+        instance.site.dashboard_general_site.pk,
+        instance.pk,
+    )
+    full_path = '{0}/{1}/{1}{2}'.format(
+        instance.site.dashboard_general_site.pk,
+        instance.pk,
+        original_extension,
+    )
+    # raise Exception('test')
     if not instance.image_file._committed:
-        silentdelete_media(settings.MEDIA_ROOT + '/' + full_path)
+        silentdelete_media(settings.MEDIA_ROOT + '/' + folder_path)
     return full_path
 
 
 # Upload File Functions
 def file_upload_to(instance, filename):
-    parentobject = nodefindobject(instance.parent)
-    url = instance.url[1:]
-    title = urlclean_objname(parentobject.file_name(instance))
     original_file, original_extension = findfileext_media(filename)
-    extension = urlclean_fileext(original_extension)
-    full_path = '{0}{1}{2}'.format(url, title, extension)
+    folder_path = '{0}/{1}'.format(
+        instance.site.dashboard_general_site.pk,
+        instance.pk,
+    )
+    full_path = '{0}/{1}/{1}{2}'.format(
+        instance.site.dashboard_general_site.pk,
+        instance.pk,
+        original_extension,
+    )
     if not instance.file_file._committed:
-        silentdelete_media(settings.MEDIA_ROOT + '/' + full_path)
+        silentdelete_media(settings.MEDIA_ROOT + '/' + folder_path)
     return full_path
 
 
@@ -298,10 +308,6 @@ def precinct_map_upload_to(instance, filename):
 def modelsave(self, *args, **kwargs):
     if not self.site:
         raise Exception('site not set for object. cannot be saved.')
-    else:
-        settings.DATA_DIR = '/srv/nginx/' + self.site.domain
-        settings.MEDIA_ROOT = os.path.join(settings.DATA_DIR)
-        settings.STATIC_ROOT = os.path.join(settings.MEDIA_ROOT, 'static')
     Node = apps.get_model('objects', 'node')
     User = apps.get_model('objects', 'user')
     Alias = apps.get_model('multisite', 'alias')
