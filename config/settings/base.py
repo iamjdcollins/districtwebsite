@@ -16,7 +16,9 @@ from multisite import SiteID
 # Django Multisite SiteID
 SITE_ID = SiteID(default=1)
 
-ADMINS = [('Jordan Collins', 'jordan.collins@slcschools.org'),]
+ADMINS = [
+    ('Jordan Collins', 'jordan.collins@slcschools.org'),
+]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,7 +35,7 @@ DEBUG = False
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-#SAML
+# SAML
 SAML2_AUTH = {
     'METADATA_AUTO_CONF_URL': 'https://adfs.slcschools.org/FederationMetadata/2007-06/FederationMetadata.xml',
     'ATTRIBUTES_MAP': {  # Change Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
@@ -47,14 +49,12 @@ SAML2_AUTH = {
 AUTH_USER_MODEL = 'objects.User'
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend', # default
+    'django.contrib.auth.backends.ModelBackend',  # default
     'guardian.backends.ObjectPermissionBackend',
 )
 
 # Application definition
-
 INSTALLED_APPS = [
-    #'jet.dashboard',
     'jet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -89,10 +89,6 @@ INSTALLED_APPS = [
     'apps.events',
     'apps.faqs',
     'apps.contactmessages',
-    #'apps.schools',
-    #'apps.board',
-    #'apps.news',
-    #'apps.departments'
 ]
 
 MIDDLEWARE = [
@@ -143,7 +139,6 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
 DATABASES = {
     'default': {
       'ENGINE': 'django.db.backends.postgresql',
