@@ -101,7 +101,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'multisite.middleware.DynamicSiteMiddleware',
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
-    'apps.common.middleware.DynamicDataDir',
+    # 'apps.common.middleware.DynamicDataDir',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -196,12 +196,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'pipeline.finders.PipelineFinder',
 )
-
-DATA_DIR = '/srv/nginx/schools.slcschools.org'
-MEDIA_URL = '/'
-MEDIA_ROOT = os.path.join(DATA_DIR)
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(MEDIA_ROOT, 'static')
 
 CACHES = {
     'default': {

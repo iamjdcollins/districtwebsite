@@ -66,3 +66,9 @@ EMAIL_FILE_PATH = '/tmp'
 DEBUG_TOOLBAR_CONFIG = {
     'JQUERY_URL': '',
 }
+
+DATA_DIR = '/srv/nginx/websites.slcschools.org'
+MEDIA_URL = '/'
+MEDIA_ROOT = os.path.join(DATA_DIR)
+STATIC_URL = 'https://websites-dev.slcschools.org/static/'
+STATIC_ROOT = os.path.join(MEDIA_ROOT, 'static')
