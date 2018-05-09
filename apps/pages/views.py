@@ -17,7 +17,7 @@ from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfileP
 from apps.directoryentries.models import Staff, SchoolAdministrator, Administrator,  BoardMember, StudentBoardMember, BoardPolicyAdmin
 from apps.links.models import ResourceLink, ActionButton
 from apps.documents.models import Document, BoardPolicy, Policy, AdministrativeProcedure, SupportingDocument
-from apps.files.models import File
+from apps.files.models import File, AudioFile, VideoFile
 from apps.events.models import BoardMeeting, DistrictCalendarEvent
 from apps.users.models import Employee
 from apps.contactmessages.forms import ContactMessageForm
@@ -104,6 +104,23 @@ def set_template(request, node):
             return 'cmstemplates/www_slcschools_org/pagelayouts/contact-us.html'
         if request.path == '/contact-us/inline/':
             return 'cmstemplates/www_slcschools_org/blocks/contact-us-inline.html'
+        if node.node_type == 'documents':
+            if node.content_type == 'document':
+                return 'cmstemplates/www_slcschools_org/pagelayouts/document.html'
+            if node.content_type == 'policy':
+                return 'cmstemplates/www_slcschools_org/pagelayouts/document.html'
+            if node.content_type == 'administrativeprocedure':
+                return 'cmstemplates/www_slcschools_org/pagelayouts/document.html'
+            if node.content_type == 'supportingdocument':
+                return 'cmstemplates/www_slcschools_org/pagelayouts/document.html'
+            if node.content_type == 'boardmeetingagenda':
+                return 'cmstemplates/www_slcschools_org/pagelayouts/document.html'
+            if node.content_type == 'boardmeetingminutes':
+                return 'cmstemplates/www_slcschools_org/pagelayouts/document.html'
+            if node.content_type == 'boardmeetingaudio':
+                return 'cmstemplates/www_slcschools_org/pagelayouts/audio.html'
+            if node.content_type == 'boardmeetingvideo':
+                return 'cmstemplates/www_slcschools_org/pagelayouts/video.html'
         return 'cmstemplates/{0}/pagelayouts/{1}'.format(
             request.site.dashboard_general_site.template.namespace,
             'page.html',
@@ -2203,13 +2220,365 @@ def node_lookup(request):
         context['page'] = context['page'].first()
         context['pageopts'] = context['page']._meta
         return render(request, template, context)
-    if node.node_type == 'files':
-        item = (Model
+    if node.node_type == 'documents':
+        if node.content_type == 'document':
+            item = (
+                Model
                 .objects
-                .get(pk=node.pk)
+                .filter(pk=node.pk)
+                .prefetch_related(
+                    Prefetch(
+                        'files_file_node',
+                        queryset=(
+                            File
+                            .objects
+                            .filter(deleted=0)
+                            .filter(published=1)
+                            .order_by(
+                                'file_language__lft',
+                                'file_language__title',
+                            )
+                            .only(
+                                'title',
+                                'file_file',
+                                'file_language',
+                                'related_node',
+                            )
+                            .prefetch_related(
+                                Prefetch(
+                                    'file_language',
+                                    queryset=(
+                                        Language
+                                        .objects
+                                        .filter(deleted=0)
+                                        .filter(published=1)
+                                        .only('title')
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
+            )
+            item = item.first()
+            if item.files_file_node.all().count() == 1:
+                return redirect(item.files_file_node.first().url)
+            template = set_template(request, node)
+            context = {}
+            context['page'] = item
+            context['pageopts'] = context['page']._meta
+            return render(request, template, context)
+        if node.content_type == 'policy':
+            item = (
+                Model
+                .objects
+                .filter(pk=node.pk)
+                .prefetch_related(
+                    Prefetch(
+                        'files_file_node',
+                        queryset=(
+                            File
+                            .objects
+                            .filter(deleted=0)
+                            .filter(published=1)
+                            .order_by(
+                                'file_language__lft',
+                                'file_language__title',
+                            )
+                            .only(
+                                'title',
+                                'file_file',
+                                'file_language',
+                                'related_node',
+                            )
+                            .prefetch_related(
+                                Prefetch(
+                                    'file_language',
+                                    queryset=(
+                                        Language
+                                        .objects
+                                        .filter(deleted=0)
+                                        .filter(published=1)
+                                        .only('title')
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            item = item.first()
+            if item.files_file_node.all().count() == 1:
+                return redirect(item.files_file_node.first().url)
+            template = set_template(request, node)
+            context = {}
+            context['page'] = item
+            context['pageopts'] = context['page']._meta
+            return render(request, template, context)
+        if node.content_type == 'administrativeprocedure':
+            item = (
+                Model
+                .objects
+                .filter(pk=node.pk)
+                .prefetch_related(
+                    Prefetch(
+                        'files_file_node',
+                        queryset=(
+                            File
+                            .objects
+                            .filter(deleted=0)
+                            .filter(published=1)
+                            .order_by(
+                                'file_language__lft',
+                                'file_language__title',
+                            )
+                            .only(
+                                'title',
+                                'file_file',
+                                'file_language',
+                                'related_node',
+                            )
+                            .prefetch_related(
+                                Prefetch(
+                                    'file_language',
+                                    queryset=(
+                                        Language
+                                        .objects
+                                        .filter(deleted=0)
+                                        .filter(published=1)
+                                        .only('title')
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            item = item.first()
+            if item.files_file_node.all().count() == 1:
+                return redirect(item.files_file_node.first().url)
+            template = set_template(request, node)
+            context = {}
+            context['page'] = item
+            context['pageopts'] = context['page']._meta
+            return render(request, template, context)
+        if node.content_type == 'supportingdocument':
+            item = (
+                Model
+                .objects
+                .filter(pk=node.pk)
+                .prefetch_related(
+                    Prefetch(
+                        'files_file_node',
+                        queryset=(
+                            File
+                            .objects
+                            .filter(deleted=0)
+                            .filter(published=1)
+                            .order_by(
+                                'file_language__lft',
+                                'file_language__title',
+                            )
+                            .only(
+                                'title',
+                                'file_file',
+                                'file_language',
+                                'related_node',
+                            )
+                            .prefetch_related(
+                                Prefetch(
+                                    'file_language',
+                                    queryset=(
+                                        Language
+                                        .objects
+                                        .filter(deleted=0)
+                                        .filter(published=1)
+                                        .only('title')
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            item = item.first()
+            if item.files_file_node.all().count() == 1:
+                return redirect(item.files_file_node.first().url)
+            template = set_template(request, node)
+            context = {}
+            context['page'] = item
+            context['pageopts'] = context['page']._meta
+            return render(request, template, context)
+        if node.content_type == 'boardmeetingagenda':
+            item = (
+                Model
+                .objects
+                .filter(pk=node.pk)
+                .prefetch_related(
+                    Prefetch(
+                        'files_file_node',
+                        queryset=(
+                            File
+                            .objects
+                            .filter(deleted=0)
+                            .filter(published=1)
+                            .order_by(
+                                'file_language__lft',
+                                'file_language__title',
+                            )
+                            .only(
+                                'title',
+                                'file_file',
+                                'file_language',
+                                'related_node',
+                            )
+                            .prefetch_related(
+                                Prefetch(
+                                    'file_language',
+                                    queryset=(
+                                        Language
+                                        .objects
+                                        .filter(deleted=0)
+                                        .filter(published=1)
+                                        .only('title')
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            item = item.first()
+            if item.files_file_node.all().count() == 1:
+                return redirect(item.files_file_node.first().url)
+            template = set_template(request, node)
+            context = {}
+            context['page'] = item
+            context['pageopts'] = context['page']._meta
+            return render(request, template, context)
+        if node.content_type == 'boardmeetingminutes':
+            item = (
+                Model
+                .objects
+                .filter(pk=node.pk)
+                .prefetch_related(
+                    Prefetch(
+                        'files_file_node',
+                        queryset=(
+                            File
+                            .objects
+                            .filter(deleted=0)
+                            .filter(published=1)
+                            .order_by(
+                                'file_language__lft',
+                                'file_language__title',
+                            )
+                            .only(
+                                'title',
+                                'file_file',
+                                'file_language',
+                                'related_node',
+                            )
+                            .prefetch_related(
+                                Prefetch(
+                                    'file_language',
+                                    queryset=(
+                                        Language
+                                        .objects
+                                        .filter(deleted=0)
+                                        .filter(published=1)
+                                        .only('title')
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            item = item.first()
+            if item.files_file_node.all().count() == 1:
+                return redirect(item.files_file_node.first().url)
+            template = set_template(request, node)
+            context = {}
+            context['page'] = item
+            context['pageopts'] = context['page']._meta
+            return render(request, template, context)
+        if node.content_type == 'boardmeetingaudio':
+            item = (
+                Model
+                .objects
+                .filter(pk=node.pk)
+                .prefetch_related(
+                    Prefetch(
+                        'files_audiofile_node',
+                        queryset=(
+                            AudioFile
+                            .objects
+                            .filter(deleted=0)
+                            .filter(published=1)
+                            .only(
+                                'title',
+                                'file_file',
+                                'related_node',
+                            )
+                        )
+                    )
+                )
+            )
+            item = item.first()
+            template = set_template(request, node)
+            context = {}
+            context['page'] = item
+            context['pageopts'] = context['page']._meta
+            return render(request, template, context)
+        if node.content_type == 'boardmeetingvideo':
+            item = (
+                Model
+                .objects
+                .filter(pk=node.pk)
+                .prefetch_related(
+                    Prefetch(
+                        'files_videofile_node',
+                        queryset=(
+                            VideoFile
+                            .objects
+                            .filter(deleted=0)
+                            .filter(published=1)
+                            .only(
+                                'title',
+                                'file_file',
+                                'related_node',
+                            )
+                        )
+                    )
+                )
+            )
+            item = item.first()
+            template = set_template(request, node)
+            context = {}
+            context['page'] = item
+            context['pageopts'] = context['page']._meta
+            return render(request, template, context)
+    if node.node_type == 'files':
+        item = (
+            Model
+            .objects
+            .get(pk=node.pk)
+        )
         response = HttpResponse()
         response['Content-Type'] = ''
         response['X-Accel-Redirect'] = item.file_file.url
         response['Content-Disposition'] = 'filename=test.pdf'
         return response
+    if node.node_type == 'images':
+        item = (
+            Model
+            .objects
+            .get(pk=node.pk)
+        )
+        response = HttpResponse()
+        response['Content-Type'] = ''
+        response['X-Accel-Redirect'] = item.image_file.url
+        response['Content-Disposition'] = 'filename=test.pdf'
+        return response
+    return HttpResponse(status=404)

@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body class="slcschools-grey lighten-1 inline-fullpage">
+	  <div class="modal-content">
+	    <div class="modaal-ajax-content-area">
+			  <div id="ajaxtitle" class="modal-title">Board Audio Recording</div>
+			  <p id="ajaxdesc" class="modal-desc sr-only">Click play below to listen to the board audio recording. You can close this dialog by pressing escape at any time.</p>
+			  {% for file in page.files_audiofile_node.all %}
+			  <audio controls preload="none">
+			    <source src="{{file.url}}" type="audio/mpeg">
+			    <a href="{{file.url}}">Your browser does not support the audio element. Click here to download</a>
+			  </audio>
+			  {% endfor %}
+			</div>
+	  </div>
+	  <link type="text/css" rel="stylesheet" href="https://websites-dev.slcschools.org/static/www_slcschools_org/css/materialize.min.css" media="screen,projection">
+	</body>
+</html>

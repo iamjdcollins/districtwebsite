@@ -1,0 +1,8 @@
+<a class="collection-item {% if document.files_file_node.all|length > 1 %}modal-ajax uninit{% endif %}" href="{{ document.url }}" {% if document.files_file_node.all|length == 1 %}target="_blank"{% endif %}>
+  {% if document.files_file_node.all|length == 1 %}
+  <span class="sr-only">Open {{ document.title }}</span>
+  {% else %}
+  <span class="sr-only">Select Language for {{ document.title }}</span>
+  {% endif %}
+  <span class="material-icons">&#xE24D;</span>
+</a>

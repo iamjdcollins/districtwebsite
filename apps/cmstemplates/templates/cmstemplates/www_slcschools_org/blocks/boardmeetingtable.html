@@ -5,17 +5,7 @@
   {% for document in meeting.documents_boardmeetingagenda_node.all %}
   {% if forloop.first %}
   <td class="agenda center">
-    <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE24D;</i></a>
-    <div id="{{ document.pk }}" class="hide">
-      <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
-      <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
-      {% for file in document.files_file_node.all %}
-      <a class="btn stretch" href="{{ file.file_file.url }}">
-        <span class="sr-only">{{ file.title }}</span>
-        <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
-      </a>
-      {% endfor %}
-    </div>
+    {% include "cmstemplates/www_slcschools_org/blocks/boardmeetingagenda.html" %}
   </td>
   {% endif %}
   {% empty %}
@@ -24,17 +14,7 @@
   {% for document in meeting.documents_boardmeetingminutes_node.all %}
   {% if forloop.first %}
   <td class="minutes center">
-    <a href="#{{ document.pk }}" class="document-inline"><i class="material-icons">&#xE24D;</i></a>
-    <div id="{{ document.pk }}" class="hide">
-      <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
-      <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
-      {% for file in document.files_file_node.all %}
-      <a class="btn stretch" href="{{ file.file_file.url }}">
-        <span class="sr-only">{{ file.title }}</span>
-        <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
-      </a>
-      {% endfor %}
-    </div>
+    {% include "cmstemplates/www_slcschools_org/blocks/boardmeetingminutes.html" %}
   </td>
   {% endif %}
   {% empty %}
@@ -43,17 +23,7 @@
   {% for audio in meeting.documents_boardmeetingaudio_node.all %}
   {% if forloop.first %}
   <td class="audio center">
-    <a href="#{{audio.pk}}" class="document-inline"><i class="material-icons">&#xE029;</i></a>
-    <div id="{{ audio.pk }}" class="hide">
-      <div id="{{ audio.pk }}-title" class="modal-title">Board Audio Recording</div>
-      <p id="{{ audio.pk }}-desc" class="modal-desc">Click play below to listen to the board audio recording. You can close this dialog by pressing escape at any time.</p>
-      {% for file in audio.files_audiofile_node.all %}
-       <audio controls preload="none">
-         <source src="{{file.file_file.url}}" type="audio/mpeg">
-         <a href="{{file.file_file.url}}">Your browser does not support the audio element. Click here to download</a>
-       </audio> 
-      {% endfor %}
-    </div>
+    {% include "cmstemplates/www_slcschools_org/blocks/boardmeetingaudio.html" %}
   </td>
   {% endif %}
   {% empty %}
@@ -62,17 +32,7 @@
   {% for video in meeting.documents_boardmeetingvideo_node.all %}
   {% if forloop.first %}
   <td class="video center">
-  <a href="#{{video.pk}}" class="document-inline"><i class="material-icons">&#xE04B;</i></a>
-    <div id="{{ video.pk }}" class="hide">
-      <div id="{{ video.pk }}-title" class="modal-title">Board Video Recording</div>
-      <p id="{{ video.pk }}-desc" class="modal-desc">Click play below to view to the board video recording. You can close this dialog by pressing escape at any time.</p>
-      {% for file in video.files_videofile_node.all %}
-        <video width="320" height="240" controls preload="none">
-          <source src="{{file.file_file.url}}" type="video/mp4">
-          <a href="{{file.file_file.url}}">Your browser does not support the video tag. Click here to download.</a>
-        </video> 
-      {% endfor %}
-    </div>
+    {% include "cmstemplates/www_slcschools_org/blocks/boardmeetingvideo.html" %}
   </td>
   {% endif %}
   {% empty %}
