@@ -288,11 +288,23 @@ CMSTEMPLATES = {
           'global': [
               'cmstemplates/src/templates/global/sass/global.scss',
           ],
+          'backend': [
+              'cmstemplates/src/templates/backend/sass/backend.scss',
+          ],
+          'frontend': [
+              'cmstemplates/src/templates/frontend/sass/frontend.scss',
+          ],
           'dashboard': [
               'cmstemplates/src/templates/dashboard/sass/dashboard.scss',
           ],
           'material': [
               'cmstemplates/src/templates/material/sass/material.scss',
+          ],
+          'innovate': [
+              'cmstemplates/src/templates/innovate/sass/innovate.scss',
+          ],
+          'inspire': [
+              'cmstemplates/src/templates/inspire/sass/inspire.scss',
           ],
       },
       'themes': {
@@ -301,7 +313,13 @@ CMSTEMPLATES = {
           ],
           'material-standard': [
               'cmstemplates/src/themes/material-standard/sass/material-standard.scss',
-          ]
+          ],
+          'innovate-standard': [
+              'cmstemplates/src/themes/innovate-standard/sass/innovate-standard.scss',
+          ],
+          'inspire-standard': [
+              'cmstemplates/src/themes/inspire-standard/sass/inspire-standard.scss',
+          ],
       },
     },
     'javascript': {
@@ -311,11 +329,26 @@ CMSTEMPLATES = {
         'materialize': [
             'cmstemplates/src/frameworks/materialize/js/bin/materialize.js',
         ],
+        'global': [
+            'cmstemplates/src/js/templates/global/global.js',
+        ],
+        'backend': [
+            'cmstemplates/src/js/templates/backend/backend.js',
+        ],
+        'frontend': [
+            'cmstemplates/src/js/templates/frontend/frontend.js',
+        ],
         'dashboard': [
             'cmstemplates/src/js/templates/dashboard/dashboard.js',
         ],
         'material': [
             'cmstemplates/src/js/templates/material/material.js',
+        ],
+        'innovate': [
+            'cmstemplates/src/js/templates/innovate/innovate.js',
+        ],
+        'inspire': [
+            'cmstemplates/src/js/templates/inspire/inspire.js',
         ],
     },
 }
@@ -330,22 +363,38 @@ PIPELINE = {
     'JS_COMPRESSOR': 'pipeline.compressors.yuglify.YuglifyCompressor',
     'STYLESHEETS': {
         'dashboard-standard': {
-            'source_filenames': CMSTEMPLATES['css']['frameworks']['materialize'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['dashboard'] + CMSTEMPLATES['css']['themes']['dashboard-standard'],
+            'source_filenames': CMSTEMPLATES['css']['frameworks']['materialize'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['backend'] + CMSTEMPLATES['css']['templates']['dashboard'] + CMSTEMPLATES['css']['themes']['dashboard-standard'],
             'output_filename': 'cmstemplates/build/dashboard-standard/dashboard-standard.min.css',
         },
         'material-standard': {
-            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['material'] + CMSTEMPLATES['css']['themes']['material-standard'],
+            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['material'] + CMSTEMPLATES['css']['themes']['material-standard'],
             'output_filename': 'cmstemplates/build/material-standard/material-standard.min.css',
+        },
+        'innovate-standard': {
+            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['innovate'] + CMSTEMPLATES['css']['themes']['innovate-standard'],
+            'output_filename': 'cmstemplates/build/innovate-standard/innovate-standard.min.css',
+        },
+        'inspire-standard': {
+            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['inspire'] + CMSTEMPLATES['css']['themes']['inspire-standard'],
+            'output_filename': 'cmstemplates/build/inspire-standard/inspire-standard.min.css',
         },
     },
     'JAVASCRIPT': {
         'dashboard-standard': {
-            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['materialize'] + CMSTEMPLATES['javascript']['dashboard'],
+            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['materialize'] + CMSTEMPLATES['javascript']['global'] + CMSTEMPLATES['javascript']['backend'] + CMSTEMPLATES['javascript']['dashboard'],
             'output_filename': 'cmstemplates/build/dashboard-standard/dashboard-standard.min.js',
         },
         'material-standard': {
-            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] +  CMSTEMPLATES['javascript']['material'],
+            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['global'] + CMSTEMPLATES['javascript']['frontend'] + CMSTEMPLATES['javascript']['material'],
             'output_filename': 'cmstemplates/build/material-standard/material-standard.min.js',
+        },
+        'innovate-standard': {
+            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['global'] + CMSTEMPLATES['javascript']['frontend'] + CMSTEMPLATES['javascript']['innovate'],
+            'output_filename': 'cmstemplates/build/innovate-standard/innovate-standard.min.js',
+        },
+        'inspire-standard': {
+            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['global'] + CMSTEMPLATES['javascript']['frontend'] + CMSTEMPLATES['javascript']['inspire'],
+            'output_filename': 'cmstemplates/build/inspire-standard/inspire-standard.min.js',
         },
     },
 }
