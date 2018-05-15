@@ -137,3 +137,18 @@
 .md-key:before {
   content: "\47";
 }
+.md-instagram:before {
+  content: "\48";
+}
+.md-twitter:before {
+  content: "\49";
+}
+.md-youtube:before {
+  content: "\4a";
+}
+.md-facebook:before {
+  content: "\4b";
+}
+.md-search:before {
+  content: "\4c";
+}
