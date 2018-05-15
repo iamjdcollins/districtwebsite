@@ -1,0 +1,98 @@
+img.responsive {
+	max-width: 100%;
+	margin: auto;
+	display: block;
+}
+.header.wrapper .header{
+  background-color: #d80b36;
+}
+ul.nav{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.navbar{
+  float: right;
+  position: relative;
+  display: block;
+  height: 100%;
+  color: #fff;
+}
+.toggle-main-menu{
+	display: block;
+	height: 100%;
+	line-height: 155.5px;
+	font-size: 2em;
+}
+#toggle-mobile-menu:hover + label, #toggle-mobile-menu:focus + label {
+  font-size: 2.05em;
+}
+/* XS Styles */
+@media screen and (max-width: 567px) {
+}
+/* SM Styles */
+@media screen and (min-width: 568px) {
+}
+/* MD Styles */
+@media screen and (min-width: 768px) {
+}
+/* LG Styles */
+@media screen and (min-width: 1024px) {
+.header.wrapper .header {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
+}
+.brand {
+  width: 260px;
+  height: 151px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -130px;
+  z-index: 5;
+  background-color: #d80b36;
+  overflow: hidden;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
+}
+.navbar{
+  float: none;
+ }
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.navbar ul li {
+  display: inline;
+}
+.navbar ul li a{
+  color: #000;
+  padding: 30px 20px;
+  display: inline-block;
+}
+.navl {
+  text-align: right;
+  width: 50%;
+  float: left;
+}
+.navl > li:last-child {
+    margin-right: 130px;
+}
+.navr {
+  text-align: left;
+  width: 50%;
+  float: right;
+}
+.navr > li:first-child {
+    margin-left: 130px;
+}
+}
+/* XL Styles */
+@media screen and (min-width: 1280px) {
+}
+
+// Must be last rule
+body {
+  display: block;
+}
