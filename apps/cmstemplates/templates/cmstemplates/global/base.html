@@ -1,11 +1,12 @@
 {% load static mptt_tags guardian_tags admin_urls object_permissions pipeline relink %}
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html class="{% if request.site.dashboard_general_site.namespace %}{{ request.site.dashboard_general_site.namespace }} {% endif %}{% if request.site.dashboard_general_site.template.namespace %}{{ request.site.dashboard_general_site.template.namespace }} {% endif %}no-js" lang="en">
   <head>
     <title>{% block title %}{% endblock %} | {{ request.site.dashboard_general_site.title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="site" content="{{ request.site.dashboard_general_site.title }}" />
     <meta name="template" content="{{ request.site.dashboard_general_site.template.title }}" />
     <meta name="pagelayout" content="{{ page.pagelayout.title }}" />
     <style>
@@ -16,6 +17,16 @@
     <script>
       document.documentElement.className = document.documentElement.className.replace("no-js","js");
     </script>
+    {% if request.site.dashboard_general_site.gatracking %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ request.site.dashboard_general_site.gatracking }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ request.site.dashboard_general_site.gatracking }}');
+    </script>
+    {% endif %}
   </head>
   <body id="top">
     <div class="pushfooter">
@@ -172,6 +183,7 @@
     <div id="google_translate_element2" class="hide"></div>
     {% block scriptsstyles %}
     {% endblock %}
+    {% stylesheet request.site.dashboard_general_site.namespace %}
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
   </body>
 </html>
