@@ -231,6 +231,16 @@ class GeneralSettings(models.Model):
                 site=site,
             )
             alias.save()
+            alias, created = Alias.objects.get_or_create(
+                domain='{0}-new.{1}'.format(
+                    site.domain.split('.')[0],
+                    '.'.join(site.domain.split('.')[1:]),
+                ),
+                is_canonical=None,
+                redirect_to_canonical=False,
+                site=site,
+            )
+            alias.save()
             self.site = site
         # Site name is limited to 50 characters.
         if self.title and self.title[:50] != self.site.name:
@@ -244,4 +254,12 @@ class GeneralSettings(models.Model):
                 item.nd_statement = self.nd_statement
                 item.ada_statement = self.ada_statement
                 item.save()
+        else:
+            try:
+                websites = GeneralSettings.objects.get(primary_domain='websites.slcschools.org')
+            except GeneralSettings.DoesNotExist:
+                websites = False
+            if websites:
+                self.nd_statement = websites.nd_statement
+                self.ada_statement = websites.ada_statement
         super().save(*args, **kwargs)

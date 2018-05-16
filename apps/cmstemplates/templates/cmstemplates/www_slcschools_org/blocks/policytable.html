@@ -3,17 +3,7 @@
   <td class="policyindex">{{ policy.section.section_prefix }}-{{ policy.index }}</td>
   <td class="policytitle">{{ policy.policy_title }}</td>
   <td class="documents rowaction">
-    <a href="#{{ document.pk }}" class="document-inline"><span class="material-icons">&#xE24D;</span></a>
-    <div id="{{ document.pk }}" class="hide">
-      <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
-      <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
-      {% for file in document.files_file_node.all %}
-      <a class="btn stretch" href="{{ file.file_file.url }}">
-        <span class="sr-only">{{ file.title }}</span>
-        <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
-      </a>
-      {% endfor %}
-    </div>
+    {% include "cmstemplates/www_slcschools_org/blocks/policy.html" %}
   </td>
   <!--<td class="rowaction"><a href="#!" title="Question / Comment"><span class="material-icons">&#xE0C9;</span></a></td>-->
   <td class="contacts">
@@ -28,17 +18,7 @@
   <td class="policyindex"><span class="material-icons">&#xE5DA;</span></td>
   <td class="aptitle">Administrative Procedure</td>
   <td class="documents rowaction"><!--<a href="#!" title="Download"><span class="material-icons">&#xE2C4;</span></a>-->
-    <a href="#{{ document.pk }}" class="document-inline"><span class="material-icons">&#xE24D;</span></a>
-    <div id="{{ document.pk }}" class="hide">
-      <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
-      <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
-      {% for file in document.files_file_node.all %}
-      <a class="btn stretch" href="{{ file.file_file.url }}">
-        <span class="sr-only">{{ file.title }}</span>
-        <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
-      </a>
-      {% endfor %}
-   </div>
+    {% include "cmstemplates/www_slcschools_org/blocks/administrativeprocedure.html" %}
  </td>
   <td class="rowaction"></td>
 </tr>
@@ -48,17 +28,7 @@
   <td class="policyindex"><i class="material-icons">&#xE5DA;</i></td>
   <td class="supportingdoctitle" >{{document.document_title}}</td>
   <td class="documents rowaction"><!--<a href="#!" title="Download"><span class="material-icons">&#xE2C4;</span></a>-->
-    <a href="#{{ document.pk }}" class="document-inline"><span class="material-icons">&#xE24D;</span></a>
-    <div id="{{ document.pk }}" class="hide">
-      <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
-      <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
-      {% for file in document.files_file_node.all %}
-      <a class="btn stretch" href="{{ file.file_file.url }}">
-        <span class="sr-only">{{ file.title }}</span>
-        <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
-      </a>
-      {% endfor %}
-   </div>
+    {% include "cmstemplates/www_slcschools_org/blocks/supportingdocument.html" %}
   </td>
   <td class="rowaction"></td>
 </tr>

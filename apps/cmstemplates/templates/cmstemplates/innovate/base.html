@@ -1,0 +1,76 @@
+{% extends 'cmstemplates/global/base.html' %}
+{% load static mptt_tags guardian_tags admin_urls object_permissions pipeline relink %}
+
+{% block title %}
+{% endblock %}
+
+{% block header %} 
+<!--Header & Branding region-->
+<header class="header">
+  <div class="pure-g">
+    <div class="col pure-u-1 pure-u-lg-2-3"> 
+      <a href="/" class="logo">
+        <!--Update Dynamic-->
+        <img src="https://innovations.slcschools.org/_assets/img/Innovations-Logo.png" alt="Innovations Early College High School" width="253" height="75">
+      </a>
+      <div class="slogan">Responsive HTML Theme</div>
+    </div>
+    <!--header rightside-->
+    <div class="col pure-u-1 pure-u-lg-1-3"> 
+      <!--social media icons-->
+      <div class="social-media">  
+        <!--Update Dynamic-->
+        <a href="#"><span class="md-twitter"></span></a>
+        <a href="#"><span class="md-facebook"></span></a>
+        <a href="#"><span class="md-instagram"></span></a>
+        <a href="#"><span class="md-youtube"></span></a>
+      </div>
+    </div>
+  </div>
+</header> 
+<!--Main Navigation-->
+<div class="navbar"> 
+  <div class="pure-g">
+    <!--everything within this div is collapsed on mobile-->
+    <div class="col pure-u-1"> 
+      <!--main navigation-->
+      <div class="nav navbar-nav clearfix">
+        <input id="toggle-mobile-menu" class="nav-trigger" type="checkbox" autocomplete="off" />
+        <label for="toggle-mobile-menu" aria-label="Menu" class="nav-trigger-label toggle-main-menu md-chevron-left alwayslinked">
+          <span class="md-menu"></span>
+          <span class="hidden">Main Menu</span>
+        </label>
+        <ul class="sidenav mobile-navigation hide-xs hide-sm hide-md">
+          <li class="nav-item home-link"><a href="/"><span class="md-home"></span><span class="hidden">Home</span></a></li>
+          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Our School</a></li>
+          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Academics</a></li>
+          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Athletics</a></li>
+          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Calendars</a></li>
+          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Students</a></li>
+          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Community</a>
+          </li>
+        </ul>
+        <a href="/search/" class="right alwayslinked"><span class="md-search"></span><span class="hidden">Search</span></a>
+      </div>
+    </div>
+  </div>
+  <!--/.navbar-collapse --> 
+</div>
+{% endblock %}
+
+{% block precontent %}
+
+{% endblock %}
+
+{% block content %}
+<div id="main">
+  <div class="pure-g"> 
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scriptsstyles %}
+{% javascript 'innovate-standard' %}
+{% stylesheet 'innovate-standard' %}
+{% endblock %}

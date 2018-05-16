@@ -1,0 +1,56 @@
+{% extends 'cmstemplates/global/base.html' %}
+{% load static mptt_tags guardian_tags admin_urls object_permissions pipeline relink %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block header %} 
+<header class="header">
+  <div class="pure-g">
+    <div class="col pure-u-1">
+      <a class="brand" href="/"><img class="responsive" src="https://school.slcschools.org/templates/Boxin/img/logo.png" alt="Boxin"></a>
+      <nav id="nav" class="navbar clearfix">
+        <input id="toggle-mobile-menu" class="nav-trigger" type="checkbox" autocomplete="off" />
+        <label for="toggle-mobile-menu" aria-label="Menu" class="nav-trigger-label toggle-main-menu md-chevron-left alwayslinked">
+          <span class="md-menu"></span>
+          <span class="hidden">Main Menu</span>
+        </label>
+        <ul class="sidenav mobile-navigation hide-xs hide-sm hide-md">
+          <li>
+            <ul class="nav navl">
+              <li class="nav-item"><a href="index.html" class="dropdown-toggle" data-toggle="dropdown">Our School</a></li>
+              <li class="nav-item"><a href="about.html">Academics</a></li>
+              <li class="nav-item"><a href="works.html" class="dropdown-toggle" data-toggle="dropdown">Athletics</a></li>
+            </ul>
+          </li>
+          <li>
+            <ul class="nav navr">
+              <li class="nav-item"><a href="blog.html" class="dropdown-toggle" data-toggle="dropdown">Calendars</a></li>
+              <li class="nav-item"><a href="elements.html" class="dropdown-toggle" data-toggle="dropdown">Students</a></li>
+              <li class="nav-item"><a href="contact.html">Community</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+{% endblock %}
+
+{% block precontent %}
+
+{% endblock %}
+
+{% block content %}
+<div id="main">
+  <div class="pure-g"> 
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scriptsstyles %}
+{% javascript 'inspire-standard' %}
+{% stylesheet 'inspire-standard' %}
+{% endblock %}

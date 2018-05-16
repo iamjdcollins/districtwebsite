@@ -2,7 +2,7 @@
   <div class="card schoolcard sticky-action">
     <div class="card-image" style="padding-bottom: 78.125%; height: 0px;">
       {% for thumbnail in school.images_thumbnail_node.all %}
-      <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.image_file.url }}" alt="{{ thumbnail.alttext }}" />
+      <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.url }}" alt="{{ thumbnail.alttext }}" />
       {% endfor %}
     </div>
     <div class="card-content">

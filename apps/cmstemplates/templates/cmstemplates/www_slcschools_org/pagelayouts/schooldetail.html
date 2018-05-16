@@ -57,7 +57,7 @@
     <ul class="slides">
       {% for bannerimage in page.images_contentbanner_node.all %}
       <li class="slide">
-        <img src="{{bannerimage.image_file.url }}" alt="{{bannerimage.alttext}}" />
+        <img src="{{bannerimage.url }}" alt="{{bannerimage.alttext}}" />
       </li>
       {% endfor %}
     </ul>
@@ -103,17 +103,7 @@
           <a href="{{ resourcelink.link_url }}" class="collection-item">{{ resourcelink.title }} <i class="material-icons right">&#xE157;</i></a>
           {% endfor %}
           {% for document in page.documents_document_node.all %}
-          <a href="#{{ document.pk }}" class="collection-item document-inline">{{ document.title }} <i class="material-icons right">&#xE157;</i></a>
-          <div id="{{ document.pk }}" class="hide">
-            <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
-            <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
-            {% for file in document.files_file_node.all %}
-              <a class="btn stretch" href="{{ file.file_file.url }}">
-                  <span class="sr-only">{{ file.title }}</span>
-                  <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
-                </a>
-            {% endfor %}
-          </div>
+          {% include "cmstemplates/www_slcschools_org/blocks/document.html" %}
           {% endfor %}
         </div>
       </div>

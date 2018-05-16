@@ -3,6 +3,8 @@
 <html class="no-js" lang="en">
   <head>
     <title>{% block title %}{% endblock %} | {{ request.site.dashboard_general_site.title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="template" content="{{ request.site.dashboard_general_site.template.title }}" />
     <meta name="pagelayout" content="{{ page.pagelayout.title }}" />
@@ -64,7 +66,7 @@
               </li>
               {% endfor %}
               <li>
-                <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+                <input type="checkbox" id="nav-trigger" class="nav-trigger" autocomplete="off" />
                 <label class="nav-trigger-label pure-button narrow md-chevron-left" for="nav-trigger">
                     <span class="hide-sm hide-xs">
                       <span class="sr-only">Open more translation languages menu (You can close the menu by pressing escape any time).</span>
@@ -81,10 +83,10 @@
                 
                 <!-- </a> -->
                 <!-- <div id="fulltranslationlist" class="slideleft-content"> -->
-                  <ul class="navigation">
+                  <ul class="sidenav navigation">
                     {% for item in TRANSLATION_ITEMS|dictsort:"title" %}
                     <li class="nav-item">
-                      <a class="btn" href="#" class="noZensmooth" onclick="doGTranslate('en|{{ item.language_code }}'); $('.fulltranslationlist').modaal('close'); return false;" >
+                      <a class="btn noZensmooth" href="#" onclick="doGTranslate('en|{{ item.language_code }}'); return false;" >
                         <span class="sr-only">Translate to {{ item.title }}</span>
                         <span class="notranslate no-sr" aria-hidden="true">{{ item.native_language }}</span>
                       </a>
@@ -132,6 +134,8 @@
         </div>
       </div>
       <div class="header wrapper">
+        {% block header %}
+        {% endblock %}
       </div>
       <div class="precontent wrapper">
         {% block precontent %}
@@ -145,7 +149,7 @@
     <footer>
       <div class="footer wrapper slcschools-grey">
         <div class="pure-g">
-          <div class="col pure-u-md-1-2 pure-u-1">
+          <div class="col pure-u-md-2-3 pure-u-1">
             <h2>Non-Discrimination Statement</h2>
             {{ request.site.dashboard_general_site.nd_statement|safe|relink }}
             <h2>Americans with Disabilities Act (ADA) Statement</h2>
@@ -166,8 +170,8 @@
       <span class="md-chevron-up no-sr" aria-hidden="true"></span>
     </a>
     <div id="google_translate_element2" class="hide"></div>
-    {% javascript 'material-standard' %}
-    {% stylesheet 'material-standard' %}
+    {% block scriptsstyles %}
+    {% endblock %}
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
   </body>
 </html>

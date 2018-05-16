@@ -102,7 +102,7 @@
             <div class="col s12 m4 l3 xl2 article-thumb" >
               {% if article.images_newsthumbnail_node.all %}
               {% for thumbnail in article.images_newsthumbnail_node.all %}
-              <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.image_file.url }}" width="350" height="350" alt="{{ thumbnail.alttext }}" typeof="foaf:Image" class="img-responsive">
+              <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.url }}" width="350" height="350" alt="{{ thumbnail.alttext }}" typeof="foaf:Image" class="img-responsive">
             {% endfor %}
             {% else %}
             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/defaults/news/images/placeholder.png" width="350" height="350" alt="Salt Lake City School District Apple" typeof="foaf:Image" class="img-responsive">

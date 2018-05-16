@@ -69,26 +69,7 @@
           <a href="{{ resourcelink.link_url }}" class="collection-item">{{ resourcelink.title }} <span class="material-icons right">&#xE157;</span></a>
           {% endfor %}
           {% for document in page.documents_document_node.all %}
-          {% if document.files_file_node.all|length == 1 %}
-          {% for file in document.files_file_node.all %}
-          <a class="collection-item" href="{{ file.file_file.url }}" target="_blank">
-            <span class="sr-only">{{ document.title }}</span>
-            <span class="no-sr" aria-hidden="true">{{ document.title }} <span class="notranslate material-icons right">&#xE24D;</span></span>
-          </a>
-          {% endfor %}
-          {% elif document.files_file_node.all|length > 1 %}
-          <a href="#{{ document.pk }}" class="collection-item document-inline">{{ document.title }} <span class="material-icons right">&#xE24D;</span></a>
-          <div id="{{ document.pk }}" class="hide">
-            <div id="{{ document.pk }}-title" class="modal-title">Document Languages</div>
-            <p id="{{ document.pk }}-desc" class="modal-desc">This document is available in the languages shown below. Please select a language. You can close this dialog by pressing escape at any time.</p>
-            {% for file in document.files_file_node.all %}
-              <a class="btn stretch" href="{{ file.file_file.url }}" target="_blank">
-                  <span class="sr-only">{{ file.title }}</span>
-                  <span class="notranslate no-sr" aria-hidden="true">{{ file.file_language.title }}</span>
-                </a>
-            {% endfor %}
-          </div>
-          {% endif %}
+          {% include "cmstemplates/www_slcschools_org/blocks/document.html" %}
           {% endfor %}
         </div>
       </div>

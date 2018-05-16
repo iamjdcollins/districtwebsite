@@ -1,0 +1,165 @@
+.pure-g,
+.navbar{
+  max-width: 1400px;
+  margin: auto;
+}
+.header.wrapper .header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.logo, .slogan {
+	float: none;
+	text-align: center;
+	border: none;
+	margin: auto;
+	display: table;
+  }
+.social-media {
+	padding: 10px 0px;
+	display: table;
+	margin: auto;
+}
+.social-media a {
+  color: white;
+  background: #1e1e1e;
+  padding: 10px;
+  border-radius: 100%;
+}
+.nav.navbar-nav {
+  margin: 0;
+  padding: 0px;
+  background: #1e1e1e;
+  color: #fff;
+  border-bottom: 3px solid #55a79a;
+  border-radius: 4px;
+}
+.nav.navbar-nav .alwayslinked{
+	color: #fff;
+  padding: 15px 10px;
+  display: inline-block;
+}
+
+ /* XS Styles */
+@media screen and (max-width: 567px) {
+}
+/* SM Styles */
+@media screen and (min-width: 568px) {
+}
+/* MD Styles */
+@media screen and (min-width: 768px) {
+
+}
+/* LG Styles */
+@media screen and (min-width: 1024px) {
+.logo, .slogan {
+	float: left;
+  }
+  .slogan{
+  padding: 10px 20px;
+  border-left: solid 1px gray;
+  margin: 18px 10px;
+}
+.social-media{
+  padding: 28px 0px;
+  float: right;
+}
+.navbar{
+	position: relative;
+}
+.nav.navbar-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0px;
+  background: #1e1e1e;
+  color: #fff;
+  border-bottom: 3px solid #55a79a;
+  border-radius: 4px;
+}
+.nav.navbar-nav ul{
+  list-style: none;
+  margin: 0;
+  padding: 0px;
+  float: left;
+}
+.nav.navbar-nav ul li {
+  display: inline;
+}
+.nav.navbar-nav a{
+  color: #fff;
+  padding: 15px 10px;
+  display: inline-block;
+}
+.nav.navbar-nav ul li.home-link a{
+  color: #55a79a;
+ }
+ .toggle-main-menu:hover,  .toggle-main-menu:focus{
+  border: 3px solid transparent;
+  transition: .05s;
+  font-size: 1.05em;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-shadow: inset 0 0 0 1px;
+  padding: 11px 7px;
+ }
+ .toggle-main-menu {
+    position: absolute;
+    z-index: 5;
+    color: #fff;
+    padding: 15px 10px;
+    display: inline-block;
+}
+}
+/* XL Styles */
+@media screen and (min-width: 1280px) {
+.navbar{
+	position: relative;
+}
+.nav.navbar-nav {
+  margin: 0;
+  padding: 0px;
+  background: #1e1e1e;
+  color: #fff;
+  border-bottom: 3px solid #55a79a;
+  border-radius: 4px;
+}
+.nav.navbar-nav ul{
+  list-style: none;
+  margin: 0;
+  padding: 0px;
+  float: left;
+}
+.nav.navbar-nav ul li {
+  display: inline;
+}
+.nav.navbar-nav a{
+  color: #fff;
+  padding: 15px 10px;
+  display: inline-block;
+}
+.nav.navbar-nav ul li.home-link a{
+  color: #55a79a;
+ }
+ .toggle-main-menu:hover,  .toggle-main-menu:focus{
+  border: 3px solid transparent;
+  transition: .05s;
+  font-size: 1.05em;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-shadow: inset 0 0 0 1px;
+  padding: 11px 7px;
+ }
+ .toggle-main-menu {
+    position: absolute;
+    z-index: 5;
+    color: #fff;
+    padding: 15px 10px;
+    display: inline-block;
+}
+}
+
+// Must be last rule
+body {
+  display: block;
+}
