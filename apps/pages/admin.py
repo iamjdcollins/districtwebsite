@@ -1180,7 +1180,7 @@ class SuperintendentMessageInline(EditLinkToInlineObject, admin.TabularInline):
   model = SuperintendentMessage
   form = SuperintendentMessageInlineForm
   fk_name = 'parent'
-  fields = ['author_date','update_user','update_date','edit_link',]
+  fields = ['author_date','update_user','update_date','edit_link', 'published',]
   readonly_fields = ['update_user','update_date','edit_link',]
   ordering = ['-author_date',]
   extra = 0
