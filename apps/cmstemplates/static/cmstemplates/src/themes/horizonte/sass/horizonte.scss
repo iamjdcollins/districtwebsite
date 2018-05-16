@@ -1,0 +1,47 @@
+/*
+ * CSS Overwrites for Horizonte
+*/
+
+/*
+ * CSS Overwrites for Horizonte using Inspire Theme
+ * Selector Prefix: html.horizonte.inspire
+*/
+html.horizonte.inspire .preheader.wrapper {
+	background: #2a104d;
+}
+html.horizonte.inspire .header.wrapper .header{
+	background: #fff;
+}
+html.horizonte.inspire .brand{
+  background: #fff;
+}
+html.horizonte.inspire .navbar{
+	color: #000;
+}
+html.horizonte.inspire footer{
+	background: #303030;
+}
+/* XS Styles */
+@media screen and (max-width: 567px) {
+}
+/* SM Styles */
+@media screen and (min-width: 568px) {
+}
+/* MD Styles */
+@media screen and (min-width: 768px) {
+}
+/* LG Styles */
+@media screen and (min-width: 1024px) {
+	html.horizonte.inspire .header.wrapper .header{
+		background: #7c5ba6;
+	}
+	html.horizonte.inspire .brand{
+	  background: #ffcc21;
+	}
+	html.horizonte.inspire .navbar ul li a{
+		color: #fff;
+	}
+}
+/* XL Styles */
+@media screen and (min-width: 1280px) {
+}
