@@ -28,10 +28,26 @@ class SitesAddForm(forms.ModelForm):
         fields = (
             'title',
             'primary_domain',
+            'namespace',
+            'gatrackingid',
         )
 
     def __init__(self, *args, **kwargs):
         super(SitesAddForm, self).__init__(*args, **kwargs)
+
+
+class SitesChangeForm(forms.ModelForm):
+    class Meta:
+        model = GeneralSettings
+        fields = (
+            'title',
+            'primary_domain',
+            'namespace',
+            'gatrackingid',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(SitesChangeForm, self).__init__(*args, **kwargs)
 
 
 class TemplatesAddForm(forms.ModelForm):
