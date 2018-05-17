@@ -136,6 +136,19 @@ class GeneralSettings(models.Model):
         blank=False,
         help_text=apphelp.GeneralSettings.primary_domain,
     )
+    namespace = models.CharField(
+        max_length=64,
+        null=True,
+        blank=False,
+        help_text=apphelp.GeneralSettings.namespace,
+    )
+    gatrackingid = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+        help_text=apphelp.GeneralSettings.gatrackingid,
+        verbose_name='Google Analytics Tracking ID',
+    )
     nd_statement = RichTextField(
         null=True,
         blank=False,
