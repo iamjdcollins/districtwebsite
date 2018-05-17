@@ -17,14 +17,14 @@
     <script>
       document.documentElement.className = document.documentElement.className.replace("no-js","js");
     </script>
-    {% if request.site.dashboard_general_site.gatracking %}
+    {% if environmentmode == 'production' and request.site.dashboard_general_site.gatrackingid %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ request.site.dashboard_general_site.gatracking }}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ request.site.dashboard_general_site.gatrackingid }}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', '{{ request.site.dashboard_general_site.gatracking }}');
+      gtag('config', '{{ request.site.dashboard_general_site.gatrackingid }}');
     </script>
     {% endif %}
   </head>
