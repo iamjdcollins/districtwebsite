@@ -19,9 +19,9 @@
         <tbody>
           {% for site in sites %}
           <tr>
-            <td><a href="/manage/dashboard/">{{ site.site.dashboard_general_site.title }}</a><br>{{ site.domain }}</td>
+            <td><a href="{% url 'dashboard:siteschange' sitepk=site.site.dashboard_general_site.pk %}">{{ site.site.dashboard_general_site.title }}</a><br>{{ site.domain }}</td>
             <td class="rowaction">
-              <a href="/manage/dashboard/">
+              <a href="{% url 'dashboard:siteschange' sitepk=site.site.dashboard_general_site.pk %}">
                 <span class="sr-only">Edit {{ site.site.dashboard_general_site.title }}</span>
                 <span class="no-sr md-settings" aria-hidden="True"></span>
               </a>
