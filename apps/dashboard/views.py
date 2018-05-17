@@ -10,6 +10,7 @@ from apps.objects.models import User
 from apps.dashboard.forms import (
     GeneralSettingsForm,
     SitesAddForm,
+    SitesChangeForm,
     TemplatesAddForm,
     PageLayoutsAddForm,
 )
@@ -77,6 +78,23 @@ def add_sitesadd_form(self, context):
         )
     else:
         context['sitesaddform'] = SitesAddForm()
+    return context
+
+
+def add_siteschange_form(self, context):
+    try:
+        instance = GeneralSettingsModel.objects.get(pk=self.kwargs['sitepk'])
+    except GeneralSettingsModel.DoesNotExist:
+        raise Exception('Site Does Not Exist')
+    if self.request.POST:
+        context['siteschangeform'] = SitesChangeForm(
+            instance=instance,
+            data=self.request.POST,
+        )
+    else:
+        context['siteschangeform'] = SitesChangeForm(
+            instance=instance,
+        )
     return context
 
 
@@ -202,6 +220,37 @@ class SitesAdd(SAMLLoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context = add_sites_context(self, context)
         context = add_sitesadd_form(self, context)
+        return context
+
+
+class SitesChange(SAMLLoginRequiredMixin, TemplateView):
+
+    template_name = 'cmstemplates/dashboard/siteschange.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        if context['siteschangeform'].is_valid():
+            user = User.objects.get(pk=request.user.pk)
+            post = context['siteschangeform'].save(commit=False)
+            if not post.create_user:
+                post.create_user = user
+            post.update_user = user
+            post.save()
+            messages.success(
+                request,
+                'Site updated successfully')
+        return redirect('dashboard:sites')
+
+    def get(self, request, *args, **kwargs):
+        if request.site.domain != 'websites.slcschools.org':
+            return BaseURL.as_view()(self.request)
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = add_sites_context(self, context)
+        context = add_siteschange_form(self, context)
         return context
 
 
