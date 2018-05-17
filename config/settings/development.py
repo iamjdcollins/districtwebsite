@@ -1,5 +1,7 @@
 from .base import *
 
+ENVIRONMENT_MODE = 'development'
+
 DEBUG = True
 
 ALLOWED_HOSTS = [

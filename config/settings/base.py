@@ -117,6 +117,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.common.processors.currentyear',
+                'apps.common.processors.environmentmode',
                 'apps.taxonomy.processors.translationlinks',
                 'apps.objects.processors.breadcrumb',
                 'apps.objects.processors.mainmenu',
@@ -377,6 +378,14 @@ PIPELINE = {
         'inspire-standard': {
             'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['inspire'] + CMSTEMPLATES['css']['themes']['inspire-standard'],
             'output_filename': 'cmstemplates/build/inspire-standard/inspire-standard.min.css',
+        },
+        'horizonte': {
+            'source_filenames': ['cmstemplates/src/themes/horizonte/sass/horizonte.scss'],
+            'output_filename': 'cmstemplates/build/horizonte/horizonte.min.css',
+        },
+        'innovations': {
+            'source_filenames': ['cmstemplates/src/themes/innovations/sass/innovations.scss'],
+            'output_filename': 'cmstemplates/build/innovations/innovations.min.css',
         },
     },
     'JAVASCRIPT': {
