@@ -28,6 +28,14 @@ class GeneralSettings():
         'or also a development and test enviroment that does not redirect.'
         '</span>'
     )
+    namespace = (
+        '<span>Enter a lower case a-z identifier for this site. Will be used '
+        'to allow custom css/js files provided by the webmaster.</span>'
+    )
+    gatrackingid = (
+        '<span>Enter the Google Analytics Tracking ID for this property '
+        'which can be found in the admin interface of Google Analytics.</span>'
+    )
     template = (
         '<span>Select the template used on this site. '
         'A value must be selected.</span>'
