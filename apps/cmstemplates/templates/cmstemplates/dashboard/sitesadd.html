@@ -24,6 +24,26 @@
 		      <label for="{{ sitesaddform.primary_domain.id_for_label}}">Primary Domain</label>
 		    </div>
 		    <div class="input-field col s12">
+		      <span class="md-code-tags prefix" aria-hidden="true"></span>
+		      {{ sitesaddform.namespace.errors }}
+		      {{ sitesaddform.namespace }}
+		      <label for="{{ sitesaddform.namespace.id_for_label}}">Namespace</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-robot"></div>
+		      	<div class="help-text">{{ sitesaddform.namespace.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-code-tags prefix" aria-hidden="true"></span>
+		      {{ sitesaddform.gatrackingid.errors }}
+		      {{ sitesaddform.gatrackingid }}
+		      <label for="{{ sitesaddform.gatrackingid.id_for_label}}">Google Analytics Tracking ID</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-robot"></div>
+		      	<div class="help-text">{{ sitesaddform.gatrackingid.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
 		      <span class="material-icons prefix" aria-hidden="true"></span>
 		      <button type="submit" class="waves-effect waves-green btn">
 		        <span class="sr-only">Submit</span>
