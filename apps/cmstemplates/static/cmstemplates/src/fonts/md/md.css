@@ -152,3 +152,15 @@
 .md-search:before {
   content: "\4c";
 }
+.md-fax:before {
+  content: "\4d";
+}
+.md-help:before {
+  content: "\4e";
+}
+.md-location:before {
+  content: "\4f";
+}
+.md-blank:before {
+  content: "\50";
+}
