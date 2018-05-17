@@ -1,0 +1,57 @@
+{% extends 'cmstemplates/dashboard/base.html' %}
+
+{% block title %}Update Site{% endblock %}
+
+{% block maincontent %}
+<div class="col s12">
+  <div class="card-panel">
+  	<div class="row">
+  	  <h1 class="col s12">Update Site</h1>
+    </div>
+    <div class="row">
+	  	<form class="col s12 focus" action="" method="post">
+		    {% csrf_token %}
+		    <div class="input-field col s12">
+		      <span class="md-building prefix" aria-hidden="true"></span>
+		      {{ siteschangeform.title.errors }}
+		      {{ siteschangeform.title }}
+		      <label for="{{ siteschangeform.title.id_for_label}}">Site Title</label>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-web prefix" aria-hidden="true"></span>
+		      {{ siteschangeform.primary_domain.errors }}
+		      {{ siteschangeform.primary_domain }}
+		      <label for="{{ siteschangeform.primary_domain.id_for_label}}">Primary Domain</label>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-code-tags prefix" aria-hidden="true"></span>
+		      {{ siteschangeform.namespace.errors }}
+		      {{ siteschangeform.namespace }}
+		      <label for="{{ siteschangeform.namespace.id_for_label}}">Namespace</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-robot"></div>
+		      	<div class="help-text">{{ siteschangeform.namespace.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-code-tags prefix" aria-hidden="true"></span>
+		      {{ siteschangeform.gatrackingid.errors }}
+		      {{ siteschangeform.gatrackingid }}
+		      <label for="{{ siteschangeform.gatrackingid.id_for_label}}">Google Analytics Tracking ID</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-robot"></div>
+		      	<div class="help-text">{{ siteschangeform.gatrackingid.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="material-icons prefix" aria-hidden="true"></span>
+		      <button type="submit" class="waves-effect waves-green btn">
+		        <span class="sr-only">Submit</span>
+		        <span class="no-sr" aria-hidden="true">Submit</span>
+		      </button>
+		    </div>
+		  </form>
+		</div>
+  </div>
+</div>
+{% endblock %}
