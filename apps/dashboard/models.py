@@ -149,6 +149,29 @@ class GeneralSettings(models.Model):
         help_text=apphelp.GeneralSettings.gatrackingid,
         verbose_name='Google Analytics Tracking ID',
     )
+    main_phone = models.CharField(
+        max_length=11,
+        null=True,
+        blank=True,
+        help_text=apphelp.GeneralSettings.main_phone,
+        verbose_name='Main Phone Number',
+    )
+    main_fax = models.CharField(
+        max_length=11,
+        null=True,
+        blank=True,
+        help_text=apphelp.GeneralSettings.main_fax,
+        verbose_name='Main Fax Number',
+    )
+    location = models.ForeignKey(
+        'taxonomy.Location',
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name='dashboard_generalsettings_location',
+        verbose_name='Primary Location',
+        help_text=apphelp.GeneralSettings.location,
+    )
     nd_statement = RichTextField(
         null=True,
         blank=False,

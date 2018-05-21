@@ -36,6 +36,20 @@ class GeneralSettings():
         '<span>Enter the Google Analytics Tracking ID for this property '
         'which can be found in the admin interface of Google Analytics.</span>'
     )
+    main_phone = (
+        '<span>Enter the main phone number for the entity this site '
+        'represents. The number should be in the 11 number format. '
+        ' (i.e.: 18015788599)</span>'
+    )
+    main_fax = (
+        '<span>Enter the main fax number for the entity this site '
+        'represents. The number should be in the 11 number format. '
+        ' (i.e.: 18015788599)</span>'
+    )
+    location = (
+        '<span>Select the primary location for the entity this site '
+        'represents. This list is managed by the webmaster.</span>'
+    )
     template = (
         '<span>Select the template used on this site. '
         'A value must be selected.</span>'
