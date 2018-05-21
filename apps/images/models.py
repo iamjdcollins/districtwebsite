@@ -801,3 +801,62 @@ class PhotoGalleryImage(Image):
 
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
+
+
+class InlineImage(Image):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/inlineimage/'
+    HAS_PERMISSIONS = False
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+    )
+    image_file = models.ImageField(
+        max_length=2000,
+        upload_to=commonfunctions.image_upload_to,
+        verbose_name='Image',
+        help_text='',
+    )
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='images_inlineimage_node',
+        editable=False,
+    )
+
+    inlineimage_image_node = models.OneToOneField(
+        Image,
+        db_column='inlineimage_image_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    class Meta:
+        db_table = 'images_inlineimage'
+        get_latest_by = 'update_date'
+        permissions = (
+            ('trash_inlineimage', 'Can soft delete inline image'),
+            ('restore_inlineimage', 'Can restore inline image'),
+        )
+        verbose_name = 'Inline Image'
+        verbose_name_plural = 'Inline Images'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    def force_title(self):
+        return str(self.uuid)
+
+    def file_name(self, file):
+        return '{0}'.format(
+            file.slug,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
