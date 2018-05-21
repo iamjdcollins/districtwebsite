@@ -40,8 +40,8 @@ function initSitesList(){
 }
 // Initialize select lists.
 function initSelect(){
-  var elem = document.querySelector('select');
-  var instance = M.FormSelect.init(elem);
+  var elems = document.querySelectorAll('select');
+  var instances = M.FormSelect.init(elems);
 }
 
 // Runs on document loaded
