@@ -117,13 +117,17 @@
                   <span class="hide-xs hide-sm hide-md no-sr" aria-hidden="true">Home</span>
                 </a>
               </li>
+              {% if request.site.dashboard_general_site.main_phone %}
               <li>
-                <a href="tel:18015788599" class="pure-button narrow">
-                  <span class="sr-only">Main phone number: 801-578-8599</span>
+                <a href="tel:{{ request.site.dashboard_general_site.main_phone }}" class="pure-button narrow">
+                  <span class="sr-only">Main phone number: {{ request.site.dashboard_general_site.main_phone }}</span>
                   <span class="md-phone no-sr" aria-hidden="true"></span>
-                  <span class="hide-xs hide-sm hide-md no-sr" aria-hidden="true">801-578-8599</span>
+                  <span class="hide-xs hide-sm hide-md no-sr" aria-hidden="true">
+                    {{request.site.dashboard_general_site.main_phone|slice:"1:4"}}-{{request.site.dashboard_general_site.main_phone|slice:"4:7"}}-{{request.site.dashboard_general_site.main_phone|slice:"7:11"}}
+                  </span>
                 </a>
               </li>
+              {% endif %}
               <li>
                 <a href="/employees/" class="pure-button narrow">
                   <span class="sr-only">Employee Dashboard (Requires Authentication).</span>
@@ -165,6 +169,27 @@
             {{ request.site.dashboard_general_site.nd_statement|safe|relink }}
             <h2>Americans with Disabilities Act (ADA) Statement</h2>
             {{ request.site.dashboard_general_site.ada_statement|safe|relink }}
+          </div>
+          <div class="col pure-u-md-1-3 pure-u-1">
+            <h2>Contact</h2>
+            {% if request.site.dashboard_general_site.location %}
+            <a href="{{ request.site.dashboard_general_site.location.google_place }}" target="_blank" class="contact-address">
+                <span class="md-location"></span> {{ request.site.dashboard_general_site.location.title }}<br>
+                <span class="md-blank"></span> {{ request.site.dashboard_general_site.location.street_address }}<br>
+                <span class="md-blank"></span> {{ request.site.dashboard_general_site.location.location_city.title }}, {{ request.site.dashboard_general_site.location.location_state.title }} {{ request.site.dashboard_general_site.location.location_zipcode.title }}<br>
+            </a>
+            {% endif %}
+            {% if request.site.dashboard_general_site.main_phone %}
+            <a target="_blank"  href="tel:{{request.site.dashboard_general_site.main_phone }}" class="contact-phone">
+              <span class="md-phone"></span> Phone: {{request.site.dashboard_general_site.main_phone|slice:"1:4"}}-{{request.site.dashboard_general_site.main_phone|slice:"4:7"}}-{{request.site.dashboard_general_site.main_phone|slice:"7:11"}}
+            </a>
+            {% endif %}
+            {% if request.site.dashboard_general_site.main_fax %}
+            <span class="contact-fax">
+              <span class="md-fax"></span> Fax: {{request.site.dashboard_general_site.main_fax|slice:"1:4"}}-{{request.site.dashboard_general_site.main_fax|slice:"4:7"}}-{{request.site.dashboard_general_site.main_fax|slice:"7:11"}}
+            </span>
+            {% endif %}
+            <a class="pure-button pure-button-primary contact-button" href="/contact-us/">Send Us A Message</a>
           </div>
         </div>
       </div>
