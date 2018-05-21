@@ -269,7 +269,7 @@ def image_upload_to(instance, filename):
         instance.pk,
         original_extension,
     )
-    # raise Exception('test')
+    full_path = full_path.lower()
     if not instance.image_file._committed:
         silentdelete_media(settings.MEDIA_ROOT + '/' + folder_path)
     return full_path
@@ -287,6 +287,7 @@ def file_upload_to(instance, filename):
         instance.pk,
         original_extension,
     )
+    full_path = full_path.lower()
     if not instance.file_file._committed:
         silentdelete_media(settings.MEDIA_ROOT + '/' + folder_path)
     return full_path
@@ -298,6 +299,7 @@ def precinct_map_upload_to(instance, filename):
     original_file, original_extension = findfileext_media(filename)
     extension = urlclean_fileext(original_extension)
     full_path = '{0}{1}{2}'.format(url, title, extension)
+    full_path = full_path.lower()
     if not instance.precinct_map._committed:
         silentdelete_media(settings.MEDIA_ROOT + '/' + full_path)
     return full_path
@@ -469,19 +471,49 @@ def modelsave(self, *args, **kwargs):
                         except Node.DoesNotExist:
                             node = None
                         rx = r'{0}'.format(link)
-                        # rr = re.sub(r'href=\"', 'data-id="', link)
                         rr = link
                         if node:
                             rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(str(node.pk)), rr)
                         else:
                             rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(''), rr)
-                        # inlinelink = re.search('inlinelink', rr)
-                        # classes = re.search(r'<a.*?class=\"(.*?)\".*?>', rr).group(1).split(' ')
-                        # rr = re.sub(r'<a(.*?)class=\".*?\"(.*?)>', r'<a\1\2>', rr)
-                        # if inlinelink:
-                        #     rr = re.sub(r'<a ', '<a class="relink inlinelink" ', rr)
-                        # else:
-                        #     rr = re.sub(r'<a ', '<a class="relink" ', rr)
+                        rr = re.sub(r'data-processed=\".*?\"', 'data-processed="{0}"'.format(url), rr)
+                        rr = re.sub(r'[ ]+', ' ', rr)
+                        field_value = re.sub(re.escape(rx), rr, field_value)
+                images = re.findall(r'<img .*? />', field_value)
+                for image in images:
+                    try:
+                        url = re.search(
+                            r'(?:src)=\"(.*?)\"',
+                            image,
+                        ).groups()[0]
+                    except AttributeError:
+                        url = ''
+                    try:
+                        data_processed = re.search(
+                            r'(?:data-processed)=\"(.*?)\"',
+                            image,
+                        ).groups()[0]
+                    except AttributeError:
+                        data_processed = ''
+                    if url != data_processed:
+                        url_parsed = urlparse(url)
+                        try:
+                            site = Alias.objects.get(domain=url_parsed.netloc).site
+                        except Alias.DoesNotExist:
+                            site = None
+                        try:
+                            if site:
+                                node = Node.objects.get(url=url_parsed.path, site=site)
+                            else:
+                                node = None
+                        except Node.DoesNotExist:
+                            node = None
+                        rx = r'{0}'.format(image)
+                        rr = image
+                        if node:
+                            rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(str(node.pk)), rr)
+                        else:
+                            rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(''), rr)
                         rr = re.sub(r'data-processed=\".*?\"', 'data-processed="{0}"'.format(url), rr)
                         rr = re.sub(r'[ ]+', ' ', rr)
                         field_value = re.sub(re.escape(rx), rr, field_value)
