@@ -7,6 +7,9 @@ class GeneralSettingsForm(forms.ModelForm):
         model = GeneralSettings
         fields = (
             'title',
+            'main_phone',
+            'main_fax',
+            'location',
             'template',
             'nd_statement',
             'ada_statement',
