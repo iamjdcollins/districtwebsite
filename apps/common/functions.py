@@ -385,35 +385,35 @@ def modelsave(self, *args, **kwargs):
     if not is_new and (oldurl != self.url):
         urlchanged = True
         urlchanged_email(self, oldurl)
-    # Set new name for file fields
-    currentname = None
-    newname = None
-    # Image file field
-    try:
-        if self.image_file:
-            currentname = findfileext_media(self.image_file.name)
-            newname = image_upload_to(self, currentname[0] + currentname[1])
-            currentname = '{0}/{1}{2}'.format(
-                '/'.join(newname.split('/')[:-1]),
-                currentname[0],
-                currentname[1],
-                )
-            self.image_file.name = newname
-    except AttributeError:
-        pass
-    # File file field
-    try:
-        if self.file_file:
-            currentname = findfileext_media(self.file_file.name)
-            newname = file_upload_to(self, currentname[0] + currentname[1])
-            currentname = '{0}/{1}{2}'.format(
-                '/'.join(newname.split('/')[:-1]),
-                currentname[0],
-                currentname[1],
-                )
-            self.file_file.name = newname
-    except AttributeError:
-        pass
+    # # Set new name for file fields
+    # currentname = None
+    # newname = None
+    # # Image file field
+    # try:
+    #     if self.image_file:
+    #         currentname = findfileext_media(self.image_file.name)
+    #         newname = image_upload_to(self, currentname[0] + currentname[1])
+    #         currentname = '{0}/{1}{2}'.format(
+    #             '/'.join(newname.split('/')[:-1]),
+    #             currentname[0],
+    #             currentname[1],
+    #             )
+    #         self.image_file.name = newname
+    # except AttributeError:
+    #     pass
+    # # File file field
+    # try:
+    #     if self.file_file:
+    #         currentname = findfileext_media(self.file_file.name)
+    #         newname = file_upload_to(self, currentname[0] + currentname[1])
+    #         currentname = '{0}/{1}{2}'.format(
+    #             '/'.join(newname.split('/')[:-1]),
+    #             currentname[0],
+    #             currentname[1],
+    #             )
+    #         self.file_file.name = newname
+    # except AttributeError:
+    #     pass
     # Set the node_title for the node
     self.node_title = self.title
     # Set the node type
