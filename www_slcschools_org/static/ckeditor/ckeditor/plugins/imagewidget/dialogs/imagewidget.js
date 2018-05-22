@@ -22,6 +22,30 @@ CKEDITOR.dialog.add( 'imagewidget', function( editor ) {
 
                     },
                     {
+                        type: 'button',
+                        id: 'browse',
+                        // ...
+                        label: editor.lang.common.browseServer,
+                        hidden: true,
+                        filebrowser: {
+                            action: 'Browse',
+                            target: 'info:src',
+                            params: { pk: (
+                                function(){
+                                    pathElems = window.location.pathname.split('/')
+                                    if(pathElems[ pathElems.length -2 ] == 'change'){
+                                        id = pathElems[ pathElems.length -3 ]
+                                        return id
+                                    } else if(pathElems[ pathElems.length -2 ] == 'add'){
+                                        return false
+                                    } else {
+                                        return false
+                                    }
+                                }()) 
+                            },
+                        }
+                    },
+                    {
                         id: 'alttext',
                         type: 'text',
                         label: 'Alternative Text (Required)',
