@@ -170,6 +170,8 @@ def has_add_permission(self, request, obj=None):
         self.model._meta.app_label + '.' + get_permission_codename(
             'add', self.model._meta)):
         return True
+    elif request.user.groups.filter(name='Website Managers'):
+        return True
     elif obj:
         if get_permission_codename(
                 'add', self.model._meta) in get_perms(request.user, obj):
@@ -184,7 +186,11 @@ def has_change_permission(self, request, obj=None):
             self.model._meta.app_label + '.' + get_permission_codename(
                 'change', self.model._meta)):
             return True
+        elif request.user.groups.filter(name='Website Managers'):
+            return True
     if obj:
+        if request.user.groups.filter(name='Website Managers'):
+            return True
         if obj.has_permissions:
             # Check for object level permission through Guardian
             if get_permission_codename(
@@ -205,6 +211,8 @@ def has_delete_permission(self, request, obj=None):
     if request.user.has_perm(
         self.model._meta.app_label + '.' + get_permission_codename(
             'trash', self.model._meta)):
+        return True
+    elif request.user.groups.filter(name='Website Managers'):
         return True
     elif obj:
         if obj.has_permissions:
