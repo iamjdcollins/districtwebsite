@@ -521,25 +521,25 @@ def modelsave(self, *args, **kwargs):
 
     # Save the item
     super(self._meta.model, self).save(*args, **kwargs)
-    # Move Directories for children then parent.
-    if urlchanged:
-        # Save Children to update their urls and move thier directories.
-        for child in self.get_children():
-            object = nodefindobject(child)
-            object.save()
-        # Move Directory
-        silentmove_media(
-            settings.MEDIA_ROOT + oldurl,
-            settings.MEDIA_ROOT + self.url
-        )
-    # Move File
-    if currentname != newname:
-        oldpath = '{0}/{1}'.format(settings.MEDIA_ROOT, currentname)
-        newpath = '{0}/{1}'.format(settings.MEDIA_ROOT, newname)
-        silentmove_media(oldpath, newpath)
-        # Commenting file moves because newly uploaded files
-        # think they are moving on upload.
-        # filepath_email(self, oldpath, newpath)
+    # # Move Directories for children then parent.
+    # if urlchanged:
+    #     # Save Children to update their urls and move thier directories.
+    #     for child in self.get_children():
+    #         object = nodefindobject(child)
+    #         object.save()
+    #     # Move Directory
+    #     silentmove_media(
+    #         settings.MEDIA_ROOT + oldurl,
+    #         settings.MEDIA_ROOT + self.url
+    #     )
+    # # Move File
+    # if currentname != newname:
+    #     oldpath = '{0}/{1}'.format(settings.MEDIA_ROOT, currentname)
+    #     newpath = '{0}/{1}'.format(settings.MEDIA_ROOT, newname)
+    #     silentmove_media(oldpath, newpath)
+    #     # Commenting file moves because newly uploaded files
+    #     # think they are moving on upload.
+    #     # filepath_email(self, oldpath, newpath)
     clearcache(self)
 
 
