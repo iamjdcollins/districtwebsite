@@ -251,7 +251,8 @@ CKEDITOR_CONFIGS = {
         'image2_altRequired': True,
         'image2_disableResizer': True,
         'uploadUrl': '/',
-        'filebrowserImageBrowseUrl': '/medialibrary/',
+        'filebrowserImagewidgetBrowseUrl': '/medialibrary/',
+        'filebrowserWindowFeatures': 'location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=no,scrollbars=yes',
         # 'filebrowserUploadUrl': '/test/',
         # 'allowedContent': 'p h3 h4 h5 h6 strong em u s ol ul li table caption thead tbody tr th td hr br',
         # 'extraAllowedContent': 'a(!relink)[!data-id]',
@@ -366,6 +367,10 @@ PIPELINE = {
         'dashboard-standard': {
             'source_filenames': CMSTEMPLATES['css']['frameworks']['materialize'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['backend'] + CMSTEMPLATES['css']['templates']['dashboard'] + CMSTEMPLATES['css']['themes']['dashboard-standard'],
             'output_filename': 'cmstemplates/build/dashboard-standard/dashboard-standard.min.css',
+        },
+        'medialibrary':{
+          'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'],
+          'output_filename': 'cmstemplates/build/medialibrary/medialibrary.min.css',
         },
         'material-standard': {
             'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['material'] + CMSTEMPLATES['css']['themes']['material-standard'],
