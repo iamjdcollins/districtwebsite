@@ -16,14 +16,14 @@ CKEDITOR.plugins.add( 'imagewidget', {
                     '<a class="relink" href="" data-id="" data-processed="">' +
                         '<span class="sr-only readertext">#</span>' +
                     '</a>' +
-                    '<img class="inlineimage-img responsive-img" src="" alt="">' + 
+                    '<img class="inlineimage-img responsive-img" src="" alt="" data-id="" data-processed="">' + 
                 '</div>',
 
             allowedContent:
                 'div(!inlineimage,!selfclear,linked,fullcenter,fullstretch,left,right,padleft,padright,padtop,padbottom);' +
                 'a(!relink, active)[!href,!data-id,!data-processed];' + 
                 'span(sr-only,readertext);' +
-                'img(!inlineimage-img,!responsive-img)[!src,!alt]{width};',
+                'img(!inlineimage-img,!responsive-img)[!src,!alt,!data-id,!data-processed]{width};',
 
             requiredContent: 'div(inlineimage)',
 
