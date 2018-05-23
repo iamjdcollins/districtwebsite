@@ -74,6 +74,25 @@ def contactmessage_message(self):
     return True
 
 
+def customerror_emailadmins(subject, message):
+    email = EmailMessage(
+        subject,
+        message,
+        'Salt Lake City School District <webmaster@slcschools.org>',
+        ['jordan.collins@slcschools.org'],
+        reply_to=['donotreply@slcschools.org'],
+        headers={
+            'Message-ID': str(uuid.uuid4()),
+            },
+    )
+    email.content_subtype = 'html'
+    try:
+        email.send(fail_silently=False)
+    except Exception:
+        return False
+    return True
+
+
 def urlchanged_email(self, oldurl):
     email = EmailMessage(
         'Website URL Changed App {0} Type {1}'.format(
@@ -356,8 +375,8 @@ def modelsave(self, *args, **kwargs):
     # Force Title
     self.title = self.force_title()
     # Set Slug
-    if not self.slug or not self.sluginstance:
-        self.slug = urlclean_objname(self.title)
+    self.slug = urlclean_objname(self.title)
+    if not self.sluginstance:
         self.sluginstance = 0
     # Set URL
     urlchanged = False
@@ -384,7 +403,7 @@ def modelsave(self, *args, **kwargs):
         )
     if not is_new and (oldurl != self.url):
         urlchanged = True
-        urlchanged_email(self, oldurl)
+        email = urlchanged_email(self, oldurl)
     # # Set new name for file fields
     # currentname = None
     # newname = None
@@ -739,3 +758,115 @@ def december_thirty_first():
     return timezone.make_aware(
         timezone.datetime(now.year, 12, 31, 00, 00)
         )
+
+
+def file_name(self):
+    if (
+        (
+            self.parent.node_type == 'documents' and
+            self.parent.content_type == 'document'
+        ) or (
+            self.parent.node_type == 'documents' and
+            self.parent.content_type == 'policy'
+        ) or (
+            self.parent.node_type == 'documents' and
+            self.parent.content_type == 'administrativeprocedure'
+        ) or (
+            self.parent.node_type == 'documents' and
+            self.parent.content_type == 'supportingdocument'
+        ) or (
+            self.parent.node_type == 'documents' and
+            self.parent.content_type == 'boardmeetingexhibit'
+        ) or (
+            self.parent.node_type == 'documents' and
+            self.parent.content_type == 'boardmeetingagendaitem'
+        )
+    ):
+        return '{0}-{1}{2}'.format(
+            self.parent.slug,
+            self.slug,
+            findfileext_media(self.file_file.url)[1],
+        )
+    if (
+        (
+            self.parent.node_type == 'documents' and
+            self.parent.content_type == 'boardmeetingagenda'
+        ) or (
+            self.parent.node_type == 'documents' and
+            self.parent.content_type == 'boardmeetingminutes'
+        )
+    ):
+        return '{0}-{1}-{2}{3}'.format(
+            self.parent.parent.slug,
+            self.parent.slug,
+            self.slug,
+            findfileext_media(self.file_file.url)[1],
+        )
+    if (
+        (
+            self.parent.node_type == 'documents' and
+            self.parent.content_type == 'BoardMeetingAudio'
+        ) or (
+            self.parent.node_type == 'documents' and
+            self.parent.content_type == 'BoardMeetingVideo'
+        )
+    ):
+        return '{0}-{1}{2}'.format(
+            self.parent.parent.slug,
+            self.parent.slug,
+            findfileext_media(self.file_file.url)[1],
+        )
+    if (
+        # (
+        #     self.node_type == 'images' and
+        #     self.content_type == 'thumbnail'
+        # ) or (
+        (
+            self.node_type == 'images' and
+            self.content_type == 'newsthumbnail'
+        ) or (
+            self.node_type == 'images' and
+            self.content_type == 'pagebanner'
+        ) or (
+            self.node_type == 'images' and
+            self.content_type == 'contentbanner'
+        ) or (
+            self.node_type == 'images' and
+            self.content_type == 'profilepicture'
+        ) or (
+            self.node_type == 'images' and
+            self.content_type == 'district;ogogif'
+        ) or (
+            self.node_type == 'images' and
+            self.content_type == 'districtlogojpg'
+        ) or (
+            self.node_type == 'images' and
+            self.content_type == 'districtlogopng'
+        ) or (
+            self.node_type == 'images' and
+            self.content_type == 'districtlogotif'
+        ) or (
+            self.node_type == 'images' and
+            self.content_type == 'districtlogo'
+        ) or (
+            self.node_type == 'images' and
+            self.content_type == 'photogalleryimage'
+        ) or (
+            self.node_type == 'images' and
+            self.content_type == 'inlineimage'
+        )
+    ):
+        return '{0}{1}'.format(
+            self.slug,
+            findfileext_media(self.image_file.url)[1],
+        )
+    customerror_emailadmins(
+        'Missing File Name',
+        'Missing file name for: '
+        '{0} with node type: {1} and content type: {2}'.format(
+            self.pk,
+            self.node_type,
+            self.content_type,
+            )
+    )
+    return 'unkonwn'
