@@ -59,12 +59,6 @@ class Document(BaseDocument):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}-{1}'.format(
-            file.parent.slug,
-            file.slug
-        )
-
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -197,12 +191,6 @@ class Policy(BaseDocument):
     def force_title(self):
         return self.parent.node_title + ' Policy'
 
-    def file_name(self, file):
-        return '{0}-{1}'.format(
-            file.parent.slug,
-            file.slug
-        )
-
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -252,12 +240,6 @@ class AdministrativeProcedure(BaseDocument):
 
     def force_title(self):
         return self.parent.node_title + ' AP'
-
-    def file_name(self, file):
-        return '{0}-{1}'.format(
-            file.parent.slug,
-            file.slug
-        )
 
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
@@ -320,12 +302,6 @@ class SupportingDocument(BaseDocument):
                 ) + '[ ]?', '', self.title).strip()
         return self.parent.node_title + ' ' + self.document_title
 
-    def file_name(self, file):
-        return '{0}-{1}'.format(
-            file.parent.slug,
-            file.slug
-        )
-
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -375,13 +351,6 @@ class BoardMeetingAgenda(BaseDocument):
 
     def force_title(self):
         return 'Agenda'
-
-    def file_name(self, file):
-        return '{0}-{1}-{2}'.format(
-            file.parent.parent.slug,
-            file.parent.slug,
-            file.slug
-        )
 
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
@@ -433,13 +402,6 @@ class BoardMeetingMinutes(BaseDocument):
     def force_title(self):
         return 'Minutes'
 
-    def file_name(self, file):
-        return '{0}-{1}-{2}'.format(
-            file.parent.parent.slug,
-            file.parent.slug,
-            file.slug
-        )
-
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -488,12 +450,6 @@ class BoardMeetingAudio(BaseDocument):
     def force_title(self):
         return 'Audio'
 
-    def file_name(self, file):
-        return '{0}-{1}'.format(
-            file.parent.parent.slug,
-            file.parent.slug,
-        )
-
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -541,12 +497,6 @@ class BoardMeetingVideo(BaseDocument):
 
     def force_title(self):
         return 'Video'
-
-    def file_name(self, file):
-        return '{0}-{1}'.format(
-            file.parent.parent.slug,
-            file.parent.slug,
-        )
 
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
@@ -598,12 +548,6 @@ class BoardMeetingExhibit(BaseDocument):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}-{1}'.format(
-            file.parent.slug,
-            file.slug,
-        )
-
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -653,12 +597,6 @@ class BoardMeetingAgendaItem(BaseDocument):
 
     def force_title(self):
         return self.title if self.title else ''
-
-    def file_name(self, file):
-        return '{0}-{1}'.format(
-            file.parent.slug,
-            file.slug,
-        )
 
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash

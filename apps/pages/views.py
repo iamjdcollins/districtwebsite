@@ -2568,7 +2568,9 @@ def node_lookup(request):
         response = HttpResponse()
         response['Content-Type'] = ''
         response['X-Accel-Redirect'] = item.file_file.url
-        response['Content-Disposition'] = 'filename=test.pdf'
+        response['Content-Disposition'] = 'filename={0}'.format(
+            item.file_name()
+        )
         return response
     if node.node_type == 'images':
         item = (
@@ -2579,6 +2581,8 @@ def node_lookup(request):
         response = HttpResponse()
         response['Content-Type'] = ''
         response['X-Accel-Redirect'] = item.image_file.url
-        response['Content-Disposition'] = 'filename=test.pdf'
+        response['Content-Disposition'] = 'filename={0}'.format(
+            item.file_name()
+        )
         return response
     return HttpResponse(status=404)

@@ -61,11 +61,7 @@ class Thumbnail(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -124,11 +120,7 @@ class NewsThumbnail(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -188,11 +180,7 @@ class PageBanner(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -262,11 +250,7 @@ class ContentBanner(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -326,11 +310,7 @@ class ProfilePicture(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -390,11 +370,7 @@ class DistrictLogoGIF(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -454,11 +430,7 @@ class DistrictLogoJPG(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -518,11 +490,7 @@ class DistrictLogoPNG(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -582,11 +550,7 @@ class DistrictLogoTIF(Image):
     def force_title(self):
         return self.title if self.title else ''
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -655,11 +619,7 @@ class DistrictLogo(Image):
         return self.district_logo_group.title + \
             ' ' + self.district_logo_style_variation.title
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -794,11 +754,7 @@ class PhotoGalleryImage(Image):
                 self.title,
             )
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -853,10 +809,6 @@ class InlineImage(Image):
     def force_title(self):
         return str(self.uuid)
 
-    def file_name(self, file):
-        return '{0}'.format(
-            file.slug,
-        )
-
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash

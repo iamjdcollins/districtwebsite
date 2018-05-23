@@ -61,6 +61,7 @@ class File(BaseFile):
     def force_title(self):
         return self.file_language.title
 
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -112,6 +113,7 @@ class AudioFile(BaseFile):
     def force_title(self):
         return self._meta.model_name
 
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
 
@@ -163,5 +165,6 @@ class VideoFile(BaseFile):
     def force_title(self):
         return self._meta.model_name
 
+    file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
