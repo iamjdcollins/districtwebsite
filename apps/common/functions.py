@@ -530,11 +530,11 @@ def modelsave(self, *args, **kwargs):
     # Save the item
     super(self._meta.model, self).save(*args, **kwargs)
     # # Move Directories for children then parent.
-    # if urlchanged:
-    #     # Save Children to update their urls and move thier directories.
-    #     for child in self.get_children():
-    #         object = nodefindobject(child)
-    #         object.save()
+    if urlchanged:
+        # Save Children to update their urls and move thier directories.
+        for child in self.get_children():
+            object = nodefindobject(child)
+            object.save()
     #     # Move Directory
     #     silentmove_media(
     #         settings.MEDIA_ROOT + oldurl,
