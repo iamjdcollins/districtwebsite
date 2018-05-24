@@ -36,6 +36,8 @@ def images(match, nodes=nodes_dict):
             id = re.search(r'data-id=\"(.*?)\"', match.group(1)).group(1)
         except IndexError:
             return ''
+        except AttributeError:
+            return '<img {0} />'.format(value)
         if id in nodes:
             url = nodes[id]['url']
         else:

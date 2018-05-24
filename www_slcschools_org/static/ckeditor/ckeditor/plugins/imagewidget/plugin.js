@@ -23,7 +23,7 @@ CKEDITOR.plugins.add( 'imagewidget', {
                 'div(!inlineimage,!selfclear,linked,fullcenter,fullstretch,left,right,padleft,padright,padtop,padbottom);' +
                 'a(!relink, active)[!href,!data-id,!data-processed];' + 
                 'span(sr-only,readertext);' +
-                'img(!inlineimage-img,!responsive-img)[!src,!alt,!data-id,!data-processed]{width};',
+                'img(!inlineimage-img,!responsive-img)[!src,!alt,data-id,data-processed]{width};',
 
             requiredContent: 'div(inlineimage)',
 
