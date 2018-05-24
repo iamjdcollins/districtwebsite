@@ -128,7 +128,7 @@
         {% for staff in page.departments_departmentsubpagestaff_department.all %}
         <div class="card horizontal">
           <div class="card-image">
-            <img src="{% if staff.employee.users_userprofileimage_user.image %}/{{staff.employee.users_userprofileimage_user.image}}{% else %}/users/images/placeholder.jpg{% endif %}" />
+            <img src="{% if staff.employee.users_userprofileimage_user.image %}/{{staff.employee.users_userprofileimage_user.image}}{% else %}{% static "www_slcschools_org/images/defaults/profilepicture.jpg" %}{% endif %}" />
           </div>
           <div class="card-stacked">
             <div class="card-content">

@@ -1,4 +1,5 @@
 {% extends "cmstemplates/www_slcschools_org/layouts/contentsideright.html" %}
+{% load static %}
 
 {% block title %}
   {{page.title}}
@@ -36,7 +37,7 @@
           <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.url }}" width="350" height="350" alt="{{ thumbnail.alttext }}" typeof="foaf:Image" class="img-responsive">
           {% endfor %}
           {% else %}
-          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/www_slcschools_org/images/cunningham.jpg" width="350" height="350" alt="Dr. Cunningham" typeof="foaf:Image" class="img-responsive">
+          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{% static "www_slcschools_org/images/defaults/superintendentmessage.jpg" %}" width="350" height="350" alt="Dr. Cunningham" typeof="foaf:Image" class="img-responsive">
           {% endif %}
         </div>
         <div class="col s12 m8 l9 xl10">
@@ -55,7 +56,7 @@
           <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ thumbnail.url }}" width="350" height="350" alt="{{ thumbnail.alttext }}" typeof="foaf:Image" class="img-responsive">
           {% endfor %}
           {% else %}
-          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/defaults/news/images/placeholder.png" width="350" height="350" alt="Salt Lake City School District Apple" typeof="foaf:Image" class="img-responsive">
+          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{% static "www_slcschools_org/images/defaults/newsthumbnail.png" %}" width="350" height="350" alt="Salt Lake City School District Apple" typeof="foaf:Image" class="img-responsive">
           {% endif %}
         </div>
         <div class="col s12 m8 l9 xl10">
