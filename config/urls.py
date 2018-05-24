@@ -40,7 +40,7 @@ urlpatterns += [
     url(r'^backend/', admin.site.urls),
 ]
 
-if settings.DEBUG:
+if settings.DEBUG and settings.ENVIRONMENT_MODE == 'development':
     import debug_toolbar
     urlpatterns = [
         url(r'^__debug__/', include(debug_toolbar.urls)),
