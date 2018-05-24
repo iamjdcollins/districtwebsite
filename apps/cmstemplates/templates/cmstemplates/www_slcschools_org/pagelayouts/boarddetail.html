@@ -259,7 +259,7 @@
             {% for profilepicture in member.images_profilepicture_node.all %}
             <img src="{{profilepicture.url}}" alt="{{profilepicture.alttext}}"/>
             {% empty %}
-            <img src="{% static "www_slcschools_org/images/defaults/profilepicture.jpg %}" alt="No Profile Picture" />
+            <img src="{% static "www_slcschools_org/images/defaults/profilepicture.jpg" %}" alt="No Profile Picture" />
             {% endfor %}
           </div>
           <div class="card-stacked">
