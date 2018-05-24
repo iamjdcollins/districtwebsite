@@ -106,3 +106,12 @@ div.inline-group table.ui-sortable tr.form-row.has_original td.drag {
 .file-upload a {
   display: none;
 }
+.file-upload a.tourl {
+  display: initial;
+}
+.linkto {
+  display: block;
+  font-size: 16px;
+  text-align: center;
+}
+

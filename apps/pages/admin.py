@@ -8,7 +8,7 @@ from guardian.admin import GuardedModelAdmin
 from mptt.admin import MPTTModelAdmin
 from ajax_select import make_ajax_form, make_ajax_field
 from adminsortable2.admin import SortableInlineAdminMixin
-from apps.common.classes import DeletedListFilter, EditLinkToInlineObject
+from apps.common.classes import DeletedListFilter, EditLinkToInlineObject, LinkToInlineObject
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear, SuperintendentMessage,SuperintendentMessageYear
@@ -27,7 +27,7 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 
 
-class ProfilePictureInline(admin.StackedInline):
+class ProfilePictureInline(LinkToInlineObject, admin.StackedInline):
     model = ProfilePicture
     fk_name = 'parent'
     fields = [
@@ -36,21 +36,23 @@ class ProfilePictureInline(admin.StackedInline):
         'alttext',
         'update_user',
         'update_date',
+        'copy_link',
     ]
     readonly_fields = [
         'update_user',
         'update_date',
+        'copy_link',
     ]
     extra = 0
     min_num = 1
     max_num = 1
 
 
-class ThumbnailInline(admin.TabularInline):
+class ThumbnailInline(LinkToInlineObject, admin.TabularInline):
   model = Thumbnail
   fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
+  fields = ['title','image_file','alttext','update_user','update_date','copy_link',]
+  readonly_fields = ['update_user','update_date', 'copy_link']
   extra = 0 
   min_num = 0
   max_num = 1
@@ -66,11 +68,11 @@ class ThumbnailInline(admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-class DistrictLogoGIFInline(admin.TabularInline):
+class DistrictLogoGIFInline(LinkToInlineObject, admin.TabularInline):
   model = DistrictLogoGIF
   fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
+  fields = ['title','image_file','alttext','update_user','update_date','copy_link',]
+  readonly_fields = ['update_user','update_date','copy_link',]
   extra = 0
   min_num = 0
   max_num = 1
@@ -86,11 +88,11 @@ class DistrictLogoGIFInline(admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-class DistrictLogoJPGInline(admin.TabularInline):
+class DistrictLogoJPGInline(LinkToInlineObject, admin.TabularInline):
   model = DistrictLogoJPG
   fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
+  fields = ['title','image_file','alttext','update_user','update_date','copy_link',]
+  readonly_fields = ['update_user','update_date','copy_link',]
   extra = 0
   min_num = 0
   max_num = 1
@@ -106,11 +108,11 @@ class DistrictLogoJPGInline(admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-class DistrictLogoPNGInline(admin.TabularInline):
+class DistrictLogoPNGInline(LinkToInlineObject, admin.TabularInline):
   model = DistrictLogoPNG
   fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
+  fields = ['title','image_file','alttext','update_user','update_date', 'copy_link',]
+  readonly_fields = ['update_user','update_date','copy_link',]
   extra = 0
   min_num = 0
   max_num = 1
@@ -126,11 +128,11 @@ class DistrictLogoPNGInline(admin.TabularInline):
           return qs
       return qs.filter(deleted=0)
 
-class DistrictLogoTIFInline(admin.TabularInline):
+class DistrictLogoTIFInline(LinkToInlineObject, admin.TabularInline):
   model = DistrictLogoTIF
   fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
+  fields = ['title','image_file','alttext','update_user','update_date','copy_link',]
+  readonly_fields = ['update_user','update_date','copy_link',]
   extra = 0
   min_num = 0
   max_num = 1
@@ -283,7 +285,7 @@ class PhotoGalleryImageInlineForm(forms.ModelForm):
             self.fields['title'].disabled = True
 
 
-class PhotoGalleryImageInline(SortableInlineAdminMixin, admin.TabularInline):
+class PhotoGalleryImageInline(SortableInlineAdminMixin, LinkToInlineObject, admin.TabularInline):
     model = PhotoGalleryImage
     fk_name = 'parent'
     fields = [
@@ -292,10 +294,12 @@ class PhotoGalleryImageInline(SortableInlineAdminMixin, admin.TabularInline):
         'alttext',
         'update_user',
         'update_date',
+        'copy_link',
         ]
     readonly_fields = [
         'update_user',
         'update_date',
+        'copy_link',
         ]
     extra = 0
     min_num = 0
@@ -315,7 +319,7 @@ class PhotoGalleryImageInline(SortableInlineAdminMixin, admin.TabularInline):
         return qs.filter(deleted=0)
 
 
-class NewsThumbnailInline(admin.TabularInline):
+class NewsThumbnailInline(LinkToInlineObject, admin.TabularInline):
     model = NewsThumbnail
     fk_name = 'parent'
     fields = [
@@ -324,10 +328,12 @@ class NewsThumbnailInline(admin.TabularInline):
         'alttext',
         'update_user',
         'update_date',
+        'copy_link',
         ]
     readonly_fields = [
         'update_user',
         'update_date',
+        'copy_link',
         ]
     extra = 0
     min_num = 0
@@ -347,11 +353,11 @@ class NewsThumbnailInline(admin.TabularInline):
         return qs.filter(deleted=0)
 
 
-class ContentBannerInline(SortableInlineAdminMixin, admin.TabularInline):
+class ContentBannerInline(SortableInlineAdminMixin, LinkToInlineObject, admin.TabularInline):
   model = ContentBanner
   fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
+  fields = ['title','image_file','alttext','update_user','update_date','copy_link',]
+  readonly_fields = ['update_user','update_date','copy_link',]
   extra = 0 
   min_num = 0
   max_num = 5
@@ -605,12 +611,12 @@ class DocumentInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class DocumentInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.TabularInline):
+class DocumentInline(EditLinkToInlineObject, SortableInlineAdminMixin, LinkToInlineObject, admin.TabularInline):
   model = Document
   form = DocumentInlineForm
   fk_name = 'parent'
-  fields = ['title','update_user','update_date','edit_link','published',]
-  readonly_fields = ['update_user','update_date','edit_link',]
+  fields = ['title','update_user','update_date','copy_link','edit_link','published',]
+  readonly_fields = ['update_user','update_date','copy_link','edit_link',]
   extra = 0 
   min_num = 0
   max_num = 500
@@ -984,12 +990,12 @@ class FileInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['file_language'].disabled = True
 
-class FileInline(admin.TabularInline):
+class FileInline(LinkToInlineObject, admin.TabularInline):
   model = File
   form = FileInlineForm
   fk_name = 'parent'
-  fields = ['file_file','file_language','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
+  fields = ['file_file','file_language','update_user','update_date','copy_link',]
+  readonly_fields = ['update_user','update_date','copy_link',]
   extra = 0 
   min_num = 0
   max_num = 50

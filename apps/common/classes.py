@@ -175,6 +175,14 @@ class EditLinkToInlineObject(object):
             return ''
 
 
+class LinkToInlineObject(object):
+    def copy_link(self, instance):
+        if instance.pk:
+            return mark_safe(u'<span class="linkto md-linkvariant" data-clipboard-text="https://{s}{u}" data-href="{u}"></span>'.format(s=instance.site.domain, u=instance.url))
+        else:
+            return ''
+
+
 class CustomSearchForm(SearchForm):
 
     def search(self):
