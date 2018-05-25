@@ -852,6 +852,14 @@ def file_name(self):
             self.slug,
             findfileext_media(self.image_file.url)[1],
         )
+    if(
+        self.node_type == 'files' and
+        self.content_type == 'precinctmap'
+    ):
+        return '{0}{1}'.format(
+            self.slug,
+            findfileext_media(self.file_file.url)[1],
+        )
     customerror_emailadmins(
         'Missing File Name',
         'Missing file name for: '
