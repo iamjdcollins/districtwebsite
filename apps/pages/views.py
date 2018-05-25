@@ -295,8 +295,8 @@ def prefetch_boardmembers_detail(qs):
                     .only(
                         'pk',
                         'title',
-                        'precinct_map',
                         )
+                    .prefetch_related('files_precinctmap_node')
                     .order_by('title')
                     )
                 ),

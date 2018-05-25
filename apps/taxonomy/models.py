@@ -480,14 +480,6 @@ class BoardPrecinct(Taxonomy):
         unique=True,
         help_text='',
     )
-    precinct_map = models.FileField(
-        max_length=2000,
-        upload_to=commonfunctions.precinct_map_upload_to,
-        verbose_name='Precinct Map',
-        help_text=apphelp.BoardPrecinct.precinct_map,
-        null=True,
-        blank=True,
-    )
 
     boardprecinct_taxonomy_node = models.OneToOneField(
         Taxonomy,

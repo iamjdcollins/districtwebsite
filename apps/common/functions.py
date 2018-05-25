@@ -321,15 +321,7 @@ def file_upload_to(instance, filename):
 
 
 def precinct_map_upload_to(instance, filename):
-    url = instance.url[1:]
-    title = urlclean_objname(instance.title + '-map')
-    original_file, original_extension = findfileext_media(filename)
-    extension = urlclean_fileext(original_extension)
-    full_path = '{0}{1}{2}'.format(url, title, extension)
-    full_path = full_path.lower()
-    if not instance.precinct_map._committed:
-        silentdelete_media(settings.MEDIA_ROOT + '/' + full_path)
-    return full_path
+    pass
 
 
 # Save Content Functions
