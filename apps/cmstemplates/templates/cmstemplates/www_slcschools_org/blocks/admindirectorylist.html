@@ -17,7 +17,7 @@
           <strong>{{ admin.employee.job_title }}</strong> <br />
           {% endif %}
           {% if admin.precinct %}
-          <strong>Precinct: </strong>{{ admin.precinct }}{% if admin.precinct.precinct_map %} - <a href="{{ admin.precinct.precinct_map.url }}" target="_blank">Map</a>{% endif %}<br>
+          <strong>Precinct: </strong>{{ admin.precinct }}{% for map in admin.precinct.files_precinctmap_node.all %}{% if forloop.first %} - <a href="{{ map.url }}" target="_blank">Map</a>{% endif %}{% endfor %}<br>
           {% endif %}
           {% if admin.street_address %}
           <span class="material-icons tiny" aria-hidden="true">&#xE55F;</span> {{ admin.street_address }}<br>

@@ -1,6 +1,8 @@
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
 from mptt.admin import MPTTModelAdmin
+from apps.pages.admin import PrecinctMapInline
+import apps.common.functions as commonfunctions
 from .models import Location, City, State, Zipcode, Language, TranslationType, SchoolType, OpenEnrollmentStatus, BoardPrecinct, BoardMeetingType, BoardPolicySection, DistrictCalendarEventCategory, DistrictLogoGroup, DistrictLogoStyleVariation, SchoolOption
 
 class LocationAdmin(MPTTModelAdmin,GuardedModelAdmin):
@@ -28,7 +30,14 @@ class OpenEnrollmentStatusAdmin(MPTTModelAdmin,GuardedModelAdmin):
   pass
 
 class BoardPrecinctAdmin(MPTTModelAdmin,GuardedModelAdmin):
-  pass
+    inlines = [PrecinctMapInline,]
+
+    has_change_permission = commonfunctions.has_change_permission
+    has_add_permission = commonfunctions.has_add_permission
+    has_delete_permission = commonfunctions.has_delete_permission
+    save_formset = commonfunctions.save_formset
+    save_model = commonfunctions.save_model
+    response_change = commonfunctions.response_change
 
 class BoardMeetingTypeAdmin(MPTTModelAdmin,GuardedModelAdmin):
   pass

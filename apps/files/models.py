@@ -168,3 +168,55 @@ class VideoFile(BaseFile):
     file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
+
+
+class PrecinctMap(BaseFile):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+    )
+    file_file = models.FileField(
+        max_length=2000,
+        upload_to=commonfunctions.file_upload_to,
+        verbose_name='File',
+        help_text='',
+    )
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='files_precinctmap_node',
+        editable=False,
+    )
+
+    file_file_node = models.OneToOneField(
+        BaseFile,
+        db_column='precinctmap_file_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    class Meta:
+        db_table = 'files_precinctmap'
+        get_latest_by = 'update_date'
+        permissions = (
+            ('trash_precinctmap', 'Can soft delete precinct map'),
+            ('restore_file', 'Can restore precinct map'),
+        )
+        verbose_name = 'Precinct Map'
+        verbose_name_plural = 'Precinct Maps'
+        default_manager_name = 'objects'
+
+    def force_title(self):
+        return self.parent.title + ' Map'
+
+    file_name = commonfunctions.file_name
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
