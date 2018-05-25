@@ -10,6 +10,7 @@ import uuid
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from django.views.generic.base import TemplateResponseMixin
+from django import forms
 #Delete View
 from django.contrib.admin.exceptions import DisallowedModelAdminToField
 from django.contrib.admin.utils import get_deleted_objects, unquote
@@ -165,6 +166,7 @@ class ModelAdminOverwrite():
 
     return self.render_delete_form(request, context)
 
+
 class EditLinkToInlineObject(object):
     def edit_link(self, instance):
         url = reverse('admin:%s_%s_change' % (
@@ -176,6 +178,7 @@ class EditLinkToInlineObject(object):
 
 
 class LinkToInlineObject(object):
+
     def copy_link(self, instance):
         if instance.pk:
             return mark_safe(u'<span class="linkto md-linkvariant" data-clipboard-text="https://{s}{u}" data-href="{u}"></span>'.format(s=instance.site.domain, u=instance.url))
