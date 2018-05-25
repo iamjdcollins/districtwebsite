@@ -17,7 +17,7 @@ from apps.directoryentries.models import SchoolAdministrator, Administrator, Sta
 from apps.links.models import ResourceLink, ActionButton
 from apps.documents.models import Document, BoardPolicy, Policy, AdministrativeProcedure, SupportingDocument, BoardMeetingAgenda, BoardMeetingMinutes, BoardMeetingAudio, BoardMeetingVideo, BoardMeetingExhibit, BoardMeetingAgendaItem
 from apps.events.models import BoardMeeting, DistrictCalendarEvent
-from apps.files.models import File, AudioFile, VideoFile
+from apps.files.models import File, AudioFile, VideoFile, PrecinctMap
 from apps.objects.models import Node
 from apps.faqs.models import FAQ
 import apps.common.functions
@@ -27,7 +27,10 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 
 
-class ProfilePictureInline(LinkToInlineObject, admin.StackedInline):
+class ProfilePictureInline(
+    LinkToInlineObject,
+    admin.StackedInline,
+):
     model = ProfilePicture
     fk_name = 'parent'
     fields = [
@@ -48,110 +51,188 @@ class ProfilePictureInline(LinkToInlineObject, admin.StackedInline):
     max_num = 1
 
 
-class ThumbnailInline(LinkToInlineObject, admin.TabularInline):
-  model = Thumbnail
-  fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date','copy_link',]
-  readonly_fields = ['update_user','update_date', 'copy_link']
-  extra = 0 
-  min_num = 0
-  max_num = 1
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
+class ThumbnailInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = Thumbnail
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'image_file',
+        'alttext',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
 
-class DistrictLogoGIFInline(LinkToInlineObject, admin.TabularInline):
-  model = DistrictLogoGIF
-  fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date','copy_link',]
-  readonly_fields = ['update_user','update_date','copy_link',]
-  extra = 0
-  min_num = 0
-  max_num = 1
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class DistrictLogoGIFInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = DistrictLogoGIF
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'image_file',
+        'alttext',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-class DistrictLogoJPGInline(LinkToInlineObject, admin.TabularInline):
-  model = DistrictLogoJPG
-  fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date','copy_link',]
-  readonly_fields = ['update_user','update_date','copy_link',]
-  extra = 0
-  min_num = 0
-  max_num = 1
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
 
-class DistrictLogoPNGInline(LinkToInlineObject, admin.TabularInline):
-  model = DistrictLogoPNG
-  fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date', 'copy_link',]
-  readonly_fields = ['update_user','update_date','copy_link',]
-  extra = 0
-  min_num = 0
-  max_num = 1
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
+class DistrictLogoJPGInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = DistrictLogoJPG
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'image_file',
+        'alttext',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
 
-class DistrictLogoTIFInline(LinkToInlineObject, admin.TabularInline):
-  model = DistrictLogoTIF
-  fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date','copy_link',]
-  readonly_fields = ['update_user','update_date','copy_link',]
-  extra = 0
-  min_num = 0
-  max_num = 1
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class DistrictLogoPNGInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = DistrictLogoPNG
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'image_file',
+        'alttext',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+
+class DistrictLogoTIFInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = DistrictLogoTIF
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'image_file',
+        'alttext',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class DistrictLogoInlineForm(forms.ModelForm):
     class Meta:
         model = DistrictLogo
-        fields = ['district_logo_group','district_logo_style_variation',]
+        fields = [
+            'district_logo_group',
+            'district_logo_style_variation',
+        ]
 
     def __init__(self, *args, **kwargs):
         super(DistrictLogoInlineForm, self).__init__(*args, **kwargs)
@@ -159,33 +240,57 @@ class DistrictLogoInlineForm(forms.ModelForm):
             self.fields['district_logo_group'].disabled = True
             self.fields['district_logo_style_variation'].disabled = True
 
-class DistrictLogoInline(EditLinkToInlineObject, admin.TabularInline):
-  model = DistrictLogo
-  form = DistrictLogoInlineForm
-  ordering = ['district_logo_group__lft','district_logo_style_variation__lft',]
-  fk_name = 'parent'
-  fields = ['district_logo_group','district_logo_style_variation','update_user','update_date','edit_link',]
-  readonly_fields = ['update_user','update_date','edit_link',]
-  extra = 0
-  min_num = 0
-  max_num = 14 
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class DistrictLogoInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
+    model = DistrictLogo
+    form = DistrictLogoInlineForm
+    ordering = [
+        'district_logo_group__lft',
+        'district_logo_style_variation__lft',
+    ]
+    fk_name = 'parent'
+    fields = [
+        'district_logo_group',
+        'district_logo_style_variation',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 14
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
 
 
 class NewsInlineForm(forms.ModelForm):
     class Meta:
         model = News
-        fields = ['title', 'pinned', 'author_date', ]
+        fields = [
+            'title',
+            'pinned',
+            'author_date',
+        ]
 
     def __init__(self, *args, **kwargs):
         super(NewsInlineForm, self).__init__(*args, **kwargs)
@@ -193,7 +298,11 @@ class NewsInlineForm(forms.ModelForm):
             self.fields['title'].disabled = True
 
 
-class NewsInline(EditLinkToInlineObject, admin.TabularInline):
+class NewsInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
     model = News
     form = NewsInlineForm
     fk_name = 'parent'
@@ -205,11 +314,13 @@ class NewsInline(EditLinkToInlineObject, admin.TabularInline):
         'update_date',
         'edit_link',
         'published',
+        'copy_link',
         ]
     readonly_fields = [
         'update_user',
         'update_date',
         'edit_link',
+        'copy_link',
         ]
     ordering = ['-author_date', ]
     extra = 0
@@ -241,8 +352,12 @@ class PhotoGalleryInlineForm(forms.ModelForm):
             self.fields['title'].disabled = True
 
 
-class PhotoGalleryInline(EditLinkToInlineObject,
-                         SortableInlineAdminMixin, admin.TabularInline):
+class PhotoGalleryInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    SortableInlineAdminMixin,
+    admin.TabularInline
+):
     model = PhotoGallery
     fk_name = 'parent'
     fields = [
@@ -250,11 +365,13 @@ class PhotoGalleryInline(EditLinkToInlineObject,
         'update_user',
         'update_date',
         'edit_link',
+        'copy_link',
         ]
     readonly_fields = [
         'update_user',
         'update_date',
         'edit_link',
+        'copy_link',
         ]
     extra = 0
     min_num = 0
@@ -285,7 +402,11 @@ class PhotoGalleryImageInlineForm(forms.ModelForm):
             self.fields['title'].disabled = True
 
 
-class PhotoGalleryImageInline(SortableInlineAdminMixin, LinkToInlineObject, admin.TabularInline):
+class PhotoGalleryImageInline(
+    SortableInlineAdminMixin,
+    LinkToInlineObject,
+    admin.TabularInline,
+):
     model = PhotoGalleryImage
     fk_name = 'parent'
     fields = [
@@ -319,7 +440,10 @@ class PhotoGalleryImageInline(SortableInlineAdminMixin, LinkToInlineObject, admi
         return qs.filter(deleted=0)
 
 
-class NewsThumbnailInline(LinkToInlineObject, admin.TabularInline):
+class NewsThumbnailInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
     model = NewsThumbnail
     fk_name = 'parent'
     fields = [
@@ -353,25 +477,41 @@ class NewsThumbnailInline(LinkToInlineObject, admin.TabularInline):
         return qs.filter(deleted=0)
 
 
-class ContentBannerInline(SortableInlineAdminMixin, LinkToInlineObject, admin.TabularInline):
-  model = ContentBanner
-  fk_name = 'parent'
-  fields = ['title','image_file','alttext','update_user','update_date','copy_link',]
-  readonly_fields = ['update_user','update_date','copy_link',]
-  extra = 0 
-  min_num = 0
-  max_num = 5
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
+class ContentBannerInline(
+    SortableInlineAdminMixin,
+    LinkToInlineObject,
+    admin.TabularInline
+):
+    model = ContentBanner
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'image_file',
+        'alttext',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 5
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class SchoolAdministratorInlineForm(forms.ModelForm):
     class Meta:
@@ -383,27 +523,44 @@ class SchoolAdministratorInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['employee'].disabled = True
 
-class SchoolAdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
-  model = SchoolAdministrator
-  fk_name = 'parent'
-  fields = ['employee', 'schooladministratortype','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
-  extra = 0 
-  min_num = 0
-  max_num = 5
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class SchoolAdministratorInline(
+    SortableInlineAdminMixin,
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = SchoolAdministrator
+    fk_name = 'parent'
+    fields = [
+        'employee',
+        'schooladministratortype',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 5
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  form = make_ajax_form(SchoolAdministrator, {'employee': 'employee'},SchoolAdministratorInlineForm)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+    form = make_ajax_form(SchoolAdministrator, {
+                          'employee': 'employee'}, SchoolAdministratorInlineForm)
+
 
 class AdministratorInlineForm(forms.ModelForm):
     class Meta:
@@ -415,27 +572,43 @@ class AdministratorInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['employee'].disabled = True
 
-class AdministratorInline(SortableInlineAdminMixin, admin.TabularInline):
-  model = Administrator
-  fk_name = 'parent'
-  fields = ['employee','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
-  extra = 0
-  min_inum = 0
-  max_num = 15
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class AdministratorInline(
+    SortableInlineAdminMixin,
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = Administrator
+    fk_name = 'parent'
+    fields = [
+        'employee',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_inum = 0
+    max_num = 15
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  form = make_ajax_form(Administrator, {'employee': 'employee'},AdministratorInlineForm)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+    form = make_ajax_form(
+        Administrator, {'employee': 'employee'}, AdministratorInlineForm)
+
 
 class StaffInlineForm(forms.ModelForm):
     class Meta:
@@ -447,27 +620,42 @@ class StaffInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['employee'].disabled = True
 
-class StaffInline(SortableInlineAdminMixin, admin.TabularInline):
-  model = Staff
-  fk_name = 'parent'
-  fields = ['employee','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
-  extra = 0
-  min_inum = 0
-  max_num = 50
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class StaffInline(
+    SortableInlineAdminMixin,
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = Staff
+    fk_name = 'parent'
+    fields = [
+        'employee',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_inum = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  form = make_ajax_form(Staff, {'employee': 'employee'},StaffInlineForm)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+    form = make_ajax_form(Staff, {'employee': 'employee'}, StaffInlineForm)
+
 
 class StudentBoardMemberInlineForm(forms.ModelForm):
     class Meta:
@@ -479,27 +667,44 @@ class StudentBoardMemberInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class StudentBoardMemberInline(EditLinkToInlineObject, admin.TabularInline):
-  model = StudentBoardMember
-  form = StudentBoardMemberInlineForm
-  fk_name = 'parent'
-  fields = ['title','update_user','update_date','edit_link']
-  readonly_fields = ['update_user','update_date','edit_link']
-  ordering = ['title',]
-  extra = 0
-  min_num = 0
-  max_num = 1
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class StudentBoardMemberInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
+    model = StudentBoardMember
+    form = StudentBoardMemberInlineForm
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = ['title', ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class BoardMemberInlineForm(forms.ModelForm):
     class Meta:
@@ -511,95 +716,163 @@ class BoardMemberInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['employee'].disabled = True
 
-class BoardMemberInline(admin.TabularInline):
-  model = BoardMember
-  fk_name = 'parent'
-  fields = ['employee','is_president','is_vicepresident','precinct','phone','street_address','city','state','zipcode','term_ends','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
-  ordering = ['precinct__title',]
-  extra = 0
-  min_num = 0
-  max_num = 7
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class BoardMemberInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = BoardMember
+    fk_name = 'parent'
+    fields = [
+        'employee',
+        'is_president',
+        'is_vicepresident',
+        'precinct',
+        'phone',
+        'street_address',
+        'city',
+        'state',
+        'zipcode',
+        'term_ends',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    ordering = ['precinct__title', ]
+    extra = 0
+    min_num = 0
+    max_num = 7
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  form = make_ajax_form(BoardMember, {'employee': 'employee'},BoardMemberInlineForm)
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
 
-class BoardPolicyAdminInline(admin.TabularInline):
-  model = BoardPolicyAdmin
-  fk_name = 'parent'
-  fields = ['employee','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
-  ordering = ['title',]
-  extra = 0
-  min_num = 0
-  max_num = 5
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
-
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
-
-  form = make_ajax_form(BoardPolicyAdmin, {'employee': 'employee'})
+    form = make_ajax_form(
+        BoardMember, {'employee': 'employee'}, BoardMemberInlineForm)
 
 
-class ResourceLinkInline(SortableInlineAdminMixin, admin.TabularInline):
-  model = ResourceLink
-  fk_name = 'parent'
-  fields = ['title','link_url','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
-  extra = 0 
-  min_num = 0
-  max_num = 50
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
+class BoardPolicyAdminInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = BoardPolicyAdmin
+    fk_name = 'parent'
+    fields = [
+        'employee',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    ordering = ['title', ]
+    extra = 0
+    min_num = 0
+    max_num = 5
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+    form = make_ajax_form(BoardPolicyAdmin, {'employee': 'employee'})
+
+
+class ResourceLinkInline(
+    SortableInlineAdminMixin,
+    LinkToInlineObject,
+    admin.TabularInline
+):
+    model = ResourceLink
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'link_url',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
 
 class ActionButtonInlineForm(forms.ModelForm):
     class Meta:
         model = ActionButton
-        fields = ['title','link_url',]
+        fields = ['title', 'link_url', ]
 
     def __init__(self, *args, **kwargs):
         super(ActionButtonInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             pass
 
-class ActionButtonInline(SortableInlineAdminMixin, admin.TabularInline):
-  model = ActionButton
-  form = ActionButtonInlineForm
-  fk_name = 'parent'
-  fields = ['title', 'link_url','update_user','update_date','published',]
-  readonly_fields = ['update_user','update_date',]
-  extra = 0
-  min_num = 0
-  max_num = 4
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class ActionButtonInline(
+    SortableInlineAdminMixin,
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = ActionButton
+    form = ActionButtonInlineForm
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'link_url',
+        'update_user',
+        'update_date',
+        'published',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 4
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class DocumentInlineForm(forms.ModelForm):
     class Meta:
@@ -611,31 +884,50 @@ class DocumentInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class DocumentInline(EditLinkToInlineObject, SortableInlineAdminMixin, LinkToInlineObject, admin.TabularInline):
-  model = Document
-  form = DocumentInlineForm
-  fk_name = 'parent'
-  fields = ['title','update_user','update_date','copy_link','edit_link','published',]
-  readonly_fields = ['update_user','update_date','copy_link','edit_link',]
-  extra = 0 
-  min_num = 0
-  max_num = 500
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class DocumentInline(
+    EditLinkToInlineObject,
+    SortableInlineAdminMixin,
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = Document
+    form = DocumentInlineForm
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'published',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 500
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class BoardPolicyInlineForm(forms.ModelForm):
     class Meta:
         model = BoardPolicy
-        fields = ['policy_title','section','index',]
+        fields = ['policy_title', 'section', 'index', ]
 
     def __init__(self, *args, **kwargs):
         super(BoardPolicyInlineForm, self).__init__(*args, **kwargs)
@@ -643,54 +935,102 @@ class BoardPolicyInlineForm(forms.ModelForm):
             self.fields['section'].disabled = True
             self.fields['index'].disabled = True
 
-class BoardPolicyInline(EditLinkToInlineObject, admin.TabularInline):
-  model = BoardPolicy
-  form = BoardPolicyInlineForm
-  fk_name = 'parent'
-  fields = ['policy_title','section','index','update_user','update_date','edit_link',]
-  readonly_fields = ['update_user','update_date','edit_link',]
-  ordering = ['section__lft','index',]
-  extra = 0
-  min_num = 0
-  max_num = 100
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+class BoardPolicyInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
+    model = BoardPolicy
+    form = BoardPolicyInlineForm
+    fk_name = 'parent'
+    fields = [
+        'policy_title',
+        'section',
+        'index',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = ['section__lft', 'index', ]
+    extra = 0
+    min_num = 0
+    max_num = 100
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
 
 
 class BoardPolicyReviewInlineForm(forms.ModelForm):
     class Meta:
         model = BoardPolicy
-        fields = ['title','subcommittee_review','boardmeeting_review','last_approved',]
+        fields = [
+            'title',
+            'subcommittee_review',
+            'boardmeeting_review',
+            'last_approved',
+        ]
 
     def __init__(self, *args, **kwargs):
         super(BoardPolicyReviewInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             pass
 
-class BoardPolicyReviewInline(EditLinkToInlineObject, admin.TabularInline):
-  model = BoardPolicy
-  form = BoardPolicyReviewInlineForm
-  verbose_name = 'Board Policy Review Schedule'
-  verbose_name_plural = 'Board Policy Review Schedule'
-  fk_name = 'parent'
-  fields = ['title','subcommittee_review','boardmeeting_review','last_approved','update_user','update_date','edit_link',]
-  readonly_fields = ['title','update_user','update_date','edit_link',]
-  ordering = ['subcommittee_review','section__lft','index',]
-  extra = 0
-  min_num = 0
-  max_num = 100
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class BoardPolicyReviewInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
+    model = BoardPolicy
+    form = BoardPolicyReviewInlineForm
+    verbose_name = 'Board Policy Review Schedule'
+    verbose_name_plural = 'Board Policy Review Schedule'
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'subcommittee_review',
+        'boardmeeting_review',
+        'last_approved',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'subcommittee_review',
+        'section__lft',
+        'index',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 100
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class PolicyInlineForm(forms.ModelForm):
     class Meta:
@@ -702,13 +1042,31 @@ class PolicyInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class PolicyInline(EditLinkToInlineObject, admin.TabularInline):
+
+class PolicyInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
     model = Policy
     form = PolicyInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
-    ordering = ['title',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'title',
+    ]
     extra = 0
     min_num = 0
     max_num = 1
@@ -720,9 +1078,10 @@ class PolicyInline(EditLinkToInlineObject, admin.TabularInline):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class AdministrativeProcedureInlineForm(forms.ModelForm):
     class Meta:
@@ -730,17 +1089,36 @@ class AdministrativeProcedureInlineForm(forms.ModelForm):
         fields = ['title']
 
     def __init__(self, *args, **kwargs):
-        super(AdministrativeProcedureInlineForm, self).__init__(*args, **kwargs)
+        super(AdministrativeProcedureInlineForm,
+              self).__init__(*args, **kwargs)
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class AdministrativeProcedureInline(EditLinkToInlineObject, admin.TabularInline):
+
+class AdministrativeProcedureInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
     model = AdministrativeProcedure
     form = AdministrativeProcedureInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
-    ordering = ['title',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'title',
+    ]
     extra = 0
     min_num = 0
     max_num = 1
@@ -752,9 +1130,10 @@ class AdministrativeProcedureInline(EditLinkToInlineObject, admin.TabularInline)
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class SupportingDocumentInlineForm(forms.ModelForm):
     class Meta:
@@ -766,13 +1145,31 @@ class SupportingDocumentInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class SupportingDocumentInline(EditLinkToInlineObject, admin.TabularInline):
+
+class SupportingDocumentInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
     model = SupportingDocument
     form = SupportingDocumentInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
-    ordering = ['title',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'title',
+    ]
     extra = 0
     min_num = 0
     max_num = 10
@@ -784,9 +1181,10 @@ class SupportingDocumentInline(EditLinkToInlineObject, admin.TabularInline):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class BoardMeetingAgendaInlineForm(forms.ModelForm):
     class Meta:
@@ -798,13 +1196,31 @@ class BoardMeetingAgendaInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class BoardMeetingAgendaInline(EditLinkToInlineObject, admin.TabularInline):
+
+class BoardMeetingAgendaInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
     model = BoardMeetingAgenda
     form = BoardMeetingAgendaInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
-    ordering = ['title',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'title',
+    ]
     extra = 0
     min_num = 0
     max_num = 1
@@ -816,9 +1232,10 @@ class BoardMeetingAgendaInline(EditLinkToInlineObject, admin.TabularInline):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class BoardMeetingMinutesInlineForm(forms.ModelForm):
     class Meta:
@@ -830,13 +1247,31 @@ class BoardMeetingMinutesInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class BoardMeetingMinutesInline(EditLinkToInlineObject, admin.TabularInline):
+
+class BoardMeetingMinutesInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
     model = BoardMeetingMinutes
     form = BoardMeetingMinutesInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
-    ordering = ['title',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'title',
+    ]
     extra = 0
     min_num = 0
     max_num = 1
@@ -848,9 +1283,10 @@ class BoardMeetingMinutesInline(EditLinkToInlineObject, admin.TabularInline):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class BoardMeetingAudioInlineForm(forms.ModelForm):
     class Meta:
@@ -862,13 +1298,31 @@ class BoardMeetingAudioInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class BoardMeetingAudioInline(EditLinkToInlineObject, admin.TabularInline):
+
+class BoardMeetingAudioInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
     model = BoardMeetingAudio
     form = BoardMeetingAudioInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
-    ordering = ['title',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'title',
+    ]
     extra = 0
     min_num = 0
     max_num = 1
@@ -880,9 +1334,10 @@ class BoardMeetingAudioInline(EditLinkToInlineObject, admin.TabularInline):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class BoardMeetingVideoInlineForm(forms.ModelForm):
     class Meta:
@@ -894,13 +1349,31 @@ class BoardMeetingVideoInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class BoardMeetingVideoInline(EditLinkToInlineObject, admin.TabularInline):
+
+class BoardMeetingVideoInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
     model = BoardMeetingVideo
     form = BoardMeetingVideoInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
-    ordering = ['title',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'title',
+    ]
     extra = 0
     min_num = 0
     max_num = 1
@@ -912,9 +1385,10 @@ class BoardMeetingVideoInline(EditLinkToInlineObject, admin.TabularInline):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class BoardMeetingExhibitInlineForm(forms.ModelForm):
     class Meta:
@@ -926,13 +1400,31 @@ class BoardMeetingExhibitInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class BoardMeetingExhibitInline(EditLinkToInlineObject, admin.TabularInline):
+
+class BoardMeetingExhibitInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
     model = BoardMeetingExhibit
     form = BoardMeetingExhibitInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
-    ordering = ['title',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'title',
+    ]
     extra = 0
     min_num = 0
     max_num = 50
@@ -944,9 +1436,10 @@ class BoardMeetingExhibitInline(EditLinkToInlineObject, admin.TabularInline):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class BoardMeetingAgendaItemInlineForm(forms.ModelForm):
     class Meta:
@@ -958,16 +1451,32 @@ class BoardMeetingAgendaItemInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class BoardMeetingAgendaItemInline(EditLinkToInlineObject, admin.TabularInline):
+
+class BoardMeetingAgendaItemInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
     model = BoardMeetingAgendaItem
     form = BoardMeetingAgendaItemInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
-    ordering = ['title',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = ['title', ]
     extra = 0
     min_num = 0
-    max_num = 50 
+    max_num = 50
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
@@ -976,102 +1485,186 @@ class BoardMeetingAgendaItemInline(EditLinkToInlineObject, admin.TabularInline):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class FileInlineForm(forms.ModelForm):
     class Meta:
         model = File
-        fields = ['file_file', 'file_language']
+        fields = [
+            'file_file',
+            'file_language',
+        ]
 
     def __init__(self, *args, **kwargs):
         super(FileInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             self.fields['file_language'].disabled = True
 
-class FileInline(LinkToInlineObject, admin.TabularInline):
-  model = File
-  form = FileInlineForm
-  fk_name = 'parent'
-  fields = ['file_file','file_language','update_user','update_date','copy_link',]
-  readonly_fields = ['update_user','update_date','copy_link',]
-  extra = 0 
-  min_num = 0
-  max_num = 50
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class FileInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = File
+    form = FileInlineForm
+    fk_name = 'parent'
+    fields = [
+        'file_file',
+        'file_language',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    ordering = [
+        'file_language__lft',
+        'file_language__title',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class AudioFileInlineForm(forms.ModelForm):
     class Meta:
         model = AudioFile
-        fields = ['file_file',]
+        fields = ['file_file', ]
 
     def __init__(self, *args, **kwargs):
         super(AudioFileInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             pass
 
-class AudioFileInline(admin.TabularInline):
-  model = AudioFile
-  form = AudioFileInlineForm
-  fk_name = 'parent'
-  fields = ['file_file','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
-  extra = 0
-  min_num = 0
-  max_num = 1
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class AudioFileInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = AudioFile
+    form = AudioFileInlineForm
+    fk_name = 'parent'
+    fields = [
+        'file_file',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class VideoFileInlineForm(forms.ModelForm):
     class Meta:
         model = VideoFile
-        fields = ['file_file',]
+        fields = ['file_file', ]
 
     def __init__(self, *args, **kwargs):
         super(VideoFileInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             pass
 
-class VideoFileInline(admin.TabularInline):
-  model = VideoFile
-  form = VideoFileInlineForm
-  fk_name = 'parent'
-  fields = ['file_file','update_user','update_date',]
-  readonly_fields = ['update_user','update_date',]
-  extra = 0
-  min_num = 0
-  max_num = 1
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class VideoFileInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = VideoFile
+    form = VideoFileInlineForm
+    fk_name = 'parent'
+    fields = [
+        'file_file',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+
+class PrecinctMapInline(
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = PrecinctMap
+    fk_name = 'parent'
+    fields = [
+        'file_file',
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class SubPageInlineForm(forms.ModelForm):
     class Meta:
@@ -1083,12 +1676,30 @@ class SubPageInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class SubPageInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.TabularInline):
+
+class SubPageInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    SortableInlineAdminMixin,
+    admin.TabularInline
+):
     model = SubPage
     form = SubPageInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link','published',]
-    readonly_fields = ['update_user','update_date','edit_link',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'published',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
     extra = 0
     min_num = 0
     max_num = 50
@@ -1100,9 +1711,10 @@ class SubPageInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.Tabu
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class BoardSubPageInlineForm(forms.ModelForm):
     class Meta:
@@ -1114,12 +1726,29 @@ class BoardSubPageInlineForm(forms.ModelForm):
         if self.instance.pk:
             self.fields['title'].disabled = True
 
-class BoardSubPageInline(SortableInlineAdminMixin, EditLinkToInlineObject, admin.TabularInline):
+
+class BoardSubPageInline(
+    SortableInlineAdminMixin,
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline
+):
     model = BoardSubPage
     form = BoardSubPageInlineForm
     fk_name = 'parent'
-    fields = ['title','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
+    fields = [
+        'title',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
     extra = 0
     min_num = 0
     max_num = 50
@@ -1131,126 +1760,209 @@ class BoardSubPageInline(SortableInlineAdminMixin, EditLinkToInlineObject, admin
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class BoardMeetingInlineForm(forms.ModelForm):
     class Meta:
         model = BoardMeeting
-        fields = ['startdate', 'meeting_type',]
+        fields = [
+            'startdate',
+            'meeting_type',
+        ]
 
     def __init__(self, *args, **kwargs):
         super(BoardMeetingInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             pass
-            #raise Exception(dir(self))
-            #self.fields['startdate'].data = self.instance.startdate
-            #self.fields['startdate'].disabled = True
-            #self.fields['startdate'].widget = forms.DateTimeInput
-            #self.fields['meeting_type'].disabled = True
 
-class BoardMeetingInline(EditLinkToInlineObject, admin.TabularInline):
-  model = BoardMeeting
-  form = BoardMeetingInlineForm
-  fk_name = 'parent'
-  fields = ['startdate', 'meeting_type','update_user','update_date','edit_link',]
-  readonly_fields = ['update_user','update_date','edit_link',]
-  ordering = ['-startdate',]
-  extra = 0
-  min_num = 0
-  max_num = 50 
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class BoardMeetingInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
+    model = BoardMeeting
+    form = BoardMeetingInlineForm
+    fk_name = 'parent'
+    fields = [
+        'startdate',
+        'meeting_type',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        '-startdate',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class SuperintendentMessageInlineForm(forms.ModelForm):
     class Meta:
         model = SuperintendentMessage
-        fields = ['author_date',]
+        fields = ['author_date', ]
 
     def __init__(self, *args, **kwargs):
         super(SuperintendentMessageInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             pass
 
-class SuperintendentMessageInline(EditLinkToInlineObject, admin.TabularInline):
-  model = SuperintendentMessage
-  form = SuperintendentMessageInlineForm
-  fk_name = 'parent'
-  fields = ['author_date','update_user','update_date','edit_link', 'published',]
-  readonly_fields = ['update_user','update_date','edit_link',]
-  ordering = ['-author_date',]
-  extra = 0
-  min_num = 0
-  max_num = 50
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class SuperintendentMessageInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
+    model = SuperintendentMessage
+    form = SuperintendentMessageInlineForm
+    fk_name = 'parent'
+    fields = [
+        'author_date',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'published',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        '-author_date',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class DistrictCalendarEventInlineForm(forms.ModelForm):
     class Meta:
         model = DistrictCalendarEvent
-        fields = ['event_name','event_category','startdate','enddate',]
+        fields = [
+            'event_name',
+            'event_category',
+            'startdate',
+            'enddate',
+        ]
 
     def __init__(self, *args, **kwargs):
         super(DistrictCalendarEventInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             pass
 
-class DistrictCalendarEventInline(EditLinkToInlineObject, admin.TabularInline):
-  model = DistrictCalendarEvent
-  form = DistrictCalendarEventInlineForm
-  fk_name = 'parent'
-  fields = ['event_name','event_category','startdate','enddate','update_user','update_date','edit_link',]
-  readonly_fields = ['update_user','update_date','edit_link',]
-  ordering = ['startdate',]
-  extra = 0
-  min_num = 0
-  max_num = 50
-  has_add_permission = apps.common.functions.has_add_permission_inline
-  has_change_permission = apps.common.functions.has_change_permission_inline
-  has_delete_permission = apps.common.functions.has_delete_permission_inline
 
-  def get_queryset(self, request):
-      qs = super().get_queryset(request)
-      if request.user.is_superuser:
-          return qs
-      if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
-          return qs
-      return qs.filter(deleted=0)
+class DistrictCalendarEventInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
+    model = DistrictCalendarEvent
+    form = DistrictCalendarEventInlineForm
+    fk_name = 'parent'
+    fields = [
+        'event_name',
+        'event_category',
+        'startdate',
+        'enddate',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'startdate',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
 
 class FAQInlineForm(forms.ModelForm):
     class Meta:
         model = FAQ
-        fields = ['question',]
+        fields = ['question', ]
 
     def __init__(self, *args, **kwargs):
         super(FAQInlineForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
-          pass
+            pass
 
-class FAQInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.TabularInline):
+
+class FAQInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    SortableInlineAdminMixin,
+    admin.TabularInline,
+):
     model = FAQ
     fk_name = 'parent'
-    fields = ['question','update_user','update_date','edit_link',]
-    readonly_fields = ['update_user','update_date','edit_link',]
+    fields = [
+        'question',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
     extra = 0
     min_num = 0
     max_num = 25
@@ -1262,9 +1974,10 @@ class FAQInline(EditLinkToInlineObject, SortableInlineAdminMixin, admin.TabularI
         qs = super().get_queryset(request)
         if request.user.is_superuser:
             return qs
-        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore',self.model._meta)):
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
             return qs
         return qs.filter(deleted=0)
+
 
 class PageAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
