@@ -57,6 +57,7 @@ django.jQuery(document).ready(function(){
     django.jQuery(element).attr('href', django.jQuery(element).attr('href') + '?next=' + nextURL)
   });
   django.jQuery('body').addClass('loaded');
+  django.jQuery('th:contains("Copy link")').addClass('hidden')
   django.jQuery('.file-upload').each(function(index, element ){
       td = django.jQuery(element).parent()[0]
       href = django.jQuery(td).siblings('.field-copy_link').find('.linkto').attr('data-href')

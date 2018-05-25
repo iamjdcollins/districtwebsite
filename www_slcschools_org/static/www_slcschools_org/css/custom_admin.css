@@ -114,4 +114,7 @@ div.inline-group table.ui-sortable tr.form-row.has_original td.drag {
   font-size: 16px;
   text-align: center;
 }
+.field-copy_link {
+    display: none;
+}
 
