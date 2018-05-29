@@ -270,8 +270,15 @@ def modeltrash(self, *args, **kwargs):
         self.deleted = True
         self.save()
     else:
-        if self.url:
-            silentdelete_media(settings.MEDIA_ROOT + self.url)
+        if(
+            self.site.dashboard_general_site.pk and
+            self.pk
+        ):
+            folder_path = '{0}/{1}'.format(
+                self.site.dashboard_general_site.pk,
+                self.pk,
+            )
+            silentdelete_media(settings.MEDIA_ROOT + '/' + folder_path)
         super(self._meta.model, self).delete()
 
 
