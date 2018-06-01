@@ -56,8 +56,4 @@ EMAIL_USE_TLS = True
 EMAIL_TIMEOUT = 25
 
 
-DATA_DIR = '/srv/nginx/websites.slcschools.org'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
 STATIC_URL = 'https://websites.slcschools.org/static/'
-STATIC_ROOT = os.path.join(DATA_DIR, 'static')

@@ -52,8 +52,4 @@ ALLOWED_HOSTS = [
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = '/tmp'
 
-DATA_DIR = '/srv/nginx/websites.slcschools.org'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
 STATIC_URL = 'https://websites-test.slcschools.org/static/'
-STATIC_ROOT = os.path.join(DATA_DIR, 'static')

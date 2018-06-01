@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from django.core.files.storage import FileSystemStorage
 from multisite import SiteID
 
 # Django Multisite SiteID
@@ -205,6 +206,11 @@ CACHES = {
     },
 }
 
+DATA_DIR = '/srv/nginx/websites.slcschools.org'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
+STATIC_ROOT = os.path.join(DATA_DIR, 'static')
+
 SLCSD_LDAP_USER = os.environ['SLCSD_LDAP_USER']
 SLCSD_LDAP_PASSWORD = os.environ['SLCSD_LDAP_PASSWORD']
 
@@ -269,7 +275,18 @@ HAYSTACK_CONNECTIONS = {
 CACHE_MULTISITE_ALIAS = 'default'
 CACHE_MULTISITE_KEY_PREFIX = 'multisite'
 
+
+class ImagekitCacheFileSystemStorage(FileSystemStorage):
+        location = DATA_DIR
+        base_url = '/'
+        file_permissions_mode = 0o664
+        directory_permissions_mode = 0o775
+
+
 # Image Kit Settings
+IMAGEKIT_DEFAULT_FILE_STORAGE = (
+    'config.settings.base.ImagekitCacheFileSystemStorage'
+)
 IMAGEKIT_CACHEFILE_DIR = 'cache'
 
 # CMSTEMPLATES
