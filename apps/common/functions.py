@@ -285,36 +285,26 @@ def movechildren(self):
 # Upload Image Functions
 def image_upload_to(instance, filename):
     original_file, original_extension = findfileext_media(filename)
-    folder_path = '{0}/{1}'.format(
-        instance.site.dashboard_general_site.pk,
-        instance.pk,
-    )
-    full_path = '{0}/{1}/{1}{2}'.format(
-        instance.site.dashboard_general_site.pk,
+    full_path = '{0}{1}'.format(
         instance.pk,
         original_extension,
     )
     full_path = full_path.lower()
     if not instance.image_file._committed:
-        silentdelete_media(settings.MEDIA_ROOT + '/' + folder_path)
+        silentdelete_media(settings.MEDIA_ROOT + '/' + full_path)
     return full_path
 
 
 # Upload File Functions
 def file_upload_to(instance, filename):
     original_file, original_extension = findfileext_media(filename)
-    folder_path = '{0}/{1}'.format(
-        instance.site.dashboard_general_site.pk,
-        instance.pk,
-    )
-    full_path = '{0}/{1}/{1}{2}'.format(
-        instance.site.dashboard_general_site.pk,
+    full_path = '{0}{1}'.format(
         instance.pk,
         original_extension,
     )
     full_path = full_path.lower()
     if not instance.file_file._committed:
-        silentdelete_media(settings.MEDIA_ROOT + '/' + folder_path)
+        silentdelete_media(settings.MEDIA_ROOT + '/' + full_path)
     return full_path
 
 

@@ -70,7 +70,7 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 DATA_DIR = '/srv/nginx/websites.slcschools.org'
-MEDIA_URL = '/'
-MEDIA_ROOT = os.path.join(DATA_DIR)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
 STATIC_URL = 'https://websites-dev.slcschools.org/static/'
-STATIC_ROOT = os.path.join(MEDIA_ROOT, 'static')
+STATIC_ROOT = os.path.join(DATA_DIR, 'static')
