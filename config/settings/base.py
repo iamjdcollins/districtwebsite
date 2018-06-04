@@ -287,6 +287,10 @@ class ImagekitCacheFileSystemStorage(FileSystemStorage):
 IMAGEKIT_DEFAULT_FILE_STORAGE = (
     'config.settings.base.ImagekitCacheFileSystemStorage'
 )
+# IMAGEKIT_SPEC_CACHEFILE_NAMER = 'imagekit.cachefiles.namers.hash'
+IMAGEKIT_SPEC_CACHEFILE_NAMER = 'apps.common.functions.name_dot_field_dot_ext'
+IMAGEKIT_DEFAULT_CACHEFILE_BACKEND = 'apps.common.classes.Simple'
+IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = 'apps.common.classes.JustInTime'
 IMAGEKIT_CACHEFILE_DIR = 'cache'
 
 # CMSTEMPLATES

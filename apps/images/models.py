@@ -700,13 +700,19 @@ class PhotoGalleryImage(Image):
         source='image_file',
         processors=[ResizeToFill(100, 100)],
         format='JPEG',
-        options={'quality': 90},
+        options={
+            'quality': 90,
+            'specfield': 'thumbnail',
+        },
     )
     isotope = ImageSpecField(
         source='image_file',
         processors=[ResizeToFit(width=320)],
         format='JPEG',
-        options={'quality': 90},
+        options={
+            'quality': 90,
+            'specfield': 'isotope',
+        },
     )
     alttext = models.CharField(
         max_length=200,

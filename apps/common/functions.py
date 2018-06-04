@@ -21,6 +21,7 @@ from django.http import HttpResponseRedirect
 from django.utils.http import urlquote
 from django.contrib import messages
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
+from pilkit.utils import suggest_extension
 
 
 def contactmessage_confirm(self):
@@ -858,3 +859,32 @@ def file_name(self):
             )
     )
     return 'unkonwn'
+
+
+def name_dot_field_dot_ext(generator):
+    """
+    A namer that, given the following source file name::
+
+        photos/thumbnails/bulldog.jpg
+
+    will generate a name like this::
+
+        /path/to/generated/images/{image.pk}.{specfield}.{ext}
+
+    where "/path/to/generated/images/" is the value specified by the
+    ``IMAGEKIT_CACHEFILE_DIR`` setting.
+
+    """
+    source_filename = getattr(generator.source, 'name', None)
+    if 'specfield' in generator.options:
+        specfield = generator.options['specfield']
+    else:
+        raise Exception('Spec Field Options Must Include Spec Field Name.')
+
+    dir = settings.IMAGEKIT_CACHEFILE_DIR
+
+    ext = suggest_extension(source_filename or '', generator.format)
+    basename = os.path.basename(source_filename)
+    returnpath = os.path.normpath(os.path.join(dir, '%s.%s%s' % (
+            os.path.splitext(basename)[0], specfield, ext)))
+    return returnpath

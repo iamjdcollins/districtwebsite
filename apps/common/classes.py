@@ -23,6 +23,9 @@ from django.contrib.auth import get_permission_codename
 TO_FIELD_VAR = '_to_field'
 IS_POPUP_VAR = '_popup'
 from guardian.shortcuts import get_perms
+from imagekit.cachefiles.backends import CachedFileBackend
+import apps.common.functions as commonfunctions
+
 
 class DeletedListFilter(admin.SimpleListFilter):
     title = 'deleted'
@@ -213,3 +216,45 @@ class CustomSearchView(SearchView, TemplateResponseMixin):
             self.request.site.dashboard_general_site.template.namespace
         )
         return [template_name]
+
+
+class Simple(CachedFileBackend):
+    """
+    The most basic file backend. The storage is consulted to see if the file
+    exists. Files are generated synchronously.
+
+    """
+
+    def generate(self, file, force=False):
+        exists = self.exists(file)
+        sourceexists = file.generator.source.storage.exists(
+            file.generator.source.name
+        )
+        if not sourceexists:
+            return
+        if not exists:
+            self.generate_now(file, force=True)
+        else:
+            self.generate_now(file, force=force)
+
+    def _exists(self, file):
+        return bool(file.storage.exists(file.name))
+
+    exists = _exists
+
+
+class JustInTime(object):
+    """
+    A strategy that ensures the file exists right before it's needed.
+
+    """
+
+    def on_existence_required(self, file):
+        file.generate()
+
+    def on_content_required(self, file):
+        file.generate()
+
+    def on_source_saved(self, file):
+        commonfunctions.silentdelete_media(file.path)
+        file.generate(force=True)
