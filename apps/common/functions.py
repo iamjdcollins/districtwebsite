@@ -815,7 +815,7 @@ def file_name(self):
             self.content_type == 'profilepicture'
         ) or (
             self.node_type == 'images' and
-            self.content_type == 'district;ogogif'
+            self.content_type == 'districtogogif'
         ) or (
             self.node_type == 'images' and
             self.content_type == 'districtlogojpg'
