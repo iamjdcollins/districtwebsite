@@ -786,10 +786,10 @@ def file_name(self):
     if (
         (
             self.parent.node_type == 'documents' and
-            self.parent.content_type == 'BoardMeetingAudio'
+            self.parent.content_type == 'boardmeetingaudio'
         ) or (
             self.parent.node_type == 'documents' and
-            self.parent.content_type == 'BoardMeetingVideo'
+            self.parent.content_type == 'boardmeetingvideo'
         )
     ):
         return '{0}-{1}{2}'.format(
@@ -798,11 +798,10 @@ def file_name(self):
             findfileext_media(self.file_file.url)[1],
         )
     if (
-        # (
-        #     self.node_type == 'images' and
-        #     self.content_type == 'thumbnail'
-        # ) or (
         (
+            self.node_type == 'images' and
+            self.content_type == 'thumbnail'
+        ) or (
             self.node_type == 'images' and
             self.content_type == 'newsthumbnail'
         ) or (
