@@ -22,7 +22,7 @@
         gtag('config', 'UA-350899-1');
     </script>
   </head>
-  <body>
+  <body class="{% block bodyclasses %}{% endblock %}">
     <div class="pushfooter slcschools-grey lighten-3">
       <a href="#main" class="skipto">Skip to main content</a>
       {% if user.is_authenticated %}

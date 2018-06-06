@@ -1,0 +1,41 @@
+{% extends "cmstemplates/www_slcschools_org/base.html" %}
+
+{% block bodyclasses %}modaal-noscroll {{ block.super }}{% endblock %}
+
+{% block title %}
+{{page.title}}
+{% endblock %}
+
+{% block precontent %}
+{% endblock %}
+
+{% block content %}
+<div class="content wrapper flex">
+  <div class="row">
+    <div class="col s12">
+			<div class="card">
+			  <div id="main" class="card-content">
+			    <h1>{% block h1 %}{{ page.title }}{% endblock %}</h1>
+			    <div class="modaal-wrapper modaal-ajax modaal-ajax">
+						<div class="modaal-outer-wrapper">
+							<div class="modaal-inner-wrapper">
+								<div class="modaal-container">
+									<div class="modaal-content modaal-focus">
+										<div class="modaal-content-container">
+										  {% block modalcontent %}
+										  {% endblock %}
+										</div>
+										<a href="{{ page.parent.url }}" type="button" class="modaal-close" id="modaal-close" aria-label="Close (Press escape to close)"><span>Close</span></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modaal-overlay" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; opacity: 0.8;"></div>
+				</div>
+			  {{ block.super }}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
