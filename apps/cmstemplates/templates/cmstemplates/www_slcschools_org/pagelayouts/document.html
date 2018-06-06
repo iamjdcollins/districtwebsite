@@ -1,7 +1,12 @@
 {% extends "cmstemplates/www_slcschools_org/layouts/contentmodal.html" %}
+{% load verbose_names %}
 
 {% block title %}
-{{page.title}}
+{% get_verbose_model_name page %}: {{page.title}}
+{% endblock %}
+
+{% block h1 %}
+{% get_verbose_model_name page %}: {{page.title}}
 {% endblock %}
 
 {% block precontent %}
