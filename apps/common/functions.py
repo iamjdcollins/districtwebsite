@@ -317,7 +317,10 @@ def precinct_map_upload_to(instance, filename):
 
 def modelsave(self, *args, **kwargs):
     if not self.site:
-        raise Exception('site not set for object. cannot be saved.')
+        if self.parent:
+            self.site = self.parent.site
+        else:
+            raise Exception('site not set for object. cannot be saved.')
     Node = apps.get_model('objects', 'node')
     User = apps.get_model('objects', 'user')
     Alias = apps.get_model('multisite', 'alias')
@@ -548,6 +551,7 @@ def modelsave(self, *args, **kwargs):
     #     # Commenting file moves because newly uploaded files
     #     # think they are moving on upload.
     #     # filepath_email(self, oldpath, newpath)
+    related_resource_links(self)
     clearcache(self)
 
 
@@ -887,3 +891,114 @@ def name_dot_field_dot_ext(generator):
     returnpath = os.path.normpath(os.path.join(dir, '%s.%s%s' % (
             os.path.splitext(basename)[0], specfield, ext)))
     return returnpath
+
+
+def related_resource_links(self):
+    #node = objectfindnode(self)
+    links = []
+    resource_links = (
+        self
+        .links_resourcelink_node
+        .filter(deleted=0)
+        .filter(related_locked=1)
+    )
+    if self.node_type == 'pages' and self.content_type == 'school':
+        if self.website_url:
+            link, created = self.links_resourcelink_node.get_or_create(
+                title='School Website',
+                parent=self,
+                site=self.site,
+                defaults={
+                    'link_url': self.website_url,
+                    'related_locked': True,
+                }
+            )
+            link.link_url = self.website_url
+            link.related_locked = True
+            link.deleted = False
+            link.published = True
+            link.save()
+            links.append(link)
+        if self.scc_url:
+            link, created = self.links_resourcelink_node.get_or_create(
+                title='School Community Council',
+                parent=self,
+                site=self.site,
+                defaults={
+                    'link_url': self.scc_url,
+                    'related_locked': True,
+                }
+            )
+            link.link_url = self.scc_url
+            link.related_locked = True
+            link.deleted = False
+            link.published = True
+            link.save()
+            links.append(link)
+        if self.calendar_url:
+            link, created = self.links_resourcelink_node.get_or_create(
+                title='School Calendar',
+                parent=self,
+                site=self.site,
+                defaults={
+                    'link_url': self.calendar_url,
+                    'related_locked': True,
+                }
+            )
+            link.link_url = self.calendar_url
+            link.related_locked = True
+            link.deleted = False
+            link.published = True
+            link.save()
+            links.append(link)
+        if self.donate_url:
+            link, created = self.links_resourcelink_node.get_or_create(
+                title='Make a Donation',
+                parent=self,
+                site=self.site,
+                defaults={
+                    'link_url': self.donate_url,
+                    'related_locked': True,
+                }
+            )
+            link.link_url = self.donate_url
+            link.related_locked = True
+            link.deleted = False
+            link.published = True
+            link.save()
+            links.append(link)
+    for document in self.documents_document_node.filter(deleted=0):
+        link, created = self.links_resourcelink_node.get_or_create(
+            title=document.title,
+            parent=self,
+            site=self.site,
+            defaults={
+                'link_url': document.url,
+                'related_locked': True,
+            }
+        )
+        link.link_url = document.url
+        link.related_locked = True
+        link.deleted = False
+        link.published = document.published
+        link.save()
+        links.append(link)
+    for subpage in self.pages_subpage_node.filter(deleted=0):
+        link, created = self.links_resourcelink_node.get_or_create(
+            title=subpage.title,
+            parent=self,
+            site=self.site,
+            defaults={
+                'link_url': subpage.url,
+                'related_locked': True,
+            }
+        )
+        link.link_url = subpage.url
+        link.related_locked = True
+        link.deleted = False
+        link.published = subpage.published
+        link.save()
+        links.append(link)
+    for link in resource_links:
+        if link not in links:
+            link.delete()
