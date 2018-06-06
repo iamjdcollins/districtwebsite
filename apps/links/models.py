@@ -12,6 +12,11 @@ class ResourceLink(Link):
 
     title = models.CharField(max_length=200, help_text='')
     link_url = models.CharField(max_length=2000, db_index=True)
+    related_locked = models.BooleanField(
+        default=False,
+        db_index=True,
+    )
+
     related_node = models.ForeignKey(
         Node,
         blank=True,
