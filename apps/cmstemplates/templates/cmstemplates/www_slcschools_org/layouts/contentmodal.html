@@ -25,7 +25,7 @@
 										  {% block modalcontent %}
 										  {% endblock %}
 										</div>
-										<a href="{{ page.parent.url }}" type="button" class="modaal-close" id="modaal-close" aria-label="Close (Press escape to close)"><span>Close</span></a>
+										<a href="{% block modalreturn %}{{ page.parent.url }}{% endblock %}" type="button" class="modaal-close" id="modaal-close"><span>Close</span></a>
 									</div>
 								</div>
 							</div>
