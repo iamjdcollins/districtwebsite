@@ -6,26 +6,41 @@ import apps.thirdparty.django_saml2_auth.django_saml2_auth.views
 from django.contrib.auth.views import logout
 from apps.common.classes import CustomSearchView, CustomSearchForm
 from haystack.views import SearchView
+from django.http import HttpResponse
+from socket import gethostname
 
 urlpatterns = [
-url(r'^saml_login/', include('apps.thirdparty.django_saml2_auth.django_saml2_auth.urls')),
-url(r'^accounts/login/$', apps.thirdparty.django_saml2_auth.django_saml2_auth.views.signin),
-url(r'^accounts/logout/$', logout,{'next_page': 'https://adfs.slcschools.org/adfs/ls/?wa=wsignout1.0&wreply=https://www.slcschools.org/'})
+    url(r'^saml_login/', include('apps.thirdparty.django_saml2_auth.django_saml2_auth.urls')),
+    url(r'^accounts/login/$', apps.thirdparty.django_saml2_auth.django_saml2_auth.views.signin),
+    url(r'^accounts/logout/$', logout,{'next_page': 'https://adfs.slcschools.org/adfs/ls/?wa=wsignout1.0&wreply=https://www.slcschools.org/'})
+]
+
+# Server Name
+
+
+def servername(request):
+    return HttpResponse('Server Online: {0}'.format(
+        gethostname()
+    ))
+
+
+urlpatterns += [
+    url(r'^server/$', servername, name='servername')
 ]
 
 #Dashboard App
 
-urlpatterns +=[
+urlpatterns += [
     url(r'^manage/', include('apps.dashboard.urls', namespace='dashboard')),
 ]
 
 # Search Results
-urlpatterns +=[
+urlpatterns += [
     url(r'^search/results/', CustomSearchView.as_view(), name="haystack_search"),
 ]
 
 # Media Library
-urlpatterns +=[
+urlpatterns += [
     url(r'^medialibrary/', include('apps.medialibrary.urls', namespace='medialibrary')),
 ]
 
