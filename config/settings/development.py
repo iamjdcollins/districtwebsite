@@ -4,7 +4,7 @@ ENVIRONMENT_MODE = 'development'
 
 DEBUG = True
 
-ALLOWED_HOSTS = [
+ALLOWED_HOSTS += [
     'backman-dev.slcschools.org',
     'beaconheights-dev.slcschools.org',
     'bennion-dev.slcschools.org',

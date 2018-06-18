@@ -44,3 +44,4 @@ libsasscompiler==0.1.5
 django-appconf==1.0.2
 django-imagekit==4.0.2
 pilkit==2.0
+netifaces==0.10.7

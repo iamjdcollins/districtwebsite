@@ -21,6 +21,19 @@ ADMINS = [
     ('Jordan Collins', 'jordan.collins@slcschools.org'),
 ]
 
+def localaddresses():
+    import netifaces
+    ifaces = netifaces.interfaces()
+    addrs = []
+    for iface in netifaces.interfaces():
+        for addr in netifaces.ifaddresses(iface)[netifaces.AF_INET]:
+            addrs.append(addr['addr'])
+    return addrs
+
+LOCAL_ADDRESSES = localaddresses()
+
+ALLOWED_HOSTS = [] + LOCAL_ADDRESSES
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -277,6 +290,7 @@ HAYSTACK_CONNECTIONS = {
 
 CACHE_MULTISITE_ALIAS = 'default'
 CACHE_MULTISITE_KEY_PREFIX = 'multisite'
+MULTISITE_FALLBACK = 'apps.common.functions.multisite_fallback_view'
 
 
 class ImagekitCacheFileSystemStorage(FileSystemStorage):

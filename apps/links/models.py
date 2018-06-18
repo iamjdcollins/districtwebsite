@@ -12,9 +12,22 @@ class ResourceLink(Link):
 
     title = models.CharField(max_length=200, help_text='')
     link_url = models.CharField(max_length=2000, db_index=True)
-    related_locked = models.BooleanField(
-        default=False,
+    related_locked = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
         db_index=True,
+    )
+    related_type = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+    )
+    modal_ajax = models.BooleanField(
+        default=False,
+    )
+    target_blank = models.BooleanField(
+        default=False,
     )
 
     related_node = models.ForeignKey(

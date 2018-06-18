@@ -24,6 +24,10 @@ from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from pilkit.utils import suggest_extension
 
 
+def multisite_fallback_view(request):
+    pass
+
+
 def contactmessage_confirm(self):
     email = EmailMessage(
         'THANK YOU: ' + self.message_subject,
@@ -894,111 +898,206 @@ def name_dot_field_dot_ext(generator):
 
 
 def related_resource_links(self):
-    #node = objectfindnode(self)
-    links = []
-    resource_links = (
-        self
-        .links_resourcelink_node
-        .filter(deleted=0)
-        .filter(related_locked=1)
-    )
     if self.node_type == 'pages' and self.content_type == 'school':
         if self.website_url:
             link, created = self.links_resourcelink_node.get_or_create(
-                title='School Website',
+                related_locked='website_url',
                 parent=self,
                 site=self.site,
                 defaults={
+                    'title': 'School Website',
                     'link_url': self.website_url,
                     'related_locked': True,
                 }
             )
+            link.title = 'School Website'
             link.link_url = self.website_url
-            link.related_locked = True
+            link.related_locked = 'website_url'
+            link.related_type = '{0}-{1}'.format(
+                self.node_type,
+                self.content_type,
+            )
             link.deleted = False
             link.published = True
             link.save()
-            links.append(link)
+        else:
+            try:
+                link = self.links_resourcelink_node.get(
+                    related_locked='website_url'
+                )
+                if link:
+                    link.published = False
+                    link.delete()
+            except self.links_resourcelink_node.model.DoesNotExist:
+                pass
         if self.scc_url:
             link, created = self.links_resourcelink_node.get_or_create(
-                title='School Community Council',
+                related_locked='scc_url',
                 parent=self,
                 site=self.site,
                 defaults={
+                    'title': 'School Community Council',
                     'link_url': self.scc_url,
                     'related_locked': True,
                 }
             )
+            link.title = 'School Community Council'
             link.link_url = self.scc_url
-            link.related_locked = True
+            link.related_locked = 'scc_url'
+            link.related_type = '{0}-{1}'.format(
+                self.node_type,
+                self.content_type,
+            )
             link.deleted = False
             link.published = True
             link.save()
-            links.append(link)
+        else:
+            try:
+                link = self.links_resourcelink_node.get(
+                    related_locked='scc_url'
+                )
+                if link:
+                    link.published = False
+                    link.delete()
+            except self.links_resourcelink_node.model.DoesNotExist:
+                pass
         if self.calendar_url:
             link, created = self.links_resourcelink_node.get_or_create(
-                title='School Calendar',
+                related_locked='calendar_url',
                 parent=self,
                 site=self.site,
                 defaults={
+                    'title': 'School Calendar',
                     'link_url': self.calendar_url,
                     'related_locked': True,
                 }
             )
+            link.title = 'School Calendar'
             link.link_url = self.calendar_url
-            link.related_locked = True
+            link.related_locked = 'calendar_url'
+            link.related_type = '{0}-{1}'.format(
+                self.node_type,
+                self.content_type,
+            )
             link.deleted = False
             link.published = True
             link.save()
-            links.append(link)
+        else:
+            try:
+                link = self.links_resourcelink_node.get(
+                    related_locked='calendar_url'
+                )
+                if link:
+                    link.published = False
+                    link.delete()
+            except self.links_resourcelink_node.model.DoesNotExist:
+                pass
         if self.donate_url:
             link, created = self.links_resourcelink_node.get_or_create(
-                title='Make a Donation',
+                related_locked='donate_url',
                 parent=self,
                 site=self.site,
                 defaults={
+                    'title': 'Make a Donation',
                     'link_url': self.donate_url,
                     'related_locked': True,
                 }
             )
+            link.title = 'Make a Donation'
             link.link_url = self.donate_url
-            link.related_locked = True
+            link.related_locked = 'donate_url'
+            link.related_type = '{0}-{1}'.format(
+                self.node_type,
+                self.content_type,
+            )
             link.deleted = False
             link.published = True
             link.save()
-            links.append(link)
-    for document in self.documents_document_node.filter(deleted=0):
-        link, created = self.links_resourcelink_node.get_or_create(
-            title=document.title,
-            parent=self,
+        else:
+            try:
+                link = self.links_resourcelink_node.get(
+                    related_locked='donate_url'
+                )
+                if link:
+                    link.published = False
+                    link.delete()
+            except self.links_resourcelink_node.model.DoesNotExist:
+                pass
+    if self.node_type == 'documents' and self.content_type == 'document':
+        link, created = self.parent.links_resourcelink_node.get_or_create(
+            related_locked=str(self.uuid),
+            parent=self.parent,
             site=self.site,
             defaults={
-                'link_url': document.url,
+                'title': self.title,
+                'link_url': self.url,
                 'related_locked': True,
             }
         )
-        link.link_url = document.url
-        link.related_locked = True
+        link.title = self.title
+        link.link_url = self.url
+        link.related_locked = str(self.uuid)
+        link.related_type = '{0}-{1}'.format(
+            self.node_type,
+            self.content_type,
+        )
         link.deleted = False
-        link.published = document.published
+        link.published = self.published
+        doc_len = len(
+            self
+            .files_file_node
+            .filter(deleted=0)
+            .filter(published=1)
+            .filter(file_file__isnull=False)
+        )
+        if doc_len < 1:
+            link.published = False
+        if doc_len > 1:
+            link.modal_ajax = True
+            link.target_blank = False
+        else:
+            link.modal_ajax = False
+            link.target_blank = True
         link.save()
-        links.append(link)
-    for subpage in self.pages_subpage_node.filter(deleted=0):
-        link, created = self.links_resourcelink_node.get_or_create(
-            title=subpage.title,
-            parent=self,
+    if self.node_type == 'pages' and self.content_type == 'subpage':
+        link, created = self.parent.links_resourcelink_node.get_or_create(
+            related_locked=str(self.uuid),
+            parent=self.parent,
             site=self.site,
             defaults={
-                'link_url': subpage.url,
+                'title': self.title,
+                'link_url': self.url,
                 'related_locked': True,
             }
         )
-        link.link_url = subpage.url
-        link.related_locked = True
+        link.title = self.title
+        link.link_url = self.url
+        link.related_locked = str(self.uuid)
+        link.related_type = '{0}-{1}'.format(
+            self.node_type,
+            self.content_type,
+        )
         link.deleted = False
-        link.published = subpage.published
+        link.published = self.published
         link.save()
-        links.append(link)
-    for link in resource_links:
-        if link not in links:
-            link.delete()
+    if self.node_type == 'pages' and self.content_type == 'boardsubpage':
+        link, created = self.parent.links_resourcelink_node.get_or_create(
+            related_locked=str(self.uuid),
+            parent=self.parent,
+            site=self.site,
+            defaults={
+                'title': self.title,
+                'link_url': self.url,
+                'related_locked': True,
+            }
+        )
+        link.title = self.title
+        link.link_url = self.url
+        link.related_locked = str(self.uuid)
+        link.related_type = '{0}-{1}'.format(
+            self.node_type,
+            self.content_type,
+        )
+        link.deleted = False
+        link.published = self.published
+        link.save()

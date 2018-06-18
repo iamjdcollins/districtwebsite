@@ -799,18 +799,41 @@ class BoardPolicyAdminInline(
     form = make_ajax_form(BoardPolicyAdmin, {'employee': 'employee'})
 
 
+class ResourceLinkInlineForm(forms.ModelForm):
+    class Meta:
+        model = ResourceLink
+        fields = ['title', 'link_url', 'published']
+
+    def __init__(self, *args, **kwargs):
+        super(ResourceLinkInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.related_locked:
+            self.fields['title'].disabled = True
+            self.fields['title'].widget.attrs['class'] = '{0} related_locked'.format(
+                self.fields['title'].widget.attrs['class']
+            )
+            self.fields['title'].widget.attrs['data-relatedtype'] = '{0}'.format(
+                self.instance.related_type
+            )
+            self.fields['link_url'].disabled = True
+            self.fields['published'].disabled = True
+            if 'deleted' in self.fields:
+                self.fields['deleted'].disabled = True
+
+
 class ResourceLinkInline(
     SortableInlineAdminMixin,
     LinkToInlineObject,
     admin.TabularInline
 ):
     model = ResourceLink
+    form = ResourceLinkInlineForm
     fk_name = 'parent'
     fields = [
         'title',
         'link_url',
         'update_user',
         'update_date',
+        'published',
         'copy_link',
     ]
     readonly_fields = [
@@ -887,12 +910,14 @@ class DocumentInlineForm(forms.ModelForm):
 
 class DocumentInline(
     EditLinkToInlineObject,
-    SortableInlineAdminMixin,
     LinkToInlineObject,
     admin.TabularInline,
 ):
     model = Document
     form = DocumentInlineForm
+    classes = {
+        'document_inline',
+    }
     fk_name = 'parent'
     fields = [
         'title',
@@ -1680,11 +1705,13 @@ class SubPageInlineForm(forms.ModelForm):
 class SubPageInline(
     LinkToInlineObject,
     EditLinkToInlineObject,
-    SortableInlineAdminMixin,
     admin.TabularInline
 ):
     model = SubPage
     form = SubPageInlineForm
+    classes = {
+        'subpage_inline',
+    }
     fk_name = 'parent'
     fields = [
         'title',
@@ -1728,7 +1755,6 @@ class BoardSubPageInlineForm(forms.ModelForm):
 
 
 class BoardSubPageInline(
-    SortableInlineAdminMixin,
     LinkToInlineObject,
     EditLinkToInlineObject,
     admin.TabularInline
@@ -1736,6 +1762,9 @@ class BoardSubPageInline(
     model = BoardSubPage
     form = BoardSubPageInlineForm
     fk_name = 'parent'
+    classes = {
+        'boardsubpage_inline',
+    }
     fields = [
         'title',
         'update_user',

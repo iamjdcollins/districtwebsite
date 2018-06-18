@@ -117,4 +117,108 @@ div.inline-group table.ui-sortable tr.form-row.has_original td.drag {
 .field-copy_link {
     display: none;
 }
-
+.help_area {
+  background: #f6fafc;
+  padding: 10px 0px;
+}
+tr.related_locked{
+  position: relative;
+}
+tr.related_locked td{
+  padding-top: 40px;
+}
+.related_locked.None td:first-child::after {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  text-align: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  content: "This row is locked except for sorting. This row comes from another tab but we are not sure which. Please contact your administrator to fix this issue.";
+  background-color: rgba(0,0,0,0.06);
+  font-family: Arial, sans-serif;
+  padding-top: -20px;
+  font-weight: normal;
+  font-size: 16px;
+  color: #fe0000;
+  opacity: .5;
+  padding-top: 0px;
+}
+.related_locked.pages-school td:first-child::after {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  text-align: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  content: "This row is locked except for sorting. This link can be update on the general tab.";
+  background-color: rgba(0,0,0,0.06);
+  font-family: Arial, sans-serif;
+  padding-top: -20px;
+  font-weight: normal;
+  font-size: 16px;
+  color: #fe0000;
+  opacity: .5;
+  padding-top: 0px;
+}
+.related_locked.documents-document td:first-child::after {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  text-align: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  content: "This row is locked except for sorting. You can update this document on the documents tab.";
+  background-color: rgba(0,0,0,0.06);
+  font-family: Arial, sans-serif;
+  padding-top: -20px;
+  font-weight: normal;
+  font-size: 16px;
+  color: #fe0000;
+  opacity: .5;
+  padding-top: 0px;
+}
+.related_locked.pages-subpage td:first-child::after {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  text-align: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  content: "This row is locked except for sorting. You can update this subpage on the subpages tab.";
+  background-color: rgba(0,0,0,0.06);
+  font-family: Arial, sans-serif;
+  padding-top: -20px;
+  font-weight: normal;
+  font-size: 16px;
+  color: #fe0000;
+  opacity: .5;
+  padding-top: 0px;
+}
+.related_locked.pages-boardsubpage td:first-child::after {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  text-align: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  content: "This row is locked except for sorting. You can update this subpage on the board subpages tab.";
+  background-color: rgba(0,0,0,0.06);
+  font-family: Arial, sans-serif;
+  padding-top: -20px;
+  font-weight: normal;
+  font-size: 16px;
+  color: #fe0000;
+  opacity: .5;
+  padding-top: 0px;
+}

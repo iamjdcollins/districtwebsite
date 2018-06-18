@@ -164,3 +164,6 @@
 .md-blank:before {
   content: "\50";
 }
+.md-document:before {
+  content: "\51";
+}

@@ -26,12 +26,14 @@
       {% if policy_review %}
       <li><a href="#policy_review" onclick="$('.inlinemodal').modaal('close');">Policy Review Schedule</a></li>
       {% endif %}
-      {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
+      {% if page.links_resourcelink_node.all %}
       <li><a href="#resourcelinks" onclick="$('.inlinemodal').modaal('close');">Resources</a></li>
       {% endif %}
-      {% if page.pages_subpage_node.all %}
-      {% for subpage in page.pages_subpage_node.all %}
-      <li><a href="{{ subpage.url }}"onclick="$('.inlinemodal').modaal('close');" >{{ subpage.title }}</a></li>
+      {% if page.links_resourcelink_node.all %}
+      {% for link in page.links_resourcelink_node.all %}
+      {% if link.related_type == 'pages-subpage' or link.related_type = 'pages-boardsubpage' %}
+      <li><a href="{{ link.url }}"onclick="$('.inlinemodal').modaal('close');" >{{ link.title }}</a></li>
+      {% endif %}
       {% endfor %}
       {% endif %}
     </ul>
@@ -137,16 +139,33 @@
     {% if policy_review %}
     {% include "cmstemplates/www_slcschools_org/blocks/policyreviewtable.html" %}
     {% endif %}
-    {% if page.links_resourcelink_node.all or page.documents_document_node.all %}
+    {% if page.links_resourcelink_node.all %}
     <div class="row">
-      <div id="resourcelinks" class="scrollspy">
+      <div id="resourcelinks" class="scrollspy resourcelinks">
         <h2>Resources</h2>
         <div class="collection">
           {% for resourcelink in page.links_resourcelink_node.all %}
-          <a href="{{ resourcelink.link_url }}" class="collection-item">{{ resourcelink.title }} <span class="material-icons right">&#xE157;</span></a>
-          {% endfor %}
-          {% for document in page.documents_document_node.all %}
-          {% include "cmstemplates/www_slcschools_org/blocks/document.html" %}
+          <a href="{{ resourcelink.link_url }}" class="collection-item{% if resourcelink.modal_ajax %} modal-ajax{% endif %}" {% if resourcelink.target_blank %}target="_blank"{% endif %}>
+            {% if resourcelink.related_type == 'documents-document' and resourcelink.modal_ajax %}
+            <span class="sr-only">Select Language for {{ resourcelink.title }}</span>
+            <span class="no-sr" aria-hidden="True">
+              {{ resourcelink.title }}
+              <span class="notranslate right md-document"></span>
+            </span>
+            {% elif resourcelink.related_type == 'documents-document' %}
+            <span class="sr-only">Open Document {{ resourcelink.title }}</span>
+            <span class="no-sr" aria-hidden="True">
+              {{ resourcelink.title }}
+              <span class="notranslate right md-document"></span>
+            </span>
+            {% else %}
+            <span class="sr-only">Goto {{ resourcelink.title }}</span>
+            <span class="no-sr" aria-hidden="True">
+              {{ resourcelink.title }}
+              <span class="notranslate right md-linkvariant"></span>
+            </span>
+            {% endif %}
+          </a>
           {% endfor %}
         </div>
       </div>

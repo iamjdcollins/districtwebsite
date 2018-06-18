@@ -70,5 +70,12 @@ django.jQuery(document).ready(function(){
       window.alert('Copied link to clipboard.')
       e.clearSelection();
   });
-
+  django.jQuery('fieldset.document_inline table').before('<div class="help_area"><ul class="messagelist"><li class="info"><span>Documents can be sorted with Resource Links. Go to the Resource Links tab to find a list of all resources including documents. Use the drag arrows on the left to change the order.</span></li></ul></div>')
+  django.jQuery('fieldset.subpage_inline table').before('<div class="help_area"><ul class="messagelist"><li class="info"><span>Subpages can be sorted with Resource Links. Go to the Resource Links tab to find a list of all resources including subpages. Use the drag arrows on the left to change the order.</span></li></ul></div>')
+  django.jQuery('fieldset.boardsubpage_inline table').before('<div class="help_area"><ul class="messagelist"><li class="info"><span>Board Subpages can be sorted with Resource Links. Go to the Resource Links tab to find a list of all resources including board subpages. Use the drag arrows on the left to change the order.</span></li></ul></div>')
+  django.jQuery('tr td.field-title .related_locked').each(function(index, element){
+    relatedtype = django.jQuery(element).attr('data-relatedtype');
+    django.jQuery(element).closest('tr').addClass('related_locked')
+    django.jQuery(element).closest('tr').addClass(relatedtype)
+  });
 });

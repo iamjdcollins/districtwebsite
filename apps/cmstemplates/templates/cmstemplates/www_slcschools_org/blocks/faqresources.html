@@ -4,7 +4,27 @@
     <h2>Resources</h2>
     <div class="collection">
       {% for resourcelink in faq.links_resourcelink_node.all %}
-      <a href="{{ resourcelink.link_url }}" class="collection-item">{{ resourcelink.title }} <i class="material-icons right">&#xE157;</i></a>
+      <a href="{{ resourcelink.link_url }}" class="collection-item{% if resourcelink.modal_ajax %} modal-ajax{% endif %}" {% if resourcelink.target_blank %}target="_blank"{% endif %}>
+        {% if resourcelink.related_type == 'documents-document' and resourcelink.modal_ajax %}
+        <span class="sr-only">Select Language for {{ resourcelink.title }}</span>
+        <span class="no-sr" aria-hidden="True">
+          {{ resourcelink.title }}
+          <span class="notranslate right md-document"></span>
+        </span>
+        {% elif resourcelink.related_type == 'documents-document' %}
+        <span class="sr-only">Open Document {{ resourcelink.title }}</span>
+        <span class="no-sr" aria-hidden="True">
+          {{ resourcelink.title }}
+          <span class="notranslate right md-document"></span>
+        </span>
+        {% else %}
+        <span class="sr-only">Goto {{ resourcelink.title }}</span>
+        <span class="no-sr" aria-hidden="True">
+          {{ resourcelink.title }}
+          <span class="notranslate right md-linkvariant"></span>
+        </span>
+        {% endif %}
+      </a>
       {% endfor %}
     </div>
   </div>

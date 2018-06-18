@@ -2,7 +2,7 @@ from .base import *
 
 ENVIRONMENT_MODE = 'test'
 
-ALLOWED_HOSTS = [
+ALLOWED_HOSTS += [
     'backman-test.slcschools.org',
     'beaconheights-test.slcschools.org',
     'bennion-test.slcschools.org',

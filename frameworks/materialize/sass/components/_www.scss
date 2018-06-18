@@ -54,11 +54,11 @@ Material Icons
 
 @font-face {
   font-family: "md";
-  src:url("../fonts/md.eot");
-  src:url("../fonts/md.eot?#iefix") format("embedded-opentype"),
-    url("../fonts/md.woff") format("woff"),
-    url("../fonts/md.ttf") format("truetype"),
-    url("../fonts/md.svg#md") format("svg");
+  src:url("/static/cmstemplates/src/fonts/md/md.eot");
+  src:url("/static/cmstemplates/src/fonts/md/md.eot?#iefix") format("embedded-opentype"),
+    url("/static/cmstemplates/src/fonts/md/md.woff") format("woff"),
+    url("/static/cmstemplates/src/fonts/md/md.ttf") format("truetype"),
+    url("/static/cmstemplates/src/fonts/md/md.svg#md") format("svg");
   font-weight: normal;
   font-style: normal;
 
@@ -201,6 +201,31 @@ Material Icons
 .md-facebook:before {
   content: "\4b";
 }
+.md-search:before {
+  content: "\4c";
+}
+.md-fax:before {
+  content: "\4d";
+}
+.md-help:before {
+  content: "\4e";
+}
+.md-location:before {
+  content: "\4f";
+}
+.md-blank:before {
+  content: "\50";
+}
+.md-document:before {
+  content: "\51";
+}
+
+/* Fontastic Adjust */
+[class^="md-"]::before, [class*=" md-"]::before{
+  font-size: 24px;
+  font-size-adjust: none;
+}
+
 a.relink{
   display: none;
 }
