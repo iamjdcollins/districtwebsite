@@ -1,11 +1,11 @@
 {% extends "cmstemplates/www_slcschools_org/layouts/contentmodal.html" %}
 
 {% block title %}
-Contact: {{form.fields.message_to.initial}}
+Contact: {{form.fields.message_to.initial}} from {{ from_page.title }}
 {% endblock %}
 
 {% block h1 %}
-Contact: {{form.fields.message_to.initial}}
+Contact: {{form.fields.message_to.initial}} from {{ from_page.title }}
 {% endblock %}
 
 {% block precontent %}
