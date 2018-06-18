@@ -49,7 +49,7 @@
       {% if page.links_resourcelink_node.all %}
       {% for link in page.links_resourcelink_node.all %}
       {% if link.related_type == 'pages-subpage' or link.related_type == 'pages-boardsubpage' %}
-      <li><a href="{{ link.url }}"onclick="$('.inlinemodal').modaal('close');" >{{ link.title }}</a></li>
+      <li><a href="{{ link.link_url }}"onclick="$('.inlinemodal').modaal('close');" >{{ link.title }}</a></li>
       {% endif %}
       {% endfor %}
       {% endif %}
