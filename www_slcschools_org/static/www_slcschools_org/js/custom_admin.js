@@ -78,5 +78,5 @@ django.jQuery(document).ready(function(){
     django.jQuery(element).closest('tr').addClass('related_locked')
     django.jQuery(element).closest('tr').addClass(relatedtype)
   });
-  django.jQuery('.related_locked input').attr('disabled','disabled');
+  django.jQuery('.related_locked .delete input').attr('disabled','disabled');
 });
