@@ -1041,7 +1041,7 @@ def related_resource_links(self):
             self.node_type,
             self.content_type,
         )
-        link.deleted = False
+        link.deleted = self.deleted
         link.published = self.published
         doc_len = len(
             self
@@ -1077,7 +1077,7 @@ def related_resource_links(self):
             self.node_type,
             self.content_type,
         )
-        link.deleted = False
+        link.deleted = self.deleted
         link.published = self.published
         link.save()
     if self.node_type == 'pages' and self.content_type == 'boardsubpage':
@@ -1098,6 +1098,6 @@ def related_resource_links(self):
             self.node_type,
             self.content_type,
         )
-        link.deleted = False
+        link.deleted = self.deleted
         link.published = self.published
         link.save()
