@@ -2268,6 +2268,8 @@ def node_lookup(request):
             context['page'] = item
             context['pageopts'] = context['page']._meta
             return render(request, template, context)
+        if node.content_type == 'boardpolicy':
+            return HttpResponse(status=200)
         if node.content_type == 'policy':
             item = (
                 Model
@@ -2559,6 +2561,10 @@ def node_lookup(request):
             context['page'] = item
             context['pageopts'] = context['page']._meta
             return render(request, template, context)
+        if node.content_type == 'boardmeetingexhibit':
+            return HttpResponse(status=200)
+        if node.content_type == 'boardmeetingagendaitem':
+            return HttpResponse(status=200)
     if node.node_type == 'files':
         item = (
             Model
