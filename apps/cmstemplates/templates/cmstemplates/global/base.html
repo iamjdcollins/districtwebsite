@@ -72,7 +72,7 @@
               <li class="{% if forloop.counter == 4 or forloop.counter == 3 %}hide-md{% endif %} hide-sm hide-xs">
                 <a href="#" class="noZensmooth pure-button narrow" onclick="doGTranslate('en|{{ item.language_code }}'); return false;">
                   <span class="sr-only">Translate to {{ item.title }}</span>
-                  <span class="notranslate no-sr" aria-hidden="true">{{ item.native_language }}</span>
+                  <span class="notranslate no-sr" aria-hidden="true"{% if item.iso_639_1_language_code %} lang="{{ item.iso_639_1_language_code }}"{% endif %}>{{ item.native_language }}</span>
                 </a>
               </li>
               {% endfor %}
@@ -99,7 +99,7 @@
                     <li class="nav-item">
                       <a class="btn noZensmooth" href="#" onclick="doGTranslate('en|{{ item.language_code }}'); return false;" >
                         <span class="sr-only">Translate to {{ item.title }}</span>
-                        <span class="notranslate no-sr" aria-hidden="true">{{ item.native_language }}</span>
+                        <span class="notranslate no-sr" aria-hidden="true"{% if item.iso_639_1_language_code %} lang="{{ item.iso_639_1_language_code }}"{% endif %}>{{ item.native_language }}</span>
                       </a>
                     </li>
                     {% endfor %}
