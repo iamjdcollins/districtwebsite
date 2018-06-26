@@ -249,7 +249,15 @@ class Language(Taxonomy):
         max_length=5,
         unique=True,
         help_text='',
-        verbose_name='Language Code',
+        verbose_name='Google Language Code',
+    )
+    iso_639_1_language_code = models.CharField(
+        null=True,
+        blank=True,
+        max_length=7,
+        unique=True,
+        help_text='',
+        verbose_name='ISO 639-1 Language Code',
     )
     language_translationtype = models.ForeignKey(
         'TranslationType',
