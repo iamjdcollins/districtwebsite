@@ -33,6 +33,7 @@ class SitesAddForm(forms.ModelForm):
             'primary_domain',
             'namespace',
             'gatrackingid',
+            'monsido_domaintoken',
         )
 
     def __init__(self, *args, **kwargs):
@@ -47,6 +48,7 @@ class SitesChangeForm(forms.ModelForm):
             'primary_domain',
             'namespace',
             'gatrackingid',
+            'monsido_domaintoken',
         )
 
     def __init__(self, *args, **kwargs):

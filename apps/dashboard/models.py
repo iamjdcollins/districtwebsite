@@ -149,6 +149,13 @@ class GeneralSettings(models.Model):
         help_text=apphelp.GeneralSettings.gatrackingid,
         verbose_name='Google Analytics Tracking ID',
     )
+    monsido_domaintoken = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+        help_text=apphelp.GeneralSettings.monsido_domaintoken,
+        verbose_name='Monsido Domain Token',
+    )
     main_phone = models.CharField(
         max_length=11,
         null=True,

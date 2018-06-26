@@ -36,6 +36,10 @@ class GeneralSettings():
         '<span>Enter the Google Analytics Tracking ID for this property '
         'which can be found in the admin interface of Google Analytics.</span>'
     )
+    monsido_domaintoken = (
+        '<span>Enter the Monsido Domain Token for this site '
+        'which can be found in the admin interface of Monsido.</span>'
+    )
     main_phone = (
         '<span>Enter the main phone number for the entity this site '
         'represents. The number should be in the 11 number format. '

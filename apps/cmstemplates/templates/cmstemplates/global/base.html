@@ -27,6 +27,14 @@
       gtag('config', '{{ request.site.dashboard_general_site.gatrackingid }}');
     </script>
     {% endif %}
+    {% if environmentmode == 'production' and request.site.dashboard_general_site.monsido_domaintoken %}
+    <script type="text/javascript">
+        var _monsido = _monsido || [];
+        _monsido.push(['_setDomainToken', '{{ request.site.dashboard_general_site.monsido_domaintoken }}']);
+        _monsido.push(['_withStatistics', 'true']);
+    </script>
+    <script async src="//cdn.monsido.com/tool/javascripts/monsido.js"></script>
+    {% endif %}
   </head>
   <body id="top">
     <div class="pushfooter">

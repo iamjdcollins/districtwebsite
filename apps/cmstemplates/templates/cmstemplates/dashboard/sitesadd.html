@@ -44,6 +44,16 @@
 		      </div>
 		    </div>
 		    <div class="input-field col s12">
+		      <span class="md-code-tags prefix" aria-hidden="true"></span>
+		      {{ sitesaddform.monsido_domaintoken.errors }}
+		      {{ sitesaddform.monsido_domaintoken }}
+		      <label for="{{ sitesaddform.monsido_domaintoken.id_for_label}}">Monsido Domain Token</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-robot"></div>
+		      	<div class="help-text">{{ sitesaddform.monsido_domaintoken.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
 		      <span class="material-icons prefix" aria-hidden="true"></span>
 		      <button type="submit" class="waves-effect waves-green btn">
 		        <span class="sr-only">Submit</span>

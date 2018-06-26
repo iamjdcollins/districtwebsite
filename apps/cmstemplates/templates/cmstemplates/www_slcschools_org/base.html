@@ -13,6 +13,7 @@
     <script>
       document.documentElement.className = document.documentElement.className.replace("no-js","js");
     </script>
+    {% if environmentmode == 'production' %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-350899-1"></script>
     <script>
@@ -21,6 +22,15 @@
         gtag('js', new Date());
         gtag('config', 'UA-350899-1');
     </script>
+    {% endif %}
+    {% if environmentmode == 'production' and request.site.dashboard_general_site.monsido_domaintoken %}
+    <script type="text/javascript">
+        var _monsido = _monsido || [];
+        _monsido.push(['_setDomainToken', '{{ request.site.dashboard_general_site.monsido_domaintoken }}']);
+        _monsido.push(['_withStatistics', 'true']);
+    </script>
+    <script async src="//cdn.monsido.com/tool/javascripts/monsido.js"></script>
+    {% endif %}
   </head>
   <body class="{% block bodyclasses %}{% endblock %}">
     <div class="pushfooter slcschools-grey lighten-3">
