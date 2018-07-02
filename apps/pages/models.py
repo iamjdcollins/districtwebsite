@@ -868,12 +868,10 @@ class DistrictCalendarYear(BasePage):
 
     title = models.CharField(
         max_length=200,
-        unique=True,
         help_text="",
     )
     yearend = models.CharField(
         max_length=4,
-        unique=True,
         help_text="",
         blank=True,
     )
