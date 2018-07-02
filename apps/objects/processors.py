@@ -6,7 +6,7 @@ def breadcrumb(request):
   return {'BREADCRUMB': breadcrumb}
 
 def mainmenu(request):
-  menu_items = Node.objects.filter(menu_item=1).filter(level=0)
+  menu_items = Node.objects.filter(menu_item=1).filter(level=0).filter(site=request.site)
   return {'MENU_ITEMS': menu_items}
 
 def sitestructure(requset):
