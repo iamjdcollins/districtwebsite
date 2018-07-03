@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.views import View
 from django.views.generic.base import RedirectView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms.formsets import formset_factory
+from django.forms.models import modelformset_factory
 from django.contrib import messages
 from django.urls import reverse
 from django.apps import apps
@@ -11,11 +13,17 @@ from apps.dashboard.forms import (
     GeneralSettingsForm,
     SitesAddForm,
     SitesChangeForm,
+    SiteTypesAddForm,
+    SiteTypesChangeForm,
+    SiteTypesRequiredPagesForm,
     TemplatesAddForm,
     PageLayoutsAddForm,
+    PageLayoutsChangeForm,
 )
 from apps.dashboard.models import (
     GeneralSettings as GeneralSettingsModel,
+    SiteType as SiteTypeModel,
+    SiteTypeRequiredPage as SiteTypeRequiredPageModel,
     Template as TemplateModel,
     PageLayout as PageLayoutsModel,
 )
@@ -49,13 +57,18 @@ def add_sites_context(self, context):
     return context
 
 
+def add_sitetypes_context(self, context):
+    context['sitetypes'] = SiteTypeModel.objects.all().order_by('title')
+    return context
+
+
 def add_templates_context(self, context):
-    context['templates'] = TemplateModel.objects.all()
+    context['templates'] = TemplateModel.objects.all().order_by('title')
     return context
 
 
 def add_pagelayouts_context(self, context):
-    context['pagelayouts'] = PageLayoutsModel.objects.all()
+    context['pagelayouts'] = PageLayoutsModel.objects.all().order_by('title')
     return context
 
 
@@ -98,6 +111,39 @@ def add_siteschange_form(self, context):
     return context
 
 
+def add_sitetypesadd_form(self, context):
+    if self.request.POST:
+        context['sitetypesaddform'] = SiteTypesAddForm(
+            data=self.request.POST,
+        )
+    else:
+        context['sitetypesaddform'] = SiteTypesAddForm()
+    return context
+
+
+def add_sitetypeschange_form(self, context):
+    try:
+        instance = SiteTypeModel.objects.get(pk=self.kwargs['sitetypepk'])
+    except SiteTypeModel.DoesNotExist:
+        raise Exception('Site Type Does Not Exist')
+    RequiredPagesForSet = modelformset_factory(
+        SiteTypeRequiredPageModel,
+        form=SiteTypesRequiredPagesForm,
+    )
+    if self.request.POST:
+        context['sitetypeschangeform'] = SiteTypesChangeForm(
+            instance=instance,
+            data=self.request.POST,
+        )
+        context['requiredpagesformset'] = RequiredPagesForSet(data=self.request.POST)
+    else:
+        context['sitetypeschangeform'] = SiteTypesChangeForm(
+            instance=instance,
+        )
+        context['requiredpagesformset'] = RequiredPagesForSet(queryset=SiteTypeRequiredPageModel.objects.filter(sitetype=instance))
+    return context
+
+
 def add_templatesadd_form(self, context):
     if self.request.POST:
         context['templatesaddform'] = TemplatesAddForm(
@@ -115,6 +161,23 @@ def add_pagelayoutsadd_form(self, context):
         )
     else:
         context['pagelayoutsaddform'] = PageLayoutsAddForm()
+    return context
+
+
+def add_pagelayoutschange_form(self, context):
+    try:
+        instance = PageLayoutsModel.objects.get(pk=self.kwargs['pagelayoutpk'])
+    except PageLayoutsModel.DoesNotExist:
+        raise Exception('Page Layout Does Not Exist')
+    if self.request.POST:
+        context['pagelayoutschangeform'] = PageLayoutsChangeForm(
+            instance=instance,
+            data=self.request.POST,
+        )
+    else:
+        context['pagelayoutschangeform'] = PageLayoutsChangeForm(
+            instance=instance,
+        )
     return context
 
 
@@ -254,6 +317,99 @@ class SitesChange(SAMLLoginRequiredMixin, TemplateView):
         return context
 
 
+class SiteTypes(SAMLLoginRequiredMixin, TemplateView):
+
+    template_name = 'cmstemplates/dashboard/sitetypes.html'
+
+    def get(self, request, *args, **kwargs):
+        if request.site.domain != 'websites.slcschools.org':
+            return BaseURL.as_view()(self.request)
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = add_sites_context(self, context)
+        context = add_sitetypes_context(self, context)
+        return context
+
+
+class SiteTypesAdd(SAMLLoginRequiredMixin, TemplateView):
+
+    template_name = 'cmstemplates/dashboard/sitetypesadd.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        if context['sitetypesaddform'].is_valid():
+            user = User.objects.get(pk=request.user.pk)
+            post = context['sitetypesaddform'].save(commit=False)
+            if not post.create_user:
+                post.create_user = user
+            post.update_user = user
+            post.save()
+            messages.success(
+                request,
+                'Site Type added successfully')
+        return redirect('dashboard:sitetypes')
+
+    def get(self, request, *args, **kwargs):
+        if request.site.domain != 'websites.slcschools.org':
+            return BaseURL.as_view()(self.request)
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = add_sites_context(self, context)
+        context = add_sitetypes_context(self, context)
+        context = add_sitetypesadd_form(self, context)
+        return context
+
+
+class SiteTypesChange(SAMLLoginRequiredMixin, TemplateView):
+
+    template_name = 'cmstemplates/dashboard/sitetypeschange.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        if context['sitetypeschangeform'].is_valid() and context['requiredpagesformset'].is_valid():
+            user = User.objects.get(pk=request.user.pk)
+            post = context['sitetypeschangeform'].save(commit=False)
+            if not post.create_user:
+                post.create_user = user
+            post.update_user = user
+            post.save()
+            messages.success(
+                request,
+                'Site Type updated successfully')
+            context['requiredpagesformset'].save(commit=False)
+            for obj in context['requiredpagesformset'].deleted_objects:
+                obj.delete()
+            for obj in context['requiredpagesformset'].new_objects:
+                obj.create_user = request.user
+                obj.update_user = request.user
+                obj.sitetype = post
+                obj.save()
+            for obj in context['requiredpagesformset'].changed_objects:
+                obj[0].update_user = request.user
+                obj[0].save()
+            context['requiredpagesformset'].save_m2m()
+        return redirect('dashboard:sitetypes')
+
+    def get(self, request, *args, **kwargs):
+        if request.site.domain != 'websites.slcschools.org':
+            return BaseURL.as_view()(self.request)
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = add_sites_context(self, context)
+        context = add_sitetypes_context(self, context)
+        context = add_sitetypeschange_form(self, context)
+        return context
+
+
 class Templates(SAMLLoginRequiredMixin, TemplateView):
 
     template_name = 'cmstemplates/dashboard/templates.html'
@@ -347,4 +503,37 @@ class PageLayoutsAdd(SAMLLoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context = add_sites_context(self, context)
         context = add_pagelayoutsadd_form(self, context)
+        return context
+
+
+class PageLayoutsChange(SAMLLoginRequiredMixin, TemplateView):
+
+    template_name = 'cmstemplates/dashboard/pagelayoutschange.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        if context['pagelayoutschangeform'].is_valid():
+            user = User.objects.get(pk=request.user.pk)
+            post = context['pagelayoutschangeform'].save(commit=False)
+            if not post.create_user:
+                post.create_user = user
+            post.update_user = user
+            post.save()
+            messages.success(
+                request,
+                'Page layout updated successfully')
+            context['pagelayoutschangeform'].save_m2m()
+        return redirect('dashboard:pagelayouts')
+
+    def get(self, request, *args, **kwargs):
+        if request.site.domain != 'websites.slcschools.org':
+            return BaseURL.as_view()(self.request)
+        context = self.get_context_data()
+        # raise Exception('Error')
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = add_sites_context(self, context)
+        context = add_pagelayoutschange_form(self, context)
         return context
