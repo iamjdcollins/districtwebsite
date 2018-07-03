@@ -2125,7 +2125,7 @@ def contactmessage_get(request):
         if request.GET['pid']:
             form.fields['parent'].initial = request.GET['pid']
     except:
-        form.fields['parent'].initial = commonfunctions.get_contactpage()
+        form.fields['parent'].initial = commonfunctions.get_contactpage(request)
     try:
         if request.GET['cid']:
             form.fields['primary_contact'].initial = request.GET['cid']
