@@ -169,14 +169,14 @@ def redirect_request(request):
         return redirect(year.url)
     if request.path == '/departments/superintendents-office/superintendents-message/':
         try:
-            year = SuperintendentMessageYear.objects.get(title=currentyear['currentyear']['long'])
+            year = SuperintendentMessageYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
         except SuperintendentMessageYear.DoesNotExist:
-            message, created = SuperintendentMessage.objects.get_or_create(author_date=timezone.now())
+            message, created = SuperintendentMessage.objects.get_or_create(author_date=timezone.now(), site=request.site)
             if created:
                 message.save()
                 message.delete()
                 message.delete()
-            year = SuperintendentMessageYear.objects.get(title=currentyear['currentyear']['long'])
+            year = SuperintendentMessageYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
         return redirect(year.url)
     return None
 
