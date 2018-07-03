@@ -19,16 +19,28 @@
         <ul class="sidenav mobile-navigation hide-xs hide-sm hide-md">
           <li>
             <ul class="nav navl">
-              <li class="nav-item"><a href="index.html" class="dropdown-toggle" data-toggle="dropdown">Our School</a></li>
-              <li class="nav-item"><a href="about.html">Academics</a></li>
-              <li class="nav-item"><a href="works.html" class="dropdown-toggle" data-toggle="dropdown">Athletics</a></li>
+              {% for item in MENU_ITEMS %}
+              {% if forloop.counter0|divisibleby:'2' %}
+              {% if item.url in request.path  %}
+              <li class="nav-item active"> <a href="{{ item.url }}" class="dropdown-toggle menu-item" data-toggle="dropdown">{{ item.menu_title|safe }}</a></li>
+              {% else %}
+              <li class="nav-item"> <a href="{{ item.url }}" class="dropdown-toggle menu-item" data-toggle="dropdown">{{ item.menu_title|safe }}</a></li>
+              {% endif %}
+              {% endif %}
+              {% endfor %}
             </ul>
           </li>
           <li>
             <ul class="nav navr">
-              <li class="nav-item"><a href="blog.html" class="dropdown-toggle" data-toggle="dropdown">Calendars</a></li>
-              <li class="nav-item"><a href="elements.html" class="dropdown-toggle" data-toggle="dropdown">Students</a></li>
-              <li class="nav-item"><a href="contact.html">Community</a></li>
+              {% for item in MENU_ITEMS %}
+              {% if not forloop.counter0|divisibleby:'2' %}
+              {% if item.url in request.path  %}
+              <li class="nav-item active"> <a href="{{ item.url }}" class="dropdown-toggle menu-item" data-toggle="dropdown">{{ item.menu_title|safe }}</a></li>
+              {% else %}
+              <li class="nav-item"> <a href="{{ item.url }}" class="dropdown-toggle menu-item" data-toggle="dropdown">{{ item.menu_title|safe }}</a></li>
+              {% endif %}
+              {% endif %}
+              {% endfor %}
             </ul>
           </li>
         </ul>
