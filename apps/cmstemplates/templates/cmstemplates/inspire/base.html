@@ -16,11 +16,12 @@
           <span class="md-menu"></span>
           <span class="hidden">Main Menu</span>
         </label>
+        {% widthratio MENU_ITEMS|length|stringformat:"i"|add:".1" 2 1 as halfmenu %}
         <ul class="sidenav mobile-navigation hide-xs hide-sm hide-md">
           <li>
             <ul class="nav navl">
               {% for item in MENU_ITEMS %}
-              {% if forloop.counter0|divisibleby:'2' %}
+              {% if forloop.counter <= halfmenu|add:"0" %}
               {% if item.url in request.path  %}
               <li class="nav-item active"> <a href="{{ item.url }}" class="dropdown-toggle menu-item" data-toggle="dropdown">{{ item.menu_title|safe }}</a></li>
               {% else %}
@@ -33,7 +34,7 @@
           <li>
             <ul class="nav navr">
               {% for item in MENU_ITEMS %}
-              {% if not forloop.counter0|divisibleby:'2' %}
+              {% if forloop.counter > halfmenu|add:"0" %}
               {% if item.url in request.path  %}
               <li class="nav-item active"> <a href="{{ item.url }}" class="dropdown-toggle menu-item" data-toggle="dropdown">{{ item.menu_title|safe }}</a></li>
               {% else %}
