@@ -126,7 +126,7 @@ def add_sitetypeschange_form(self, context):
         instance = SiteTypeModel.objects.get(pk=self.kwargs['sitetypepk'])
     except SiteTypeModel.DoesNotExist:
         raise Exception('Site Type Does Not Exist')
-    RequiredPagesForSet = modelformset_factory(
+    RequiredPagesFormSet = modelformset_factory(
         SiteTypeRequiredPageModel,
         form=SiteTypesRequiredPagesForm,
     )
@@ -135,12 +135,15 @@ def add_sitetypeschange_form(self, context):
             instance=instance,
             data=self.request.POST,
         )
-        context['requiredpagesformset'] = RequiredPagesForSet(data=self.request.POST)
+        context['requiredpagesformset'] = RequiredPagesFormSet(data=self.request.POST)
     else:
         context['sitetypeschangeform'] = SiteTypesChangeForm(
             instance=instance,
         )
-        context['requiredpagesformset'] = RequiredPagesForSet(queryset=SiteTypeRequiredPageModel.objects.filter(sitetype=instance))
+        context['requiredpagesformset'] = RequiredPagesFormSet(queryset=SiteTypeRequiredPageModel.objects.filter(sitetype=instance))
+        for form in context['requiredpagesformset']:
+            form.fields['pagelayout'].queryset = instance.dashboard_pagelayout_allowed_sitetypes.all().order_by('title')
+            form.fields['parent'].queryset = instance.dashboard_sitetyperequiredpage_sitetype.all().order_by('title')
     return context
 
 
