@@ -8,7 +8,7 @@ from guardian.admin import GuardedModelAdmin
 from mptt.admin import MPTTModelAdmin
 from ajax_select import make_ajax_form, make_ajax_field
 from adminsortable2.admin import SortableInlineAdminMixin
-from apps.common.classes import DeletedListFilter, EditLinkToInlineObject, LinkToInlineObject
+from apps.common.classes import DeletedListFilter, EditLinkToInlineObject, LinkToInlineObject, MyDraggableMPTTAdmin 
 from apps.common.actions import trash_selected, restore_selected, publish_selected, unpublish_selected
 from django.contrib.admin.actions import delete_selected
 from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear, SuperintendentMessage,SuperintendentMessageYear
@@ -2027,7 +2027,7 @@ class PageAdminForm(forms.ModelForm):
         model = Page
         fields = ['title', 'body','primary_contact','parent','url']
 
-class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
+class PageAdmin(MyDraggableMPTTAdmin, GuardedModelAdmin):
 
   form = make_ajax_form(Page, {'primary_contact': 'employee'},PageAdminForm)
 
@@ -2069,9 +2069,9 @@ class PageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   def get_list_display(self,request):
     if request.user.has_perm('pages.restore_page'):
-      return ['title','update_date','update_user','published','deleted']
+      return ['tree_actions', 'indented_title','update_date','update_user','published','deleted']
     else:
-      return ['title','update_date','update_user','published']
+      return ['tree_actions', 'indented_title','update_date','update_user','published']
 
   #ordering = ('url',)
   

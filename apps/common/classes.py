@@ -1,3 +1,4 @@
+import json
 from django.contrib import admin
 from haystack.utils.highlighting import Highlighter
 from haystack.forms import SearchForm
@@ -25,6 +26,8 @@ IS_POPUP_VAR = '_popup'
 from guardian.shortcuts import get_perms
 from imagekit.cachefiles.backends import CachedFileBackend
 import apps.common.functions as commonfunctions
+from mptt.admin import DraggableMPTTAdmin, JS
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 class DeletedListFilter(admin.SimpleListFilter):
@@ -258,3 +261,34 @@ class JustInTime(object):
     def on_source_saved(self, file):
         commonfunctions.silentdelete_media(file.path)
         file.generate(force=True)
+
+
+class MyDraggableMPTTAdmin(DraggableMPTTAdmin):
+
+    def changelist_view(self, request, *args, **kwargs):
+        if request.is_ajax() and request.POST.get('cmd') == 'move_node':
+            return self._move_node(request)
+
+        response = super(DraggableMPTTAdmin, self).changelist_view(
+            request, *args, **kwargs)
+
+        try:
+            response.context_data['media'].add_css({'all': (
+                'mptt/draggable-admin.css',
+            )})
+            response.context_data['media'].add_js((
+                JS('mptt/draggable-admin.js', {
+                    'id': 'draggable-admin-context',
+                    'data-context': json.dumps(
+                        self._tree_context(request), cls=DjangoJSONEncoder
+                    ),
+
+                }),
+            ),)
+        except (AttributeError, KeyError):
+            # Not meant for us if there is no context_data attribute (no
+            # TemplateResponse) or no media in the context.
+            pass
+
+        return response
+
