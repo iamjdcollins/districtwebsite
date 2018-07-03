@@ -111,7 +111,7 @@ class BoardMeeting(BaseEvent):
 
     def create_parent(self, creator):
         currentyear = commonfunctions.currentyear(self.startdate)
-        parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL)
+        parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL, site=self.site)
         obj, created = self.PARENT_TYPE.objects.get_or_create(
             title=currentyear['currentyear']['long'],
             yearend=currentyear['currentyear']['short'],
@@ -250,7 +250,7 @@ class DistrictCalendarEvent(BaseEvent):
 
     def create_parent(self, creator):
         currentyear = commonfunctions.currentyear(self.startdate)
-        parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL)
+        parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL, site=self.site)
         obj, created = self.PARENT_TYPE.objects.get_or_create(
             title=currentyear['currentyear']['long'],
             yearend=currentyear['currentyear']['short'],
