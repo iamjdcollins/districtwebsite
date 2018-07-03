@@ -5,7 +5,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import AbstractUser
 from django.contrib.sites.models import Site
 from apps.common.functions import get_default_pagelayout
-from apps.dashboard.models import PageLayout
+from apps.dashboard.models import PageLayout, SiteTypeRequiredPage
 
 
 class Node(MPTTModel):
@@ -34,6 +34,14 @@ class Node(MPTTModel):
         null=False,
         on_delete=models.PROTECT,
         default=get_default_pagelayout,
+        related_name='objects_node_pagelayout'
+    )
+    requiredpage = models.ForeignKey(
+        SiteTypeRequiredPage,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='objects_node_requiredpage'
     )
     parent = TreeForeignKey(
       'self',
