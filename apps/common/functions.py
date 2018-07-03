@@ -351,7 +351,7 @@ def modelsave(self, *args, **kwargs):
     if self.PARENT_URL:
         try:
             self.parent = Node.objects.exclude(
-                uuid=self.uuid).get(url=self.PARENT_URL)
+                uuid=self.uuid).get(url=self.PARENT_URL, site=self.site)
         except Node.DoesNotExist:
             pass
     # Related Node matches Parent
@@ -699,10 +699,10 @@ def get_default_pagelayout(pk=True):
         return ''
 
 
-def get_contactpage(pk=True):
+def get_contactpage(request, pk=True):
     Node = apps.get_model('objects', 'node')
     try:
-        page = Node.objects.get(node_title='Contact Us')
+        page = Node.objects.get(node_title='Contact Us', site=request.site)
         if pk:
             return page.pk
         else:
