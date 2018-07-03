@@ -19,9 +19,9 @@
         <tbody>
           {% for layout in pagelayouts %}
           <tr>
-            <td><a href="/manage/dashboard/">{{ layout.title }}</a><br>{{ layout.namespace }}</td>
+            <td><a href="{% url 'dashboard:pagelayoutschange' pagelayoutpk=layout.pk %}">{{ layout.title }}</a><br>{{ layout.namespace }}</td>
             <td class="rowaction">
-              <a href="/manage/dashboard/">
+              <a href="{% url 'dashboard:pagelayoutschange' pagelayoutpk=layout.pk %}">
                 <span class="sr-only">Edit {{ layout.title }}</span>
                 <span class="no-sr md-settings" aria-hidden="True"></span>
               </a>
