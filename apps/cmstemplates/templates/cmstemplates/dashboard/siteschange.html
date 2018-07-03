@@ -25,6 +25,16 @@
 		    </div>
 		    <div class="input-field col s12">
 		      <span class="md-code-tags prefix" aria-hidden="true"></span>
+		      {{ siteschangeform.sitetype.errors }}
+		      {{ siteschangeform.sitetype }}
+		      <label for="{{ siteschangeform.sitetype.id_for_label}}">Site Type</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-robot"></div>
+		      	<div class="help-text">{{ siteschangeform.sitetype.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-code-tags prefix" aria-hidden="true"></span>
 		      {{ siteschangeform.namespace.errors }}
 		      {{ siteschangeform.namespace }}
 		      <label for="{{ siteschangeform.namespace.id_for_label}}">Namespace</label>
