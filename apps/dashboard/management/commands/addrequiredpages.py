@@ -5,18 +5,16 @@ from apps.pages.models import Page
 
 def createpage(site, requiredpage, parents, remaining):
     if requiredpage in remaining:
+        parent = None
         if requiredpage.parent:
-            print('Page Has Parent')
             parents, remaining = createpage(
                 site,
                 requiredpage.parent,
                 parents,
                 remaining
             )
-        if str(requiredpage.pk) in parents:
-            parent = parents[str(requiredpage.pk)]
-        else:
-            parent = None
+            if str(requiredpage.parent.pk) in parents:
+                parent = parents[str(requiredpage.parent.pk)]
         page, created = Page.objects.get_or_create(
             requiredpage=requiredpage,
             site=site.site,
@@ -28,15 +26,26 @@ def createpage(site, requiredpage, parents, remaining):
                 'parent': parent,
             }
         )
-        print('{0} was created: {1}'.format(page, created))
-        page.title = requiredpage.title
-        page.menu_item = requiredpage.menu_item
-        page.menu_title = requiredpage.menu_title
-        page.pagelayout = requiredpage.pagelayout
-        page.parent = parent
-        page.site = site.site
-        page.save()
-        parents[str(page.pk)] = page
+        if not created:
+            changed = False
+            if page.title != requiredpage.title:
+                page.title = requiredpage.title
+                changed = True
+            if page.menu_item != requiredpage.menu_item:
+                page.menu_item = requiredpage.menu_item
+                changed = True
+            if page.menu_title != requiredpage.menu_title:
+                page.menu_title = requiredpage.menu_title
+                changed = True
+            if page.pagelayout != requiredpage.pagelayout:
+                page.pagelayout = requiredpage.pagelayout
+                changed = True
+            if page.parent != parent:
+                page.parent = parent
+                changed = True
+            if changed:
+                page.save()
+        parents[str(requiredpage.pk)] = page
         if page.requiredpage in remaining:
             remaining.remove(page.requiredpage)
     return parents, remaining
@@ -53,11 +62,6 @@ class Command(BaseCommand):
                 ):
                     remaining.append(requiredpage)
                 while len(remaining) > 0:
-                    print('Creating: {0} for site: {1}'.format(
-                        remaining[0],
-                        site.title
-                        )
-                    )
                     parents, remaining = createpage(
                         site,
                         remaining[0],
