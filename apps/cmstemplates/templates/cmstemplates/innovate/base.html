@@ -42,12 +42,13 @@
         </label>
         <ul class="sidenav mobile-navigation hide-xs hide-sm hide-md">
           <li class="nav-item home-link"><a href="/"><span class="md-home"></span><span class="hidden">Home</span></a></li>
-          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Our School</a></li>
-          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Academics</a></li>
-          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Athletics</a></li>
-          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Calendars</a></li>
-          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Students</a></li>
-          <li class="nav-item"> <a href="features.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">Community</a>
+          {% for item in MENU_ITEMS %}
+          {% if item.url in request.path  %}
+          <li class="nav-item active"> <a href="{{ item.url }}" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">{{ item.menu_title|safe }}</a></li>
+          {% else %}
+          <li class="nav-item"> <a href="{{ item.url }}" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown">{{ item.menu_title|safe }}</a></li>
+          {% endif %}
+          {% endfor %}
           </li>
         </ul>
         <a href="/search/" class="right alwayslinked"><span class="md-search"></span><span class="hidden">Search</span></a>
