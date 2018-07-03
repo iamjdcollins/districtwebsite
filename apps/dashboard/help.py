@@ -1,3 +1,19 @@
+class SiteType():
+    title = (
+        '<span>Enter a name for this site type. The name should be a'
+        ' short descriptive name for the purpose of the site (e.g. ',
+        ' School Website, District Website, or Teacher Website).</span>'
+    )
+
+
+class SiteTypeRequiredPage():
+    title = (
+        '<span>Enter a name for this required page. The name should be a'
+        ' short descriptive name for the purpose of the page. (e.g. ',
+        ' Home, About Our School, or School Community Council (SCC)).</span>'
+    )
+
+
 class PageLayout():
     title = (
         '<span>Enter a name for this page layout. The name should be a'
