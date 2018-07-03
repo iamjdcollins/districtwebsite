@@ -1,5 +1,5 @@
 from django import forms
-from apps.dashboard.models import GeneralSettings, Template, PageLayout
+from apps.dashboard.models import GeneralSettings, SiteType, Template, PageLayout, SiteTypeRequiredPage
 
 
 class GeneralSettingsForm(forms.ModelForm):
@@ -32,6 +32,7 @@ class SitesAddForm(forms.ModelForm):
             'title',
             'primary_domain',
             'namespace',
+            'sitetype',
             'gatrackingid',
             'monsido_domaintoken',
         )
@@ -47,6 +48,7 @@ class SitesChangeForm(forms.ModelForm):
             'title',
             'primary_domain',
             'namespace',
+            'sitetype',
             'gatrackingid',
             'monsido_domaintoken',
         )
@@ -55,7 +57,47 @@ class SitesChangeForm(forms.ModelForm):
         super(SitesChangeForm, self).__init__(*args, **kwargs)
 
 
+class SiteTypesAddForm(forms.ModelForm):
+    class Meta:
+        model = SiteType
+        fields = (
+            'title',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(SiteTypesAddForm, self).__init__(*args, **kwargs)
+
+
+class SiteTypesChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = SiteType
+        fields = (
+            'title',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(SiteTypesChangeForm, self).__init__(*args, **kwargs)
+
+
+class SiteTypesRequiredPagesForm(forms.ModelForm):
+
+    class Meta:
+        model = SiteTypeRequiredPage
+        fields = (
+            'title',
+            'menu_item',
+            'menu_title',
+            'pagelayout',
+            'parent',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(SiteTypesRequiredPagesForm, self).__init__(*args, **kwargs)
+
+
 class TemplatesAddForm(forms.ModelForm):
+
     class Meta:
         model = Template
         fields = (
@@ -77,3 +119,17 @@ class PageLayoutsAddForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PageLayoutsAddForm, self).__init__(*args, **kwargs)
+
+
+class PageLayoutsChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = PageLayout
+        fields = (
+            'title',
+            'namespace',
+            'allowed_sitetypes',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(PageLayoutsChangeForm, self).__init__(*args, **kwargs)
