@@ -8,6 +8,55 @@ from ckeditor.fields import RichTextField
 import apps.dashboard.help as apphelp
 
 
+class SiteType(models.Model):
+
+    uuid = models.UUIDField(
+      primary_key=True,
+      unique=True,
+      default=uuid.uuid4,
+      editable=False,
+    )
+    title = models.CharField(
+        max_length=200,
+        help_text=apphelp.SiteType.title,
+        unique=True,
+        verbose_name='Site Type',
+    )
+    create_date = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+    )
+    create_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        to_field='uuid',
+        on_delete=models.DO_NOTHING,
+        related_name='dashboard_sitetype_create_user',
+    )
+    update_date = models.DateTimeField(
+        auto_now=True,
+        db_index=True,
+    )
+    update_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        to_field='uuid',
+        on_delete=models.DO_NOTHING,
+        related_name='dashboard_sitetype_update_user',
+    )
+
+    class Meta:
+        db_table = 'dashboard_sitetype'
+        get_latest_by = 'update_date'
+        verbose_name = 'Site Type'
+        verbose_name_plural = 'Site Types'
+
+    def __str__(self):
+        return self.title
+
+
 class PageLayout(models.Model):
 
     uuid = models.UUIDField(
@@ -27,6 +76,12 @@ class PageLayout(models.Model):
         help_text=apphelp.PageLayout.namespace,
         unique=True,
         verbose_name='HTML File Name'
+    )
+    allowed_sitetypes = models.ManyToManyField(
+        SiteType,
+        db_table='dashboard_pagelayout_allowed_sitetypes',
+        blank=True,
+        related_name='dashboard_pagelayout_allowed_sitetypes'
     )
     create_date = models.DateTimeField(
         auto_now_add=True,
@@ -58,6 +113,89 @@ class PageLayout(models.Model):
         get_latest_by = 'update_date'
         verbose_name = 'Page Layout'
         verbose_name_plural = 'Page Layouts'
+
+    def __str__(self):
+        return self.title
+
+
+class SiteTypeRequiredPage(models.Model):
+
+    uuid = models.UUIDField(
+      primary_key=True,
+      unique=True,
+      default=uuid.uuid4,
+      editable=False,
+    )
+    title = models.CharField(
+        max_length=200,
+        help_text=apphelp.SiteTypeRequiredPage.title,
+        verbose_name='Page Title',
+    )
+    menu_item = models.BooleanField(
+        default=False,
+        db_index=True,
+        verbose_name='Include in Main Menu',
+    )
+    menu_title = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+        verbose_name='Main Menu Title',
+    )
+    pagelayout = models.ForeignKey(
+        PageLayout,
+        null=False,
+        blank=False,
+        related_name='dashboard_sitetyperequiredpage_pagelayout',
+        db_index=True,
+        verbose_name='Page Layout',
+    )
+    parent = models.ForeignKey(
+      'self',
+      null=True,
+      blank=True,
+      related_name='dashboard_sitetyperequiredpage_parent',
+      db_index=True,
+      verbose_name='Parent Page',
+    )
+    sitetype = models.ForeignKey(
+        SiteType,
+        null=False,
+        blank=False,
+        related_name='dashboard_sitetyperequiredpage_sitetype',
+        db_index=True,
+    )
+    create_date = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+    )
+    create_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        to_field='uuid',
+        on_delete=models.DO_NOTHING,
+        related_name='dashboard_sitetyperequiredpage_create_user',
+    )
+    update_date = models.DateTimeField(
+        auto_now=True,
+        db_index=True,
+    )
+    update_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        to_field='uuid',
+        on_delete=models.DO_NOTHING,
+        related_name='dashboard_sitetyperequiredpage_update_user',
+    )
+
+    class Meta:
+        db_table = 'dashboard_sitetyperequiredpage'
+        get_latest_by = 'update_date'
+        verbose_name = 'Site Type Required Page'
+        verbose_name_plural = 'Site Types Required Pages'
+        unique_together = (('title', 'sitetype', 'parent'),)
 
     def __str__(self):
         return self.title
@@ -141,6 +279,13 @@ class GeneralSettings(models.Model):
         null=True,
         blank=False,
         help_text=apphelp.GeneralSettings.namespace,
+    )
+    sitetype = models.ForeignKey(
+        SiteType,
+        null=True,
+        blank=True,
+        related_name='dashboard_generalsettings_sitetype',
+        db_index=True,
     )
     gatrackingid = models.CharField(
         max_length=20,
