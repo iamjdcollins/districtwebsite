@@ -1,0 +1,37 @@
+{% extends 'cmstemplates/dashboard/base.html' %}
+
+{% block title %}Site Types{% endblock %}
+
+{% block maincontent %}
+<div class="col s12">
+  <div class="card-panel">
+    <div class="row">
+      <h1 class="col s12">Site Types</h1>
+    </div>
+    <div class="row">
+      <table>
+        <thead>
+          <tr>
+            <th>Site Type</th>
+            <th class="rowaction"><span class="sr-only">Edit</span><th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sitetype in sitetypes %}
+          <tr>
+            <td><a href="{% url 'dashboard:sitetypeschange' sitetypepk=sitetype.pk %}">{{ sitetype.title }}</a></td>
+            <td class="rowaction">
+              <a href="{% url 'dashboard:sitetypeschange' sitetypepk=sitetype.pk %}">
+                <span class="sr-only">Edit {{ sitetype.title }}</span>
+                <span class="no-sr md-settings" aria-hidden="True"></span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="{% url 'dashboard:sitetypesadd' %}" class="btn-floating btn-large waves-effect waves-light" style="position: fixed; bottom: 15px; right: 15px;"><span class="md-plus"></span></a>
+    </div>
+  </div>
+</div>
+{% endblock %}

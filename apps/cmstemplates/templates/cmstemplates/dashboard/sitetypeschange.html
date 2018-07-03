@@ -1,0 +1,75 @@
+{% extends 'cmstemplates/dashboard/base.html' %}
+
+{% block title %}Add Site Type{% endblock %}
+
+{% block maincontent %}
+<div class="col s12">
+  <div class="card-panel">
+  	<div class="row">
+  	  <h1 class="col s12">Add Site Type</h1>
+    </div>
+    <div class="row">
+	  	<form class="col s12 focus" action="" method="post">
+		    {% csrf_token %}
+		    <div class="input-field col s12">
+		      <span class="md-filedocument prefix" aria-hidden="true"></span>
+		      {{ sitetypeschangeform.title.errors }}
+		      {{ sitetypeschangeform.title }}
+		      <label for="{{ sitetypeschangeform.title.id_for_label}}">Site Type Name</label>
+		    </div>
+		    <h2>Required Pages</h2>
+		    {{ requiredpagesformset.management_form }}
+		    <table>
+		    	<thead>
+		    		<th>Title</th>
+		    		<th>Menu Item</th>
+		    		<th>Menu Title</th>
+		    		<th>Page Layout</th>
+		    		<th>Parent Page</th>
+		    	</thead>
+		    	<tbody>
+			    {% for requiredpage in requiredpagesformset %}
+			        <tr>
+			        	<td>
+			        		{{ requiredpage.uuid }}
+			        		{{ requiredpage.title.errors }}
+						    {{ requiredpage.title }}
+						    <label for="{{ requiredpage.title.id_for_label}}"  class="hide">Title</label>
+			        	</td>
+			        	<td>
+			        		{{ requiredpage.menu_item.errors }}
+						    {{ requiredpage.menu_item }}
+						    <span></span>
+						    <label for="{{ requiredpage.menu_item.id_for_label}}"  class="hide">Menu Item</label>
+			        	</td>
+			        	<td>
+			        		{{ requiredpage.menu_title.errors }}
+						    {{ requiredpage.menu_title }}
+						    <label for="{{ requiredpage.menu_title.id_for_label}}"  class="hide">Menu Title</label>
+			        	</td>
+			        	<td>
+			        		{{ requiredpage.pagelayout.errors }}
+						    {{ requiredpage.pagelayout }}
+						    <label for="{{ requiredpage.pagelayout.id_for_label}}"  class="hide">Page Layout</label>
+			        	</td>
+			        	<td>
+			        		{{ requiredpage.parent.errors }}
+						    {{ requiredpage.parent }}
+						    <label for="{{ requiredpage.parent.id_for_label}}" class="hide">Parent Pgae</label>
+			        	</td>
+			        </tr>
+			    {% endfor %}
+			    </tbody>
+			</table>
+		    <div class="input-field col s12">
+		      <span class="material-icons prefix" aria-hidden="true"></span>
+		      <button type="submit" class="waves-effect waves-green btn">
+		        <span class="sr-only">Submit</span>
+		        <span class="no-sr" aria-hidden="true">Submit</span>
+		      </button>
+		    </div>
+		  </form>
+		</div>
+  </div>
+</div>
+{% endblock %}
