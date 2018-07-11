@@ -20,10 +20,30 @@
       <!--social media icons-->
       <div class="social-media">  
         <!--Update Dynamic-->
-        <a href="#"><span class="md-twitter"></span></a>
-        <a href="#"><span class="md-facebook"></span></a>
-        <a href="#"><span class="md-instagram"></span></a>
-        <a href="#"><span class="md-youtube"></span></a>
+        {% if request.site.dashboard_general_site.global_facebook %}
+        <a href="{{ request.site.dashboard_general_site.global_facebook }}">
+          <span class="sr-only">Facebook</span>
+          <span class="md-facebook no-sr"></span>
+        </a>
+        {% endif %}
+        {% if request.site.dashboard_general_site.global_twitter %}
+        <a href="{{ request.site.dashboard_general_site.global_twitter }}">
+          <span class="sr-only">Twitter</span>
+          <span class="md-twitter no-sr"></span>
+        </a>
+        {% endif %}
+        {% if request.site.dashboard_general_site.global_instagram %}
+        <a href="{{ request.site.dashboard_general_site.global_instagram }}">
+          <span class="sr-only">Instagram</span>
+          <span class="md-instagram no-sr"></span>
+        </a>
+        {% endif %}
+        {% if request.site.dashboard_general_site.global_youtube %}
+        <a href="{{ request.site.dashboard_general_site.global_youtube }}">
+          <span class="sr-only">YouTube</span>
+          <span class="md-youtube no-sr"></span>
+        </a>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -60,13 +80,19 @@
 {% endblock %}
 
 {% block precontent %}
-
+<div class="breadcrumbs">
+  <div class="pure-g">
+    <div class="col pure-u-1">
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block content %}
 <div id="main">
   <div class="pure-g"> 
-
+  {% block main-content %}
+  {% endblock %}
   </div>
 </div>
 {% endblock %}
@@ -74,4 +100,8 @@
 {% block scriptsstyles %}
 {% javascript 'innovate-standard' %}
 {% stylesheet 'innovate-standard' %}
+<link rel="stylesheet" type="text/css" media="all" href="/revslider/revslider/public/assets/css/settings.css" />
+<script type="text/javascript" src="/revslider/revslider/public/assets/js/jquery.themepunch.tools.min.js"></script>
+<script type="text/javascript" src="/revslider/revslider/public/assets/js/jquery.themepunch.revolution.min.js"></script>
+<script type="text/javascript" src="/revslider/assets/js/revslider.js" id="revslider_script"></script>
 {% endblock %}

@@ -9,6 +9,9 @@
  * CSS Overwrites for Innovations using Innovate Theme
  * Selector Prefix: html.innovations.innovate
 */
+html.innovations.innovate .section-menu ul.nav-list li.active > a, html.innovations.innovate .sect1ion-menu ul.nav-list li.active > a:hover{
+  border-left: 4px solid #ffcc00;
+}
 html.innovations.innovate .social-media a{
 	background: #424242;
 }

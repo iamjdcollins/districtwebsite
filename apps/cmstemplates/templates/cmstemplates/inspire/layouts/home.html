@@ -1,0 +1,29 @@
+{% extends 'cmstemplates/inspire/base.html' %}
+{% load static mptt_tags relink %}
+
+{% block title %}
+  {{ page.title }}
+{% endblock %}
+
+{% block precontent %}
+<div class="pure-g1">
+	<div class="col1 1pure-u-1">
+		<div class="revslider" data-alias="home"></div>
+	</div>
+</div>
+{% endblock %}
+
+{% block main-content %}
+<div class="col pure-u-md-2-3 pure-u-1">
+	<h1 class="hide">{{ page.title }}</h1>
+	<h2>Annoucements</h2>
+	{% for annoucement in page.pages_announcement_node.all %}
+	<h3>{{ annoucement.title }}</h3>
+	<div class="announcement-body">
+		{{ annoucement.body|safe|relink }}
+	</div>
+	{% empty %}
+	<p>We do not have any annoucements at this time. Please check back soon.</p>
+	{% endfor %}
+</div>
+{% endblock %}

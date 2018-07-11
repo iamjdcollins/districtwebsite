@@ -24,6 +24,16 @@
 		      </div>
 		    </div>
 		    <div class="input-field col s12">
+		      <span class="md-person prefix" aria-hidden="true"></span>
+		      {{ generalsettingsform.primary_contact.errors }}
+		      {{ generalsettingsform.primary_contact }}
+		      <label class="active" for="{{ generalsettingsform.primary_contact.id_for_label}}">Primary Contact</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-help"></div>
+		      	<div class="help-text">Default contact when contacting the site through a page such as Contact Us or Page Feedback.</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
 		      <span class="md-phone prefix" aria-hidden="true"></span>
 		      {{ generalsettingsform.main_phone.errors }}
 		      {{ generalsettingsform.main_phone }}
@@ -41,6 +51,46 @@
 		      <div class="form-field-help">
 		      	<div class="help-icon md-help"></div>
 		      	<div class="help-text">{{ generalsettingsform.main_fax.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-facebook prefix" aria-hidden="true"></span>
+		      {{ generalsettingsform.global_facebook.errors }}
+		      {{ generalsettingsform.global_facebook }}
+		      <label for="{{ generalsettingsform.global_facebook.id_for_label}}">Site Facebook Page</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-help"></div>
+		      	<div class="help-text">{{ generalsettingsform.global_facebook.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-twitter prefix" aria-hidden="true"></span>
+		      {{ generalsettingsform.global_twitter.errors }}
+		      {{ generalsettingsform.global_twitter }}
+		      <label for="{{ generalsettingsform.global_twitter.id_for_label}}">Site Twitter Page</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-help"></div>
+		      	<div class="help-text">{{ generalsettingsform.global_twitter.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-instagram prefix" aria-hidden="true"></span>
+		      {{ generalsettingsform.global_instagram.errors }}
+		      {{ generalsettingsform.global_instagram }}
+		      <label for="{{ generalsettingsform.global_instagram.id_for_label}}">Site Instagram Page</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-help"></div>
+		      	<div class="help-text">{{ generalsettingsform.global_instagram.help_text|safe }}</div>
+		      </div>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="md-youtube prefix" aria-hidden="true"></span>
+		      {{ generalsettingsform.global_youtube.errors }}
+		      {{ generalsettingsform.global_youtube }}
+		      <label for="{{ generalsettingsform.global_youtube.id_for_label}}">Site YouTube Page</label>
+		      <div class="form-field-help">
+		      	<div class="help-icon md-help"></div>
+		      	<div class="help-text">{{ generalsettingsform.global_youtube.help_text|safe }}</div>
 		      </div>
 		    </div>
 		    <div class="input-field col s12">

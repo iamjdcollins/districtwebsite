@@ -131,7 +131,7 @@
 .md-exit:before {
   content: "\45";
 }
-.md-accounts:before {
+.md-p:before {
   content: "\46";
 }
 .md-key:before {
@@ -166,4 +166,22 @@
 }
 .md-document:before {
   content: "\51";
+}
+.md-bullet-list:before {
+  content: "\52";
+}
+.md-filter:before {
+  content: "\53";
+}
+.md-message:before {
+  content: "\54";
+}
+.md-number-list:before {
+  content: "\55";
+}
+.md-mail:before {
+  content: "\56";
+}
+.md-person:before {
+  content: "\57";
 }

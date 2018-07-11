@@ -6,6 +6,9 @@
 {% block extrastyle %}
 {{block.super}}
 <link rel="stylesheet" type="text/css" href="{% static 'www_slcschools_org/css/custom_admin.css' %}">
+{% if not request.user.is_superuser %}
+<link rel="stylesheet" type="text/css" href="{% static 'www_slcschools_org/css/lockdown_admin.css' %}">
+{% endif %}
 {% endblock %}
 
 {% block branding %}
@@ -17,4 +20,7 @@
 {% block footer %}
 {{block.super}}
 <script type="text/javascript" src="{% static 'www_slcschools_org/js/custom_admin.js' %}"></script>
+{% if not request.user.is_superuser %}
+<script type="text/javascript" src="{% static 'www_slcschools_org/js/lockdown_admin.js' %}"></script>
+{% endif %}
 {% endblock %}

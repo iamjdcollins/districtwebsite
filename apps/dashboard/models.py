@@ -274,6 +274,14 @@ class GeneralSettings(models.Model):
         blank=False,
         help_text=apphelp.GeneralSettings.primary_domain,
     )
+    primary_contact = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=False,
+        to_field='uuid',
+        on_delete=models.PROTECT,
+        related_name='dashboard_generalsettings_primary_contact',
+    )
     namespace = models.CharField(
         max_length=64,
         null=True,
@@ -335,6 +343,34 @@ class GeneralSettings(models.Model):
         blank=False,
         verbose_name='Americans with Disabilities Act (ADA) Statement',
         help_text=apphelp.GeneralSettings.ada_statement,
+    )
+    global_facebook = models.CharField(
+        max_length=2000,
+        null=True,
+        blank=True,
+        help_text=apphelp.GeneralSettings.global_facebook,
+        verbose_name='Site Facebook Page',
+    )
+    global_twitter = models.CharField(
+        max_length=2000,
+        null=True,
+        blank=True,
+        help_text=apphelp.GeneralSettings.global_twitter,
+        verbose_name='Site Twitter Page',
+    )
+    global_instagram = models.CharField(
+        max_length=2000,
+        null=True,
+        blank=True,
+        help_text=apphelp.GeneralSettings.global_instagram,
+        verbose_name='Site Instagram Page',
+    )
+    global_youtube = models.CharField(
+        max_length=2000,
+        null=True,
+        blank=True,
+        help_text=apphelp.GeneralSettings.global_youtube,
+        verbose_name='Site YouTube Page',
     )
     template = models.ForeignKey(
         'Template',

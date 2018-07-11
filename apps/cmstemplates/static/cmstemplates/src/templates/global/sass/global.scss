@@ -54,3 +54,55 @@ a:hover, a:focus {
 .md-blank{
   color: transparent !important;
 }
+footer .socialicons {
+  overflow: hidden;
+  z-index: 11;
+  cursor: pointer;
+  bottom: 18px;
+  right: 18px;
+  text-align: center;
+  font-size: 28px;
+  text-decoration: none;
+  color: #fff;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  font-size-adjust: none;
+}
+.input-field {
+  padding-bottom: 10px;
+}
+.input-field .prefix {
+  position: absolute;
+  width: 3rem;
+  font-size: 2rem;
+  transition: color .2s;
+}
+.input-field .prefix ~ input,
+.input-field .prefix ~ span input,
+.input-field .prefix ~ textarea,
+.input-field .prefix ~ label,
+.input-field .prefix ~ .validate ~ label,
+.input-field .prefix ~ .autocomplete-content {
+  margin-left: 3rem;
+  width: 92%;
+  width: calc(100% - 3rem);
+}
+.input-field .prefix ~ button{
+  margin-left: 3rem;
+}
+.pure-form input:not([type])[disabled], .pure-form input[type="password"][disabled], .pure-form input[type="email"][disabled], .pure-form input[type="url"][disabled], .pure-form input[type="date"][disabled], .pure-form input[type="month"][disabled], .pure-form input[type="time"][disabled], .pure-form input[type="datetime"][disabled], .pure-form input[type="datetime-local"][disabled], .pure-form input[type="week"][disabled], .pure-form input[type="tel"][disabled], .pure-form input[type="color"][disabled], .pure-form input[type="number"][disabled], .pure-form input[type="search"][disabled], .pure-form input[type="text"][disabled], .pure-form select[disabled], .pure-form textarea[disabled]{
+background-color: transparent;
+}
+.card {
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.card.card-alert.success,
+.card.card-alert.success a {
+    background: #4BB543;
+    color: #fff !important;
+}

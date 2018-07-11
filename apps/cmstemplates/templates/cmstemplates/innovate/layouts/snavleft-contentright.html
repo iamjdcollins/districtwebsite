@@ -1,0 +1,25 @@
+{% extends 'cmstemplates/innovate/base.html' %}
+
+{% block main-content %}
+<div class="col pure-u-lg-1-4 pure-u-md-1-3 pure-u-1">
+	{% block main-content-left %}
+	{% if in_this_section %}
+	<div class="section-menu">
+      <ul class="nav nav-list">
+        <li class="nav-header">In This Section</li>
+        {% for item in in_this_section %}
+        <li class="{% if page.url == item.url %} active{% endif %}">
+        	<a href="{{ item.url }}" class="{% if forloop.counter == 1 %} first{% endif %}">{{ item.node_title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% endblock %}
+</div>
+<div class="col pure-u-lg-3-4 pure-u-md-2-3 pure-u-1">
+	{% block header1 %}<h1>{{ page.title }}</h1>{% endblock %}
+	{% block main-content-right %}
+	{% endblock %}
+</div>
+{% endblock %}

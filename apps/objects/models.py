@@ -91,10 +91,17 @@ class Node(MPTTModel):
     primary_contact = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,
-        blank=False,
+        blank=True,
         to_field='uuid',
         on_delete=models.PROTECT,
         related_name='objects_node_primary_contact',
+        help_text=(
+            'Optional: Primary Contact is used to specify who is responsible'
+            ' for receiving page feedback and other contact messages that were'
+            ' created on this page. Messages to specific people found in a'
+            ' directory listing on the page will still go to the'
+            ' appropriate person from the directory listing.'
+        )
     )
     has_permissions = models.BooleanField(
         default=False,

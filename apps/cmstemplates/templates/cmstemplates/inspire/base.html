@@ -52,13 +52,19 @@
 {% endblock %}
 
 {% block precontent %}
-
+<div class="breadcrumbs">
+  <div class="pure-g">
+    <div class="col pure-u-1">
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block content %}
 <div id="main">
   <div class="pure-g"> 
-
+  {% block main-content %}
+  {% endblock %}
   </div>
 </div>
 {% endblock %}
@@ -66,4 +72,8 @@
 {% block scriptsstyles %}
 {% javascript 'inspire-standard' %}
 {% stylesheet 'inspire-standard' %}
+<link rel="stylesheet" type="text/css" media="all" href="/revslider/revslider/public/assets/css/settings.css" />
+<script type="text/javascript" src="/revslider/revslider/public/assets/js/jquery.themepunch.tools.min.js"></script>
+<script type="text/javascript" src="/revslider/revslider/public/assets/js/jquery.themepunch.revolution.min.js"></script>
+<script type="text/javascript" src="/revslider/assets/js/revslider.js" id="revslider_script"></script>
 {% endblock %}

@@ -39,7 +39,60 @@ html.innovate .nav.navbar-nav .alwayslinked{
   padding: 15px 10px;
   display: inline-block;
 }
-
+html.innovate .main.wrapper{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+html.innovate .main.wrapper h1{
+  margin-top: 0;
+}
+html.innovate .section-menu ul.nav-list {
+  border-right: 1px solid #e6e6e6;
+}
+html.innovate .section-menu ul.nav-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+html.innovate .section-menu ul.nav-list li.nav-header {
+  padding-left: 5px;
+  margin: 0;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  color: #999;
+  font-weight: 700;
+  font-size: 14px;
+}
+html.innovate .section-menu ul.nav-list li.active > a, html.innovate .sec1tion-menu ul.nav-list li.active > a:hover {
+  border-right-color: #fff;
+}
+html.innovate .section-menu ul.nav-list li.active > a, html.innovate .sect1ion-menu ul.nav-list li.active > a:hover {
+  border-left: 4px solid #55a79a;
+  margin: 0 -1px 0 0;
+  background: #fff;
+}
+html.innovate .section-menu ul.nav-list li a.first {
+  border-top: 1px solid #e6e6e6;
+}
+html.innovate .section-menu ul.nav-list li a {
+  color: #494949;
+  color: rgba(27,27,27,.7);
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  font-weight: 700;
+  font-size: 18px;
+  border: 1px solid #e6e6e6;
+  border-top: 0;
+  margin: 0 -1px 0 3px;
+  -webkit-box-shadow: 1px 1px 1px #fff;
+  box-shadow: 1px 1px 1px #fff;
+  background: #fafafa;
+  text-shadow: none;
+  padding: 8px 15px;
+  position: relative;
+  display: block;
+}
  /* XS Styles */
 @media screen and (max-width: 567px) {
 }

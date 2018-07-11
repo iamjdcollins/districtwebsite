@@ -66,6 +66,22 @@ class GeneralSettings():
         'represents. The number should be in the 11 number format. '
         ' (i.e.: 18015788599)</span>'
     )
+    global_facebook = (
+        '<span>Enter the URL for the Facebook page for this site '
+        ' (i.e.: https://www.facebook.com/slcschools)</span>'
+    )
+    global_twitter = (
+        '<span>Enter the URL for the Twitter page for this site '
+        ' (i.e.: https://twitter.com/slcschools)</span>'
+    )
+    global_instagram = (
+        '<span>Enter the URL for the Instagram page for this site '
+        ' (i.e.: https://www.instagram.com/slcschools/)</span>'
+    )
+    global_youtube = (
+        '<span>Enter the URL for the YouTube page for this site '
+        ' (i.e.: https://www.youtube.com/user/slcschools)</span>'
+    )
     location = (
         '<span>Select the primary location for the entity this site '
         'represents. This list is managed by the webmaster.</span>'

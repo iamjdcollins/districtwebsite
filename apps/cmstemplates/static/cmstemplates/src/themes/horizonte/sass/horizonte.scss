@@ -8,18 +8,31 @@
 */
 html.horizonte.inspire .preheader.wrapper {
 	background: #2a104d;
+        background: #412666;
 }
 html.horizonte.inspire .header.wrapper .header{
-	background: #fff;
+	background: #ffcc21;
 }
 html.horizonte.inspire .brand{
-  background: #fff;
+  background: transparent;
 }
 html.horizonte.inspire .navbar{
 	color: #000;
 }
+html.horizonte.inspire .widget-box .widget-title{
+  border-color: #cfcfcf;
+}
+html.horizonte.inspire .widget-box .widget-inner{
+  border: 1px solid #cfcfcf;
+  background-color: #f5f5f5;
+}
+html.horizonte.inspire .widget-box a{
+  background-color: #f5f5f5;
+  color: #000 !important;
+}
 html.horizonte.inspire footer{
 	background: #303030;
+        background: #412666;
 }
 /* XS Styles */
 @media screen and (max-width: 567px) {
@@ -32,15 +45,12 @@ html.horizonte.inspire footer{
 }
 /* LG Styles */
 @media screen and (min-width: 1024px) {
-	html.horizonte.inspire .header.wrapper .header{
-		background: #7c5ba6;
-	}
 	html.horizonte.inspire .brand{
-	  background: #ffcc21;
+	  background: #fff;
 	}
-	html.horizonte.inspire .navbar ul li a{
-		color: #fff;
-	}
+.navbar ul li a{
+  font-weight: 600;
+}
 }
 /* XL Styles */
 @media screen and (min-width: 1280px) {

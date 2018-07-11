@@ -1,0 +1,9 @@
+#header,
+.breadcrumbs,
+.sidebar-container-toggle,
+.sidebar,
+.siderbar-header-wrapper,
+.changeform-navigation,
+.object-tools{
+  display:none !important;
+}

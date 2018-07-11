@@ -1,0 +1,13 @@
+{% extends 'cmstemplates/inspire/layouts/contentfull.html' %}
+
+{% block title %}
+  {{ page.title }}
+{% endblock %}
+
+{% block content %}
+  {{ block.super }}
+{% endblock %}
+
+{% block main-content-center %}
+{% include "cmstemplates/global/blocks/contact-form.html" %}
+{% endblock %}

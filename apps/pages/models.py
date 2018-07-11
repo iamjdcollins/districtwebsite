@@ -14,6 +14,88 @@ class Page(BasePage):
     PARENT_URL = ''
     URL_PREFIX = ''
     HAS_PERMISSIONS = True
+    PAGETYPES = {
+        'default.html': {
+            'fields': [
+                'title',
+                'body',
+                'primary_contact',
+                'published',
+                ['update_user', 'update_date'],
+                ['create_user', 'create_date'],
+            ],
+            'readonly_fields': [
+                'title',
+                'update_user',
+                'update_date',
+                'create_user',
+                'create_date',
+                'url',
+            ],
+            'inlines': [
+                'ResourceLinkInline',
+                'DocumentInline',
+            ],
+        },
+        'about-our-school.html': {
+            'fields': [
+                'title',
+                'about_our_school',
+                'primary_contact',
+                'published',
+                ['update_user', 'update_date'],
+                ['create_user', 'create_date'],
+            ],
+            'readonly_fields': [
+                'title',
+                'update_user',
+                'update_date',
+                'create_user',
+                'create_date',
+                'url',
+            ],
+            'inlines': [],
+        },
+        'administration-staff-directory.html': {
+            'fields': [
+                'title',
+                'primary_contact',
+                'published',
+                ['update_user', 'update_date'],
+                ['create_user', 'create_date'],
+            ],
+            'readonly_fields': [
+                'title',
+                'update_user',
+                'update_date',
+                'create_user',
+                'create_date',
+                'url',
+            ],
+            'inlines': [
+            ],
+        },
+        'school-home.html': {
+            'fields': [
+                'title',
+                'primary_contact',
+                'published',
+                ['update_user', 'update_date'],
+                ['create_user', 'create_date'],
+            ],
+            'readonly_fields': [
+                'title',
+                'update_user',
+                'update_date',
+                'create_user',
+                'create_date',
+                'url',
+            ],
+            'inlines': [
+                'AnnouncementInline',
+            ],
+        },
+    }
 
     title = models.CharField(
         max_length=200,
@@ -24,6 +106,15 @@ class Page(BasePage):
         null=True,
         blank=True,
         help_text=PageHelp.body
+    )
+    about_our_school = models.ForeignKey(
+        'School',
+        null=True,
+        blank=False,
+        limit_choices_to={
+            'deleted': False,
+        },
+        related_name='page_about_our_school',
     )
 
     page_page_node = models.OneToOneField(
@@ -43,6 +134,70 @@ class Page(BasePage):
         )
         verbose_name = 'Page'
         verbose_name_plural = 'Pages'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class Announcement(BasePage):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/announcements/'
+    HAS_PERMISSIONS = False
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+        db_index=True,
+    )
+    body = RichTextField(
+        null=True,
+        blank=True,
+        help_text=''
+    )
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='pages_announcement_node',
+        editable=False,
+    )
+
+    announcement_page_node = models.OneToOneField(
+        BasePage,
+        db_column='announcement_page_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True
+    )
+
+    class Meta:
+        db_table = 'pages_announcement'
+        get_latest_by = 'update_date'
+        ordering = [
+            'inline_order',
+        ]
+        permissions = (
+            ('trash_announcement', 'Can soft delete announcement'),
+            ('restore_announcement', 'Can restore announcement'),
+        )
+        verbose_name = 'Announcement'
+        verbose_name_plural = 'Announcements'
         default_manager_name = 'objects'
 
     def __str__(self):

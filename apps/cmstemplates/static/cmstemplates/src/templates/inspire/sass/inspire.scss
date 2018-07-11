@@ -1,3 +1,8 @@
+html.inspire .pure-g,
+html.inspire .navbar{
+  max-width: 1400px;
+  margin: auto;
+}
 img.responsive {
 	max-width: 100%;
 	margin: auto;
@@ -26,6 +31,55 @@ ul.nav{
 }
 #toggle-mobile-menu:hover + label, #toggle-mobile-menu:focus + label {
   font-size: 2.05em;
+}
+html.inspire .main.wrapper{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+html.inspire .main.wrapper h1{
+  margin-top: 0;
+}
+html.inspire .breadcrumbs {
+    padding-top: 74px;
+    background: #fff;
+}
+html.inspire .widget-container {
+    margin-bottom: 10px;
+}
+html.inspire .widget-box .widget-title {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    color: #000;
+    font-size: 18px;
+    border-top: 1px solid;
+        border-top-color: currentcolor;
+    border-left: 1px solid;
+        border-left-color: currentcolor;
+    border-color: #000;
+    padding: 15px 0;
+}
+html.inspire .widget-box .widget-inner {
+    border: 1px solid #000;
+    color: #fff;
+    padding: 10px 0;
+    background-color: #000;
+}
+html.inspire .widget-box ul, html.inspire .widget-box li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+html.inspire .widget-box a {
+    display: block;
+    color: #fff !important;
+    background-color: #000;
+    padding: 10px 30px;
+    position: relative;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 /* XS Styles */
 @media screen and (max-width: 567px) {

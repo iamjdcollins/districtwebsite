@@ -810,7 +810,6 @@ def add_additional_context(request, context, node):
                 .order_by('lft')
                 )
             )
-
     if request.path == '/board-of-education/policies/':
         district_policies = (
             BoardPolicy
@@ -2073,6 +2072,17 @@ def add_additional_context(request, context, node):
                 .get(pk=context['form'].fields['parent'].initial)
             )
         )
+    context['in_this_section'] = (
+        node
+        .get_root()
+        .get_descendants(include_self=True)
+        .filter(
+            node_type='pages',
+            content_type='page',
+            published=True,
+            deleted=False,
+        )
+    )
     return context
 
 
@@ -2098,7 +2108,10 @@ def contactmessage_post(request):
         post = form.save(commit=False)
         message_parent = Node.objects.get(pk=post.parent.pk)
         if post.primary_contact == '':
-            post.primary_contact = message_parent.primary_contact
+            if message_parent.primary_contact:
+                post.primary_contact = message_parent.primary_contact
+            else:
+                post.primary_contact = request.site.dashboard_general_site.primary_contact
         post.create_user = user
         post.update_user = user
         post.site = request.site
@@ -2133,7 +2146,10 @@ def contactmessage_get(request):
         try:
             form.fields['primary_contact'].initial = str(Node.objects.get(pk=form.fields['parent'].initial).primary_contact.pk)
         except:
-            form.fields['primary_contact'].initial = str(User.objects.get(username='webmaster@slcschools.org').pk)
+            try:
+                form.fields['primary_contact'].initial = str(request.site.dashboard_general_site.primary_contact.pk)
+            except:
+                form.fields['primary_contact'].initial = str(User.objects.get(username='webmaster@slcschools.org').pk)
     try:
         message_to = User.objects.get(
             pk=form.fields['primary_contact'].initial

@@ -1,4 +1,5 @@
 from django import forms
+from ajax_select.fields import AutoCompleteSelectField
 from apps.dashboard.models import GeneralSettings, SiteType, Template, PageLayout, SiteTypeRequiredPage
 
 
@@ -7,13 +8,20 @@ class GeneralSettingsForm(forms.ModelForm):
         model = GeneralSettings
         fields = (
             'title',
+            'primary_contact',
             'main_phone',
             'main_fax',
             'location',
             'template',
             'nd_statement',
             'ada_statement',
+            'global_facebook',
+            'global_twitter',
+            'global_instagram',
+            'global_youtube',
         )
+
+    primary_contact = AutoCompleteSelectField('employee', help_text='')
 
     def __init__(self, *args, **kwargs):
         super(GeneralSettingsForm, self).__init__(*args, **kwargs)

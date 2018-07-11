@@ -62,7 +62,7 @@
             {% if pageopts %}
             {% has_change_permissions request page as can_edit%}
             {% if can_edit %}
-            <a id="editpagemodaal" href="{% url pageopts|admin_urlname:'change' page.pk %}" class="right pure-button narrow">
+            <a id="editpagemodaal" href="{% url pageopts|admin_urlname:'change' page.pk %}" class="right pure-button narrow editlink">
               <span class="sr-only">Edit Page</span>
               <span class="md-pencil no-sr" aria-hidden="true"> Edit Page</span>
             </a>
@@ -165,6 +165,21 @@
         {% endblock %}
       </div>
       <div id="main" class="main wrapper">
+        {% if messages %}
+        <div class="messages wrapper">
+          <div class="pure-g">
+            <div class="col pure-u-1">
+              {% for message in messages %}
+              <div class="card card-alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                <div class="card-content">
+                {{message}}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
         {% block content %}
         {% endblock %}
       </div>
@@ -198,6 +213,33 @@
             </span>
             {% endif %}
             <a class="pure-button pure-button-primary contact-button" href="/contact-us/">Send Us A Message</a>
+            {% if request.site.dashboard_general_site.global_facebook or request.site.dashboard_general_site.global_twitter or request.site.dashboard_general_site.global_instagram or request.site.dashboard_general_site.global_youtube %}
+            <h2>Connect</h2>
+            {% if request.site.dashboard_general_site.global_facebook %}
+            <a class="socialicons" href="{{ request.site.dashboard_general_site.global_facebook  }}" target="_blank">
+              <span class="sr-only">Facebook</span>
+              <span class="md-facebook no-sr" aria-hidden="true"></span>
+            </a>
+            {% endif %}
+            {% if request.site.dashboard_general_site.global_twitter %}
+            <a class="socialicons" href="{{ request.site.dashboard_general_site.global_twitter }}" target="_blank">
+              <span class="sr-only">Twitter</span>
+              <span class="md-twitter no-sr" aria-hidden="true"></span>
+            </a>
+            {% endif %}
+            {% if request.site.dashboard_general_site.global_instagram %}
+            <a class="socialicons" href="{{ request.site.dashboard_general_site.global_instagram }}" target="_blank">
+              <span class="sr-only">Instagram</span>
+              <span class="md-instagram no-sr" aria-hidden="true"></span>
+            </a>
+            {% endif %}
+            {% if request.site.dashboard_general_site.global_youtube %}
+            <a class="socialicons" href="{{ request.site.dashboard_general_site.global_youtube }}" target="_blank">
+              <span class="sr-only">YouTube</span>
+              <span class="md-youtube no-sr" aria-hidden="true"></span>
+            </a>
+            {% endif %}
+            {% endif %}
           </div>
         </div>
       </div>

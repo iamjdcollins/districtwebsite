@@ -1,4 +1,5 @@
-{% extends 'cmstemplates/innovate/base.html' %}
+{% extends 'cmstemplates/innovate/layouts/snavleft-contentright.html' %}
+{% load static mptt_tags relink %}
 
 {% block title %}
   {{ page.title }}
@@ -6,5 +7,12 @@
 
 {% block content %}
   {{ block.super }}
-  Default Template. This should be changed to show information on the page.
+{% endblock %}
+
+{% block main-content-right %}
+{% if page.body %}
+<div class="body">
+	{{ page.body|safe|relink }}
+</div>
+{% endif %}
 {% endblock %}
