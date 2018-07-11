@@ -49,11 +49,6 @@ def create_pagelayouts(apps, schema_editor):
         'school-home.html': 'School Home Page',
         'school-calendars.html': 'School Calendars',
         'search.html': 'Search',
-        'school-athletics.html': 'School Athletics',
-        'school-community.html': 'School Community',
-        'school-students.html': 'School Students',
-        'school-academics.html': 'School Academics',
-        'school-employee-resources.html': 'School Employee Resources',
         'contact-us.html': 'Contact Us',
     }
     for namespace, title in pagelayouts.items():
@@ -84,11 +79,6 @@ def assign_pagelayouts(apps, schema_editor):
         'school-home.html': ['School Website', ],
         'school-calendars.html': ['School Website', ],
         'search.html': ['District Website', 'School Website', ],
-        'school-athletics.html': ['School Website', ],
-        'school-community.html': ['School Website', ],
-        'school-students.html': ['School Website', ],
-        'school-academics.html': ['School Website', ],
-        'school-employee-resources.html': ['School Website', ],
         'contact-us.html': ['District Website', 'School Website', ],
     }
     for pagelayout in PageLayout.objects.all():
