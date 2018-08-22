@@ -14,7 +14,7 @@ class Page(BasePage):
     PARENT_URL = ''
     URL_PREFIX = ''
     HAS_PERMISSIONS = True
-    PAGETYPES = {
+    TYPES = {
         'default.html': {
             'fields': [
                 'title',
@@ -73,6 +73,29 @@ class Page(BasePage):
                 'url',
             ],
             'inlines': [
+                'SchoolAdministrationInline',
+                'SchoolStaffInline',
+            ],
+        },
+        'faculty-directory.html': {
+            'fields': [
+                'title',
+                'primary_contact',
+                'published',
+                ['update_user', 'update_date'],
+                ['create_user', 'create_date'],
+            ],
+            'readonly_fields': [
+                'title',
+                'update_user',
+                'update_date',
+                'create_user',
+                'create_date',
+                'url',
+            ],
+            'inlines': [
+                'SubjectGradeLevelInline',
+                'SchoolFacultyInline',
             ],
         },
         'school-home.html': {

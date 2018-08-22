@@ -1,6 +1,6 @@
 from django.db import models
 import apps.common.functions as commonfunctions
-from apps.objects.models import Taxonomy
+from apps.objects.models import Node, Taxonomy
 import apps.taxonomy.help_text as apphelp
 
 
@@ -783,6 +783,66 @@ class SchoolOption(Taxonomy):
         )
         verbose_name = 'School Option'
         verbose_name_plural = 'School Options'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class SubjectGradeLevel(Taxonomy):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/subjects-grade-levels/'
+    HAS_PERMISSIONS = False
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+        db_index=True,
+    )
+
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='taxonomy_subjectgradelevel_node',
+        editable=False,
+    )
+
+    subjectgradelevel_taxonomy_node = models.OneToOneField(
+        Taxonomy,
+        db_column='subjectgradelevel_taxonomy_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True
+    )
+
+    class Meta:
+        db_table = 'taxonomy_subjectgradelevel'
+        ordering = [
+            'inline_order',
+        ]
+        get_latest_by = 'update_date'
+        permissions = (
+            ('trash_subjectgradelevel', 'Can soft delete Subject or Grade Level'),
+            ('restore_subjectgradelevel', 'Can restore Subject or Grade Level'),
+        )
+        verbose_name = 'Subject or Grade Level'
+        verbose_name_plural = 'Subjects and Grade Levels'
         default_manager_name = 'objects'
 
     def __str__(self):

@@ -39,9 +39,21 @@ html.inspire .main.wrapper{
 html.inspire .main.wrapper h1{
   margin-top: 0;
 }
-html.inspire .breadcrumbs {
-    padding-top: 74px;
-    background: #fff;
+html.inspire .featured-img,
+html.inspire .featured-img .container {
+    height: 240px;
+    position: relative;
+}
+html.inspire .featured-img {
+    overflow: hidden;
+    position: relative;
+    border-bottom: 2px solid #412666;
+    background-repeat: no-repeat !important;
+    background-position: 50% 100% !important;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    -o-background-size: cover !important;
+    background-size: cover !important;
 }
 html.inspire .widget-container {
     margin-bottom: 10px;

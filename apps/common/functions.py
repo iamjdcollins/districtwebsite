@@ -1052,10 +1052,12 @@ def related_resource_links(self):
         )
         if doc_len < 1:
             link.published = False
-        if doc_len > 1:
+        elif doc_len > 1:
+            link.published = self.published
             link.modal_ajax = True
             link.target_blank = False
         else:
+            link.published = self.published
             link.modal_ajax = False
             link.target_blank = True
         link.save()
@@ -1101,3 +1103,5 @@ def related_resource_links(self):
         link.deleted = self.deleted
         link.published = self.published
         link.save()
+    if self.node_type == 'files':
+        related_resource_links(nodefindobject(self.parent))

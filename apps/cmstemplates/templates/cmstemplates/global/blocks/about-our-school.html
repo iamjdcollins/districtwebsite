@@ -1,0 +1,67 @@
+{% load static mptt_tags relink %}
+<div class="body">
+	{{ page.about_our_school.body|safe|relink }}
+</div>
+{% if page.about_our_school.schooloptions.all %}
+<div class="learningoptions">
+	<p>The learning options available at {% if school.title %}{{ school.title }}{% else %}{{ page.title }}{% endif %} include:</p>
+	<ul class="browser-default">
+	{% for option in page.about_our_school.schooloptions.all %}
+		<li class="{{option.pk}}">{{ option.title }}</li>
+	{% endfor %}
+	</ul>
+	<p><a href="http://www.yourbestchoice.org/programs-and-options/" target="_blank">Click here</a> for written descriptions of the options listed above.</p>
+</div>
+{% else %}
+<p>Learning options not listed at this time. Please check back soon.</p>
+{% endif %}
+{% if page.about_our_school.directoryentries_schooladministrator_node.all %}
+    <div class="row">
+      <div id="administration" class="scrollspy contactcardlist">
+        <h2>Administration</h2>
+        {% for admin in page.about_our_school.directoryentries_schooladministrator_node.all %}
+        {% include "cmstemplates/www_slcschools_org/blocks/admindirectorylist.html" %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% if page.about_our_school.links_resourcelink_node.all %}
+    <div class="row">
+      <div id="resourcelinks" class="scrollspy resourcelinks">
+        <h2>Resources</h2>
+        <div class="collection">
+          {% for resourcelink in page.about_our_school.links_resourcelink_node.all %}
+          <a href="{{ resourcelink.link_url }}" class="collection-item{% if resourcelink.modal_ajax %} modal-ajax{% endif %}" {% if resourcelink.target_blank %}target="_blank"{% endif %}>
+            {% if resourcelink.related_type == 'documents-document' and resourcelink.modal_ajax %}
+            <span class="sr-only">Select Language for {{ resourcelink.title }}</span>
+            <span class="no-sr" aria-hidden="True">
+              {{ resourcelink.title }}
+              <span class="notranslate right md-document"></span>
+            </span>
+            {% elif resourcelink.related_type == 'documents-document' %}
+            <span class="sr-only">Open Document {{ resourcelink.title }}</span>
+            <span class="no-sr" aria-hidden="True">
+              {{ resourcelink.title }}
+              <span class="notranslate right md-document"></span>
+            </span>
+            {% else %}
+            <span class="sr-only">Goto {{ resourcelink.title }}</span>
+            <span class="no-sr" aria-hidden="True">
+              {{ resourcelink.title }}
+              <span class="notranslate right md-linkvariant"></span>
+            </span>
+            {% endif %}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if page.about_our_school.boundary_map %}
+    <div class="row">
+      <div id="boundarymap" class="scrollspy">
+        <h2>Boundary Map</h2>
+        <iframe class="googlemap" width="850" height="500" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="{{ page.about_our_school.boundary_map }}"></iframe>
+      </div>
+    </div>
+    {% endif %}

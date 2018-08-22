@@ -1,0 +1,17 @@
+{% extends 'cmstemplates/inspire/layouts/snavleft-contentright.html' %}
+
+{% block title %}
+  School Faculty: {{ page.employee.first_name }} {{ page.employee.last_name }}
+{% endblock %}
+
+{% block header1 %}
+	<h1>School Faculty: {{ page.employee.first_name }} {{ page.employee.last_name }}</h1>
+{% endblock %}
+
+{% block content %}
+  {{ block.super }}
+{% endblock %}
+
+{% block main-content-right %}
+{% include "cmstemplates/global/blocks/school-faculty-my-page.html" %}
+{% endblock %}

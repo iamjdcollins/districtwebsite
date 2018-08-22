@@ -1,0 +1,62 @@
+{% if page.directoryentries_schooladministration_node.all or person in page.directoryentries_schoolstaff_node.all %}
+<table class="pure-table pure-table-horizontal grouped-table stretched-table directory-table">
+	<tbody>
+		{% if page.directoryentries_schooladministration_node.all %}
+		<tr class="directory-group">
+			<th colspan="3"><h2>Administration</h2></th>
+		</tr>
+		<tr class="directory-heading">
+			<th></th>
+			<th>Name</th>
+			<th>Title</th>
+			<th>Contact</th>
+		</tr>
+    	{% for person in page.directoryentries_schooladministration_node.all %}
+    	<tr class="directory-entry">
+    		{% if person.employee.images_profilepicture_node.first %}
+	    	<td class="narrow-cell"><img class="schooladministration-picture" src="https://websites-dev.slcschools.org/static/www_slcschools_org/images/defaults/profilepicture.jpg" alt="No Profile Picture"></td>
+	    	{% else %}
+	    	<td class="narrow-cell"><img class="schooladministration-picture" src="https://websites-dev.slcschools.org/static/www_slcschools_org/images/defaults/profilepicture.jpg" alt="No Profile Picture"></td>
+	    	{% endif %}
+    		<td>{{ person.employee.first_name }} {{ person.employee.last_name }}</td>
+    		<td>{{ person.employee.job_title }}</td>
+    		<td>
+    			<a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{person.employee.pk}}" class="modal-ajax">
+    				<span class="md-send" aria-hidden="true"> Send Me A Message</span>
+    				<span class="sr-only">Send {{ person.employee.first_name }} {{ person.employee.last_name }} a Message</span>
+    			</a>
+    		</td>
+    	</tr>
+		{% endfor %}
+		{% endif %}
+		{% if page.directoryentries_schoolstaff_node.all %}
+		<tr class="directory-group">
+			<th colspan="3"><h2>Staff</h2></th>
+		</tr>
+		<tr class="directory-heading">
+			<th></th>
+			<th>Name</th>
+			<th>Title</th>
+			<th>Contact</th>
+		</tr>
+		{% for person in page.directoryentries_schoolstaff_node.all %}
+	    <tr class="directory-entry">
+	    	{% if person.employee.images_profilepicture_node.first %}
+	    	<td class="narrow-cell"><img class="schoolstaff-picture" src="https://websites-dev.slcschools.org/static/www_slcschools_org/images/defaults/profilepicture.jpg" alt="No Profile Picture"></td>
+	    	{% else %}
+	    	<td class="narrow-cell"><img class="schoolstaff-picture" src="https://websites-dev.slcschools.org/static/www_slcschools_org/images/defaults/profilepicture.jpg" alt="No Profile Picture"></td>
+	    	{% endif %}
+    		<td>{{ person.employee.first_name }} {{ person.employee.last_name }}</td>
+    		<td>{{ person.employee.job_title }}</td>
+    		<td>
+    			<a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{person.employee.pk}}" class="modal-ajax">
+    				<span class="md-send" aria-hidden="true"> Send Me A Message</span>
+    				<span class="sr-only">Send {{ person.employee.first_name }} {{ person.employee.last_name }} a Message</span>
+    			</a>
+    		</td>
+    	</tr>
+		{% endfor %}
+		{% endif %}
+	</tbody>
+</table>
+{% endif %}

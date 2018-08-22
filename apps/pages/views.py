@@ -11,10 +11,20 @@ from django.http import HttpResponse
 from collections import OrderedDict
 import apps.common.functions as commonfunctions
 from apps.objects.models import Node, User
-from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear,SuperintendentMessage,SuperintendentMessageYear
-from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct, BoardPolicySection, SchoolType, SchoolOption, SchoolAdministratorType
+from .models import Page, School, Department, Board, BoardSubPage, News, NewsYear, SubPage, BoardMeetingYear, DistrictCalendarYear,SuperintendentMessage,SuperintendentMessageYear, Announcement
+from apps.taxonomy.models import Location, City, State, Zipcode, Language, BoardPrecinct, BoardPolicySection, SchoolType, SchoolOption, SchoolAdministratorType, SubjectGradeLevel
 from apps.images.models import Thumbnail, NewsThumbnail, ContentBanner, ProfilePicture, DistrictLogo
-from apps.directoryentries.models import Staff, SchoolAdministrator, Administrator,  BoardMember, StudentBoardMember, BoardPolicyAdmin
+from apps.directoryentries.models import (
+    Staff,
+    SchoolAdministrator,
+    Administrator,
+    BoardMember,
+    StudentBoardMember,
+    BoardPolicyAdmin,
+    SchoolAdministration,
+    SchoolStaff,
+    SchoolFaculty,
+)
 from apps.links.models import ResourceLink, ActionButton
 from apps.documents.models import Document, BoardPolicy, Policy, AdministrativeProcedure, SupportingDocument
 from apps.files.models import File, AudioFile, VideoFile
@@ -733,6 +743,148 @@ def prefecth_resourcelinks_detail(qs):
         )
     )
 
+def prefecth_announcement_detail(qs):
+    prefetchqs = (
+        Announcement
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+    )
+    return qs.prefetch_related(
+        Prefetch(
+            'pages_announcement_node',
+            queryset=prefetchqs,
+        )
+    )
+
+def prefecth_subjectgradelevel_detail(qs):
+    activesubjects = []
+    page = qs[0]
+    for person in page.directoryentries_schoolfaculty_node.all():
+        if person.primary_subject.pk not in activesubjects:
+            activesubjects.append(person.primary_subject.pk)
+    prefetchqs = (
+        SubjectGradeLevel
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .filter(pk__in=activesubjects)
+    )
+    return qs.prefetch_related(
+        Prefetch(
+            'taxonomy_subjectgradelevel_node',
+            queryset=prefetchqs,
+        )
+    )
+
+
+def prefecth_schooladministration_detail(qs):
+    prefetchqs = (
+        SchoolAdministration
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .filter(employee__is_active=True)
+        .filter(employee__is_staff=True)
+        .prefetch_related(
+            Prefetch(
+                'employee',
+                queryset=(
+                    Employee
+                    .objects
+                    .filter(is_active=True)
+                    .filter(is_staff=True)
+                    .only(
+                        'pk',
+                        'last_name',
+                        'first_name',
+                        'email',
+                        'job_title',
+                    )
+                )
+            )
+        )
+    )
+    return qs.prefetch_related(
+        Prefetch(
+            'directoryentries_schooladministration_node',
+            queryset=prefetchqs,
+        )
+    )
+
+
+def prefecth_schoolstaff_detail(qs):
+    prefetchqs = (
+        SchoolStaff
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .filter(employee__is_active=True)
+        .filter(employee__is_staff=True)
+        .prefetch_related(
+            Prefetch(
+                'employee',
+                queryset=(
+                    Employee
+                    .objects
+                    .filter(is_active=True)
+                    .filter(is_staff=True)
+                    .only(
+                        'pk',
+                        'last_name',
+                        'first_name',
+                        'email',
+                        'job_title',
+                    )
+                )
+            )
+        )
+    )
+    return qs.prefetch_related(
+        Prefetch(
+            'directoryentries_schoolstaff_node',
+            queryset=prefetchqs,
+        )
+    )
+
+
+def prefecth_schoolfaculty_detail(qs):
+    prefetchqs = (
+        SchoolFaculty
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .filter(employee__is_active=True)
+        .filter(employee__is_staff=True)
+        .prefetch_related(
+            Prefetch(
+                'employee',
+                queryset=(
+                    Employee
+                    .objects
+                    .filter(is_active=True)
+                    .filter(is_staff=True)
+                    .only(
+                        'pk',
+                        'last_name',
+                        'first_name',
+                        'email',
+                        'job_title',
+                    )
+                )
+            )
+        )
+        .order_by(
+            'employee__first_name',
+            'employee__last_name',
+        )
+    )
+    return qs.prefetch_related(
+        Prefetch(
+            'directoryentries_schoolfaculty_node',
+            queryset=prefetchqs,
+        )
+    )
 
 def prefetch_subpage_detail(qs):
     prefetchqs = (
@@ -2230,6 +2382,11 @@ def node_lookup(request):
         context['page'] = prefecth_resourcelinks_detail(context['page'])
         context['page'] = prefetch_documents_detail(context['page'])
         context['page'] = prefetch_subpage_detail(context['page'])
+        context['page'] = prefecth_announcement_detail(context['page'])
+        context['page'] = prefecth_schooladministration_detail(context['page'])
+        context['page'] = prefecth_schoolstaff_detail(context['page'])
+        context['page'] = prefecth_schoolfaculty_detail(context['page'])
+        context['page'] = prefecth_subjectgradelevel_detail(context['page'])
         # Add additional context here
         context = add_additional_context(request, context, node)
         # Change Queryset into object
@@ -2607,4 +2764,19 @@ def node_lookup(request):
             item.file_name()
         )
         return response
+    if node.node_type == 'directoryentries':
+        if node.content_type == 'schoolfaculty':
+            item = (
+                Model
+                .objects
+                .filter(deleted=0)
+                .filter(published=1)
+                .filter(pk=node.pk)
+            )
+            template = set_template(request, node)
+            context = {}
+            context = add_additional_context(request, context, node)
+            context['page'] = item.first()
+            context['pageopts'] = context['page']._meta
+            return render(request, template, context)
     return HttpResponse(status=404)

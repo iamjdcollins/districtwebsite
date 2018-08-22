@@ -3,6 +3,7 @@ from django.db import models
 import apps.common.functions as commonfunctions
 from apps.objects.models import Node, Document as BaseDocument
 from apps.taxonomy.models import BoardPolicySection
+from apps.dashboard.models import PageLayout
 
 
 class Document(BaseDocument):
@@ -11,6 +12,9 @@ class Document(BaseDocument):
     PARENT_URL = ''
     URL_PREFIX = '/documents/'
     HAS_PERMISSIONS = False
+    PAGELAYOUT = '{0}'.format(
+        PageLayout.objects.get_or_create(namespace='document.html', defaults={'title': 'Document'})[0].pk
+    )
 
     title = models.CharField(
         max_length=200,
@@ -51,6 +55,68 @@ class Document(BaseDocument):
         )
         verbose_name = 'Document'
         verbose_name_plural = 'Documents'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class DisclosureDocument(BaseDocument):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/disclosure-document/'
+    HAS_PERMISSIONS = False
+    PAGELAYOUT = '{0}'.format(
+        PageLayout.objects.get_or_create(namespace='disclosure-document.html',
+                                         defaults={'title': 'Disclosure Document'})[0].pk
+    )
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+    )
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='documents_disclosuredocument_node',
+        editable=False,
+    )
+
+    disclosuredocument_document_node = models.OneToOneField(
+        BaseDocument,
+        db_column='disclosuredocument_document_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'documents_disclosuredocument'
+        ordering = [
+            'inline_order',
+        ]
+        get_latest_by = 'update_date'
+        permissions = (
+            ('trash_document', 'Can soft delete Disclosure Document'),
+            ('restore_document', 'Can restore Disclosure Document'),
+        )
+        verbose_name = 'Disclosure Document'
+        verbose_name_plural = 'Disclosure Documents'
         default_manager_name = 'objects'
 
     def __str__(self):

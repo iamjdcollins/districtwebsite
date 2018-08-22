@@ -360,3 +360,59 @@ a.pure-button-selected {
     background: #4685aa;
     color: #fff;
 }
+table.directory-table {
+  border: none;
+}
+table.directory-table tr.directory-group th{
+  text-align: left;
+  padding: 0;
+}
+table.directory-table tr.directory-heading{
+  background: #000;
+  color: #fff;
+}
+table.directory-table tr.directory-heading,
+table.directory-table tr.directory-entry{
+  border: 1px solid #cbcbcb;
+  border-collapse: collapse;
+  text-align: left;
+}
+table.directory-table tr td.narrow-cell{
+  width: 1px;
+}
+.modaal-wrapper.modaal-inline .modal-title,
+.modaal-wrapper.modaal-ajax .modal-title,
+.modaal-wrapper.modaal-iframe .modal-title {
+	margin: -30px -30px 10px -30px;
+	padding: 5px 40px 5px 10px;
+	line-height: 30px;
+	color: #fff;
+	font-size: 1.5em;
+	background-color: #000 !important;
+}
+.modaal-inline .modaal-close,
+.modaal-ajax .modaal-close,
+.modaal-iframe .modaal-close,
+.modaal-inline .modaal-close:hover,
+.modaal-ajax .modaal-close:hover,
+.modaal-iframe .modaal-close:hover{
+    right: 0px !important;
+    top: 0px !important;
+    color: white;
+    width: 40px;
+    height: 40px;
+    background-color: #ca2027;
+    position: absolute;
+    border-radius: 0;
+}
+.modaal-inline .modaal-close::after,
+.modaal-inline .modaal-close::before,
+.modaal-ajax .modaal-close::after,
+.modaal-ajax .modaal-close::before,
+.modaal-iframe .modaal-close::after,
+.modaal-iframe .modaal-close::before {
+    top: 9px !important;
+    right: 18px !important;
+    left: initial !important;
+    background: #fff;
+}

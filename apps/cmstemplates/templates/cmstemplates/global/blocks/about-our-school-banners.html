@@ -1,0 +1,121 @@
+<!-- <div class="card">
+  <div class="unslider slcschools-grey darken-1">
+    <ul class="slides">
+      {% for bannerimage in page.about_our_school.images_contentbanner_node.all %}
+      <li class="slide">
+        <img src="{{bannerimage.url }}" alt="{{bannerimage.alttext}}" />
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div> -->
+<style type="text/css">#content_banners .uranus.tparrows{width:50px; height:50px; background:rgba(255,255,255,0)}#content_banners .uranus.tparrows:before{width:50px; height:50px; line-height:50px; font-size:40px; transition:all 0.3s;-webkit-transition:all 0.3s}#content_banners .uranus.tparrows:hover:before{opacity:0.75}#content_banners .uranus .tp-bullet{border-radius:50%; box-shadow:0 0 0 2px rgba(255,255,255,0); -webkit-transition:box-shadow 0.3s ease; transition:box-shadow 0.3s ease; background:transparent; width:15px; height:15px}#content_banners .uranus .tp-bullet.selected,#content_banners .uranus .tp-bullet:hover{box-shadow:0 0 0 2px rgba(255,255,255,1); border:none; border-radius:50%; background:transparent}#content_banners .uranus .tp-bullet-inner{-webkit-transition:background-color 0.3s ease,-webkit-transform 0.3s ease; transition:background-color 0.3s ease,transform 0.3s ease; top:0; left:0; width:100%; height:100%; outline:none; border-radius:50%; background-color:rgb(255,255,255); background-color:rgba(255,255,255,0.3); text-indent:-999em; cursor:pointer; position:absolute}#content_banners .uranus .tp-bullet.selected .tp-bullet-inner,#content_banners .uranus .tp-bullet:hover .tp-bullet-inner{transform:scale(0.4); -webkit-transform:scale(0.4); background-color:rgb(255,255,255)}</style>
+<div id="content_banners_wrapper" class="rev_slider_wrapper fullwidthbanner-container" data-alias="test" data-source="gallery" style="margin:0px auto;background:transparent;padding:0px;margin-top:0px;margin-bottom:0px;">
+	<div id="content_banners" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.4.7.2">
+		<ul>
+			{% for bannerimage in page.about_our_school.images_contentbanner_node.all %}
+		    <li data-index="rs-{{ forloop.counter|add:1" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="300"  data-rotate="0"  data-saveperformance="off"  data-title="Slide" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+		        <img src="//{{ bannerimage.site.domain }}{{bannerimage.url }}"  alt="{{bannerimage.alttext}}"  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+			</li>
+			{% endfor %}
+		</ul>
+		<div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
+	</div>
+</div>
+		<script type="text/javascript">
+			            var revapi2,
+			tpj;    
+(function() {            
+    if (!/loaded|interactive|complete/.test(document.readyState)) document.addEventListener("DOMContentLoaded",onLoad); else onLoad();    
+    
+    function onLoad() {                
+        if (tpj===undefined) { tpj = jQuery; if("off" == "on") tpj.noConflict();}
+				if(tpj("#content_banners").revolution == undefined){
+					revslider_showDoubleJqueryError("#content_banners");
+				}else{
+					revapi2 = tpj("#content_banners").show().revolution({
+						sliderType:"standard",
+jsFileLocation:"/revslider/revslider/public/assets/js/",
+						sliderLayout:"auto",
+						dottedOverlay:"none",
+						delay:9000,
+						navigation: {
+							keyboardNavigation:"off",
+							keyboard_direction: "horizontal",
+							mouseScrollNavigation:"off",
+                             mouseScrollReverse:"default",
+							onHoverStop:"off",
+							touch:{
+								touchenabled:"on",
+								touchOnDesktop:"on",
+								swipe_threshold: 75,
+								swipe_min_touches: 1,
+								swipe_direction: "horizontal",
+								drag_block_vertical: false
+							}
+							,
+							arrows: {
+								style:"uranus",
+								enable:true,
+								hide_onmobile:false,
+								hide_onleave:true,
+								hide_delay:200,
+								hide_delay_mobile:1200,
+								tmp:'',
+								left: {
+									h_align:"left",
+									v_align:"center",
+									h_offset:20,
+                                    v_offset:0
+								},
+								right: {
+									h_align:"right",
+									v_align:"center",
+									h_offset:20,
+                                    v_offset:0
+								}
+							}
+							,
+							bullets: {
+								enable:true,
+								hide_onmobile:false,
+								style:"uranus",
+								hide_onleave:true,
+								hide_delay:200,
+								hide_delay_mobile:1200,
+								direction:"horizontal",
+								h_align:"center",
+								v_align:"bottom",
+								h_offset:0,
+								v_offset:20,
+                                space:5,
+								tmp:'<span class="tp-bullet-inner"></span>'
+							}
+						},
+						visibilityLevels:[1240,1024,778,480],
+						gridwidth:1280,
+						gridheight:600,
+						lazyType:"none",
+						shadow:0,
+						spinner:"spinner0",
+						stopLoop:"off",
+						stopAfterLoops:-1,
+						stopAtSlide:-1,
+						shuffle:"off",
+						autoHeight:"on",
+						disableProgressBar:"on",
+						hideThumbsOnMobile:"off",
+						hideSliderAtLimit:0,
+						hideCaptionAtLimit:0,
+						hideAllCaptionAtLilmit:0,
+						debugMode:false,
+						fallbacks: {
+							simplifyAll:"off",
+							nextSlideOnWindowFocus:"off",
+							disableFocusListener:false,
+						}
+					});
+    }; /* END OF revapi call */
+     }; /* END OF ON LOAD FUNCTION */
+}()); /* END OF WRAPPING FUNCTION */
+		</script>

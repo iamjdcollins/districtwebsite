@@ -36,7 +36,7 @@
     <script async src="//cdn.monsido.com/tool/javascripts/monsido.js"></script>
     {% endif %}
   </head>
-  <body id="top">
+  <body id="top" class="{% block bodyclasses %}{% endblock %}">
     <div class="pushfooter">
       <a href="#main" class="skipto">Skip to main content</a>
       {% if user.is_authenticated %}
@@ -256,6 +256,7 @@
       <span class="md-chevron-up no-sr" aria-hidden="true"></span>
     </a>
     <div id="google_translate_element2" class="hide"></div>
+    {% stylesheet request.site.dashboard_general_site.namespace %}
     {% block scriptsstyles %}
     {% endblock %}
     {% stylesheet request.site.dashboard_general_site.namespace %}

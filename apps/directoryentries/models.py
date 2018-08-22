@@ -1,10 +1,18 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 import apps.common.functions as commonfunctions
 from apps.objects.models import Node, DirectoryEntry
 from apps.users.models import Employee
-from apps.taxonomy.models import SchoolAdministratorType, City, State, \
-    Zipcode, BoardPrecinct
+from apps.taxonomy.models import (
+    SchoolAdministratorType,
+    City,
+    State,
+    Zipcode,
+    BoardPrecinct,
+    SubjectGradeLevel,
+)
 from apps.taxonomy.models import Location
+from apps.dashboard.models import PageLayout
 
 
 class SchoolAdministrator(DirectoryEntry):
@@ -418,6 +426,227 @@ class BoardPolicyAdmin(DirectoryEntry):
 
     def force_title(self):
         return self.employee.title
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class SchoolAdministration(DirectoryEntry):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/school-administration/'
+    HAS_PERMISSIONS = False
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+    )
+    body = RichTextField(
+        null=True,
+        blank=True,
+        help_text='',
+        verbose_name='About Me',
+    )
+    employee = models.ForeignKey(
+        Employee,
+        null=True,
+        blank=False,
+        on_delete=models.CASCADE,
+        related_name='directoryenties_schooladministration_employee',
+    )
+    related_node = models.ForeignKey(
+        Node,
+        null=True,
+        blank=True,
+        related_name='directoryentries_schooladministration_node',
+        editable=False,
+    )
+
+    schooladministration_directoryentry_node = models.OneToOneField(
+        DirectoryEntry,
+        db_column='schooladministration_directoryentry_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'directoryenties_schooladministration'
+        ordering = [
+            'inline_order',
+        ]
+        get_latest_by = 'create_date'
+        verbose_name = 'School Administrator'
+        verbose_name_plural = 'School Administration'
+        default_manager_name = 'objects'
+
+    def force_title(self):
+        return self.employee.title
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class SchoolStaff(DirectoryEntry):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+    )
+    body = RichTextField(
+        null=True,
+        blank=True,
+        help_text='',
+        verbose_name='About Me',
+    )
+    employee = models.ForeignKey(
+        Employee,
+        null=True,
+        blank=False,
+        on_delete=models.CASCADE,
+        related_name='directoryenties_schoolstaff_employee',
+    )
+    related_node = models.ForeignKey(
+        Node,
+        null=True,
+        blank=True,
+        related_name='directoryentries_schoolstaff_node',
+        editable=False,
+    )
+
+    schoolstaff_directoryentry_node = models.OneToOneField(
+        DirectoryEntry,
+        db_column='schoolstaff_directoryentry_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'directoryenties_schoolstaff'
+        ordering = [
+            'inline_order',
+        ]
+        get_latest_by = 'create_date'
+        verbose_name = 'School Staff'
+        verbose_name_plural = 'School Staff'
+        default_manager_name = 'objects'
+
+    def force_title(self):
+        return 'School Staff: {0} {1}'.format(
+            self.employee.first_name,
+            self.employee.last_name,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class SchoolFaculty(DirectoryEntry):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
+    PAGELAYOUT = '{0}'.format(
+        PageLayout.objects.get_or_create(
+            namespace='school-faculty-my-page.html',
+            defaults={'title': 'School Faculty My Page'}
+        )[0].pk
+    )
+
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+    )
+    body = RichTextField(
+        null=True,
+        blank=True,
+        help_text='',
+        verbose_name='About Me',
+    )
+    employee = models.ForeignKey(
+        Employee,
+        null=True,
+        blank=False,
+        on_delete=models.CASCADE,
+        related_name='directoryenties_schoolfaculty_employee',
+    )
+
+    primary_subject = models.ForeignKey(
+        SubjectGradeLevel,
+        null=True,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name='directoryenties_schoolfaculty_primary_subject'
+    )
+
+    additional_subjects = models.ManyToManyField(
+        SubjectGradeLevel,
+        blank=True,
+        related_name='directoryenties_schoolfaculty_additional_subjects',
+        verbose_name='Additional Subjects',
+    )
+
+    related_node = models.ForeignKey(
+        Node,
+        null=True,
+        blank=True,
+        related_name='directoryentries_schoolfaculty_node',
+        editable=False,
+    )
+
+    schoolfaculty_directoryentry_node = models.OneToOneField(
+        DirectoryEntry,
+        db_column='schoolfaculty_directoryentry_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'directoryenties_schoolfaculty'
+        ordering = [
+            'inline_order',
+        ]
+        get_latest_by = 'create_date'
+        verbose_name = 'School Faculty'
+        verbose_name_plural = 'School Faculty'
+        default_manager_name = 'objects'
+
+    def force_title(self):
+        return 'School Faculty: {0} {1}'.format(
+            self.employee.first_name,
+            self.employee.last_name,
+        )
 
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash

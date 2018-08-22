@@ -364,11 +364,18 @@ CMSTEMPLATES = {
               'cmstemplates/src/themes/inspire-standard/sass/inspire-standard.scss',
           ],
       },
+      'modaal043': [
+          'cmstemplates/src/modaal043/css/modaal.min.css',
+      ],
     },
     'javascript': {
         'jquery211': [
             'cmstemplates/src/js/jquery/jquery.2.1.1.js',
         ],
+        'modaal043': [
+            'cmstemplates/src/modaal043/js/modaal.min.js',
+        ],
+
         'materialize': [
             'cmstemplates/src/frameworks/materialize/js/bin/materialize.js',
         ],
@@ -422,7 +429,7 @@ PIPELINE = {
             'output_filename': 'cmstemplates/build/innovate-standard/innovate-standard.min.css',
         },
         'inspire-standard': {
-            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['inspire'] + CMSTEMPLATES['css']['themes']['inspire-standard'],
+            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['modaal043'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['inspire'] + CMSTEMPLATES['css']['themes']['inspire-standard'],
             'output_filename': 'cmstemplates/build/inspire-standard/inspire-standard.min.css',
         },
         'horizonte': {
@@ -448,7 +455,7 @@ PIPELINE = {
             'output_filename': 'cmstemplates/build/innovate-standard/innovate-standard.min.js',
         },
         'inspire-standard': {
-            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['global'] + CMSTEMPLATES['javascript']['frontend'] + CMSTEMPLATES['javascript']['inspire'],
+            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['modaal043'] + CMSTEMPLATES['javascript']['global'] + CMSTEMPLATES['javascript']['frontend'] + CMSTEMPLATES['javascript']['inspire'],
             'output_filename': 'cmstemplates/build/inspire-standard/inspire-standard.min.js',
         },
     },

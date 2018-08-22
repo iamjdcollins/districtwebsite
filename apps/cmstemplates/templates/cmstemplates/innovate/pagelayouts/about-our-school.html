@@ -9,22 +9,12 @@
   {{ block.super }}
 {% endblock %}
 
-{% block main-content-right %}
-<div class="body">
-	{{ page.about_our_school.body|safe|relink }}
-</div>
-{% if page.about_our_school.schooloptions.all %}
-<div class="learningoptions">
-	<p>The learning options available at {% if school.title %}{{ school.title }}{% else %}{{ page.title }}{% endif %} include:</p>
-	<ul class="browser-default">
-	{% for option in page.about_our_school.schooloptions.all %}
-		<li class="{{option.pk}}">{{ option.title }}</li>
-	{% endfor %}
-	</ul>
-	<p><a href="http://www.yourbestchoice.org/programs-and-options/" target="_blank">Click here</a> for written descriptions of the options listed above.</p>
-</div>
-{% else %}
-<p>Learning options not listed at this time. Please check back soon.</p>
+{% block contentbanners %}
+{% if page.about_our_school.images_contentbanner_node.all %}
+{% include "cmstemplates/global/blocks/about-our-school-banners.html" %}
 {% endif %}
+{% endblock %}
 
+{% block main-content-right %}
+{% include "cmstemplates/global/blocks/about-our-school.html" %}
 {% endblock %}

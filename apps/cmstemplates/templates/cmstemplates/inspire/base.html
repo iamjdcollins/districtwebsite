@@ -52,6 +52,10 @@
 {% endblock %}
 
 {% block precontent %}
+{% with 'cmstemplates/src/themes/'|add:request.site.dashboard_general_site.namespace|add:'/img/inspire-feature.jpg'  as img_src %}
+<div class="featured-img" style="background: url('{% static img_src %}');">
+</div>
+{% endwith %}
 <div class="breadcrumbs">
   <div class="pure-g">
     <div class="col pure-u-1">

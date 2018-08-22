@@ -1,0 +1,8 @@
+{% load relink %}
+
+{% if page.body %}
+<h2>About Me</h2>
+{{ page.body|safe|relink }}
+{% endif %}
+<h2>Disclosure Documents</h2>
+<h2>Resources</h2>

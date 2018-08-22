@@ -106,3 +106,16 @@ background-color: transparent;
     background: #4BB543;
     color: #fff !important;
 }
+iframe.googlemap{
+  width: 100%;
+}
+table.stretched-table{
+  width: 100%;
+}
+.schooldirectory-picture {
+  width: 100px;
+}
+.schooladministration-picture, .schoolstaff-picture {
+  max-width: 100px;
+  height: auto;
+}

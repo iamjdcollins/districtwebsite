@@ -185,3 +185,6 @@
 .md-person:before {
   content: "\57";
 }
+.md-send:before {
+  content: "\58";
+}

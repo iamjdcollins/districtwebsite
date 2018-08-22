@@ -44,11 +44,5 @@
       <span class="sr-only">Submit page feedback form.</span>
       <span class="no-sr" aria-hidden="true">Submit</span>
     </button>
-    {% if request.path == '/contact-us/inline/' %}
-    <a href="#" onclick="$('.pagefeedback').modaal('close'); return false;" class="modal-action modal-close waves-effect waves-green btn-flat ">
-      <span class="sr-only">Cancel page feedback form and close dialog.</span>
-      <span class="no-sr" aria-hidden="true">Cancel</span>
-    </a>
-  {% endif %}
   </div>
 </form>
