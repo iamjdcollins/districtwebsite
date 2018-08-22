@@ -2,7 +2,7 @@
 {% load static mptt_tags %}
 
 {% block title %}
-  {{ page.title }} Directory
+  {{ page.title }}
 {% endblock %}
 
 {% block precontent %}
@@ -19,10 +19,6 @@
       <li><a href="#middleschools" onclick="$('.collapsible').collapsible('open', 2); $('.inlinemodal').modaal('close');">Middle Schools ({{ middle_schools_directory|length }})</a></li>
       <li><a href="#highschools" onclick="$('.collapsible').collapsible('open', 3); $('.inlinemodal').modaal('close');">High Schools ({{ high_schools_directory|length }})</a></li>
       <li><a href="#charterschools" onclick="$('.collapsible').collapsible('open', 4); $('.inlinemodal').modaal('close');">Charter Schools ({{ charter_schools_directory|length }})</a></li>
-      <li><a href="#communitylearningcenters" onclick="$('.collapsible').collapsible('open', 4); $('.inlinemodal').modaal('close');">Community Learning Centers ({{ community_learning_centers_directory|length }})</a></li>
-      <li><a href="/schools/school-handbooks/">School Handbooks</a></li>
-      <li><a href="/schools/district-demographics/">District Demographics</a></li>
-      <li><a href="/schools/school-registration-dates/">School Registration Dates</a></li>
     </ul>
   </div>
 </div>
@@ -34,22 +30,13 @@
 <div class="card">
   <a href="#toc" class="mobile-table-of-contents hide-on-med-and-up btn btn-wrap btn-stretch inlinemodal uninit"><span aria-hidden="true" class="material-icons left">&#xE8EF;</span><span>Table of Contents / Contact</span></a>
   <div class="card-content">
-    <h1>{{page.title}} Directory</h1>
+    <h1>{{page.title}}</h1>
     <div class="row">
       <form class="textfieldboxes" action="javascript:void(0);" onsubmit="myFunction(); return false;">
-        <div class="input-field col s12 m6">
+        <div class="input-field col s12">
           <input class="autocomplete" onkeyup="myFunction()" title="Search Schools" id="schoolsfilter" type="text">
           <label for="schoolsfilter">Search Schools</label>
           <button type="submit" class="btn tableSearchSubmit white-text" name="tableSearchSubmit"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
-        </div>
-        <div class="input-field col s12 m6">
-          <select id="learningoptionsfilter" multiple onchange="myFunction();">
-            <option value="" disabled selected>Select Learning Options</option>
-            {% for option in learningoptions %}
-            <option value="{{option.pk}}">{{ option.title }}</option>
-            {% endfor %}
-          </select>
-          <label for="learningoptionsfilter" class="sr-only">Filter Learning Options</label>
         </div>
       </form>
     </div>
@@ -57,7 +44,7 @@
       <h2>Elementary Schools</h2>
       <div class="row">
         {% for school in elementary_schools_directory %}
-        {% include "cmstemplates/www_slcschools_org/blocks/school-directory-card.html" %}
+        {% include "cmstemplates/www_slcschools_org/blocks/school-registration-dates-card.html" %}
         {% endfor %}
       </div>
     </div>
@@ -65,7 +52,7 @@
       <h2>K-8 Schools</h2>
       <div class="row">
         {% for school in k8_schools_directory %}
-        {% include "cmstemplates/www_slcschools_org/blocks/school-directory-card.html" %}
+        {% include "cmstemplates/www_slcschools_org/blocks/school-registration-dates-card.html" %}
         {% endfor %}
       </div>
     </div>
@@ -73,7 +60,7 @@
       <h2>Middle Schools</h2>
       <div class="row">
         {% for school in middle_schools_directory %}
-        {% include "cmstemplates/www_slcschools_org/blocks/school-directory-card.html" %}
+        {% include "cmstemplates/www_slcschools_org/blocks/school-registration-dates-card.html" %}
         {% endfor %}
       </div>
     </div>
@@ -81,7 +68,7 @@
       <h2>High Schools</h2>
       <div class="row">
         {% for school in high_schools_directory %}
-        {% include "cmstemplates/www_slcschools_org/blocks/school-directory-card.html" %}
+        {% include "cmstemplates/www_slcschools_org/blocks/school-registration-dates-card.html" %}
         {% endfor %}
       </div>
     </div>
@@ -89,15 +76,7 @@
       <h2>Charter Schools</h2>
       <div class="row">
         {% for school in charter_schools_directory %}
-        {% include "cmstemplates/www_slcschools_org/blocks/school-directory-card.html" %}
-        {% endfor %}
-      </div>
-    </div>
-    <div id="communitylearningcenters" class="scrollspy filterpoint">
-      <h2>Community Learning Centers</h2>
-      <div class="row">
-        {% for school in community_learning_centers_directory %}
-        {% include "cmstemplates/www_slcschools_org/blocks/school-directory-card.html" %}
+        {% include "cmstemplates/www_slcschools_org/blocks/school-registration-dates-card.html" %}
         {% endfor %}
       </div>
     </div>
@@ -117,24 +96,9 @@ function myFunction() {
   $('.filterpoint').removeClass('hide');
   input = document.getElementById("schoolsfilter");
   filter = input.value.toUpperCase();
-  learningoptioninput = document.getElementById("learningoptionsfilter");
-  learningoptions = $(learningoptioninput).val();
-  if( learningoptions === null ){
-      learningoptions = []
-  }
   school = document.getElementsByClassName("filterpoint");
   for (i = 0; i < school.length; i++) {
       visible = true
-      if( learningoptions.length > 0 ){
-        visible = false
-        b = 0
-        while(visible == false && b <= learningoptions.length){
-          if( $(school[i]).find('li.' + learningoptions[b]).length > 0 ){
-            visible = true
-          }
-          b += 1
-        }
-      }
       if ( filter && visible && school[i].innerHTML.toUpperCase().indexOf(filter) <= -1) {
         visible = false
       }

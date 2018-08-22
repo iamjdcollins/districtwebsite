@@ -115,7 +115,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'multisite.middleware.DynamicSiteMiddleware',
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
     # 'apps.common.middleware.DynamicDataDir',
