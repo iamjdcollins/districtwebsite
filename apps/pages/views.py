@@ -1,4 +1,5 @@
 import json
+import urllib.request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.http import HttpResponse, Http404
@@ -21,6 +22,40 @@ from apps.files.models import File, AudioFile, VideoFile
 from apps.events.models import BoardMeeting, DistrictCalendarEvent
 from apps.users.models import Employee
 from apps.contactmessages.forms import ContactMessageForm
+
+
+def updates_school_reg_dates():
+
+    reg_locations = {
+        10: 'Online',
+        20: 'Online/On-Site',
+        30: 'On-Site',
+    }
+    reg_audience = {
+        105: '1 - 5th Grade',
+        6: '6th Grade',
+        7: '7th Grade',
+        8: '8th Grade',
+        9: '9th Grade',
+        199: 'All Students',
+        99: 'All Unregistered Students',
+        0: 'Kindergarten',
+        13: 'New Students',
+        21: 'Returning Students',
+    }
+    response = urllib.request.urlopen('https://apex.slcschools.org/apex/slcsd-apps/regcalendars/')
+    jsonalldates = response.read()
+    alldates = json.loads(jsonalldates.decode("utf-8"))
+    groupeddates = {}
+    for date in alldates['items']:
+        if date['location'] in reg_locations:
+            date['location'] = reg_locations[date['location']]
+        if date['audience'] in reg_audience:
+            date['audience'] = reg_audience[date['audience']]
+        if date['school'] not in groupeddates:
+            groupeddates[date['school']] = []
+        groupeddates[date['school']].append(date)
+    return groupeddates
 
 
 def set_template(request, node):
@@ -104,6 +139,8 @@ def set_template(request, node):
             return 'cmstemplates/www_slcschools_org/pagelayouts/contact-us.html'
         if request.path == '/contact-us/inline/':
             return 'cmstemplates/www_slcschools_org/blocks/contact-us-inline.html'
+        if request.path == '/schools/school-registration-dates/':
+            return 'cmstemplates/www_slcschools_org/pagelayouts/school-registration-dates.html'
         if node.node_type == 'documents':
             if node.content_type == 'document':
                 return 'cmstemplates/www_slcschools_org/pagelayouts/document.html'
@@ -974,7 +1011,7 @@ def add_additional_context(request, context, node):
             if item.author_date.month == 7:
                 newsmonths[11]['news'].append(item)
         context['newsmonths'] = newsmonths
-    if request.path == '/schools/':
+    if request.path == '/schools/' or request.path == '/schools/school-registration-dates/':
         schools = (
             School
             .objects
@@ -984,6 +1021,7 @@ def add_additional_context(request, context, node):
             .only(
                 'pk',
                 'title',
+                'school_number',
                 'building_location',
                 'schooltype',
                 'schooloptions',
@@ -1096,6 +1134,7 @@ def add_additional_context(request, context, node):
             if school.schooltype.title == 'Community Learning Centers':
                 context['community_learning_centers_directory'].append(school)
         context['learningoptions'] = SchoolOption.objects.filter(deleted=0).filter(published=1).order_by('title')
+        context['school_reg_dates'] = cache.get_or_set('school_reg_dates', updates_school_reg_dates(), 120)
     if request.path == '/schools/elementary-schools/':
         schools = (
             School

@@ -1,0 +1,28 @@
+<div class="filterpoint">
+      <h3 class="school-title">{{ school.title }}</h3>
+          <ul class="collection">
+      {% if school.school_number|stringformat:"s" in school_reg_dates %}
+      {% for key, value in school_reg_dates.items %}
+        {% if key == school.school_number|stringformat:"s" %}
+          
+          {% for date in value %}
+              <li class="collection-item avatar stripe">
+                <span class="avatar-stripe general"></span>
+                <span class="title">{{ date.event_name }}</span><br><br>
+                <span style="font-weight: bold">Start Date: </span><span>{{ date.start_date }}</span><br>
+                <span style="font-weight: bold">End Date: </span><span>{{ date.end_date }}</span><br>
+                <span style="font-weight: bold">Location: </span><span>{{ date.location }}</span><br>
+                <span style="font-weight: bold">Audience: </span><span>{{ date.audience }}</span><br>
+              </li>
+          {% endfor %}
+          
+        {% endif %}
+      {% endfor %}
+      {% else %}
+      <li class="collection-item avatar stripe">
+          <span class="avatar-stripe general"></span>
+          <p>We do not have any registration dates scheduled at this time. Check back soon.</p>
+      </li>
+      {% endif %}
+          </ul>
+</div>
