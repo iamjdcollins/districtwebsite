@@ -19,6 +19,8 @@ from apps.dashboard.forms import (
     TemplatesAddForm,
     PageLayoutsAddForm,
     PageLayoutsChangeForm,
+    SitePublishersAddForm,
+    SitePublishersChangeForm,
 )
 from apps.dashboard.models import (
     GeneralSettings as GeneralSettingsModel,
@@ -26,6 +28,7 @@ from apps.dashboard.models import (
     SiteTypeRequiredPage as SiteTypeRequiredPageModel,
     Template as TemplateModel,
     PageLayout as PageLayoutsModel,
+    SitePublisher as SitePublisherModel,
 )
 
 
@@ -69,6 +72,11 @@ def add_templates_context(self, context):
 
 def add_pagelayouts_context(self, context):
     context['pagelayouts'] = PageLayoutsModel.objects.all().order_by('title')
+    return context
+
+
+def add_sitepublishers_context(self, context):
+    context['sitepublishers'] = SitePublisherModel.objects.filter(site=self.request.site).order_by('account')
     return context
 
 
@@ -179,6 +187,33 @@ def add_pagelayoutschange_form(self, context):
         )
     else:
         context['pagelayoutschangeform'] = PageLayoutsChangeForm(
+            instance=instance,
+        )
+    return context
+
+
+def add_sitepublishersadd_form(self, context):
+    if self.request.POST:
+        context['sitepublishersaddform'] = SitePublishersAddForm(
+            data=self.request.POST,
+        )
+    else:
+        context['sitepublishersaddform'] = SitePublishersAddForm()
+    return context
+
+
+def add_sitepublisherschange_form(self, context):
+    try:
+        instance = SitePublisherModel.objects.get(pk=self.kwargs['sitepublisherpk'])
+    except SitePublisherModel.DoesNotExist:
+        raise Exception('Site Publisher Does Not Exist')
+    if self.request.POST:
+        context['sitepublisherschangeform'] = SitePublishersChangeForm(
+            instance=instance,
+            data=self.request.POST,
+        )
+    else:
+        context['sitepublisherschangeform'] = SitePublishersChangeForm(
             instance=instance,
         )
     return context
@@ -540,3 +575,88 @@ class PageLayoutsChange(SAMLLoginRequiredMixin, TemplateView):
         context = add_sites_context(self, context)
         context = add_pagelayoutschange_form(self, context)
         return context
+
+
+class SitePublishers(SAMLLoginRequiredMixin, TemplateView):
+
+    template_name = 'cmstemplates/dashboard/sitepublishers.html'
+
+    def get(self, request, *args, **kwargs):
+        if request.site.domain == 'websites.slcschools.org':
+            return BaseURL.as_view()(self.request)
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = add_sites_context(self, context)
+        context = add_sitepublishers_context(self, context)
+        return context
+
+
+class SitePublishersAdd(SAMLLoginRequiredMixin, TemplateView):
+
+    template_name = 'cmstemplates/dashboard/sitepublishersadd.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        if context['sitepublishersaddform'].is_valid():
+            user = User.objects.get(pk=request.user.pk)
+            post = context['sitepublishersaddform'].save(commit=False)
+            if not post.create_user:
+                post.create_user = user
+            post.site = request.site
+            post.update_user = user
+            post.save()
+            messages.success(
+                request,
+                'Site Publisher added successfully')
+        return redirect('dashboard:sitepublishers')
+
+    def get(self, request, *args, **kwargs):
+        if request.site.domain == 'websites.slcschools.org':
+            return BaseURL.as_view()(self.request)
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = add_sites_context(self, context)
+        context = add_sitepublishersadd_form(self, context)
+        return context
+
+
+class SitePublishersChange(SAMLLoginRequiredMixin, TemplateView):
+
+    template_name = 'cmstemplates/dashboard/sitepublisherschange.html'
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        if context['sitepublisherschangeform'].is_valid():
+            user = User.objects.get(pk=request.user.pk)
+            post = context['sitepublisherschangeform'].save(commit=False)
+            if not post.create_user:
+                post.create_user = user
+            if not post.site:
+                post.site = request.site
+            post.update_user = user
+            post.save()
+            messages.success(
+                request,
+                'Site Publisher updated successfully')
+            context['sitepublisherschangeform'].save_m2m()
+        return redirect('dashboard:sitepublishers')
+
+    def get(self, request, *args, **kwargs):
+        if request.site.domain == 'websites.slcschools.org':
+            return BaseURL.as_view()(self.request)
+        context = self.get_context_data()
+        # raise Exception('Error')
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = add_sites_context(self, context)
+        context = add_sitepublisherschange_form(self, context)
+        return context
+

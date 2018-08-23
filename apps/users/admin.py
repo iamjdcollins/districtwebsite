@@ -15,7 +15,7 @@ from apps.images.models import ProfilePicture
 class ProfilePictureInline(admin.StackedInline):
     model = ProfilePicture
     fk_name = 'parent'
-    fields = ['title','image_file','alttext',]
+    fields = ['title','site','image_file','alttext',]
     extra = 0
     min_num = 1
     max_num = 1

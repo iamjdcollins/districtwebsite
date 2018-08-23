@@ -1,0 +1,32 @@
+{% extends 'cmstemplates/dashboard/base.html' %}
+
+{% block title %}Add Site Publisher{% endblock %}
+
+{% block maincontent %}
+<div class="col s12">
+  <div class="card-panel">
+  	<div class="row">
+  	  <h1 class="col s12">Add Site Publisher</h1>
+    </div>
+    <div class="row">
+	  	<form class="col s12 focus" action="{% url 'dashboard:sitepublishersadd' %}" method="post">
+		    {% csrf_token %}
+		    {{ sitepublishersaddform.media }}
+		    <div class="input-field col s12">
+		      <span class="md-person prefix" aria-hidden="true"></span>
+		      {{ sitepublishersaddform.account.errors }}
+		      {{ sitepublishersaddform.account }}
+		      <label class="active" for="{{ sitepublishersaddform.account.id_for_label}}">Publisher</label>
+		    </div>
+		    <div class="input-field col s12">
+		      <span class="material-icons prefix" aria-hidden="true"></span>
+		      <button type="submit" class="waves-effect waves-green btn">
+		        <span class="sr-only">Submit</span>
+		        <span class="no-sr" aria-hidden="true">Submit</span>
+		      </button>
+		    </div>
+		  </form>
+		</div>
+  </div>
+</div>
+{% endblock %}

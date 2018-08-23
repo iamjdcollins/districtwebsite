@@ -196,6 +196,8 @@ def has_add_permission(self, request, obj=None):
         return True
     elif request.user.groups.filter(name='Website Managers'):
         return True
+    elif request.site.dashboard_sitepublisher_site.filter(account=request.user.pk):
+        return True
     elif obj:
         if get_permission_codename(
                 'add', self.model._meta) in get_perms(request.user, obj):
@@ -212,8 +214,12 @@ def has_change_permission(self, request, obj=None):
             return True
         elif request.user.groups.filter(name='Website Managers'):
             return True
+        elif request.site.dashboard_sitepublisher_site.filter(account=request.user.pk):
+            return True
     if obj:
         if request.user.groups.filter(name='Website Managers'):
+            return True
+        elif request.site.dashboard_sitepublisher_site.filter(account=request.user.pk):
             return True
         if obj.has_permissions:
             # Check for object level permission through Guardian

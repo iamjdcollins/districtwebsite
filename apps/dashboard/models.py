@@ -8,6 +8,63 @@ from ckeditor.fields import RichTextField
 import apps.dashboard.help as apphelp
 
 
+class SitePublisher(models.Model):
+
+    uuid = models.UUIDField(
+        primary_key=True,
+        unique=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
+    account = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=False,
+        to_field='uuid',
+        on_delete=models.PROTECT,
+        related_name='dashboard_sitepublisher_account',
+    )
+    site = models.ForeignKey(
+        Site,
+        null=False,
+        blank=False,
+        on_delete=models.PROTECT,
+        related_name='dashboard_sitepublisher_site',
+    )
+    create_date = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+    )
+    create_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        to_field='uuid',
+        on_delete=models.DO_NOTHING,
+        related_name='dashboard_sitepublisher_create_user',
+    )
+    update_date = models.DateTimeField(
+        auto_now=True,
+        db_index=True,
+    )
+    update_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        to_field='uuid',
+        on_delete=models.DO_NOTHING,
+        related_name='dashboard_sitepublisher_update_user',
+    )
+
+    class Meta:
+        db_table = 'dashboard_sitepublisher'
+        get_latest_by = 'update_date'
+        verbose_name = 'Site Publisher'
+        verbose_name_plural = 'Site Publishers'
+
+    def __str__(self):
+        return self.account.email
+
 class SiteType(models.Model):
 
     uuid = models.UUIDField(

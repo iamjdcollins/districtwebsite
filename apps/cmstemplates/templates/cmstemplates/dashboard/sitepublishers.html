@@ -1,0 +1,37 @@
+{% extends 'cmstemplates/dashboard/base.html' %}
+
+{% block title %}Site Publishers{% endblock %}
+
+{% block maincontent %}
+<div class="col s12">
+  <div class="card-panel">
+    <div class="row">
+      <h1 class="col s12">Site Publishers</h1>
+    </div>
+    <div class="row">
+      <table>
+        <thead>
+          <tr>
+            <th>Publisher</th>
+            <th class="rowaction"><span class="sr-only">Edit</span><th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sitepublisher in sitepublishers %}
+          <tr>
+            <td><a href="{% url 'dashboard:sitepublisherschange' sitepublisherpk=sitepublisher.pk %}">{{ sitepublisher.account.first_name }} {{ sitepublisher.account.last_name }}</a><br>{{ sitepublisher.account.email }}</td>
+            <td class="rowaction">
+              <a href="{% url 'dashboard:sitepublisherschange' sitepublisherpk=sitepublisher.pk %}">
+                <span class="sr-only">Edit {{ sitepublisher.account.first_name }} {{ sitepublisher.account.last_name }}</span>
+                <span class="no-sr md-settings" aria-hidden="True"></span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="{% url 'dashboard:sitepublishersadd' %}" class="btn-floating btn-large waves-effect waves-light" style="position: fixed; bottom: 15px; right: 15px;"><span class="md-plus"></span></a>
+    </div>
+  </div>
+</div>
+{% endblock %}

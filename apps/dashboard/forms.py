@@ -1,6 +1,7 @@
 from django import forms
 from ajax_select.fields import AutoCompleteSelectField
-from apps.dashboard.models import GeneralSettings, SiteType, Template, PageLayout, SiteTypeRequiredPage
+from ajax_select import make_ajax_field
+from apps.dashboard.models import GeneralSettings, SiteType, Template, PageLayout, SiteTypeRequiredPage, SitePublisher
 
 
 class GeneralSettingsForm(forms.ModelForm):
@@ -141,3 +142,29 @@ class PageLayoutsChangeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PageLayoutsChangeForm, self).__init__(*args, **kwargs)
+
+
+class SitePublishersAddForm(forms.ModelForm):
+    class Meta:
+        model = SitePublisher
+        fields = (
+            'account',
+        )
+
+    account = AutoCompleteSelectField('employee', help_text='')
+
+    def __init__(self, *args, **kwargs):
+        super(SitePublishersAddForm, self).__init__(*args, **kwargs)
+
+
+class SitePublishersChangeForm(forms.ModelForm):
+    class Meta:
+        model = SitePublisher
+        fields = (
+            'account',
+        )
+
+    account = AutoCompleteSelectField('employee', help_text='')
+
+    def __init__(self, *args, **kwargs):
+        super(SitePublishersChangeForm, self).__init__(*args, **kwargs)
