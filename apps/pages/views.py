@@ -2263,17 +2263,25 @@ def add_additional_context(request, context, node):
                 .get(pk=context['form'].fields['parent'].initial)
             )
         )
-    context['in_this_section'] = (
-        node
-        .get_root()
-        .get_descendants(include_self=True)
-        .filter(
-            node_type='pages',
-            content_type='page',
-            published=True,
-            deleted=False,
+    try:
+        context['in_this_section'] = (
+            node
+            .get_ancestors(ascending=True)
+            .filter(
+                deleted=0,
+                published=1,
+                pagelayout__namespace='site-section.html'
+            ).first()
+            .get_children()
+            .filter(
+                node_type='pages',
+                content_type='page',
+                published=True,
+                deleted=False,
+            )
         )
-    )
+    except AttributeError:
+        pass
     return context
 
 
@@ -2396,6 +2404,22 @@ def node_lookup(request):
     except Node.DoesNotExist:
         raise Http404('Page not found.')
     Model = apps.get_model(node.node_type, node.content_type)
+    if node.pagelayout.namespace == 'site-section.html':
+        first_child = (
+            node
+            .get_children()
+            .filter(
+                node_type='pages',
+                content_type='page',
+                deleted=0,
+                published=1
+            ).first()
+        )
+        if first_child:
+            return redirect(first_child.url)
+        else:
+            if not commonfunctions.is_siteadmin(request):
+                raise Http404('Page not found.')
     if node.node_type == 'pages':
         if request.method == 'POST':
             return redirect(process_post(request))

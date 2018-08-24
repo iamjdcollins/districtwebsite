@@ -1883,6 +1883,61 @@ class SubPageInline(
         return qs.filter(deleted=0)
 
 
+class SectionPageInlineForm(forms.ModelForm):
+    class Meta:
+        model = Page
+        fields = [
+            'title',
+            'pagelayout',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(SectionPageInlineForm, self).__init__(*args, **kwargs)
+        self.fields['pagelayout'].queryset = PageLayout.objects.filter(namespace='default.html')
+
+
+class SectionPageInline(
+    LinkToInlineObject,
+    SortableInlineAdminMixin,
+    EditLinkToInlineObject,
+    admin.TabularInline
+):
+    model = Page
+    form = SectionPageInlineForm
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'pagelayout',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'published',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    verbose_name = 'Section Page'
+    verbose_name_plural = 'Section Pages'
+    extra = 0
+    min_num = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+
 class BoardSubPageInlineForm(forms.ModelForm):
     class Meta:
         model = BoardSubPage

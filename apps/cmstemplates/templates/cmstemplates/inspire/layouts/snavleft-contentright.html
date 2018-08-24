@@ -1,4 +1,5 @@
 {% extends 'cmstemplates/inspire/base.html' %}
+{% load admin_urls %}
 
 {% block main-content %}
 <div class="col pure-u-lg-1-4 pure-u-md-1-3 pure-u-1">
@@ -6,6 +7,12 @@
 	<div class="widget-container widget-box">
 		<div class="widget-title">In This Section</div>
 		<div class="widget-inner">
+			{%if SITEADMIN %}
+			<a id="editpagemodaal" href="{% url pageopts|admin_urlname:'change' page.parent.pk %}" class="pure-button narrow editlink">
+              <span class="sr-only">Edit Section Pages</span>
+              <span class="md-pencil no-sr" aria-hidden="true"> Edit Section Pages</span>
+            </a>
+			{% endif %}
 			<ul>
 				{% for item in in_this_section %}
 				<li>

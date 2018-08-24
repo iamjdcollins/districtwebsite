@@ -106,6 +106,12 @@ background-color: transparent;
     background: #4BB543;
     color: #fff !important;
 }
+.card.card-alert.error,
+.card.card-alert.error a {
+    background: #f33;
+    color: #fff !important;
+}
+
 iframe.googlemap{
   width: 100%;
 }

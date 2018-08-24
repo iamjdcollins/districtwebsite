@@ -37,6 +37,24 @@ class Page(BasePage):
                 'DocumentInline',
             ],
         },
+        'site-section.html': {
+            'fields': [
+                'title',
+                ['update_user', 'update_date'],
+                ['create_user', 'create_date'],
+            ],
+            'readonly_fields': [
+                'title',
+                'update_user',
+                'update_date',
+                'create_user',
+                'create_date',
+                'url',
+            ],
+            'inlines': [
+                'SectionPageInline',
+            ],
+        },
         'about-our-school.html': {
             'fields': [
                 'title',
@@ -148,8 +166,18 @@ class Page(BasePage):
         editable=False,
     )
 
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
     class Meta:
         db_table = 'pages_page'
+        ordering = [
+            'inline_order',
+        ]
         get_latest_by = 'update_date'
         permissions = (
             ('trash_page', 'Can soft delete page'),

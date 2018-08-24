@@ -1128,3 +1128,12 @@ def get_domain(site):
         except Alias.DoesNotExist:
             pass
     return site.domain
+
+def is_siteadmin(request):
+    if (
+            request.user.is_superuser or
+            request.user.groups.filter(name='Website Managers') or
+            request.site.dashboard_sitepublisher_site.filter(account=request.user.pk)
+    ):
+        return True
+    return False
