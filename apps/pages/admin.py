@@ -2288,7 +2288,7 @@ class SchoolStaffInline(
     ]
     extra = 0
     min_num = 0
-    max_num = 25
+    max_num = 100
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
@@ -2354,7 +2354,7 @@ class SchoolFacultyInline(
     ]
     extra = 0
     min_num = 0
-    max_num = 50
+    max_num = 100
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
