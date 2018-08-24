@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "md";
-  src:url("/static/cmstemplates/src/fonts/md/md.eot");
-  src:url("/static/cmstemplates/src/fonts/md/md.eot?#iefix") format("embedded-opentype"),
-    url("/static/cmstemplates/src/fonts/md/md.woff") format("woff"),
-    url("/static/cmstemplates/src/fonts/md/md.ttf") format("truetype"),
-    url("/static/cmstemplates/src/fonts/md/md.svg#md") format("svg");
+  src:url("/static/cmstemplates/src/fonts/md/md.1.eot");
+  src:url("/static/cmstemplates/src/fonts/md/md.1.eot?#iefix") format("embedded-opentype"),
+    url("/static/cmstemplates/src/fonts/md/md.1.woff") format("woff"),
+    url("/static/cmstemplates/src/fonts/md/md.1.ttf") format("truetype"),
+    url("/static/cmstemplates/src/fonts/md/md.1.svg#md") format("svg");
   font-weight: normal;
   font-style: normal;
 
