@@ -20,6 +20,8 @@ from django.utils.html import format_html
 from django.http import HttpResponseRedirect
 from django.utils.http import urlquote
 from django.contrib import messages
+from django.contrib.sites.models import Site
+from multisite.models import Alias
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from pilkit.utils import suggest_extension
 
@@ -53,13 +55,14 @@ def contactmessage_message(self):
         'WEBSITE CONTACT: ' + self.message_subject,
         ('<p><strong>From:</strong> {0}: {1}</p>'
          '<p><strong>To:</strong> {2}</p><p><strong>Page:</strong> '
-         '<a href="https://www.slcschools.org{3}">https://www.slcschools.org'
+         '<a href="https://{5}{3}">https://{5}'
          '{3}</a></p><p><strong>Message:</strong><br>{4}</p>').format(
             self.your_name,
             self.your_email,
             self.primary_contact.email,
             self.parent.url,
-            self.your_message
+            self.your_message,
+            get_domain(self.site),
             ),
         '"{0}" <{1}>'.format(self.your_name, self.your_email),
         [self.primary_contact.email],
@@ -1111,3 +1114,17 @@ def related_resource_links(self):
         link.save()
     if self.node_type == 'files':
         related_resource_links(nodefindobject(self.parent))
+
+
+def get_domain(site):
+    if settings.ENVIRONMENT_MODE == "development":
+        try:
+            site = Alias.objects.get(domain__contains='-dev', site=site)
+        except Alias.DoesNotExist:
+            pass
+    if settings.ENVIRONMENT_MODE == "test":
+        try:
+            site = Alias.objects.get(domain__contains='-test', site=site)
+        except Alias.DoesNotExist:
+            pass
+    return site.domain
