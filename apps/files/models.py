@@ -215,7 +215,7 @@ class PrecinctMap(BaseFile):
         default_manager_name = 'objects'
 
     def force_title(self):
-        return self.parent.title + ' Map'
+        return self.parent.node_title + ' Map'
 
     file_name = commonfunctions.file_name
     save = commonfunctions.modelsave
