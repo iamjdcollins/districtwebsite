@@ -1888,12 +1888,12 @@ class SectionPageInlineForm(forms.ModelForm):
         model = Page
         fields = [
             'title',
-            'pagelayout',
         ]
 
     def __init__(self, *args, **kwargs):
         super(SectionPageInlineForm, self).__init__(*args, **kwargs)
-        self.fields['pagelayout'].queryset = PageLayout.objects.filter(namespace='default.html')
+        if self.instance.pk:
+            self.fields['title'].disabled = True
 
 
 class SectionPageInline(
@@ -1907,7 +1907,6 @@ class SectionPageInline(
     fk_name = 'parent'
     fields = [
         'title',
-        'pagelayout',
         'update_user',
         'update_date',
         'edit_link',
@@ -2509,7 +2508,7 @@ class PageAdmin(MyDraggableMPTTAdmin, GuardedModelAdmin):
                 if 'url' not in fields:
                     fields.append('url')
             return fields
-        if request.site.domain == 'www.slcschools.org':
+        elif request.site.domain == 'www.slcschools.org':
             fields = ['title', 'pagelayout', 'body','primary_contact',['update_user','update_date',],['create_user','create_date',],]
             if request.user.is_superuser:
                 fields += ['published','searchable','parent',]
@@ -2530,12 +2529,13 @@ class PageAdmin(MyDraggableMPTTAdmin, GuardedModelAdmin):
                 if 'title' in fields:
                     fields.remove('title')
             return fields
-        fields = ['title','update_user','update_date','create_user','create_date',]
-        if request.user.is_superuser:
-            fields.remove('title')
-            if obj:
-                fields += ['url']
-        return fields
+        elif request.site.domain == 'www.slcschools.org':
+            fields = ['title','update_user','update_date','create_user','create_date',]
+            if request.user.is_superuser:
+                fields.remove('title')
+                if obj:
+                    fields += ['url']
+            return fields
 
     inlines = [ActionButtonInline,FAQInline,ResourceLinkInline,DocumentInline,SubPageInline]
 
