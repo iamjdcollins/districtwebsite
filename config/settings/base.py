@@ -140,6 +140,7 @@ TEMPLATES = [
                 'apps.objects.processors.mainmenu',
                 'apps.objects.processors.sitestructure',
                 'apps.objects.processors.is_siteadmin',
+                'apps.objects.processors.is_globaladmin',
             ],
             'loaders': [
                  ('django.template.loaders.cached.Loader', [
