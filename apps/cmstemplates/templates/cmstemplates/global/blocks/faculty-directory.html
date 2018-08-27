@@ -1,3 +1,5 @@
+{% load static %}
+
 {% if page.directoryentries_schoolfaculty_node.all %}
 <table class="pure-table pure-table-horizontal grouped-table stretched-table directory-table">
 	<tbody>
@@ -16,9 +18,9 @@
     	{% if person.primary_subject == subject %}
     	<tr class="directory-entry">
     		{% if person.employee.images_profilepicture_node.first %}
-	    	<td class="narrow-cell"><img class="schooladministration-picture" src="https://websites-dev.slcschools.org/static/www_slcschools_org/images/defaults/profilepicture.jpg" alt="No Profile Picture"></td>
+	    	<td class="narrow-cell"><img class="schooladministration-picture" src="{% static "www_slcschools_org/images/defaults/profilepicture.jpg" %}" alt="No Profile Picture"></td>
 	    	{% else %}
-	    	<td class="narrow-cell"><img class="schooladministration-picture" src="https://websites-dev.slcschools.org/static/www_slcschools_org/images/defaults/profilepicture.jpg" alt="No Profile Picture"></td>
+	    	<td class="narrow-cell"><img class="schooladministration-picture" src="{% static "www_slcschools_org/images/defaults/profilepicture.jpg" %}" alt="No Profile Picture"></td>
 	    	{% endif %}
     		<td>{{ person.employee.first_name }} {{ person.employee.last_name }}</td>
     		<td>{{ person.employee.job_title }}</td>

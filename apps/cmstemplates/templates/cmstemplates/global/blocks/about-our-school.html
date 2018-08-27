@@ -21,7 +21,6 @@
         <h2>Administration</h2>
         {% for admin in page.about_our_school.directoryentries_schooladministrator_node.all %}
 
-{% load static %}
     <div class="card horizontal">
       <div class="card-image">
         {% for profilepicture in admin.employee.images_profilepicture_node.all %}
