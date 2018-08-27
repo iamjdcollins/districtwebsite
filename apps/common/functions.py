@@ -5,6 +5,7 @@ import uuid
 from urllib.parse import urlparse
 from django.conf import settings
 from django.apps import apps
+from django.db.models import Q
 from django.core.mail import EmailMessage
 from django.contrib.auth import get_permission_codename
 from guardian.shortcuts import get_perms
@@ -545,6 +546,44 @@ def modelsave(self, *args, **kwargs):
 
     # Save the item
     super(self._meta.model, self).save(*args, **kwargs)
+    # Set the section page count
+    if self.pagelayout.namespace == 'site-section.html':
+        node = objectfindnode(self)
+        node.section_page_count = len(
+            self
+            .get_children()
+            .filter(
+                node_type='pages',
+                content_type='page',
+                published=True,
+                deleted=False,
+            )
+            .exclude(
+                pagelayout__namespace='site-section.html',
+            )
+        )
+        node.save()
+    else:
+        self.section_page_count = 1
+        if self.parent:
+            if self.parent.pagelayout.namespace == 'site-section.html':
+                self.parent.section_page_count = len(
+                    self.parent
+                    .get_children()
+                    .filter(
+                        node_type='pages',
+                        content_type='page',
+                        published=True,
+                        deleted=False,
+                    )
+                    .exclude(
+                        Q(pagelayout__namespace='site-section.html') |
+                        Q(pk=self.pk),
+                    )
+                )
+                if self.published and not self.deleted:
+                    self.parent.section_page_count += 1
+                self.parent.save()
     # # Move Directories for children then parent.
     if urlchanged:
         # Save Children to update their urls and move thier directories.
@@ -1134,6 +1173,14 @@ def is_siteadmin(request):
             request.user.is_superuser or
             request.user.groups.filter(name='Website Managers') or
             request.site.dashboard_sitepublisher_site.filter(account=request.user.pk)
+    ):
+        return True
+    return False
+
+def is_globaladmin(request):
+    if (
+            request.user.is_superuser or
+            request.user.groups.filter(name='Website Managers')
     ):
         return True
     return False
