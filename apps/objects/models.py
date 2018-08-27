@@ -36,6 +36,12 @@ class Node(MPTTModel):
         default=get_default_pagelayout,
         related_name='objects_node_pagelayout'
     )
+    section_page_count = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+        default=0,
+        db_index=True,
+    )
     requiredpage = models.ForeignKey(
         SiteTypeRequiredPage,
         blank=True,
