@@ -20,7 +20,49 @@
       <div id="administration" class="scrollspy contactcardlist">
         <h2>Administration</h2>
         {% for admin in page.about_our_school.directoryentries_schooladministrator_node.all %}
-        {% include "cmstemplates/www_slcschools_org/blocks/admindirectorylist.html" %}
+
+{% load static %}
+    <div class="card horizontal">
+      <div class="card-image">
+        {% for profilepicture in admin.employee.images_profilepicture_node.all %}
+        <img src="https://{{admin.site.domain}}{{profilepicture.url}}" alt="{{profilepicture.alttext}}"/>
+        {% empty %}
+        <img src="{% static "www_slcschools_org/images/defaults/profilepicture.jpg" %}" alt="No Profile Picture" />
+        {% endfor %}
+      </div>
+      <div class="card-stacked">
+        <div class="card-content">
+          <span class="card-title contactcardname">{{ admin.employee.first_name }} {{ admin.employee.last_name }}{% if admin.is_president %} - President{% elif admin.is_vicepresident %} - Vice President{% endif %}</span>
+          {% if pageopts.model_name == 'school' %}
+          <strong>{{ admin.schooladministratortype }}</strong> <br />
+          <strong>{{ admin.employee.job_title }}</strong> <br />
+          {% elif pageopts.model_name == 'department' or pageopts.model_name == 'subpage' %}
+          <strong>{{ admin.employee.job_title }}</strong> <br />
+          {% endif %}
+          {% if admin.precinct %}
+          <strong>Precinct: </strong>{{ admin.precinct }}{% for map in admin.precinct.files_precinctmap_node.all %}{% if forloop.first %} - <a href="{{ map.url }}" target="_blank">Map</a>{% endif %}{% endfor %}<br>
+          {% endif %}
+          {% if admin.street_address %}
+          <span class="material-icons tiny" aria-hidden="true">&#xE55F;</span> {{ admin.street_address }}<br>
+          <span class="material-icons tiny blank" aria-hidden="true"></span> {{ admin.city.title }}, {{admin.state.title}} {{admin.zipcode.title}}<br>
+          {% endif %}
+          {% if admin.phone %}
+          <a href="tel:+{{admin.phone|slice:"0:1"}}-{{admin.phone|slice:"1:4"}}-{{admin.phone|slice:"4:7"}}-{{admin.phone|slice:"7:11"}}">
+            <span class="material-icons tiny black-text" aria-hidden="true">&#xE0CD;</span> {{admin.phone|slice:"1:4"}}.{{admin.phone|slice:"4:7"}}.{{admin.phone|slice:"7:11"}}
+          </a><br>
+          {% endif %}
+          {% if admin.term_ends %}
+          <strong>Term Ends:</strong> {{ admin.term_ends|date:"F d, Y" }} <br>
+          {% endif %}
+          <br>
+          <a href="/contact-us/inline/?pid={{ page.uuid }}&cid={{admin.employee.pk}}" class="btn btn-wrap pagefeedback uninit modal-ajax">
+            <span class="md-send left notranslate" aria-hidden="true"> Send me a message</span>
+            <span class="sr-only">Send {{ admin.employee.first_name }} {{ admin.employee.last_name }} a Message</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
         {% endfor %}
       </div>
     </div>
