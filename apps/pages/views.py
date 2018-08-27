@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.http import HttpResponse, Http404
 from django.template import Context, Template, RequestContext
-from django.db.models import Prefetch
+from django.db.models import Q, Prefetch
 from django.utils import timezone
 from django.contrib import messages
 from django.apps import apps
@@ -2276,10 +2276,13 @@ def add_additional_context(request, context, node):
             .filter(
                 node_type='pages',
                 content_type='page',
-                published=True,
-                deleted=False,
+                published=1,
+                deleted=0,
             )
+            .order_by('page__page__inline_order')
         )
+        if not commonfunctions.is_siteadmin(request):
+            context['in_this_section'] = context['in_this_section'].filter(section_page_count__gte=1)
     except AttributeError:
         pass
     return context
@@ -2413,7 +2416,12 @@ def node_lookup(request):
                 content_type='page',
                 deleted=0,
                 published=1
-            ).first()
+            )
+            .exclude(
+                pagelayout__namespace='site-section.html'
+            )
+            .order_by('page__page__inline_order')
+            .first()
         )
         if first_child:
             return redirect(first_child.url)
