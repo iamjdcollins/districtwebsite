@@ -209,11 +209,11 @@ class CustomSearchForm(SearchForm):
         q = self.cleaned_data['q']
         sqs = SearchQuerySet().filter(SQ(content=AutoQuery(q)) | SQ(url=AutoQuery(q)) | SQ(node_type=AutoQuery(q)) | SQ(content_type=AutoQuery(q)))
 
+        if self.cleaned_data['site']:
+            sqs = sqs.filter(site=self.cleaned_data['site'])
+
         if self.load_all:
             sqs = sqs.load_all()
-
-        if self.cleaned_data['site']:
-            sqs.filter(site=self.cleaned_data['site'])
 
         return sqs
 
