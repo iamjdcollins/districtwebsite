@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "md";
-  src:url("/static/cmstemplates/src/fonts/md/md.1.eot");
-  src:url("/static/cmstemplates/src/fonts/md/md.1.eot?#iefix") format("embedded-opentype"),
-    url("/static/cmstemplates/src/fonts/md/md.1.woff") format("woff"),
-    url("/static/cmstemplates/src/fonts/md/md.1.ttf") format("truetype"),
-    url("/static/cmstemplates/src/fonts/md/md.1.svg#md") format("svg");
+  src:url("./md.9nsk76.eot");
+  src:url("./md.9nsk76.eot?#iefix") format("embedded-opentype"),
+    url("./md.9nsk76.woff") format("woff"),
+    url("./md.9nsk76.ttf") format("truetype"),
+    url("./md.9nsk76.svg#md") format("svg");
   font-weight: normal;
   font-style: normal;
 
@@ -131,7 +131,7 @@
 .md-exit:before {
   content: "\45";
 }
-.md-p:before {
+.md-group:before {
   content: "\46";
 }
 .md-key:before {
