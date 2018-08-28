@@ -136,6 +136,24 @@ class Page(BasePage):
                 'AnnouncementInline',
             ],
         },
+        'school-employees.html': {
+            'fields': [
+                'title',
+                'school_employees',
+                ['update_user', 'update_date'],
+                ['create_user', 'create_date'],
+            ],
+            'readonly_fields': [
+                'title',
+                'update_user',
+                'update_date',
+                'create_user',
+                'create_date',
+                'url',
+            ],
+            'inlines': [
+            ],
+        },
     }
 
     title = models.CharField(
@@ -156,6 +174,19 @@ class Page(BasePage):
             'deleted': False,
         },
         related_name='page_about_our_school',
+    )
+    school_employees = models.ForeignKey(
+        'self',
+        null=True,
+        blank=False,
+        limit_choices_to={
+            'url': '/employees/',
+            'site__domain': 'www.slcschools.org',
+            'published': 1,
+            'deleted': 0,
+        },
+        verbose_name='District Website Employees Page',
+        related_name='page_school_employees',
     )
 
     page_page_node = models.OneToOneField(
