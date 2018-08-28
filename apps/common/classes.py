@@ -213,7 +213,7 @@ class CustomSearchForm(SearchForm):
             sqs = sqs.load_all()
 
         if self.cleaned_data['site']:
-            sqs.filter(site__domain=self.cleaned_data['site'])
+            sqs.filter(site=self.cleaned_data['site'])
 
         return sqs
 
