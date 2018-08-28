@@ -194,6 +194,10 @@ class LinkToInlineObject(object):
 
 class CustomSearchForm(SearchForm):
 
+    site = forms.CharField(
+        widget = forms.HiddenInput
+    )
+
     def search(self):
         if not self.is_valid():
             return self.no_query_found()
@@ -207,16 +211,15 @@ class CustomSearchForm(SearchForm):
         if self.load_all:
             sqs = sqs.load_all()
 
+        if self.clean_data['site']:
+            sqs.filter(site=self.clean_data['site'])
+
         return sqs
 
 
 class CustomSearchView(SearchView, TemplateResponseMixin):
 
     form_class=CustomSearchForm
-
-    def get_queryset(self):
-        queryset = super(CustomSearchView, self).get_queryset()
-        return queryset.filter(site=self.request.site)
 
     def get_template_names(self):
         template_name='cmstemplates/{0}/pagelayouts/search-results.html'.format(
