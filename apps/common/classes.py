@@ -214,6 +214,10 @@ class CustomSearchView(SearchView, TemplateResponseMixin):
 
     form_class=CustomSearchForm
 
+    def get_queryset(self):
+        queryset = super(CustomSearchView, self).get_queryset()
+        return queryset.filter(site=self.request.site)
+
     def get_template_names(self):
         template_name='cmstemplates/{0}/pagelayouts/search-results.html'.format(
             self.request.site.dashboard_general_site.template.namespace
