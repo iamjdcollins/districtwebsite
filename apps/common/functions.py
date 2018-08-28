@@ -564,7 +564,8 @@ def modelsave(self, *args, **kwargs):
         )
         node.save()
     else:
-        self.section_page_count = 1
+        node = objectfindnode(self)
+        node.section_page_count = 1
         if self.parent:
             if self.parent.pagelayout.namespace == 'site-section.html':
                 self.parent.section_page_count = len(
@@ -584,6 +585,7 @@ def modelsave(self, *args, **kwargs):
                 if self.published and not self.deleted:
                     self.parent.section_page_count += 1
                 self.parent.save()
+        node.save()
     # # Move Directories for children then parent.
     if urlchanged:
         # Save Children to update their urls and move thier directories.
