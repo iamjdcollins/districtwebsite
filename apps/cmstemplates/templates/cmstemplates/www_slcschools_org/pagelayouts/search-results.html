@@ -16,14 +16,14 @@
 <div class="card">
   <div id="main" class="card-content">
     <form class="textfieldboxes" action="/search/results/">
+      <div class="input-field hide">
+        <input id="site" name="site" title="Site" type="hidden" value="{{ request.site }}">
+        <label for="site" class="">Site</label>
+      </div>
       <div class="input-field">
         <input id="tableSearch" name="q" class="autocomplete" title="Search This Website" type="text">
         <label for="tableSearch" class="">Search This Website</label>
         <button type="submit" class="btn tableSearchSubmit white-text"><span class="material-icons no-sr" aria-hidden="true">&#xE8B6;</span></button>
-      </div>
-      <div class="input-field hide">
-        <input id="tableSearch" name="site" class="autocomplete" title="Site" type="text" value="{{ request.site }}" disabled>
-        <label for="tableSearch" class="">Site</label>
       </div>
     </form>
     <h1>Search Results</h1>

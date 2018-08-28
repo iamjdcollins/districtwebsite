@@ -195,7 +195,8 @@ class LinkToInlineObject(object):
 class CustomSearchForm(SearchForm):
 
     site = forms.CharField(
-        widget = forms.HiddenInput
+        widget=forms.HiddenInput,
+        required=False,
     )
 
     def search(self):
@@ -211,8 +212,8 @@ class CustomSearchForm(SearchForm):
         if self.load_all:
             sqs = sqs.load_all()
 
-        if self.clean_data['site']:
-            sqs.filter(site__domain=self.clean_data['site'])
+        if self.cleaned_data['site']:
+            sqs.filter(site__domain=self.cleaned_data['site'])
 
         return sqs
 
