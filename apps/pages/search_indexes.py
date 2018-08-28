@@ -3,6 +3,7 @@ from .models import Page, School, Department, SubPage, Board, BoardSubPage
 
 class PageIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    site = indexes.CharField(model_attr='site__domain')
     url = indexes.CharField(model_attr='url',boost=1.125)
     node_type = indexes.CharField(model_attr='node_type',boost=1.125)
     content_type = indexes.CharField(model_attr='content_type',boost=1.125)
@@ -17,6 +18,7 @@ class PageIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SchoolIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    site = indexes.CharField(model_attr='site__domain')
     url = indexes.CharField(model_attr='url',boost=1.125)
     node_type = indexes.CharField(model_attr='node_type',boost=1.125)
     content_type = indexes.CharField(model_attr='content_type',boost=1.125)
@@ -31,6 +33,7 @@ class SchoolIndex(indexes.SearchIndex, indexes.Indexable):
 
 class DepartmentIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    site = indexes.CharField(model_attr='site__domain')
     url = indexes.CharField(model_attr='url',boost=1.125)
     node_type = indexes.CharField(model_attr='node_type',boost=1.125)
     content_type = indexes.CharField(model_attr='content_type',boost=1.125)
@@ -45,6 +48,7 @@ class DepartmentIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SubPageIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    site = indexes.CharField(model_attr='site__domain')
     url = indexes.CharField(model_attr='url',boost=1.125)
     node_type = indexes.CharField(model_attr='node_type',boost=1.125)
     content_type = indexes.CharField(model_attr='content_type',boost=1.125)
@@ -59,6 +63,7 @@ class SubPageIndex(indexes.SearchIndex, indexes.Indexable):
 
 class BoardIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    site = indexes.CharField(model_attr='site__domain')
     url = indexes.CharField(model_attr='url',boost=1.125)
     node_type = indexes.CharField(model_attr='node_type',boost=1.125)
     content_type = indexes.CharField(model_attr='content_type',boost=1.125)
@@ -73,6 +78,7 @@ class BoardIndex(indexes.SearchIndex, indexes.Indexable):
 
 class BoardSubPageIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    site = indexes.CharField(model_attr='site__domain')
     url = indexes.CharField(model_attr='url',boost=1.125)
     node_type = indexes.CharField(model_attr='node_type',boost=1.125)
     content_type = indexes.CharField(model_attr='content_type',boost=1.125)
