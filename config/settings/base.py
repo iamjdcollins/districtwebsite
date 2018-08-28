@@ -453,7 +453,7 @@ PIPELINE = {
             'output_filename': 'cmstemplates/build/material-standard/material-standard.min.js',
         },
         'innovate-standard': {
-            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['global'] + CMSTEMPLATES['javascript']['frontend'] + CMSTEMPLATES['javascript']['innovate'],
+            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['modaal043'] + CMSTEMPLATES['javascript']['global'] + CMSTEMPLATES['javascript']['frontend'] + CMSTEMPLATES['javascript']['innovate'],
             'output_filename': 'cmstemplates/build/innovate-standard/innovate-standard.min.js',
         },
         'inspire-standard': {
