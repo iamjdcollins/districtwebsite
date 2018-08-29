@@ -25,6 +25,7 @@ from django.contrib.sites.models import Site
 from multisite.models import Alias
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from pilkit.utils import suggest_extension
+from threading import Thread
 
 
 def multisite_fallback_view(request):
@@ -401,7 +402,7 @@ def modelsave(self, *args, **kwargs):
         )
     if not is_new and (oldurl != self.url):
         urlchanged = True
-        email = urlchanged_email(self, oldurl)
+        Thread(target=urlchanged_email, args=(self, oldurl)).start()
     # # Set new name for file fields
     # currentname = None
     # newname = None
