@@ -2,7 +2,7 @@ import os
 import shutil
 import re
 import uuid
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlsplit, urlunsplit
 from django.conf import settings
 from django.apps import apps
 from django.db.models import Q
@@ -543,7 +543,12 @@ def modelsave(self, *args, **kwargs):
                         rr = re.sub(r'[ ]+', ' ', rr)
                         field_value = re.sub(re.escape(rx), rr, field_value)
             setattr(self, field.name, field_value)
-
+    # Set Link URL to absolute URL
+    try:
+        if self._meta.get_field('link_url'):
+            self.link_url = link_url_absolute(self)
+    except FieldDoesNotExist:
+        pass
     # Save the item
     super(self._meta.model, self).save(*args, **kwargs)
     # Set the section page count
@@ -1186,3 +1191,12 @@ def is_globaladmin(request):
     ):
         return True
     return False
+
+def link_url_absolute(self):
+    input_url = urlsplit(self.link_url)
+    working_url = list(input_url)
+    if self.link_url:
+        if not working_url[1]:
+            working_url[0] = 'https'
+            working_url[1] = self.site.domain
+    return urlunsplit(working_url)

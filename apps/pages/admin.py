@@ -2492,6 +2492,7 @@ class PageAdmin(MyDraggableMPTTAdmin, GuardedModelAdmin):
     form = make_ajax_form(Page, {'primary_contact': 'employee'} ,PageAdminForm)
 
     def get_fields(self, request, obj=None):
+        fields = []
         if request.site.domain != 'www.slcschools.org':
             if obj:
                 if obj.pagelayout.namespace in obj.TYPES:
@@ -2500,6 +2501,10 @@ class PageAdmin(MyDraggableMPTTAdmin, GuardedModelAdmin):
                     fields = []
             else:
                 fields = []
+            # When adding fields with append below you should
+            # have a matching remove. For some reason if you
+            # do not fields appear inconsistently for different
+            # users.
             if request.user.is_superuser:
                 if 'searchable' not in fields:
                     fields.append('searchable')
@@ -2507,6 +2512,13 @@ class PageAdmin(MyDraggableMPTTAdmin, GuardedModelAdmin):
                     fields.append('parent')
                 if 'url' not in fields:
                     fields.append('url')
+            else:
+                if 'searchable' in fields:
+                    fields.remove('searchable')
+                if 'parent' in fields:
+                    fields.remove('parent')
+                if 'url' in fields:
+                    fields.remove('url')
             return fields
         elif request.site.domain == 'www.slcschools.org':
             fields = ['title', 'pagelayout', 'body','primary_contact',['update_user','update_date',],['create_user','create_date',],]
@@ -2525,9 +2537,16 @@ class PageAdmin(MyDraggableMPTTAdmin, GuardedModelAdmin):
                     fields = []
             else:
                 fields = ['title']
+            # When adding fields with append below you should
+            # have a matching remove. For some reason if you
+            # do not fields appear inconsistently for different
+            # users.
             if request.user.is_superuser:
                 if 'title' in fields:
                     fields.remove('title')
+            else:
+                if 'title' not in fields:
+                    fields.append('title')
             return fields
         elif request.site.domain == 'www.slcschools.org':
             fields = ['title','update_user','update_date','create_user','create_date',]
