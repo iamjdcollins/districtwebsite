@@ -733,7 +733,7 @@ def get_districtcalendareventcategory_general():
     )
     try:
         return DistrictCalendarEventCategory.objects.only('pk').get(
-            title='General Event').only('pk').pk
+            title='General Event').pk
     except DistrictCalendarEventCategory.DoesNotExist:
         return ''
 
