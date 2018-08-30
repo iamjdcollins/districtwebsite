@@ -711,10 +711,17 @@ def response_change(self, request, obj):
     return super(self.__class__, self).response_change(request, obj)
 
 
+def get_management_website():
+    Site = apps.get_model('sites', 'site')
+    try:
+        return Site.objects.only('pk').get(name='Website Management').pk
+    except Site.DoesNotExist:
+        return ''
+
 def get_district_office():
     Location = apps.get_model('taxonomy', 'location')
     try:
-        return Location.objects.get(title='District Office').pk
+         return Location.objects.only('pk').get(title='District Office').pk
     except Location.DoesNotExist:
         return ''
 
@@ -725,8 +732,8 @@ def get_districtcalendareventcategory_general():
         'districtcalendareventcategory'
     )
     try:
-        return DistrictCalendarEventCategory.objects.get(
-            title='General Event').pk
+        return DistrictCalendarEventCategory.objects.only('pk').get(
+            title='General Event').only('pk').pk
     except DistrictCalendarEventCategory.DoesNotExist:
         return ''
 

@@ -174,6 +174,7 @@ class Page(BasePage):
             'deleted': False,
         },
         related_name='page_about_our_school',
+        on_delete=models.SET_NULL,
     )
     school_employees = models.ForeignKey(
         'self',
@@ -187,6 +188,7 @@ class Page(BasePage):
         },
         verbose_name='District Website Employees Page',
         related_name='page_school_employees',
+        on_delete=models.CASCADE,
     )
 
     page_page_node = models.OneToOneField(
@@ -251,6 +253,7 @@ class Announcement(BasePage):
         null=True,
         related_name='pages_announcement_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     announcement_page_node = models.OneToOneField(
@@ -661,6 +664,7 @@ class BoardSubPage(BasePage):
         null=True,
         related_name='pages_boardsubpage_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     boardsubpage_page_node = models.OneToOneField(
@@ -957,6 +961,7 @@ class SuperintendentMessage(BasePage):
         null=True,
         related_name='pages_superintendentmessage_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     superintendentmessage_page_node = models.OneToOneField(
@@ -1055,6 +1060,7 @@ class SubPage(BasePage):
         null=True,
         related_name='pages_subpage_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     subpage_page_node = models.OneToOneField(

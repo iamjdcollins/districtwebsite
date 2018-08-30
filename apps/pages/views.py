@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.http import HttpResponse, Http404
 from django.template import Context, Template, RequestContext
-from django.db.models import Q, Prefetch
+from django.db.models import Q, Prefetch, Count, OuterRef
 from django.utils import timezone
 from django.contrib import messages
 from django.apps import apps
@@ -26,8 +26,15 @@ from apps.directoryentries.models import (
     SchoolStaff,
     SchoolFaculty,
 )
-from apps.links.models import ResourceLink, ActionButton
-from apps.documents.models import Document, BoardPolicy, Policy, AdministrativeProcedure, SupportingDocument
+from apps.links.models import ResourceLink, ActionButton, ClassWebsite
+from apps.documents.models import (
+    Document,
+    BoardPolicy,
+    Policy,
+    AdministrativeProcedure,
+    SupportingDocument,
+    DisclosureDocument,
+)
 from apps.files.models import File, AudioFile, VideoFile
 from apps.events.models import BoardMeeting, DistrictCalendarEvent
 from apps.users.models import Employee
@@ -716,6 +723,69 @@ def prefetch_documents_detail(qs):
         )
     )
 
+def prefetch_disclosuredocuments_detail(qs):
+    prefetchqs = (
+        DisclosureDocument
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .annotate(
+            file_count=Count(
+                'files_file_node',
+                filter=Q(
+                    files_file_node__published=1,
+                    files_file_node__deleted=0,
+                )
+            )
+        )
+        .filter(file_count__gt=0)
+        .order_by('inline_order')
+        .only(
+            'pk',
+            'title',
+            'inline_order',
+            'related_node'
+            )
+        .prefetch_related(
+            Prefetch(
+                'files_file_node',
+                queryset=(
+                    File
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .order_by(
+                        'file_language__lft',
+                        'file_language__title',
+                        )
+                    .only(
+                        'title',
+                        'file_file',
+                        'file_language',
+                        'related_node',
+                        )
+                    .prefetch_related(
+                        Prefetch(
+                            'file_language',
+                            queryset=(
+                                Language
+                                .objects
+                                .filter(deleted=0)
+                                .filter(published=1)
+                                .only('title')
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    return qs.prefetch_related(
+        Prefetch(
+            'documents_disclosuredocument_node',
+            queryset=prefetchqs,
+        )
+    )
 
 def prefetch_contentbanner_detail(qs):
     prefetchqs = (
@@ -737,7 +807,7 @@ def prefetch_contentbanner_detail(qs):
     )
 
 
-def prefecth_actionbuttons_detail(qs):
+def prefetch_actionbuttons_detail(qs):
     prefetchqs = (
         ActionButton
         .objects
@@ -759,7 +829,7 @@ def prefecth_actionbuttons_detail(qs):
     )
 
 
-def prefecth_resourcelinks_detail(qs):
+def prefetch_resourcelinks_detail(qs):
     prefetchqs = (
         ResourceLink
         .objects
@@ -780,7 +850,28 @@ def prefecth_resourcelinks_detail(qs):
         )
     )
 
-def prefecth_announcement_detail(qs):
+def prefetch_classwebsite_detail(qs):
+    prefetchqs = (
+        ClassWebsite
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .only(
+            'pk',
+            'title',
+            'link_url',
+            'inline_order',
+            'related_node',
+        )
+    )
+    return qs.prefetch_related(
+        Prefetch(
+            'links_classwebsite_node',
+            queryset=prefetchqs,
+        )
+    )
+
+def prefetch_announcement_detail(qs):
     prefetchqs = (
         Announcement
         .objects
@@ -794,7 +885,7 @@ def prefecth_announcement_detail(qs):
         )
     )
 
-def prefecth_subjectgradelevel_detail(qs):
+def prefetch_subjectgradelevel_detail(qs):
     activesubjects = []
     page = qs[0]
     for person in page.directoryentries_schoolfaculty_node.all():
@@ -815,7 +906,7 @@ def prefecth_subjectgradelevel_detail(qs):
     )
 
 
-def prefecth_schooladministration_detail(qs):
+def prefetch_schooladministration_detail(qs):
     prefetchqs = (
         SchoolAdministration
         .objects
@@ -850,7 +941,7 @@ def prefecth_schooladministration_detail(qs):
     )
 
 
-def prefecth_schoolstaff_detail(qs):
+def prefetch_schoolstaff_detail(qs):
     prefetchqs = (
         SchoolStaff
         .objects
@@ -885,7 +976,7 @@ def prefecth_schoolstaff_detail(qs):
     )
 
 
-def prefecth_schoolfaculty_detail(qs):
+def prefetch_schoolfaculty_detail(qs):
     prefetchqs = (
         SchoolFaculty
         .objects
@@ -2428,6 +2519,53 @@ def node_lookup(request):
         else:
             if not commonfunctions.is_siteadmin(request):
                 raise Http404('Page not found.')
+    if node.pagelayout.namespace == 'disclosure-document.html':
+        item = (
+            Model
+            .objects
+            .filter(pk=node.pk)
+            .prefetch_related(
+                Prefetch(
+                    'files_file_node',
+                    queryset=(
+                        File
+                        .objects
+                        .filter(deleted=0)
+                        .filter(published=1)
+                        .order_by(
+                            'file_language__lft',
+                            'file_language__title',
+                        )
+                        .only(
+                            'title',
+                            'file_file',
+                            'file_language',
+                            'related_node',
+                        )
+                        .prefetch_related(
+                            Prefetch(
+                                'file_language',
+                                queryset=(
+                                    Language
+                                    .objects
+                                    .filter(deleted=0)
+                                    .filter(published=1)
+                                    .only('title')
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        item = item.first()
+        if item.files_file_node.all().count() == 1:
+            return redirect(item.files_file_node.first().url)
+        template = set_template(request, node)
+        context = {}
+        context['page'] = item
+        context['pageopts'] = context['page']._meta
+        return render(request, template, context)
     if node.node_type == 'pages':
         if request.method == 'POST':
             return redirect(process_post(request))
@@ -2444,20 +2582,21 @@ def node_lookup(request):
                 prefetch_building_location_detail(context['page'])
                 )
         context['page'] = prefetch_contentbanner_detail(context['page'])
-        context['page'] = prefecth_actionbuttons_detail(context['page'])
+        context['page'] = prefetch_actionbuttons_detail(context['page'])
         context['page'] = prefetch_boardmembers_detail(context['page'])
         context['page'] = prefetch_studentboardmember_detail(context['page'])
         context['page'] = prefetch_schooladministrators_detail(context['page'])
         context['page'] = prefetch_administrators_detail(context['page'])
         context['page'] = prefetch_staff_detail(context['page'])
-        context['page'] = prefecth_resourcelinks_detail(context['page'])
+        context['page'] = prefetch_resourcelinks_detail(context['page'])
         context['page'] = prefetch_documents_detail(context['page'])
+        context['page'] = prefetch_disclosuredocuments_detail(context['page'])
         context['page'] = prefetch_subpage_detail(context['page'])
-        context['page'] = prefecth_announcement_detail(context['page'])
-        context['page'] = prefecth_schooladministration_detail(context['page'])
-        context['page'] = prefecth_schoolstaff_detail(context['page'])
-        context['page'] = prefecth_schoolfaculty_detail(context['page'])
-        context['page'] = prefecth_subjectgradelevel_detail(context['page'])
+        context['page'] = prefetch_announcement_detail(context['page'])
+        context['page'] = prefetch_schooladministration_detail(context['page'])
+        context['page'] = prefetch_schoolstaff_detail(context['page'])
+        context['page'] = prefetch_schoolfaculty_detail(context['page'])
+        context['page'] = prefetch_subjectgradelevel_detail(context['page'])
         # Add additional context here
         context = add_additional_context(request, context, node)
         # Change Queryset into object
@@ -2837,17 +2976,19 @@ def node_lookup(request):
         return response
     if node.node_type == 'directoryentries':
         if node.content_type == 'schoolfaculty':
-            item = (
+            template = set_template(request, node)
+            context = {}
+            context['page'] = (
                 Model
                 .objects
                 .filter(deleted=0)
                 .filter(published=1)
                 .filter(pk=node.pk)
             )
-            template = set_template(request, node)
-            context = {}
+            context['page'] = prefetch_disclosuredocuments_detail(context['page'])
+            context['page'] = prefetch_classwebsite_detail(context['page'])
             context = add_additional_context(request, context, node)
-            context['page'] = item.first()
+            context['page'] = context['page'].first()
             context['pageopts'] = context['page']._meta
             return render(request, template, context)
     return HttpResponse(status=404)

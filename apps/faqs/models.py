@@ -30,6 +30,7 @@ class FAQ(BaseFAQ):
         null=True,
         related_name='faqs_faq_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     faq_faq_node = models.OneToOneField(

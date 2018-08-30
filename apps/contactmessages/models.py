@@ -72,6 +72,7 @@ class ContactMessage(BaseContactMessage):
         null=True,
         related_name='contactmessages_contactmessage_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     contactmessage_contactmessage_node = models.OneToOneField(

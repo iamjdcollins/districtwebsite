@@ -4,5 +4,39 @@
 <h2>About Me</h2>
 {{ page.body|safe|relink }}
 {% endif %}
+{% if page.documents_disclosuredocument_node.all %}
 <h2>Disclosure Documents</h2>
-<h2>Resources</h2>
+<div class="collection">
+  {% for document in page.documents_disclosuredocument_node.all %}
+  <a href="{{ document.url }}" class="collection-item{% if document.modal_ajax %} modal-ajax{% endif %}" {% if document.target_blank %}target="_blank"{% endif %}>
+    {% if document.modal_ajax %}
+    <span class="sr-only">Select Language for {{ document.title }}</span>
+    <span class="no-sr" aria-hidden="True">
+      {{ document.title }}
+      <span class="notranslate right md-document"></span>
+    </span>
+    {% else %}
+    <span class="sr-only">Open Document {{ document.title }}</span>
+    <span class="no-sr" aria-hidden="True">
+      {{ document.title }}
+      <span class="notranslate right md-document"></span>
+    </span>
+    {% endif %}
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+{% if page.links_classwebsite_node.all %}
+<h2>Class Websites</h2>
+<div class="collection">
+  {% for link in page.links_classwebsite_node.all %}
+  <a href="{{ link.link_url }}" class="collection-item">
+    <span class="sr-only">Go to {{ link.title }}</span>
+    <span class="no-sr" aria-hidden="True">
+      {{ link.title }}
+      <span class="notranslate right md-linkvariant"></span>
+    </span>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}

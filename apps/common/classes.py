@@ -9,7 +9,7 @@ from haystack.inputs import AutoQuery
 from ajax_select.lookup_channel import LookupChannel
 import uuid
 from django.utils.safestring import mark_safe
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.views.generic.base import TemplateResponseMixin
 from django import forms
 #Delete View
@@ -66,7 +66,7 @@ class UUIDLookupChannel(LookupChannel):
         Returns:
             list: list of Model objects
         """
-        if self.model._meta.pk.rel is not None:
+        if self.model._meta.pk.remote_field is not None:
             # Use the type of the field being referenced
             pk_type = self.model._meta.pk.target_field.to_python
         else:

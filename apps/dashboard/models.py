@@ -206,6 +206,7 @@ class SiteTypeRequiredPage(models.Model):
         related_name='dashboard_sitetyperequiredpage_pagelayout',
         db_index=True,
         verbose_name='Page Layout',
+        on_delete=models.PROTECT,
     )
     parent = models.ForeignKey(
       'self',
@@ -214,6 +215,7 @@ class SiteTypeRequiredPage(models.Model):
       related_name='dashboard_sitetyperequiredpage_parent',
       db_index=True,
       verbose_name='Parent Page',
+      on_delete=models.CASCADE,
     )
     sitetype = models.ForeignKey(
         SiteType,
@@ -221,6 +223,7 @@ class SiteTypeRequiredPage(models.Model):
         blank=False,
         related_name='dashboard_sitetyperequiredpage_sitetype',
         db_index=True,
+        on_delete=models.PROTECT,
     )
     create_date = models.DateTimeField(
         auto_now_add=True,
@@ -351,6 +354,7 @@ class GeneralSettings(models.Model):
         blank=True,
         related_name='dashboard_generalsettings_sitetype',
         db_index=True,
+        on_delete=models.PROTECT,
     )
     gatrackingid = models.CharField(
         max_length=20,

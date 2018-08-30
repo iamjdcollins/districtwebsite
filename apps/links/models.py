@@ -36,6 +36,7 @@ class ResourceLink(Link):
         null=True,
         related_name='links_resourcelink_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     resourcelink_link_node = models.OneToOneField(
@@ -90,6 +91,7 @@ class ActionButton(Link):
         null=True,
         related_name='links_actionbutton_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     actionbutton_link_node = models.OneToOneField(
@@ -117,6 +119,69 @@ class ActionButton(Link):
         )
         verbose_name = 'Action Button'
         verbose_name_plural = 'Action Buttons'
+        default_manager_name = 'objects'
+
+    def __str__(self):
+        return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class ClassWebsite(Link):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/classwebsite/'
+    HAS_PERMISSIONS = False
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+        verbose_name='Class Name',
+    )
+    link_url = models.CharField(
+        max_length=2000,
+        db_index=True
+    )
+
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='links_classwebsite_node',
+        editable=False,
+        on_delete=models.CASCADE,
+    )
+
+    classwebsite_link_node = models.OneToOneField(
+        Link,
+        db_column='classwebsite_link_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'links_classwebsite'
+        ordering = ['inline_order', ]
+        get_latest_by = 'update_date'
+        permissions = (
+            ('trash_classwebsite', 'Can soft delete class website'),
+            ('restore_resourcelink', 'Can restore class website'),
+        )
+        verbose_name = 'Class Website'
+        verbose_name_plural = 'Class Websites'
         default_manager_name = 'objects'
 
     def __str__(self):

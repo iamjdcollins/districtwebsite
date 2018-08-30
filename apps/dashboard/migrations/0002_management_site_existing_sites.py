@@ -9,10 +9,18 @@ def create_management_site(apps, schema_editor):
     Site = apps.get_model('sites', 'Site')
     Alias = apps.get_model('multisite', 'Alias')
     site, created = Site.objects.get_or_create(
-        domain='websites.slcschools.org'
+        domain='websites.slcschools.org',
+        defaults={'name': 'Website Management'}
     )
     site.name = 'Website Management'
     site.save()
+    alias, created = Alias.objects.get_or_create(
+        domain='websites.slcschools.org',
+        is_canonical=True,
+        redirect_to_canonical=False,
+        site=site
+    )
+    alias.save()
     alias, created = Alias.objects.get_or_create(
         domain='websites-dev.slcschools.org',
         is_canonical=None,
@@ -54,6 +62,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('dashboard', '0001_initial'),
+        ('multisite', '0001_initial'),
     ]
 
     operations = [
