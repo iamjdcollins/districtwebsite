@@ -1740,6 +1740,8 @@ class FileInline(
         'file_language__lft',
         'file_language__title',
     ]
+    verbose_name = 'File Translation'
+    verbose_name_plural = 'File Translations'
     extra = 0
     min_num = 0
     max_num = 50
@@ -2412,6 +2414,7 @@ class SchoolFacultyInlineForm(forms.ModelForm):
         fields = [
             'employee',
             'primary_subject',
+            'primary_contact',
             'additional_subjects',
             'pagelayout',
         ]
@@ -2420,8 +2423,14 @@ class SchoolFacultyInlineForm(forms.ModelForm):
         super(SchoolFacultyInlineForm, self).__init__(*args, **kwargs)
         self.fields['pagelayout'].initial = str(PageLayout.objects.get(namespace='school-faculty-my-page.html').pk)
         self.fields['pagelayout'].widget = forms.HiddenInput()
+        self.fields['primary_contact'].widget = forms.HiddenInput()
         if self.instance.pk:
-            pass
+            self.fields['employee'].disabled = True
+
+    def clean_primary_contact(self):
+        data = self.cleaned_data['employee']
+        return data
+
 
 
 class SchoolFacultyInline(

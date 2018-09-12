@@ -658,7 +658,8 @@ def save_formset(self, request, form, formset, change):
         obj.create_user = request.user
         obj.update_user = request.user
         obj.site = request.site
-        obj.primary_contact = request.user
+        if not obj.primary_contact:
+            obj.primary_contact = request.user
         obj.save()
     for obj in formset.changed_objects:
         obj[0].update_user = request.user
