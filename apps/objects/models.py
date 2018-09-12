@@ -4,7 +4,7 @@ import uuid
 from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import AbstractUser
 from django.contrib.sites.models import Site
-from apps.common.functions import get_default_pagelayout
+from apps.common.functions import get_default_pagelayout, get_management_website
 from apps.dashboard.models import PageLayout, SiteTypeRequiredPage
 
 
@@ -24,6 +24,7 @@ class Node(MPTTModel):
         null=False,
         on_delete=models.CASCADE,
         db_index=True,
+        default=get_management_website,
     )
     node_title = models.CharField(
       max_length=200,
@@ -55,6 +56,7 @@ class Node(MPTTModel):
       blank=True,
       related_name='objects_node_parent',
       db_index=True,
+      on_delete=models.CASCADE,
     )
     url = models.CharField(
       max_length=2000,

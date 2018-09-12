@@ -814,6 +814,7 @@ class SubjectGradeLevel(Taxonomy):
         null=True,
         related_name='taxonomy_subjectgradelevel_node',
         editable=False,
+        on_delete=models.CASCADE
     )
 
     subjectgradelevel_taxonomy_node = models.OneToOneField(

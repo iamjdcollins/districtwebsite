@@ -1,4 +1,5 @@
-Django==1.11.6
+# Django==1.11.6
+Django==2.0.0
 gunicorn==19.7.1
 pyasn1==0.3.7
 ldap3==2.3
@@ -10,8 +11,10 @@ chardet==3.0.4
 uuid==1.30
 django-ckeditor==5.3.1
 django-guardian==1.4.9
-django-jet==1.0.6
-django-mptt==0.8.7
+# django-jet==1.0.6
+django-jet==1.0.7
+# django-mptt==0.8.7
+django-mptt==0.9.1
 django-ajax-selects==1.6.1
 pysaml2==4.5.0
 pillow==4.3.0
@@ -33,7 +36,8 @@ textract==1.6.1
 xlrd==1.0.0
 XlsxWriter==1.0.2
 # Django Multisite
-django-multisite==1.4.1
+# django-multisite==1.4.1
+django-multisite==1.5.0
 requests-file==1.4.3
 tldextract==2.2.0
 # Django Pipeline

@@ -65,6 +65,7 @@ from apps.directoryentries.models import (
 from apps.links.models import (
     ResourceLink,
     ActionButton,
+    ClassWebsite,
 )
 from apps.documents.models import (
     Document,
@@ -99,7 +100,7 @@ import apps.common.functions
 from ckeditor.widgets import CKEditorWidget
 
 from django.utils.safestring import mark_safe
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from apps.dashboard.models import PageLayout
 
 
@@ -933,6 +934,52 @@ class ResourceLinkInline(
         return qs.filter(deleted=0)
 
 
+class ClassWebsiteInlineForm(forms.ModelForm):
+    class Meta:
+        model = ClassWebsite
+        fields = ['title', 'link_url', 'published']
+
+    def __init__(self, *args, **kwargs):
+        super(ClassWebsiteInlineForm, self).__init__(*args, **kwargs)
+
+
+class ClassWebsiteInline(
+    SortableInlineAdminMixin,
+    LinkToInlineObject,
+    admin.TabularInline
+):
+    model = ClassWebsite
+    form = ClassWebsiteInlineForm
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'link_url',
+        'update_user',
+        'update_date',
+        'published',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+
 class ActionButtonInlineForm(forms.ModelForm):
     class Meta:
         model = ActionButton
@@ -1039,7 +1086,7 @@ class DocumentInline(
 class DisclosureDocumentInlineForm(forms.ModelForm):
     class Meta:
         model = DisclosureDocument
-        fields = ['title']
+        fields = ['title', 'pagelayout',]
 
     def __init__(self, *args, **kwargs):
         super(DisclosureDocumentInlineForm, self).__init__(*args, **kwargs)
@@ -1061,6 +1108,7 @@ class DisclosureDocumentInline(
     fk_name = 'parent'
     fields = [
         'title',
+        'pagelayout',
         'update_user',
         'update_date',
         'edit_link',
@@ -1692,6 +1740,8 @@ class FileInline(
         'file_language__lft',
         'file_language__title',
     ]
+    verbose_name = 'File Translation'
+    verbose_name_plural = 'File Translations'
     extra = 0
     min_num = 0
     max_num = 50
@@ -2278,6 +2328,7 @@ class SchoolAdministrationInline(
         'update_user',
         'update_date',
         # 'edit_link',
+        'published',
         'copy_link',
     ]
     readonly_fields = [
@@ -2332,6 +2383,7 @@ class SchoolStaffInline(
         'update_user',
         'update_date',
         # 'edit_link',
+        'published',
         'copy_link',
     ]
     readonly_fields = [
@@ -2362,6 +2414,7 @@ class SchoolFacultyInlineForm(forms.ModelForm):
         fields = [
             'employee',
             'primary_subject',
+            'primary_contact',
             'additional_subjects',
             'pagelayout',
         ]
@@ -2370,13 +2423,19 @@ class SchoolFacultyInlineForm(forms.ModelForm):
         super(SchoolFacultyInlineForm, self).__init__(*args, **kwargs)
         self.fields['pagelayout'].initial = str(PageLayout.objects.get(namespace='school-faculty-my-page.html').pk)
         self.fields['pagelayout'].widget = forms.HiddenInput()
+        self.fields['primary_contact'].widget = forms.HiddenInput()
         if self.instance.pk:
-            pass
+            self.fields['employee'].disabled = True
+
+    def clean_primary_contact(self):
+        data = self.cleaned_data['employee']
+        return data
+
 
 
 class SchoolFacultyInline(
     LinkToInlineObject,
-    # EditLinkToInlineObject,
+    EditLinkToInlineObject,
     #SortableInlineAdminMixin,
     admin.TabularInline,
 ):
@@ -2394,16 +2453,18 @@ class SchoolFacultyInline(
         'employee',
         'primary_subject',
         'additional_subjects',
+        'primary_contact',
         'pagelayout',
         'update_user',
         'update_date',
-        # 'edit_link',
+        'edit_link',
+        'published',
         'copy_link',
     ]
     readonly_fields = [
         'update_user',
         'update_date',
-        # 'edit_link',
+        'edit_link',
         'copy_link',
     ]
     extra = 0
@@ -4523,7 +4584,7 @@ class SchoolFacultyAdmin(
     GuardedModelAdmin,
 ):
 
-    inlines = [ResourceLinkInline, DisclosureDocumentInline, ]
+    inlines = [DisclosureDocumentInline, ClassWebsiteInline, ]
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):

@@ -9,6 +9,7 @@ from haystack.views import SearchView
 from django.http import HttpResponse
 from socket import gethostname
 
+app_name = 'config'
 urlpatterns = [
 url(r'^saml_login/', include('apps.thirdparty.django_saml2_auth.django_saml2_auth.urls')),
 url(r'^accounts/login/$', apps.thirdparty.django_saml2_auth.django_saml2_auth.views.signin),
@@ -31,7 +32,7 @@ urlpatterns += [
 # Dashboard App
 
 urlpatterns += [
-    url(r'^manage/', include('apps.dashboard.urls', namespace='dashboard')),
+    url(r'^manage/', include('apps.dashboard.urls')),
 ]
 
 # Search Results
@@ -41,7 +42,7 @@ urlpatterns += [
 
 # Media Library
 urlpatterns += [
-    url(r'^medialibrary/', include('apps.medialibrary.urls', namespace='medialibrary')),
+    url(r'^medialibrary/', include('apps.medialibrary.urls')),
 ]
 
 admin.site.site_header = 'Salt Lake City School District'
@@ -63,5 +64,5 @@ if settings.DEBUG and settings.ENVIRONMENT_MODE == 'development':
 
 # Pages App Should be last since it matches all urls at the end.
 urlpatterns += [
-  url(r'', include('apps.pages.urls', namespace='pages')),
+  url(r'', include('apps.pages.urls')),
 ]

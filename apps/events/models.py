@@ -80,6 +80,7 @@ class BoardMeeting(BaseEvent):
         null=True,
         related_name='events_boardmeeting_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     event_boardmeeting_node = models.OneToOneField(
@@ -160,6 +161,7 @@ class DistrictCalendarEvent(BaseEvent):
         blank=True,
         related_name='events_districtcalendarevent_event_type',
         default=commonfunctions.get_districtcalendareventcategory_general,
+        on_delete=models.PROTECT,
     )
     startdate = models.DateTimeField(
         default=commonfunctions.tomorrow_midnight,
@@ -216,6 +218,7 @@ class DistrictCalendarEvent(BaseEvent):
         null=True,
         related_name='events_districtcalendarevent_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     districtcalendarevent_event_node = models.OneToOneField(

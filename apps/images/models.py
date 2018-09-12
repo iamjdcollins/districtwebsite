@@ -34,6 +34,7 @@ class Thumbnail(Image):
         null=True,
         related_name='images_thumbnail_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     thumbnail_image_node = models.OneToOneField(
@@ -93,6 +94,7 @@ class NewsThumbnail(Image):
         null=True,
         related_name='images_newsthumbnail_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     newsthumbnail_image_node = models.OneToOneField(
@@ -153,6 +155,7 @@ class PageBanner(Image):
         null=True,
         related_name='images_pagebanner_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     pagebanner_image_node = models.OneToOneField(
@@ -213,6 +216,7 @@ class ContentBanner(Image):
         null=True,
         related_name='images_contentbanner_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     contentbanner_image_node = models.OneToOneField(
@@ -283,6 +287,7 @@ class ProfilePicture(Image):
         null=True,
         related_name='images_profilepicture_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     profilepicture_image_node = models.OneToOneField(
@@ -343,6 +348,7 @@ class DistrictLogoGIF(Image):
         null=True,
         related_name='images_districtlogogif_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     districtlogogif_image_node = models.OneToOneField(
@@ -403,6 +409,7 @@ class DistrictLogoJPG(Image):
         null=True,
         related_name='images_districtlogojpg_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     districtlogojpg_image_node = models.OneToOneField(
@@ -463,6 +470,7 @@ class DistrictLogoPNG(Image):
         null=True,
         related_name='images_districtlogopng_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     districtlogopng_image_node = models.OneToOneField(
@@ -523,6 +531,7 @@ class DistrictLogoTIF(Image):
         null=True,
         related_name='images_districtlogotif_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     districtlogotif_image_node = models.OneToOneField(
@@ -593,12 +602,14 @@ class DistrictLogo(Image):
         blank=True,
         null=True,
         related_name='images_districtlogo_node',
+        on_delete=models.CASCADE,
     )
 
     districtlogo_image_node = models.OneToOneField(
         Image,
         db_column='districtlogo_image_node',
         on_delete=models.CASCADE,
+        parent_link=True,
     )
 
     class Meta:
@@ -640,12 +651,14 @@ class PhotoGallery(Image):
         blank=True,
         null=True,
         related_name='images_photogallery_node',
+        on_delete=models.CASCADE,
     )
 
     photogallery_image_node = models.OneToOneField(
         Image,
         db_column='photogallery_image_node',
         on_delete=models.CASCADE,
+        parent_link=True,
     )
 
     inline_order = models.PositiveIntegerField(
@@ -725,12 +738,14 @@ class PhotoGalleryImage(Image):
         blank=True,
         null=True,
         related_name='images_photogalleryimage_node',
+        on_delete=models.CASCADE,
     )
 
     photogallery_image_node = models.OneToOneField(
         Image,
         db_column='photogalleryimage_image_node',
         on_delete=models.CASCADE,
+        parent_link=True,
     )
 
     inline_order = models.PositiveIntegerField(
@@ -788,6 +803,7 @@ class InlineImage(Image):
         null=True,
         related_name='images_inlineimage_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     inlineimage_image_node = models.OneToOneField(

@@ -37,6 +37,7 @@ class File(BaseFile):
         null=True,
         related_name='files_file_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     file_file_node = models.OneToOneField(
@@ -89,6 +90,7 @@ class AudioFile(BaseFile):
         null=True,
         related_name='files_audiofile_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     audiofile_file_node = models.OneToOneField(
@@ -141,6 +143,7 @@ class VideoFile(BaseFile):
         null=True,
         related_name='files_videofile_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     videofile_file_node = models.OneToOneField(
@@ -193,6 +196,7 @@ class PrecinctMap(BaseFile):
         null=True,
         related_name='files_precinctmap_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     file_file_node = models.OneToOneField(

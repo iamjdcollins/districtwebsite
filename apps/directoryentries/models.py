@@ -43,6 +43,7 @@ class SchoolAdministrator(DirectoryEntry):
         null=True,
         related_name='directoryentries_schooladministrator_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     schooladministrator_directoryentry_node = models.OneToOneField(
@@ -105,6 +106,7 @@ class Administrator(DirectoryEntry):
         null=True,
         related_name='directoryentries_administrator_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     administrator_directoryentry_node = models.OneToOneField(
@@ -167,6 +169,7 @@ class Staff(DirectoryEntry):
         null=True,
         related_name='directoryentries_staff_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     staff_directoryentry_node = models.OneToOneField(
@@ -289,6 +292,7 @@ class BoardMember(DirectoryEntry):
         null=True,
         related_name='directoryentries_boardmember_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     boardmember_directoryentry_node = models.OneToOneField(
@@ -361,6 +365,7 @@ class StudentBoardMember(DirectoryEntry):
         null=True,
         related_name='directoryentries_studentboardmember_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     studentboardmember_directoryentry_node = models.OneToOneField(
@@ -407,6 +412,7 @@ class BoardPolicyAdmin(DirectoryEntry):
         null=True,
         related_name='directoryentries_boardpolicyadmin_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     boardpolicyadmin_directoryentry_node = models.OneToOneField(
@@ -461,6 +467,7 @@ class SchoolAdministration(DirectoryEntry):
         blank=True,
         related_name='directoryentries_schooladministration_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     schooladministration_directoryentry_node = models.OneToOneField(
@@ -525,6 +532,7 @@ class SchoolStaff(DirectoryEntry):
         blank=True,
         related_name='directoryentries_schoolstaff_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     schoolstaff_directoryentry_node = models.OneToOneField(
@@ -615,6 +623,7 @@ class SchoolFaculty(DirectoryEntry):
         blank=True,
         related_name='directoryentries_schoolfaculty_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     schoolfaculty_directoryentry_node = models.OneToOneField(

@@ -26,6 +26,7 @@ class Document(BaseDocument):
         null=True,
         related_name='documents_document_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     document_document_node = models.OneToOneField(
@@ -81,6 +82,7 @@ class DisclosureDocument(BaseDocument):
     title = models.CharField(
         max_length=200,
         help_text='',
+        verbose_name='Class Name',
     )
     related_node = models.ForeignKey(
         Node,
@@ -88,6 +90,7 @@ class DisclosureDocument(BaseDocument):
         null=True,
         related_name='documents_disclosuredocument_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     disclosuredocument_document_node = models.OneToOneField(
@@ -124,6 +127,24 @@ class DisclosureDocument(BaseDocument):
 
     def force_title(self):
         return self.title if self.title else ''
+
+    def has_files(self):
+        doc_len = self.files_file_node.filter(published=1, deleted=0).count()
+        if doc_len > 1:
+            return True
+        return False
+
+    def modal_ajax(self):
+        doc_len = self.files_file_node.filter(published=1, deleted=0).count()
+        if doc_len > 1:
+            return True
+        return False
+
+    def target_blank(self):
+        doc_len = self.files_file_node.filter(published=1, deleted=0).count()
+        if doc_len > 1:
+            return False
+        return True
 
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
@@ -175,6 +196,7 @@ class BoardPolicy(BaseDocument):
         null=True,
         related_name='documents_boardpolicy_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     document_boardpolicy_node = models.OneToOneField(
@@ -230,6 +252,7 @@ class Policy(BaseDocument):
         null=True,
         related_name='documents_policy_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     document_policy_node = models.OneToOneField(
@@ -278,6 +301,7 @@ class AdministrativeProcedure(BaseDocument):
         null=True,
         related_name='documents_administrativeprocedure_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     document_administrativeprocedure_node = models.OneToOneField(
@@ -333,6 +357,7 @@ class SupportingDocument(BaseDocument):
         null=True,
         related_name='documents_supportingdocument_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     document_supportingdocument_node = models.OneToOneField(
@@ -389,6 +414,7 @@ class BoardMeetingAgenda(BaseDocument):
         null=True,
         related_name='documents_boardmeetingagenda_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     document_boardmeetingagenda_node = models.OneToOneField(
@@ -439,6 +465,7 @@ class BoardMeetingMinutes(BaseDocument):
         null=True,
         related_name='documents_boardmeetingminutes_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     document_boardmeetingminutes_node = models.OneToOneField(
@@ -489,6 +516,7 @@ class BoardMeetingAudio(BaseDocument):
         null=True,
         related_name='documents_boardmeetingaudio_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     boardmeetingaudio_document_node = models.OneToOneField(
@@ -537,6 +565,7 @@ class BoardMeetingVideo(BaseDocument):
         null=True,
         related_name='documents_boardmeetingvideo_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     boardmeetingvideo_document_node = models.OneToOneField(
@@ -585,6 +614,7 @@ class BoardMeetingExhibit(BaseDocument):
         null=True,
         related_name='documents_boardmeetingexhibit_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     boardmeetingexhibit_document_node = models.OneToOneField(
@@ -635,6 +665,7 @@ class BoardMeetingAgendaItem(BaseDocument):
         null=True,
         related_name='documents_boardmeetingagendaitem_node',
         editable=False,
+        on_delete=models.CASCADE,
     )
 
     boardmeetingagendaitem_document_node = models.OneToOneField(

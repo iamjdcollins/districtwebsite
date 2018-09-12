@@ -658,7 +658,8 @@ def save_formset(self, request, form, formset, change):
         obj.create_user = request.user
         obj.update_user = request.user
         obj.site = request.site
-        obj.primary_contact = request.user
+        if not obj.primary_contact:
+            obj.primary_contact = request.user
         obj.save()
     for obj in formset.changed_objects:
         obj[0].update_user = request.user
@@ -711,10 +712,17 @@ def response_change(self, request, obj):
     return super(self.__class__, self).response_change(request, obj)
 
 
+def get_management_website():
+    Site = apps.get_model('sites', 'site')
+    try:
+        return Site.objects.only('pk').get(name='Website Management').pk
+    except Site.DoesNotExist:
+        return ''
+
 def get_district_office():
     Location = apps.get_model('taxonomy', 'location')
     try:
-        return Location.objects.get(title='District Office').pk
+         return Location.objects.only('pk').get(title='District Office').pk
     except Location.DoesNotExist:
         return ''
 
@@ -725,7 +733,7 @@ def get_districtcalendareventcategory_general():
         'districtcalendareventcategory'
     )
     try:
-        return DistrictCalendarEventCategory.objects.get(
+        return DistrictCalendarEventCategory.objects.only('pk').get(
             title='General Event').pk
     except DistrictCalendarEventCategory.DoesNotExist:
         return ''
