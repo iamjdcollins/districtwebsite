@@ -82,6 +82,7 @@ class DisclosureDocument(BaseDocument):
     title = models.CharField(
         max_length=200,
         help_text='',
+        verbose_name='Class Name',
     )
     related_node = models.ForeignKey(
         Node,
