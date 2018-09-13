@@ -19,6 +19,9 @@
       {% endif %}
       <li><a class="yearnav" href="#yearnav" onclick="$('.inlinemodal').modaal('close');">Select School Year</a></li>
       <li><a href="#districtcalendarevents" onclick="$('.inlinemodal').modaal('close');">District Calendar Events</a></li>
+      {% if page.links_resourcelink_node.all %}
+      <li><a href="#resourcelinks" onclick="$('.inlinemodal').modaal('close');">Resources</a></li>
+      {% endif %}
       <li><a href="/calendars/guidelines-for-developing-calendar-options/" onclick="$('.inlinemodal').modaal('close');">Parameters for District Calendars</a></li>
       <li><a href="/schools/school-registration-dates/">School Registration Dates</a></li>
     </ul>
@@ -120,6 +123,38 @@
         {% endif %}
       </div>
     </div>
+    {% if page.links_resourcelink_node.all %}
+    <div class="row">
+      <div id="resourcelinks" class="scrollspy resourcelinks">
+        <h2>Resources</h2>
+        <div class="collection">
+          {% for resourcelink in page.links_resourcelink_node.all %}
+          <a href="{{ resourcelink.link_url }}" class="collection-item{% if resourcelink.modal_ajax %} modal-ajax{% endif %}" {% if resourcelink.target_blank %}target="_blank"{% endif %}>
+            {% if resourcelink.related_type == 'documents-document' and resourcelink.modal_ajax %}
+            <span class="sr-only">Select Language for {{ resourcelink.title }}</span>
+            <span class="no-sr" aria-hidden="True">
+              {{ resourcelink.title }}
+              <span class="notranslate right md-document"></span>
+            </span>
+            {% elif resourcelink.related_type == 'documents-document' %}
+            <span class="sr-only">Open Document {{ resourcelink.title }}</span>
+            <span class="no-sr" aria-hidden="True">
+              {{ resourcelink.title }}
+              <span class="notranslate right md-document"></span>
+            </span>
+            {% else %}
+            <span class="sr-only">Goto {{ resourcelink.title }}</span>
+            <span class="no-sr" aria-hidden="True">
+              {{ resourcelink.title }}
+              <span class="notranslate right md-linkvariant"></span>
+            </span>
+            {% endif %}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
   {{ block.super }}
 </div>

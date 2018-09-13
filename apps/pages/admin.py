@@ -4464,7 +4464,7 @@ class FAQAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
 class DistrictCalendarYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
-    inlines = [DistrictCalendarEventInline,]
+    inlines = [DistrictCalendarEventInline,ResourceLinkInline, DocumentInline, ]
 
     def get_inline_instances(self, request, obj=None):
         inline_instances = []
