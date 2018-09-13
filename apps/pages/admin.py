@@ -102,6 +102,7 @@ from ckeditor.widgets import CKEditorWidget
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 from apps.dashboard.models import PageLayout
+from apps.users.models import PageEditor
 
 
 class ProfilePictureInline(
@@ -2432,7 +2433,6 @@ class SchoolFacultyInlineForm(forms.ModelForm):
         return data
 
 
-
 class SchoolFacultyInline(
     LinkToInlineObject,
     EditLinkToInlineObject,
@@ -2470,6 +2470,57 @@ class SchoolFacultyInline(
     extra = 0
     min_num = 0
     max_num = 100
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+
+class PageEditorInlineForm(forms.ModelForm):
+    class Meta:
+        model = PageEditor
+        fields = [
+            'employee',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(PageEditorInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.employee_id:
+            self.fields['employee'].disabled = True
+
+
+class PageEditorInline(
+    admin.TabularInline,
+):
+    model = PageEditor
+    form = make_ajax_form(PageEditor, {
+                          'employee': 'employee'}, PageEditorInlineForm)
+    verbose_name = 'Page Editor'
+    verbose_name_plural = 'Page Editors'
+    fk_name = 'related_node'
+    ordering = [
+        'employee__first_name',
+        'employee__last_name',
+    ]
+    fields = [
+        'employee',
+        'update_user',
+        'update_date',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 10
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
@@ -2627,6 +2678,12 @@ class PageAdmin(MyDraggableMPTTAdmin, GuardedModelAdmin):
                     inlines = obj.TYPES[obj.pagelayout.namespace]['inlines']
                 else:
                     inlines = []
+                if apps.common.functions.is_globaladmin(request):
+                    if not 'PageEditorInline' in inlines:
+                        inlines.append('PageEditorInline')
+                else:
+                    if 'PageEditorInline' in inlines:
+                        inlines.remove('PageEditorInline')
             else:
                 inlines = []
             inlines = [getattr(sys.modules[__name__], inline) for inline in inlines]
