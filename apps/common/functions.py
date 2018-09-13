@@ -26,6 +26,7 @@ from multisite.models import Alias
 from django.contrib.admin.templatetags.admin_urls import add_preserved_filters
 from pilkit.utils import suggest_extension
 from threading import Thread
+from collections import OrderedDict
 
 
 def multisite_fallback_view(request):
@@ -222,23 +223,26 @@ def has_change_permission(self, request, obj=None):
         elif request.site.dashboard_sitepublisher_site.filter(account=request.user.pk):
             return True
     if obj:
-        if request.user.groups.filter(name='Website Managers'):
-            return True
-        elif request.site.dashboard_sitepublisher_site.filter(account=request.user.pk):
-            return True
-        if obj.has_permissions:
-            # Check for object level permission through Guardian
-            if get_permission_codename(
-                    'change', obj._meta) in get_perms(request.user, obj):
+        if request.user.is_authenticated:
+            if request.user.pk in can_edit_page(obj):
                 return True
-        else:
-            node = objectfindnode(obj)
-            permission_point = nodefindobject(
-                node.get_ancestors().filter(has_permissions=True).last())
-            if get_permission_codename(
-                    'change', permission_point._meta) in get_perms(
-                    request.user, permission_point):
-                return True
+        # if request.user.groups.filter(name='Website Managers'):
+        #     return True
+        # elif request.site.dashboard_sitepublisher_site.filter(account=request.user.pk):
+        #     return True
+        # if obj.has_permissions:
+        #     # Check for object level permission through Guardian
+        #     if get_permission_codename(
+        #             'change', obj._meta) in get_perms(request.user, obj):
+        #         return True
+        # else:
+        #     node = objectfindnode(obj)
+        #     permission_point = nodefindobject(
+        #         node.get_ancestors().filter(has_permissions=True).last())
+        #     if get_permission_codename(
+        #             'change', permission_point._meta) in get_perms(
+        #             request.user, permission_point):
+        #         return True
     return False
 
 
@@ -658,8 +662,11 @@ def save_formset(self, request, form, formset, change):
         obj.create_user = request.user
         obj.update_user = request.user
         obj.site = request.site
-        if not obj.primary_contact:
-            obj.primary_contact = request.user
+        try:
+            if not obj.primary_contact:
+                obj.primary_contact = request.user
+        except AttributeError:
+            pass
         obj.save()
     for obj in formset.changed_objects:
         obj[0].update_user = request.user
@@ -1209,3 +1216,97 @@ def link_url_absolute(self):
             working_url[0] = 'https'
             working_url[1] = self.site.domain
     return urlunsplit(working_url)
+
+def can_edit_page(node):
+    # Get Required Models
+    Employee = apps.get_model('users', 'Employee')
+    PageEditor = apps.get_model('users', 'PageEditor')
+    # Define the ordered dic to track all users
+    all_users = OrderedDict()
+    # Find all superusers
+    for username in (
+            Employee
+            .objects
+            .filter(
+                is_active=1,
+                deleted=0,
+                published=1,
+                is_superuser=1)
+            .values('pk', 'username')
+    ):
+        if username['pk'] in all_users:
+            all_users[username['pk']]['roles'].append('superuser')
+        else:
+            all_users[username['pk']] = {'username': username['username'], 'roles': ['superuser']}
+    # Find all website managers
+    for username in (
+            Employee
+            .objects
+            .filter(
+                is_active=1,
+                deleted=0,
+                published=1,
+                groups__name='Website Managers'
+            )
+            .values('pk', 'username')
+    ):
+        if username['pk'] in all_users:
+            all_users[username['pk']]['roles'].append('website_manager')
+        else:
+            all_users[username['pk']] = {'username': username['username'], 'roles': ['website_manager']}
+    # Final site publishers
+    for username in (
+        node
+        .site
+        .dashboard_sitepublisher_site
+        .all()
+        .only('account')
+    ):
+        if username.account.is_active:
+            if username.account.pk in all_users:
+                all_users[username.account.pk]['roles'].append('site_publisher')
+            else:
+                all_users[username.account.pk] = {'username': username.account.username, 'roles': ['site_publisher']}
+    # Find direct page editors for the node
+    for username in (
+        node
+        .users_pageeditor_node
+        .filter(
+            deleted=0,
+            employee__is_active=1,
+            employee__deleted=0,
+            employee__published=1
+        )
+        .values('employee__pk', 'employee__username')
+    ):
+        if username['employee__pk'] in all_users:
+            all_users[username['employee__pk']]['roles'].append('page_editor')
+        else:
+            all_users[username['employee__pk']] = {'username': username['employee__username'], 'roles': ['page_editor']}
+    # Find all parent nodes and their page editors
+    for node in (
+        node
+        .get_ancestors()
+        .filter(
+            deleted=0,
+            published=1
+        )
+    ):
+        for username in (
+            node
+            .users_pageeditor_node
+            .filter(
+                deleted=0,
+                employee__is_active=1,
+                employee__deleted=0,
+                employee__published=1
+            )
+            .values('employee__pk', 'employee__username')
+        ):
+            if username['employee__pk'] in all_users:
+                all_users[username['employee__pk']]['roles'].append('inherited_page_editor')
+            else:
+                all_users[username['employee__pk']] = {'username': username['employee__username'],
+                                                       'roles': ['inherited_page_editor']}
+    # Return the ordered dict
+    return all_users
