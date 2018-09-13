@@ -2,6 +2,8 @@ from django.conf.urls import url
 
 from . import views
 
+app_name = 'dashboard'
+
 urlpatterns = [
     url(r'^$', views.BaseURL.as_view(), name='baseurl'),
     url(r'^dashboard/$', views.Dashboard.as_view(), name='dashboard'),

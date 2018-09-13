@@ -3,6 +3,8 @@ from django.conf.urls import url
 from . import views
 from .models import Page
 
+app_name = 'pages'
+
 Pages = Page.objects.filter(deleted=0).filter(published=1)
 
 urlpatterns = [
