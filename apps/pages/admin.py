@@ -2689,6 +2689,12 @@ class PageAdmin(MyDraggableMPTTAdmin, GuardedModelAdmin):
             inlines = [getattr(sys.modules[__name__], inline) for inline in inlines]
         if request.site.domain == 'www.slcschools.org':
             inlines = self.inlines
+            if apps.common.functions.is_globaladmin(request):
+                if not PageEditorInline in inlines:
+                    inlines.append(PageEditorInline)
+            else:
+                if PageEditorInline in inlines:
+                    inlines.remove(PageEditorInline)
 
         for inline_class in inlines:
             inline = inline_class(self.model, self.admin_site)
@@ -2800,6 +2806,29 @@ class SchoolAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   inlines = [ThumbnailInline, ContentBannerInline, SchoolAdministratorInline, ResourceLinkInline, DocumentInline,]
 
+  def get_inline_instances(self, request, obj=None):
+      inline_instances = []
+      inlines = self.inlines
+      if apps.common.functions.is_globaladmin(request):
+          if not PageEditorInline in inlines:
+              inlines.append(PageEditorInline)
+      else:
+          if PageEditorInline in inlines:
+              inlines.remove(PageEditorInline)
+
+      for inline_class in inlines:
+          inline = inline_class(self.model, self.admin_site)
+          if request:
+              if not (inline.has_add_permission(request) or
+                      inline.has_change_permission(request, obj) or
+                      inline.has_delete_permission(request, obj)):
+                  continue
+              if not inline.has_add_permission(request):
+                  inline.max_num = 0
+          inline_instances.append(inline)
+
+      return inline_instances
+
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
           # Remove delete fields is not superuser
@@ -2850,6 +2879,29 @@ class DepartmentAdmin(MPTTModelAdmin,GuardedModelAdmin):
       return fields
 
   inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,SubPageInline]
+
+  def get_inline_instances(self, request, obj=None):
+      inline_instances = []
+      inlines = self.inlines
+      if apps.common.functions.is_globaladmin(request):
+          if not PageEditorInline in inlines:
+              inlines.append(PageEditorInline)
+      else:
+          if PageEditorInline in inlines:
+              inlines.remove(PageEditorInline)
+
+      for inline_class in inlines:
+          inline = inline_class(self.model, self.admin_site)
+          if request:
+              if not (inline.has_add_permission(request) or
+                      inline.has_change_permission(request, obj) or
+                      inline.has_delete_permission(request, obj)):
+                  continue
+              if not inline.has_add_permission(request):
+                  inline.max_num = 0
+          inline_instances.append(inline)
+
+      return inline_instances
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -2902,6 +2954,29 @@ class BoardAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   inlines = [ContentBannerInline,BoardMemberInline,StudentBoardMemberInline,ResourceLinkInline,DocumentInline,BoardSubPageInline,]
 
+  def get_inline_instances(self, request, obj=None):
+      inline_instances = []
+      inlines = self.inlines
+      if apps.common.functions.is_globaladmin(request):
+          if not PageEditorInline in inlines:
+              inlines.append(PageEditorInline)
+      else:
+          if PageEditorInline in inlines:
+              inlines.remove(PageEditorInline)
+
+      for inline_class in inlines:
+          inline = inline_class(self.model, self.admin_site)
+          if request:
+              if not (inline.has_add_permission(request) or
+                      inline.has_change_permission(request, obj) or
+                      inline.has_delete_permission(request, obj)):
+                  continue
+              if not inline.has_add_permission(request):
+                  inline.max_num = 0
+          inline_instances.append(inline)
+
+      return inline_instances
+
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
           # Remove delete fields is not superuser
@@ -2952,6 +3027,29 @@ class BoardSubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
       return fields
 
   inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,BoardPolicyInline,BoardPolicyReviewInline,BoardMeetingInline,SubPageInline,]
+
+  def get_inline_instances(self, request, obj=None):
+      inline_instances = []
+      inlines = self.inlines
+      if apps.common.functions.is_globaladmin(request):
+          if not PageEditorInline in inlines:
+              inlines.append(PageEditorInline)
+      else:
+          if PageEditorInline in inlines:
+              inlines.remove(PageEditorInline)
+
+      for inline_class in inlines:
+          inline = inline_class(self.model, self.admin_site)
+          if request:
+              if not (inline.has_add_permission(request) or
+                      inline.has_change_permission(request, obj) or
+                      inline.has_delete_permission(request, obj)):
+                  continue
+              if not inline.has_add_permission(request):
+                  inline.max_num = 0
+          inline_instances.append(inline)
+
+      return inline_instances
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -3071,6 +3169,29 @@ class NewsYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   inlines = [NewsInline, ]
 
+  def get_inline_instances(self, request, obj=None):
+      inline_instances = []
+      inlines = self.inlines
+      if apps.common.functions.is_globaladmin(request):
+          if not PageEditorInline in inlines:
+              inlines.append(PageEditorInline)
+      else:
+          if PageEditorInline in inlines:
+              inlines.remove(PageEditorInline)
+
+      for inline_class in inlines:
+          inline = inline_class(self.model, self.admin_site)
+          if request:
+              if not (inline.has_add_permission(request) or
+                      inline.has_change_permission(request, obj) or
+                      inline.has_delete_permission(request, obj)):
+                  continue
+              if not inline.has_add_permission(request):
+                  inline.max_num = 0
+          inline_instances.append(inline)
+
+      return inline_instances
+
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
           # Remove delete fields is not superuser
@@ -3145,6 +3266,29 @@ class SuperintendentMessageYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
       return fields
 
   inlines = [SuperintendentMessageInline,]
+
+  def get_inline_instances(self, request, obj=None):
+      inline_instances = []
+      inlines = self.inlines
+      if apps.common.functions.is_globaladmin(request):
+          if not PageEditorInline in inlines:
+              inlines.append(PageEditorInline)
+      else:
+          if PageEditorInline in inlines:
+              inlines.remove(PageEditorInline)
+
+      for inline_class in inlines:
+          inline = inline_class(self.model, self.admin_site)
+          if request:
+              if not (inline.has_add_permission(request) or
+                      inline.has_change_permission(request, obj) or
+                      inline.has_delete_permission(request, obj)):
+                  continue
+              if not inline.has_add_permission(request):
+                  inline.max_num = 0
+          inline_instances.append(inline)
+
+      return inline_instances
 
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
@@ -3554,6 +3698,29 @@ class SubPageAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
   inlines = [ContentBannerInline,ActionButtonInline,AdministratorInline,StaffInline,ResourceLinkInline,DocumentInline,DistrictLogoInline,]
 
+  def get_inline_instances(self, request, obj=None):
+      inline_instances = []
+      inlines = self.inlines
+      if apps.common.functions.is_globaladmin(request):
+          if not PageEditorInline in inlines:
+              inlines.append(PageEditorInline)
+      else:
+          if PageEditorInline in inlines:
+              inlines.remove(PageEditorInline)
+
+      for inline_class in inlines:
+          inline = inline_class(self.model, self.admin_site)
+          if request:
+              if not (inline.has_add_permission(request) or
+                      inline.has_change_permission(request, obj) or
+                      inline.has_delete_permission(request, obj)):
+                  continue
+              if not inline.has_add_permission(request):
+                  inline.max_num = 0
+          inline_instances.append(inline)
+
+      return inline_instances
+
   def get_formsets_with_inlines(self, request, obj=None):
       for inline in self.get_inline_instances(request, obj):
           # Remove delete fields is not superuser
@@ -3691,6 +3858,29 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
 class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     inlines = [BoardMeetingInline,]
+
+    def get_inline_instances(self, request, obj=None):
+        inline_instances = []
+        inlines = self.inlines
+        if apps.common.functions.is_globaladmin(request):
+            if not PageEditorInline in inlines:
+                inlines.append(PageEditorInline)
+        else:
+            if PageEditorInline in inlines:
+                inlines.remove(PageEditorInline)
+
+        for inline_class in inlines:
+            inline = inline_class(self.model, self.admin_site)
+            if request:
+                if not (inline.has_add_permission(request) or
+                        inline.has_change_permission(request, obj) or
+                        inline.has_delete_permission(request, obj)):
+                    continue
+                if not inline.has_add_permission(request):
+                    inline.max_num = 0
+            inline_instances.append(inline)
+
+        return inline_instances
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
@@ -4276,6 +4466,29 @@ class DistrictCalendarYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
 
     inlines = [DistrictCalendarEventInline,]
 
+    def get_inline_instances(self, request, obj=None):
+        inline_instances = []
+        inlines = self.inlines
+        if apps.common.functions.is_globaladmin(request):
+            if not PageEditorInline in inlines:
+                inlines.append(PageEditorInline)
+        else:
+            if PageEditorInline in inlines:
+                inlines.remove(PageEditorInline)
+
+        for inline_class in inlines:
+            inline = inline_class(self.model, self.admin_site)
+            if request:
+                if not (inline.has_add_permission(request) or
+                        inline.has_change_permission(request, obj) or
+                        inline.has_delete_permission(request, obj)):
+                    continue
+                if not inline.has_add_permission(request):
+                    inline.max_num = 0
+            inline_instances.append(inline)
+
+        return inline_instances
+
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
             # Remove delete fields is not superuser
@@ -4642,6 +4855,29 @@ class SchoolFacultyAdmin(
 ):
 
     inlines = [DisclosureDocumentInline, ClassWebsiteInline, ]
+
+    def get_inline_instances(self, request, obj=None):
+        inline_instances = []
+        inlines = self.inlines
+        if apps.common.functions.is_globaladmin(request):
+            if not PageEditorInline in inlines:
+                inlines.append(PageEditorInline)
+        else:
+            if PageEditorInline in inlines:
+                inlines.remove(PageEditorInline)
+
+        for inline_class in inlines:
+            inline = inline_class(self.model, self.admin_site)
+            if request:
+                if not (inline.has_add_permission(request) or
+                        inline.has_change_permission(request, obj) or
+                        inline.has_delete_permission(request, obj)):
+                    continue
+                if not inline.has_add_permission(request):
+                    inline.max_num = 0
+            inline_instances.append(inline)
+
+        return inline_instances
 
     def get_formsets_with_inlines(self, request, obj=None):
         for inline in self.get_inline_instances(request, obj):
