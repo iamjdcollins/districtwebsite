@@ -51,7 +51,7 @@ def get_current_domain(r):
 
 def get_reverse(objs):
     '''In order to support different django version, I have to do this '''
-    from django.core.urlresolvers import reverse
+    from django.urls import reverse
     if objs.__class__.__name__ not in ['list', 'tuple']:
         objs = [objs]
 
