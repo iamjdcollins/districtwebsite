@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+import uuid
 from django.db.models import Q
 import apps.common.functions as commonfunctions
 from apps.objects.models import Node, User
@@ -93,3 +95,63 @@ class System(User):
 
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
+
+
+class PageEditor(models.Model):
+
+    uuid = models.UUIDField(
+      primary_key=True,
+      unique=True,
+      default=uuid.uuid4,
+      editable=False,
+    )
+    employee = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE,
+        related_name='users_pageeditor_employee',
+    )
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='users_pageeditor_node',
+        editable=False,
+        on_delete=models.CASCADE,
+    )
+    create_date = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+    )
+    create_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        to_field='uuid',
+        on_delete=models.DO_NOTHING,
+        related_name='objects_pageeditor_create_user',
+    )
+    update_date = models.DateTimeField(
+        auto_now=True,
+        db_index=True,
+    )
+    update_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        to_field='uuid',
+        on_delete=models.DO_NOTHING,
+        related_name='objects_pageeditor_update_user',
+    )
+    deleted = models.BooleanField(
+        default=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'users_pageeditor'
+        get_latest_by = 'create_date'
+        verbose_name = 'Page Editor'
+        verbose_name_plural = 'Page Editors'
+
+    def __str__(self):
+        return '{0}'.format(self.employee.username)
