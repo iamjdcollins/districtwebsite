@@ -7,8 +7,8 @@
 	<div class="widget-container widget-box">
 		<div class="widget-title">In This Section</div>
 		<div class="widget-inner">
-			{%if SITEADMIN %}
-			<a id="editpagemodaal" href="{% url pageopts|admin_urlname:'change' page.parent.pk %}" class="pure-button narrow editlink">
+			{%if SITEADMIN and section.pk %}
+			<a id="editpagemodaal" href="{% url sectionopts|admin_urlname:'change' section.pk %}" class="pure-button narrow editlink">
               <span class="sr-only">Edit Section Pages</span>
               <span class="md-pencil no-sr" aria-hidden="true"> Edit Section Pages</span>
             </a>

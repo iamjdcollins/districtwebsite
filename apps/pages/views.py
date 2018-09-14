@@ -2602,6 +2602,14 @@ def node_lookup(request):
         # Change Queryset into object
         context['page'] = context['page'].first()
         context['pageopts'] = context['page']._meta
+        context['section'] = context['page'].get_ancestors(ascending=True).filter(
+            deleted=0,
+            published=1,
+            pagelayout__namespace='site-section.html'
+        ).first()
+        if context['section']:
+            context['section'] = commonfunctions.nodefindobject(context['section'])
+            context['sectionopts'] = context['section']._meta
         return render(request, template, context)
     if node.node_type == 'documents':
         if node.content_type == 'document':
@@ -2990,5 +2998,13 @@ def node_lookup(request):
             context = add_additional_context(request, context, node)
             context['page'] = context['page'].first()
             context['pageopts'] = context['page']._meta
+            context['section'] = context['page'].get_ancestors(ascending=True).filter(
+                deleted=0,
+                published=1,
+                pagelayout__namespace='site-section.html'
+            ).first()
+            if context['section']:
+                context['section'] = commonfunctions.nodefindobject(context['section'])
+                context['sectionopts'] = context['section']._meta
             return render(request, template, context)
     return HttpResponse(status=404)
