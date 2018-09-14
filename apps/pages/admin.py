@@ -128,6 +128,10 @@ class ProfilePictureInline(
     min_num = 1
     max_num = 1
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
 
 class ThumbnailInline(
     LinkToInlineObject,
@@ -154,6 +158,10 @@ class ThumbnailInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -190,6 +198,10 @@ class DistrictLogoGIFInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -224,6 +236,10 @@ class DistrictLogoJPGInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -260,6 +276,10 @@ class DistrictLogoPNGInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -294,6 +314,10 @@ class DistrictLogoTIFInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -352,6 +376,10 @@ class DistrictLogoInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -408,6 +436,10 @@ class NewsInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -458,6 +490,10 @@ class PhotoGalleryInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -507,6 +543,10 @@ class PhotoGalleryImageInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -543,6 +583,10 @@ class NewsThumbnailInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -581,6 +625,10 @@ class ContentBannerInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -627,6 +675,10 @@ class SchoolAdministratorInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -676,6 +728,10 @@ class AdministratorInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -718,11 +774,15 @@ class StaffInline(
         'copy_link',
     ]
     extra = 0
-    min_inum = 0
+    min_num = 0
     max_num = 50
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -774,6 +834,10 @@ class StudentBoardMemberInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -829,6 +893,10 @@ class BoardMemberInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -865,6 +933,10 @@ class BoardPolicyAdminInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -926,6 +998,10 @@ class ResourceLinkInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -971,6 +1047,10 @@ class ClassWebsiteInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -1019,6 +1099,10 @@ class ActionButtonInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -1075,6 +1159,10 @@ class DocumentInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -1129,6 +1217,10 @@ class DisclosureDocumentInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -1180,6 +1272,10 @@ class BoardPolicyInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
 
 class BoardPolicyReviewInlineForm(forms.ModelForm):
@@ -1237,6 +1333,10 @@ class BoardPolicyReviewInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -1287,6 +1387,10 @@ class PolicyInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -1340,6 +1444,10 @@ class AdministrativeProcedureInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -1390,6 +1498,10 @@ class SupportingDocumentInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -1442,6 +1554,10 @@ class BoardMeetingAgendaInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -1492,6 +1608,10 @@ class BoardMeetingMinutesInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -1544,6 +1664,10 @@ class BoardMeetingAudioInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -1594,6 +1718,10 @@ class BoardMeetingVideoInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -1646,6 +1774,10 @@ class BoardMeetingExhibitInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -1694,6 +1826,10 @@ class BoardMeetingAgendaItemInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -1750,6 +1886,10 @@ class FileInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -1794,6 +1934,10 @@ class AudioFileInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -1840,6 +1984,10 @@ class VideoFileInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -1872,6 +2020,10 @@ class PrecinctMapInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -1924,6 +2076,10 @@ class SubPageInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -1979,6 +2135,10 @@ class SectionPageInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -2029,6 +2189,10 @@ class BoardSubPageInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -2085,6 +2249,10 @@ class BoardMeetingInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -2136,6 +2304,10 @@ class SuperintendentMessageInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -2196,6 +2368,10 @@ class DistrictCalendarEventInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -2244,6 +2420,10 @@ class FAQInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -2291,6 +2471,10 @@ class AnnouncementInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -2344,6 +2528,10 @@ class SchoolAdministrationInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -2400,6 +2588,10 @@ class SchoolStaffInline(
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
 
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -2425,6 +2617,26 @@ class SchoolFacultyInlineForm(forms.ModelForm):
         self.fields['pagelayout'].initial = str(PageLayout.objects.get(namespace='school-faculty-my-page.html').pk)
         self.fields['pagelayout'].widget = forms.HiddenInput()
         self.fields['primary_contact'].widget = forms.HiddenInput()
+        self.fields['primary_subject'].queryset = (
+            SubjectGradeLevel
+            .objects
+            .filter(
+                site=self.request.site,
+                deleted=0,
+                published=1
+            )
+            .order_by('inline_order')
+        )
+        self.fields['additional_subjects'].queryset = (
+            SubjectGradeLevel
+            .objects
+            .filter(
+                site=self.request.site,
+                deleted=0,
+                published=1
+            )
+            .order_by('inline_order')
+        )
         if self.instance.pk:
             self.fields['employee'].disabled = True
 
@@ -2439,6 +2651,7 @@ class SchoolFacultyInline(
     #SortableInlineAdminMixin,
     admin.TabularInline,
 ):
+
     model = SchoolFaculty
     form = make_ajax_form(SchoolFaculty, {
                           'employee': 'employee'}, SchoolFacultyInlineForm)
@@ -2473,6 +2686,10 @@ class SchoolFacultyInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -2524,6 +2741,10 @@ class PageEditorInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -2577,6 +2798,10 @@ class SubjectGradeLevelInline(
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -2698,6 +2923,7 @@ class PageAdmin(MyDraggableMPTTAdmin, GuardedModelAdmin):
 
         for inline_class in inlines:
             inline = inline_class(self.model, self.admin_site)
+            # inline.request = request
             if request:
                 if not (inline.has_add_permission(request) or
                         inline.has_change_permission(request, obj) or
