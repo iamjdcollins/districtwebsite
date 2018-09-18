@@ -797,8 +797,9 @@ def prefetch_contentbanner_detail(qs):
             'image_file',
             'alttext',
             'related_node_id',
-            )
         )
+        .order_by('inline_order')
+    )
     return qs.prefetch_related(
         Prefetch(
             'images_contentbanner_node',
@@ -820,6 +821,7 @@ def prefetch_actionbuttons_detail(qs):
             'inline_order',
             'related_node',
         )
+        .order_by('inline_order')
     )
     return qs.prefetch_related(
         Prefetch(
@@ -842,6 +844,7 @@ def prefetch_resourcelinks_detail(qs):
             'inline_order',
             'related_node',
         )
+        .order_by('inline_order')
     )
     return qs.prefetch_related(
         Prefetch(
@@ -877,6 +880,7 @@ def prefetch_announcement_detail(qs):
         .objects
         .filter(deleted=0)
         .filter(published=1)
+        .order_by('inline_order')
     )
     return qs.prefetch_related(
         Prefetch(
@@ -897,6 +901,7 @@ def prefetch_subjectgradelevel_detail(qs):
         .filter(deleted=0)
         .filter(published=1)
         .filter(pk__in=activesubjects)
+        .order_by('inline_order')
     )
     return qs.prefetch_related(
         Prefetch(
@@ -914,6 +919,7 @@ def prefetch_schooladministration_detail(qs):
         .filter(published=1)
         .filter(employee__is_active=True)
         .filter(employee__is_staff=True)
+        .order_by('inline_order')
         .prefetch_related(
             Prefetch(
                 'employee',
@@ -949,6 +955,7 @@ def prefetch_schoolstaff_detail(qs):
         .filter(published=1)
         .filter(employee__is_active=True)
         .filter(employee__is_staff=True)
+        .order_by('inline_order')
         .prefetch_related(
             Prefetch(
                 'employee',

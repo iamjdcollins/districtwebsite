@@ -64,7 +64,7 @@ class ResourceLink(Link):
         )
         verbose_name = 'Resource Link'
         verbose_name_plural = 'Resource Links'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -119,7 +119,7 @@ class ActionButton(Link):
         )
         verbose_name = 'Action Button'
         verbose_name_plural = 'Action Buttons'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -182,7 +182,7 @@ class ClassWebsite(Link):
         )
         verbose_name = 'Class Website'
         verbose_name_plural = 'Class Websites'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title

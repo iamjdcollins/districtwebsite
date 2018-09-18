@@ -56,7 +56,7 @@ class Document(BaseDocument):
         )
         verbose_name = 'Document'
         verbose_name_plural = 'Documents'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -120,7 +120,7 @@ class DisclosureDocument(BaseDocument):
         )
         verbose_name = 'Disclosure Document'
         verbose_name_plural = 'Disclosure Documents'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -216,7 +216,7 @@ class BoardPolicy(BaseDocument):
         )
         verbose_name = 'Board Policy'
         verbose_name_plural = 'Board Policies'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def get_policy_index(self):
         return '{0}-{1}'.format(self.section.section_prefix, self.index)
@@ -272,7 +272,7 @@ class Policy(BaseDocument):
         )
         verbose_name = 'Policy'
         verbose_name_plural = 'Policies'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -323,7 +323,7 @@ class AdministrativeProcedure(BaseDocument):
         )
         verbose_name = 'Administrative Procedure'
         verbose_name_plural = 'Administrative Procedures'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -379,7 +379,7 @@ class SupportingDocument(BaseDocument):
         )
         verbose_name = 'Supporting Document'
         verbose_name_plural = 'Supporting Documents'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -436,7 +436,7 @@ class BoardMeetingAgenda(BaseDocument):
         )
         verbose_name = 'Board Meeting Agenda'
         verbose_name_plural = 'Board Meeting Agendas'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -487,7 +487,7 @@ class BoardMeetingMinutes(BaseDocument):
         )
         verbose_name = 'Board Meeting Minutes'
         verbose_name_plural = 'Board Meeting Minutes'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -536,7 +536,7 @@ class BoardMeetingAudio(BaseDocument):
         )
         verbose_name = 'Board Meeting Audio'
         verbose_name_plural = 'Board Meeting Audio'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -585,7 +585,7 @@ class BoardMeetingVideo(BaseDocument):
         )
         verbose_name = 'Board Meeting Video'
         verbose_name_plural = 'Board Meeting Videos'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -636,7 +636,7 @@ class BoardMeetingExhibit(BaseDocument):
         )
         verbose_name = 'Board Meeting Exhibit'
         verbose_name_plural = 'Board Meeting Exhibits'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -687,7 +687,7 @@ class BoardMeetingAgendaItem(BaseDocument):
         )
         verbose_name = 'Board Meeting Agenda Item'
         verbose_name_plural = 'Board Meeting Agenda Items'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title

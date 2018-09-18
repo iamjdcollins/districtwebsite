@@ -102,7 +102,7 @@ class ContactMessage(BaseContactMessage):
         )
         verbose_name = 'Contact Message'
         verbose_name_plural = 'Contact Message'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.message_subject

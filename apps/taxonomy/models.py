@@ -80,7 +80,7 @@ class Location(Taxonomy):
         )
         verbose_name = 'Location'
         verbose_name_plural = 'Locations'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -124,7 +124,7 @@ class City(Taxonomy):
         )
         verbose_name = 'City'
         verbose_name_plural = 'Cities'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -168,7 +168,7 @@ class State(Taxonomy):
         )
         verbose_name = 'State'
         verbose_name_plural = 'States'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -212,7 +212,7 @@ class Zipcode(Taxonomy):
         )
         verbose_name = 'ZIP Code'
         verbose_name_plural = 'ZIP Codes'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -288,7 +288,7 @@ class Language(Taxonomy):
         )
         verbose_name = 'Language'
         verbose_name_plural = 'Languages'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -333,7 +333,7 @@ class TranslationType(Taxonomy):
         )
         verbose_name = 'Translation Type'
         verbose_name_plural = 'Translation Types'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -376,7 +376,7 @@ class SchoolType(Taxonomy):
         )
         verbose_name = 'School Type'
         verbose_name_plural = 'School Types'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -420,7 +420,7 @@ class OpenEnrollmentStatus(Taxonomy):
                 'Can restore school open enrollment status'))
         verbose_name = 'Open Enrollment Status'
         verbose_name_plural = 'Open Enrollment Statuses'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -464,7 +464,7 @@ class SchoolAdministratorType(Taxonomy):
                 'Can restore school administrator type'))
         verbose_name = 'School Administrator Type'
         verbose_name_plural = 'School Administrator Types'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -506,7 +506,7 @@ class BoardPrecinct(Taxonomy):
         )
         verbose_name = 'Board Precinct'
         verbose_name_plural = 'Board Precincts'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -548,7 +548,7 @@ class BoardMeetingType(Taxonomy):
         )
         verbose_name = 'Board Meeting Type'
         verbose_name_plural = 'Board Meeting Types'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -603,7 +603,7 @@ class BoardPolicySection(Taxonomy):
         )
         verbose_name = 'Board Policy Section'
         verbose_name_plural = 'Board Policy Sections'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -653,7 +653,7 @@ class DistrictCalendarEventCategory(Taxonomy):
                 'Can restore district calendar event category'))
         verbose_name = 'District Calendar Event Category'
         verbose_name_plural = 'District Calendar Event Categories'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -696,7 +696,7 @@ class DistrictLogoGroup(Taxonomy):
         )
         verbose_name = 'District Logo Group'
         verbose_name_plural = 'District Logo Groups'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -740,7 +740,7 @@ class DistrictLogoStyleVariation(Taxonomy):
                 'Can restore district logo style variation'))
         verbose_name = 'District Logo Style Variation'
         verbose_name_plural = 'District Logo Style Variations'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -783,7 +783,7 @@ class SchoolOption(Taxonomy):
         )
         verbose_name = 'School Option'
         verbose_name_plural = 'School Options'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -844,7 +844,7 @@ class SubjectGradeLevel(Taxonomy):
         )
         verbose_name = 'Subject or Grade Level'
         verbose_name_plural = 'Subjects and Grade Levels'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title

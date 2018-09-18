@@ -57,7 +57,7 @@ class File(BaseFile):
         )
         verbose_name = 'File'
         verbose_name_plural = 'Files'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return self.file_language.title
@@ -110,7 +110,7 @@ class AudioFile(BaseFile):
         )
         verbose_name = 'Audio File'
         verbose_name_plural = 'Audio Files'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return self._meta.model_name
@@ -163,7 +163,7 @@ class VideoFile(BaseFile):
         )
         verbose_name = 'Video File'
         verbose_name_plural = 'Video Files'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return self._meta.model_name
@@ -216,7 +216,7 @@ class PrecinctMap(BaseFile):
         )
         verbose_name = 'Precinct Map'
         verbose_name_plural = 'Precinct Maps'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return self.parent.node_title + ' Map'

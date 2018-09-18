@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 import uuid
 from mptt.models import MPTTModel, TreeForeignKey
+from mptt.managers import TreeManager
 from django.contrib.auth.models import AbstractUser
 from django.contrib.sites.models import Site
 from apps.common.functions import get_default_pagelayout, get_management_website
@@ -152,6 +153,10 @@ class Node(MPTTModel):
         db_index=True,
     )
 
+    base_manager = models.Manager()
+    # objects = models.Manager()
+    # tree_manager = TreeManager()
+
     class Meta:
         db_table = 'objects_node'
         get_latest_by = 'create_date'
@@ -178,7 +183,7 @@ class User(AbstractUser, Node):
         get_latest_by = 'create_date'
         verbose_name = 'User'
         verbose_name_plural = 'Users'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
 
 class Page(Node):
@@ -196,7 +201,7 @@ class Page(Node):
         get_latest_by = 'create_date'
         verbose_name = 'Page'
         verbose_name_plural = 'Pages'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
 
 class Taxonomy(Node):
@@ -214,7 +219,7 @@ class Taxonomy(Node):
         get_latest_by = 'create_date'
         verbose_name = 'Taxonomy'
         verbose_name_plural = 'Taxonomies'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
 
 class Image(Node):
@@ -232,7 +237,7 @@ class Image(Node):
         get_latest_by = 'create_date'
         verbose_name = 'Image'
         verbose_name_plural = 'Images'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
 
 class DirectoryEntry(Node):
@@ -250,7 +255,7 @@ class DirectoryEntry(Node):
         get_latest_by = 'create_date'
         verbose_name = 'Directory Entry'
         verbose_name_plural = 'Directory Entries'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
 
 class Link(Node):
@@ -268,7 +273,7 @@ class Link(Node):
         get_latest_by = 'create_date'
         verbose_name = 'Link'
         verbose_name_plural = 'Links'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
 
 class File(Node):
@@ -286,7 +291,7 @@ class File(Node):
         get_latest_by = 'create_date'
         verbose_name = 'File'
         verbose_name_plural = 'Files'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
 
 class Document(Node):
@@ -304,7 +309,7 @@ class Document(Node):
         get_latest_by = 'create_date'
         verbose_name = 'Document'
         verbose_name_plural = 'Documents'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
 
 class Event(Node):
@@ -322,7 +327,7 @@ class Event(Node):
         get_latest_by = 'create_date'
         verbose_name = 'Event'
         verbose_name_plural = 'Events'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
 
 class FAQ(Node):
@@ -340,7 +345,7 @@ class FAQ(Node):
         get_latest_by = 'create_date'
         verbose_name = 'FAQ'
         verbose_name_plural = 'FAQs'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
 
 class ContactMessage(Node):
@@ -358,4 +363,4 @@ class ContactMessage(Node):
         get_latest_by = 'create_date'
         verbose_name = 'Contact Message'
         verbose_name_plural = 'Contact Messages'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'

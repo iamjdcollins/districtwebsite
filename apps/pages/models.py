@@ -218,7 +218,7 @@ class Page(BasePage):
         )
         verbose_name = 'Page'
         verbose_name_plural = 'Pages'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -283,7 +283,7 @@ class Announcement(BasePage):
         )
         verbose_name = 'Announcement'
         verbose_name_plural = 'Announcements'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -429,7 +429,7 @@ class School(BasePage):
         )
         verbose_name = 'School'
         verbose_name_plural = 'Schools'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -514,7 +514,7 @@ class Department(BasePage):
         )
         verbose_name = 'Department'
         verbose_name_plural = 'Departments'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -599,7 +599,7 @@ class Board(BasePage):
         )
         verbose_name = 'Board'
         verbose_name_plural = 'Board'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -694,7 +694,7 @@ class BoardSubPage(BasePage):
         )
         verbose_name = 'Board Subpage'
         verbose_name_plural = 'Board Subpages'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -742,7 +742,7 @@ class BoardMeetingYear(BasePage):
         )
         verbose_name = 'Board Meeting Year'
         verbose_name_plural = 'Board Meeting Years'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -790,7 +790,7 @@ class NewsYear(BasePage):
         )
         verbose_name = 'News Year'
         verbose_name_plural = 'News Years'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -852,7 +852,7 @@ class News(BasePage):
         ordering = [
             '-author_date',
         ]
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -917,7 +917,7 @@ class SuperintendentMessageYear(BasePage):
         )
         verbose_name = 'Superintendent Message Year'
         verbose_name_plural = 'Superintendent Message Years'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -985,7 +985,7 @@ class SuperintendentMessage(BasePage):
         ordering = [
             '-author_date',
         ]
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -1090,7 +1090,7 @@ class SubPage(BasePage):
         )
         verbose_name = 'Subpage'
         verbose_name_plural = 'Subpages'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -1138,7 +1138,7 @@ class DistrictCalendarYear(BasePage):
         )
         verbose_name = 'District Calendar Year'
         verbose_name_plural = 'District Calendar Years'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title

@@ -470,6 +470,9 @@ class PhotoGalleryInline(
 ):
     model = PhotoGallery
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'title',
         'update_user',
@@ -523,6 +526,9 @@ class PhotoGalleryImageInline(
 ):
     model = PhotoGalleryImage
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'title',
         'image_file',
@@ -606,6 +612,9 @@ class ContentBannerInline(
 ):
     model = ContentBanner
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'title',
         'image_file',
@@ -657,6 +666,9 @@ class SchoolAdministratorInline(
 ):
     model = SchoolAdministrator
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'employee',
         'schooladministratortype',
@@ -710,6 +722,9 @@ class AdministratorInline(
 ):
     model = Administrator
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'employee',
         'update_user',
@@ -762,6 +777,9 @@ class StaffInline(
 ):
     model = Staff
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'employee',
         'update_user',
@@ -978,6 +996,9 @@ class ResourceLinkInline(
     model = ResourceLink
     form = ResourceLinkInlineForm
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'title',
         'link_url',
@@ -1028,6 +1049,9 @@ class ClassWebsiteInline(
     model = ClassWebsite
     form = ClassWebsiteInlineForm
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'title',
         'link_url',
@@ -1080,6 +1104,9 @@ class ActionButtonInline(
     model = ActionButton
     form = ActionButtonInlineForm
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'title',
         'link_url',
@@ -2112,6 +2139,9 @@ class SectionPageInline(
     model = Page
     form = SectionPageInlineForm
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'title',
         'update_user',
@@ -2400,6 +2430,9 @@ class FAQInline(
 ):
     model = FAQ
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'question',
         'update_user',
@@ -2452,6 +2485,9 @@ class AnnouncementInline(
 ):
     model = Announcement
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'title',
         'update_user',
@@ -2508,6 +2544,9 @@ class SchoolAdministrationInline(
     form = make_ajax_form(SchoolAdministration, {
                           'employee': 'employee'}, SchoolAdministrationInlineForm)
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'employee',
         'update_user',
@@ -2567,6 +2606,9 @@ class SchoolStaffInline(
     verbose_name = 'School Staff'
     verbose_name_plural = 'School Staff'
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'employee',
         'update_user',
@@ -2779,6 +2821,9 @@ class SubjectGradeLevelInline(
     verbose_name = 'Subject or Grade Level'
     verbose_name_plural = 'Subjects and Grade Levels'
     fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
     fields = [
         'title',
         'update_user',

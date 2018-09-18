@@ -100,7 +100,7 @@ class BoardMeeting(BaseEvent):
         )
         verbose_name = 'Board Meeting'
         verbose_name_plural = 'Board Meetings'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -241,7 +241,7 @@ class DistrictCalendarEvent(BaseEvent):
         )
         verbose_name = 'District Calendar Event'
         verbose_name_plural = 'District Calendar Events'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title

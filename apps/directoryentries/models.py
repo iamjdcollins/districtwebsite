@@ -69,7 +69,7 @@ class SchoolAdministrator(DirectoryEntry):
         get_latest_by = 'create_date'
         verbose_name = 'School Administrator'
         verbose_name_plural = 'School Administrators'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return self.employee.title
@@ -132,7 +132,7 @@ class Administrator(DirectoryEntry):
         get_latest_by = 'create_date'
         verbose_name = 'Administrator'
         verbose_name_plural = 'Administrators'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return self.employee.title
@@ -195,7 +195,7 @@ class Staff(DirectoryEntry):
         get_latest_by = 'create_date'
         verbose_name = 'Staff'
         verbose_name_plural = 'Staff'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return self.employee.title
@@ -308,7 +308,7 @@ class BoardMember(DirectoryEntry):
         get_latest_by = 'create_date'
         verbose_name = 'Board Member'
         verbose_name_plural = 'Board Members'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return self.employee.title
@@ -381,7 +381,7 @@ class StudentBoardMember(DirectoryEntry):
         get_latest_by = 'create_date'
         verbose_name = 'Student Board Member'
         verbose_name_plural = 'Student Board Members'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return 'Student Board Member'
@@ -428,7 +428,7 @@ class BoardPolicyAdmin(DirectoryEntry):
         get_latest_by = 'create_date'
         verbose_name = 'Board Policy Administrator'
         verbose_name_plural = 'Board Policy Administrators'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return self.employee.title
@@ -493,7 +493,7 @@ class SchoolAdministration(DirectoryEntry):
         get_latest_by = 'create_date'
         verbose_name = 'School Administrator'
         verbose_name_plural = 'School Administration'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return self.employee.title
@@ -558,7 +558,7 @@ class SchoolStaff(DirectoryEntry):
         get_latest_by = 'create_date'
         verbose_name = 'School Staff'
         verbose_name_plural = 'School Staff'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return 'School Staff: {0} {1}'.format(
@@ -649,7 +649,7 @@ class SchoolFaculty(DirectoryEntry):
         get_latest_by = 'create_date'
         verbose_name = 'School Faculty'
         verbose_name_plural = 'School Faculty'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def force_title(self):
         return 'School Faculty: {0} {1}'.format(

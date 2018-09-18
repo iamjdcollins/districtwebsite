@@ -60,7 +60,7 @@ class FAQ(BaseFAQ):
         )
         verbose_name = 'Fequently Asked Question'
         verbose_name_plural = 'Frequently Asked Questions'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.question

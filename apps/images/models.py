@@ -54,7 +54,7 @@ class Thumbnail(Image):
         )
         verbose_name = 'Thumbnail'
         verbose_name_plural = 'Thumbnails'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -114,7 +114,7 @@ class NewsThumbnail(Image):
         )
         verbose_name = 'News Thumbnail'
         verbose_name_plural = 'News Thumbnails'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -175,7 +175,7 @@ class PageBanner(Image):
         )
         verbose_name = 'Page Banner'
         verbose_name_plural = 'Page Banners'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -246,7 +246,7 @@ class ContentBanner(Image):
         )
         verbose_name = 'Content Banner'
         verbose_name_plural = 'Content Banners'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -307,7 +307,7 @@ class ProfilePicture(Image):
         )
         verbose_name = 'Profile Picture'
         verbose_name_plural = 'Profile Pictures'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -368,7 +368,7 @@ class DistrictLogoGIF(Image):
         )
         verbose_name = 'District Logo GIF'
         verbose_name_plural = 'District Logo GIFs'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -429,7 +429,7 @@ class DistrictLogoJPG(Image):
         )
         verbose_name = 'District Logo JPG'
         verbose_name_plural = 'District Logo JPGs'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -490,7 +490,7 @@ class DistrictLogoPNG(Image):
         )
         verbose_name = 'District Logo PNG'
         verbose_name_plural = 'District Logo PNGs'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -551,7 +551,7 @@ class DistrictLogoTIF(Image):
         )
         verbose_name = 'District Logo TIF'
         verbose_name_plural = 'District Logo TIFs'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -621,7 +621,7 @@ class DistrictLogo(Image):
         )
         verbose_name = 'District Logo'
         verbose_name_plural = 'District Logos'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -678,7 +678,7 @@ class PhotoGallery(Image):
         )
         verbose_name = 'Photo Gallery'
         verbose_name_plural = 'Photo Galleries'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -765,7 +765,7 @@ class PhotoGalleryImage(Image):
         )
         verbose_name = 'Photo Gallery Image'
         verbose_name_plural = 'Photo Gallery Images'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
@@ -823,7 +823,7 @@ class InlineImage(Image):
         )
         verbose_name = 'Inline Image'
         verbose_name_plural = 'Inline Images'
-        default_manager_name = 'objects'
+        default_manager_name = 'base_manager'
 
     def __str__(self):
         return self.title
