@@ -186,7 +186,7 @@ def acs(r):
     except User.DoesNotExist:
         Thread(
             target=commonfunctions.failed_saml_login_email,
-            args=(user_name)
+            args=(user_name,)
         ).start()
         return HttpResponseRedirect(
             get_reverse([denied, 'denied', 'django_saml2_auth:denied'])
