@@ -82,7 +82,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'multisite',
     'haystack',
-    'apps.thirdparty.django_saml2_auth',
+    'apps.thirdparty.django_saml2_auth.django_saml2_auth',
     'guardian',
     'mptt',
     'pipeline',

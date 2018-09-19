@@ -141,6 +141,24 @@ def filepath_email(self, oldpath, newpath):
         return False
     return True
 
+def failed_saml_login_email(username):
+    email = EmailMessage(
+        'Failed SAML Login',
+        'An attempt to login via SAML has failed for username: {0}'.format(
+                username
+        ),
+        'Salt Lake City School District <webmaster@slcschools.org>',
+        ['jordan.collins@slcschools.org'],
+        reply_to=['donotreply@slcschools.org'],
+        headers={'Message-ID': str(uuid.uuid4())},
+    )
+    email.content_subtype = 'html'
+    try:
+        email.send(fail_silently=False)
+    except Exception:
+        return False
+    return True
+
 
 def findfileext_media(media):
     media = media.split('/')[-1:]

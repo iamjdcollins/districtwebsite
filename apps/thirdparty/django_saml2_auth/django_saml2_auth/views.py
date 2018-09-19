@@ -14,7 +14,7 @@ from django import get_version
 from pkg_resources import parse_version
 from django.conf import settings
 # Do not import User - 2 lines - Jd Collins
-#from django.contrib.auth.models import (User, Group)
+# from django.contrib.auth.models import (User, Group)
 from django.contrib.auth.models import Group
 # Import get_user_model for dynamic user model detection - 2 lines - Jd Collins
 from django.contrib.auth import get_user_model
@@ -26,6 +26,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.template import TemplateDoesNotExist
 from django.http import HttpResponseRedirect
 from django.utils.http import is_safe_url
+from threading import Thread
+import apps.common.functions as commonfunctions
 
 try:
     import urllib2 as _urllib
@@ -65,9 +67,11 @@ def get_reverse(objs):
 
 def _get_saml_client(domain):
     acs_url = domain + get_reverse([acs, 'acs', 'django_saml2_auth:acs'])
-    import tempfile, os
+    import tempfile
+    import os
     f = tempfile.NamedTemporaryFile(mode='wb', delete=False)
-    f.write(_urllib.urlopen(settings.SAML2_AUTH['METADATA_AUTO_CONF_URL']).read())
+    f.write(_urllib.urlopen(
+        settings.SAML2_AUTH['METADATA_AUTO_CONF_URL']).read())
     f.close()
     saml_settings = {
         'entityid': domain,
@@ -118,10 +122,14 @@ def _create_new_user(username, email, firstname, lastname):
     user = User.objects.create_user(username, email)
     user.first_name = firstname
     user.last_name = lastname
-    user.groups = [Group.objects.get(name=x) for x in settings.SAML2_AUTH.get('NEW_USER_PROFILE', {}).get('USER_GROUPS', [])]
-    user.is_active = settings.SAML2_AUTH.get('NEW_USER_PROFILE', {}).get('ACTIVE_STATUS', True)
-    user.is_staff = settings.SAML2_AUTH.get('NEW_USER_PROFILE', {}).get('STAFF_STATUS', True)
-    user.is_superuser = settings.SAML2_AUTH.get('NEW_USER_PROFILE', {}).get('SUPERUSER_STATUS', False)
+    user.groups = [Group.objects.get(name=x) for x in settings.SAML2_AUTH.get(
+        'NEW_USER_PROFILE', {}).get('USER_GROUPS', [])]
+    user.is_active = settings.SAML2_AUTH.get(
+        'NEW_USER_PROFILE', {}).get('ACTIVE_STATUS', True)
+    user.is_staff = settings.SAML2_AUTH.get(
+        'NEW_USER_PROFILE', {}).get('STAFF_STATUS', True)
+    user.is_superuser = settings.SAML2_AUTH.get(
+        'NEW_USER_PROFILE', {}).get('SUPERUSER_STATUS', False)
     user.save()
     return user
 
@@ -130,7 +138,8 @@ def _create_new_user(username, email, firstname, lastname):
 def acs(r):
     saml_client = _get_saml_client(get_current_domain(r))
     resp = r.POST.get('SAMLResponse', None)
-    next_url = r.session.get('login_next_url', settings.SAML2_AUTH.get('DEFAULT_NEXT_URL', get_reverse('admin:index')))
+    next_url = r.session.get('login_next_url', settings.SAML2_AUTH.get(
+        'DEFAULT_NEXT_URL', get_reverse('admin:index')))
 
     if not resp:
         return HttpResponseRedirect(get_reverse([denied, 'denied', 'django_saml2_auth:denied']))
@@ -144,10 +153,14 @@ def acs(r):
     if user_identity is None:
         return HttpResponseRedirect(get_reverse([denied, 'denied', 'django_saml2_auth:denied']))
 
-    user_email = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('email', 'Email')][0]
-    user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'UserName')][0]
-    user_first_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('first_name', 'FirstName')][0]
-    user_last_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('last_name', 'LastName')][0]
+    user_email = user_identity[settings.SAML2_AUTH.get(
+        'ATTRIBUTES_MAP', {}).get('email', 'Email')][0]
+    user_name = user_identity[settings.SAML2_AUTH.get(
+        'ATTRIBUTES_MAP', {}).get('username', 'UserName')][0]
+    user_first_name = user_identity[settings.SAML2_AUTH.get(
+        'ATTRIBUTES_MAP', {}).get('first_name', 'FirstName')][0]
+    user_last_name = user_identity[settings.SAML2_AUTH.get(
+        'ATTRIBUTES_MAP', {}).get('last_name', 'LastName')][0]
 
     target_user = None
     is_new_user = False
@@ -155,12 +168,21 @@ def acs(r):
     try:
         target_user = User.objects.get(username=user_name.lower())
         if settings.SAML2_AUTH.get('TRIGGER', {}).get('BEFORE_LOGIN', None):
-            import_string(settings.SAML2_AUTH['TRIGGER']['BEFORE_LOGIN'])(user_identity)
+            import_string(
+                settings.SAML2_AUTH['TRIGGER']['BEFORE_LOGIN']
+            )(user_identity)
     except User.DoesNotExist:
-        target_user = _create_new_user(user_name, user_email, user_first_name, user_last_name)
-        if settings.SAML2_AUTH.get('TRIGGER', {}).get('CREATE_USER', None):
-            import_string(settings.SAML2_AUTH['TRIGGER']['CREATE_USER'])(user_identity)
-        is_new_user = True
+        Thread(
+            target=commonfunctions.failed_saml_login_email,
+            args=(user_name)
+        ).start()
+        return HttpResponseRedirect(
+            get_reverse([denied, 'denied', 'django_saml2_auth:denied'])
+        )
+        # target_user = _create_new_user(user_name, user_email, user_first_name, user_last_name)
+        # if settings.SAML2_AUTH.get('TRIGGER', {}).get('CREATE_USER', None):
+        #     import_string(settings.SAML2_AUTH['TRIGGER']['CREATE_USER'])(user_identity)
+        # is_new_user = True
 
     r.session.flush()
 
@@ -186,13 +208,16 @@ def signin(r):
     except:
         import urllib.parse as _urlparse
         from urllib.parse import unquote
-    next_url = r.GET.get('next', settings.SAML2_AUTH.get('DEFAULT_NEXT_URL', get_reverse('admin:index')))
+    next_url = r.GET.get('next', settings.SAML2_AUTH.get(
+        'DEFAULT_NEXT_URL', get_reverse('admin:index')))
 
     try:
         if 'next=' in unquote(next_url):
-            next_url = _urlparse.parse_qs(_urlparse.urlparse(unquote(next_url)).query)['next'][0]
+            next_url = _urlparse.parse_qs(
+                _urlparse.urlparse(unquote(next_url)).query)['next'][0]
     except:
-        next_url = r.GET.get('next', settings.SAML2_AUTH.get('DEFAULT_NEXT_URL', get_reverse('admin:index')))
+        next_url = r.GET.get('next', settings.SAML2_AUTH.get(
+            'DEFAULT_NEXT_URL', get_reverse('admin:index')))
 
     # Only permit signin requests where the next_url is a safe URL
     if not is_safe_url(next_url):
