@@ -66,7 +66,7 @@ def contactmessage_message(self):
             self.parent.url,
             self.your_message,
             get_domain(self.site),
-            ),
+        ),
         '"{0}" <{1}>'.format(self.your_name, self.your_email),
         [self.primary_contact.email],
         bcc=['webmaster@slcschools.org'],
@@ -75,7 +75,7 @@ def contactmessage_message(self):
             'Message-ID': str(self.pk) + '-' + str(uuid.uuid4())[0:8],
             'Sender': ('Salt Lake City School District'
                        '<webmaster@slcschools.org>'),
-            },
+        },
     )
     email.content_subtype = 'html'
     try:
@@ -94,7 +94,7 @@ def customerror_emailadmins(subject, message):
         reply_to=['donotreply@slcschools.org'],
         headers={
             'Message-ID': str(uuid.uuid4()),
-            },
+        },
     )
     email.content_subtype = 'html'
     try:
@@ -107,7 +107,7 @@ def customerror_emailadmins(subject, message):
 def urlchanged_email(self, oldurl):
     email = EmailMessage(
         'Website URL Changed App {0} Type {1}'.format(
-                self.node_type, self.content_type),
+            self.node_type, self.content_type),
         ('<p><strong>Previous URL:</strong> ' + oldurl + '</p>'
          '<p><strong>New URL:</strong> ' + self.url + '</p>'),
         'Salt Lake City School District <webmaster@slcschools.org>',
@@ -126,7 +126,7 @@ def urlchanged_email(self, oldurl):
 def filepath_email(self, oldpath, newpath):
     email = EmailMessage(
         'File Path Changed: App {0} Type {1}'.format(
-                self.parent.node_type, self.parent.content_type),
+            self.parent.node_type, self.parent.content_type),
         ('<p><strong>Previous Path:</strong> ' + oldpath + '</p>'
          '<p><strong>New Path:</strong> ' + newpath + '</p>'),
         'Salt Lake City School District <webmaster@slcschools.org>',
@@ -141,11 +141,12 @@ def filepath_email(self, oldpath, newpath):
         return False
     return True
 
+
 def failed_saml_login_email(username):
     email = EmailMessage(
         'Failed SAML Login',
         'An attempt to login via SAML has failed for username: {0}'.format(
-                username
+            username
         ),
         'Salt Lake City School District <webmaster@slcschools.org>',
         ['jordan.collins@slcschools.org'],
@@ -409,7 +410,7 @@ def modelsave(self, *args, **kwargs):
         is_deleted,
         urlclean_objname(self.slug),
         '' if self.sluginstance == 0 else '-{0}'.format(self.sluginstance),
-        )
+    )
     )
     while Node.objects.filter(site=self.site).filter(url=self.url).exclude(
             pk=self.pk).count() >= 1:
@@ -420,7 +421,7 @@ def modelsave(self, *args, **kwargs):
             is_deleted,
             urlclean_objname(self.slug),
             '' if self.sluginstance == 0 else '-{0}'.format(self.sluginstance),
-            )
+        )
         )
     if not is_new and (oldurl != self.url):
         urlchanged = True
@@ -508,12 +509,14 @@ def modelsave(self, *args, **kwargs):
                     if url != data_processed:
                         url_parsed = urlparse(url)
                         try:
-                            site = Alias.objects.get(domain=url_parsed.netloc).site
+                            site = Alias.objects.get(
+                                domain=url_parsed.netloc).site
                         except Alias.DoesNotExist:
                             site = None
                         try:
                             if site:
-                                node = Node.objects.get(url=url_parsed.path, site=site)
+                                node = Node.objects.get(
+                                    url=url_parsed.path, site=site)
                             else:
                                 node = None
                         except Node.DoesNotExist:
@@ -521,10 +524,13 @@ def modelsave(self, *args, **kwargs):
                         rx = r'{0}'.format(link)
                         rr = link
                         if node:
-                            rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(str(node.pk)), rr)
+                            rr = re.sub(r'data-id=\".*?\"',
+                                        'data-id="{0}"'.format(str(node.pk)), rr)
                         else:
-                            rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(''), rr)
-                        rr = re.sub(r'data-processed=\".*?\"', 'data-processed="{0}"'.format(url), rr)
+                            rr = re.sub(r'data-id=\".*?\"',
+                                        'data-id="{0}"'.format(''), rr)
+                        rr = re.sub(r'data-processed=\".*?\"',
+                                    'data-processed="{0}"'.format(url), rr)
                         rr = re.sub(r'[ ]+', ' ', rr)
                         field_value = re.sub(re.escape(rx), rr, field_value)
                 images = re.findall(r'<img .*? />', field_value)
@@ -546,12 +552,14 @@ def modelsave(self, *args, **kwargs):
                     if url != data_processed:
                         url_parsed = urlparse(url)
                         try:
-                            site = Alias.objects.get(domain=url_parsed.netloc).site
+                            site = Alias.objects.get(
+                                domain=url_parsed.netloc).site
                         except Alias.DoesNotExist:
                             site = None
                         try:
                             if site:
-                                node = Node.objects.get(url=url_parsed.path, site=site)
+                                node = Node.objects.get(
+                                    url=url_parsed.path, site=site)
                             else:
                                 node = None
                         except Node.DoesNotExist:
@@ -559,10 +567,13 @@ def modelsave(self, *args, **kwargs):
                         rx = r'{0}'.format(image)
                         rr = image
                         if node:
-                            rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(str(node.pk)), rr)
+                            rr = re.sub(r'data-id=\".*?\"',
+                                        'data-id="{0}"'.format(str(node.pk)), rr)
                         else:
-                            rr = re.sub(r'data-id=\".*?\"', 'data-id="{0}"'.format(''), rr)
-                        rr = re.sub(r'data-processed=\".*?\"', 'data-processed="{0}"'.format(url), rr)
+                            rr = re.sub(r'data-id=\".*?\"',
+                                        'data-id="{0}"'.format(''), rr)
+                        rr = re.sub(r'data-processed=\".*?\"',
+                                    'data-processed="{0}"'.format(url), rr)
                         rr = re.sub(r'[ ]+', ' ', rr)
                         field_value = re.sub(re.escape(rx), rr, field_value)
             setattr(self, field.name, field_value)
@@ -744,10 +755,11 @@ def get_management_website():
     except Site.DoesNotExist:
         return ''
 
+
 def get_district_office():
     Location = apps.get_model('taxonomy', 'location')
     try:
-         return Location.objects.only('pk').get(title='District Office').pk
+        return Location.objects.only('pk').get(title='District Office').pk
     except Location.DoesNotExist:
         return ''
 
@@ -806,7 +818,7 @@ def currentyear(date=timezone.now()):
         currentyearstring = str(date.year) + '-' + str(date.year + 1)[2:]
     else:
         currentyearkey = date.year
-        currentyearstring = str(date.year-1) + '-' + str(date.year)[2:]
+        currentyearstring = str(date.year - 1) + '-' + str(date.year)[2:]
     currentyear = {"short": currentyearkey, "long": currentyearstring}
     return {'currentyear': currentyear}
 
@@ -816,8 +828,8 @@ def next_tuesday_sixthrity():
         timezone.datetime.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
     while now.weekday() != 1:
         now += timedelta(days=1)
-    now += timedelta(hours=18-int(now.strftime('%H')))
-    now += timedelta(minutes=30-int(now.strftime('%M')))
+    now += timedelta(hours=18 - int(now.strftime('%H')))
+    now += timedelta(minutes=30 - int(now.strftime('%M')))
     return timezone.make_aware(now)
 
 
@@ -825,8 +837,8 @@ def tomorrow_midnight():
     now = timezone.datetime.strptime(
         timezone.datetime.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
     now += timedelta(days=1)
-    now += timedelta(hours=0-int(now.strftime('%H')))
-    now += timedelta(minutes=0-int(now.strftime('%M')))
+    now += timedelta(hours=0 - int(now.strftime('%H')))
+    now += timedelta(minutes=0 - int(now.strftime('%M')))
     return timezone.make_aware(now)
 
 
@@ -835,7 +847,7 @@ def december_thirty_first():
         timezone.datetime.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
     return timezone.make_aware(
         timezone.datetime(now.year, 12, 31, 00, 00)
-        )
+    )
 
 
 def file_name(self):
@@ -952,7 +964,7 @@ def file_name(self):
             self.pk,
             self.node_type,
             self.content_type,
-            )
+        )
     )
     return 'unkonwn'
 
@@ -982,7 +994,7 @@ def name_dot_field_dot_ext(generator):
     ext = suggest_extension(source_filename or '', generator.format)
     basename = os.path.basename(source_filename)
     returnpath = os.path.normpath(os.path.join(dir, '%s.%s%s' % (
-            os.path.splitext(basename)[0], specfield, ext)))
+        os.path.splitext(basename)[0], specfield, ext)))
     return returnpath
 
 
@@ -1209,14 +1221,17 @@ def get_domain(site):
             pass
     return site.domain
 
+
 def is_siteadmin(request):
     if (
             request.user.is_superuser or
             request.user.groups.filter(name='Website Managers') or
-            request.site.dashboard_sitepublisher_site.filter(account=request.user.pk)
+            request.site.dashboard_sitepublisher_site.filter(
+                account=request.user.pk)
     ):
         return True
     return False
+
 
 def is_globaladmin(request):
     if (
@@ -1226,6 +1241,7 @@ def is_globaladmin(request):
         return True
     return False
 
+
 def link_url_absolute(self):
     input_url = urlsplit(self.link_url)
     working_url = list(input_url)
@@ -1234,6 +1250,7 @@ def link_url_absolute(self):
             working_url[0] = 'https'
             working_url[1] = self.site.domain
     return urlunsplit(working_url)
+
 
 def can_edit_page(node):
     # Get Required Models
@@ -1255,7 +1272,8 @@ def can_edit_page(node):
         if username['pk'] in all_users:
             all_users[username['pk']]['roles'].append('superuser')
         else:
-            all_users[username['pk']] = {'username': username['username'], 'roles': ['superuser']}
+            all_users[username['pk']] = {
+                'username': username['username'], 'roles': ['superuser']}
     # Find all website managers
     for username in (
             Employee
@@ -1271,7 +1289,8 @@ def can_edit_page(node):
         if username['pk'] in all_users:
             all_users[username['pk']]['roles'].append('website_manager')
         else:
-            all_users[username['pk']] = {'username': username['username'], 'roles': ['website_manager']}
+            all_users[username['pk']] = {
+                'username': username['username'], 'roles': ['website_manager']}
     # Final site publishers
     for username in (
         node
@@ -1282,9 +1301,11 @@ def can_edit_page(node):
     ):
         if username.account.is_active:
             if username.account.pk in all_users:
-                all_users[username.account.pk]['roles'].append('site_publisher')
+                all_users[username.account.pk]['roles'].append(
+                    'site_publisher')
             else:
-                all_users[username.account.pk] = {'username': username.account.username, 'roles': ['site_publisher']}
+                all_users[username.account.pk] = {
+                    'username': username.account.username, 'roles': ['site_publisher']}
     # Find direct page editors for the node
     for username in (
         node
@@ -1300,7 +1321,8 @@ def can_edit_page(node):
         if username['employee__pk'] in all_users:
             all_users[username['employee__pk']]['roles'].append('page_editor')
         else:
-            all_users[username['employee__pk']] = {'username': username['employee__username'], 'roles': ['page_editor']}
+            all_users[username['employee__pk']] = {
+                'username': username['employee__username'], 'roles': ['page_editor']}
     # Find all parent nodes and their page editors
     for node in (
         node
@@ -1322,7 +1344,8 @@ def can_edit_page(node):
             .values('employee__pk', 'employee__username')
         ):
             if username['employee__pk'] in all_users:
-                all_users[username['employee__pk']]['roles'].append('inherited_page_editor')
+                all_users[username['employee__pk']]['roles'].append(
+                    'inherited_page_editor')
             else:
                 all_users[username['employee__pk']] = {'username': username['employee__username'],
                                                        'roles': ['inherited_page_editor']}
