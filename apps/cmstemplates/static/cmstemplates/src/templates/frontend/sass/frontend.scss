@@ -393,6 +393,10 @@ table td, table th {
   border-left-width: 0px;
   border-bottom: 1px solid #cbcbcb;
 }
+table thead tr th {
+  background: #000;
+  color: #fff;
+}
 table tr:nth-child(2n-1) td {
     background-color: #f2f2f2;
 }
