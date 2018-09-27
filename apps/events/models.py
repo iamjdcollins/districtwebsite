@@ -112,7 +112,8 @@ class BoardMeeting(BaseEvent):
 
     def create_parent(self, creator):
         currentyear = commonfunctions.currentyear(self.startdate)
-        parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL, site=self.site)
+        parent = Node.objects.get(
+            url=self.PARENT_TYPE.PARENT_URL, site=self.site)
         obj, created = self.PARENT_TYPE.objects.get_or_create(
             title=currentyear['currentyear']['long'],
             yearend=currentyear['currentyear']['short'],
@@ -253,7 +254,8 @@ class DistrictCalendarEvent(BaseEvent):
 
     def create_parent(self, creator):
         currentyear = commonfunctions.currentyear(self.startdate)
-        parent = Node.objects.get(url=self.PARENT_TYPE.PARENT_URL, site=self.site)
+        parent = Node.objects.get(
+            url=self.PARENT_TYPE.PARENT_URL, site=self.site)
         obj, created = self.PARENT_TYPE.objects.get_or_create(
             title=currentyear['currentyear']['long'],
             yearend=currentyear['currentyear']['short'],
@@ -265,6 +267,88 @@ class DistrictCalendarEvent(BaseEvent):
             },
         )
         return obj
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class SchoolCommunityCouncilMeeting(BaseEvent):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/scc-meeting/'
+    HAS_PERMISSIONS = False
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+    )
+    startdate = models.DateTimeField(
+        default=commonfunctions.next_tuesday_sixthrity,
+        unique=False,
+        verbose_name="Start Date and Time",
+    )
+    originaldate = models.DateTimeField(
+        unique=False,
+        verbose_name="Original Start Date and Time",
+    )
+    originalinstance = models.PositiveIntegerField(
+        unique=False,
+        blank=True,
+        null=True,
+    )
+    schoolyear = models.CharField(
+        max_length=7,
+        help_text='',
+    )
+    yearend = models.CharField(
+        max_length=4,
+        help_text='',
+    )
+    cancelled = models.BooleanField(
+        default=False,
+    )
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='events_schoolcommunitycouncilmeeting_node',
+        editable=False,
+        on_delete=models.CASCADE,
+    )
+
+    event_schoolcommunitycouncilmeeting_node = models.OneToOneField(
+        BaseEvent,
+        db_column='event_schoolcommunitycouncilmeeting_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    class Meta:
+        db_table = 'events_schoolcommunitycouncilmeeting'
+        get_latest_by = 'update_date'
+        permissions = (
+            (
+                'trash_schoolcommunitycouncilmeeting',
+                'Can soft delete school community council meeting'
+            ),
+            (
+                'restore_schoolcommunitycouncilmeeting',
+                'Can restore school community council meeting'
+            ),
+        )
+        verbose_name = 'School Community Council Meeting'
+        verbose_name_plural = 'School Community Council Meetings'
+        default_manager_name = 'base_manager'
+
+    def __str__(self):
+        return self.title
+
+    def force_title(self):
+        return timezone.localtime(
+            self.originaldate).strftime(
+            '%Y%m%d-%H%M')
 
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
