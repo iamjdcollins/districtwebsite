@@ -134,6 +134,7 @@ class Page(BasePage):
             ],
             'inlines': [
                 'AnnouncementInline',
+                'ActionButtonInline',
             ],
         },
         'school-employees.html': {
@@ -152,6 +153,28 @@ class Page(BasePage):
                 'url',
             ],
             'inlines': [
+            ],
+        },
+        'school-community-council-scc.html': {
+            'fields': [
+                'title',
+                'body',
+                'primary_contact',
+                'published',
+                ['update_user', 'update_date'],
+                ['create_user', 'create_date'],
+            ],
+            'readonly_fields': [
+                'title',
+                'update_user',
+                'update_date',
+                'create_user',
+                'create_date',
+                'url',
+            ],
+            'inlines': [
+                'SchoolCommunityCouncilMemberInline',
+                'SchoolCommunityCouncilMeetingInline',
             ],
         },
     }
@@ -1001,7 +1024,8 @@ class SuperintendentMessage(BasePage):
             title=currentyear['currentyear']['long'],
             yearend=currentyear['currentyear']['short'],
             parent=parent,
-            defaults={'create_user': creator, 'update_user': creator, 'site': self.site},
+            defaults={'create_user': creator,
+                      'update_user': creator, 'site': self.site},
         )
         return obj
 

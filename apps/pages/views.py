@@ -34,9 +34,11 @@ from apps.documents.models import (
     AdministrativeProcedure,
     SupportingDocument,
     DisclosureDocument,
+    SchoolCommunityCouncilMeetingAgenda,
+    SchoolCommunityCouncilMeetingMinutes,
 )
 from apps.files.models import File, AudioFile, VideoFile
-from apps.events.models import BoardMeeting, DistrictCalendarEvent
+from apps.events.models import BoardMeeting, DistrictCalendarEvent, SchoolCommunityCouncilMeeting
 from apps.users.models import Employee
 from apps.contactmessages.forms import ContactMessageForm
 
@@ -786,6 +788,158 @@ def prefetch_disclosuredocuments_detail(qs):
             queryset=prefetchqs,
         )
     )
+
+
+def prefetch_schoolcommunitycouncilmeetings_detail(qs):
+    prefetchqs = (
+        SchoolCommunityCouncilMeeting
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .order_by('startdate')
+    )
+    prefetchqs = prefetch_schoolcommunitycouncilmeetingagenda_detail(prefetchqs)
+    prefetchqs = prefetch_schoolcommunitycouncilmeetingminutes_detail(prefetchqs)
+    qs = qs.prefetch_related(
+        Prefetch(
+            'events_schoolcommunitycouncilmeeting_node',
+            queryset=prefetchqs,
+        )
+    )
+    return qs
+
+
+def prefetch_schoolcommunitycouncilmeetingagenda_detail(qs):
+    prefetchqs = (
+        SchoolCommunityCouncilMeetingAgenda
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .annotate(
+            file_count=Count(
+                'files_file_node',
+                filter=Q(
+                    files_file_node__published=1,
+                    files_file_node__deleted=0,
+                )
+            )
+        )
+        .filter(file_count__gt=0)
+        .order_by('inline_order')
+        .only(
+            'pk',
+            'title',
+            'inline_order',
+            'related_node'
+            )
+        .prefetch_related(
+            Prefetch(
+                'files_file_node',
+                queryset=(
+                    File
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .order_by(
+                        'file_language__lft',
+                        'file_language__title',
+                        )
+                    .only(
+                        'title',
+                        'file_file',
+                        'file_language',
+                        'related_node',
+                        )
+                    .prefetch_related(
+                        Prefetch(
+                            'file_language',
+                            queryset=(
+                                Language
+                                .objects
+                                .filter(deleted=0)
+                                .filter(published=1)
+                                .only('title')
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    qs = qs.prefetch_related(
+        Prefetch(
+            'documents_schoolcommunitycouncilmeetingagenda_node',
+            queryset=prefetchqs,
+        )
+    )
+    return qs
+
+
+def prefetch_schoolcommunitycouncilmeetingminutes_detail(qs):
+    prefetchqs = (
+        SchoolCommunityCouncilMeetingMinutes
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .annotate(
+            file_count=Count(
+                'files_file_node',
+                filter=Q(
+                    files_file_node__published=1,
+                    files_file_node__deleted=0,
+                )
+            )
+        )
+        .filter(file_count__gt=0)
+        .order_by('inline_order')
+        .only(
+            'pk',
+            'title',
+            'inline_order',
+            'related_node'
+            )
+        .prefetch_related(
+            Prefetch(
+                'files_file_node',
+                queryset=(
+                    File
+                    .objects
+                    .filter(deleted=0)
+                    .filter(published=1)
+                    .order_by(
+                        'file_language__lft',
+                        'file_language__title',
+                        )
+                    .only(
+                        'title',
+                        'file_file',
+                        'file_language',
+                        'related_node',
+                        )
+                    .prefetch_related(
+                        Prefetch(
+                            'file_language',
+                            queryset=(
+                                Language
+                                .objects
+                                .filter(deleted=0)
+                                .filter(published=1)
+                                .only('title')
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    qs = qs.prefetch_related(
+        Prefetch(
+            'documents_schoolcommunitycouncilmeetingminutes_node',
+            queryset=prefetchqs,
+        )
+    )
+    return qs
+
 
 def prefetch_contentbanner_detail(qs):
     prefetchqs = (
@@ -2573,6 +2727,100 @@ def node_lookup(request):
         context['page'] = item
         context['pageopts'] = context['page']._meta
         return render(request, template, context)
+    if node.pagelayout.namespace == 'school-community-council-meeting-agenda.html':
+        item = (
+            Model
+            .objects
+            .filter(pk=node.pk)
+            .prefetch_related(
+                Prefetch(
+                    'files_file_node',
+                    queryset=(
+                        File
+                        .objects
+                        .filter(deleted=0)
+                        .filter(published=1)
+                        .order_by(
+                            'file_language__lft',
+                            'file_language__title',
+                        )
+                        .only(
+                            'title',
+                            'file_file',
+                            'file_language',
+                            'related_node',
+                        )
+                        .prefetch_related(
+                            Prefetch(
+                                'file_language',
+                                queryset=(
+                                    Language
+                                    .objects
+                                    .filter(deleted=0)
+                                    .filter(published=1)
+                                    .only('title')
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        item = item.first()
+        if item.files_file_node.all().count() == 1:
+            return redirect(item.files_file_node.first().url)
+        template = set_template(request, node)
+        context = {}
+        context['page'] = item
+        context['pageopts'] = context['page']._meta
+        return render(request, template, context)
+    if node.pagelayout.namespace == 'school-community-council-meeting-minutes.html':
+        item = (
+            Model
+            .objects
+            .filter(pk=node.pk)
+            .prefetch_related(
+                Prefetch(
+                    'files_file_node',
+                    queryset=(
+                        File
+                        .objects
+                        .filter(deleted=0)
+                        .filter(published=1)
+                        .order_by(
+                            'file_language__lft',
+                            'file_language__title',
+                        )
+                        .only(
+                            'title',
+                            'file_file',
+                            'file_language',
+                            'related_node',
+                        )
+                        .prefetch_related(
+                            Prefetch(
+                                'file_language',
+                                queryset=(
+                                    Language
+                                    .objects
+                                    .filter(deleted=0)
+                                    .filter(published=1)
+                                    .only('title')
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        item = item.first()
+        if item.files_file_node.all().count() == 1:
+            return redirect(item.files_file_node.first().url)
+        template = set_template(request, node)
+        context = {}
+        context['page'] = item
+        context['pageopts'] = context['page']._meta
+        return render(request, template, context)
     if node.node_type == 'pages':
         if request.method == 'POST':
             return redirect(process_post(request))
@@ -2604,6 +2852,7 @@ def node_lookup(request):
         context['page'] = prefetch_schoolstaff_detail(context['page'])
         context['page'] = prefetch_schoolfaculty_detail(context['page'])
         context['page'] = prefetch_subjectgradelevel_detail(context['page'])
+        context['page'] = prefetch_schoolcommunitycouncilmeetings_detail(context['page'])
         # Add additional context here
         context = add_additional_context(request, context, node)
         # Change Queryset into object

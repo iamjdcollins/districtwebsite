@@ -61,6 +61,7 @@ from apps.directoryentries.models import (
     SchoolAdministration,
     SchoolStaff,
     SchoolFaculty,
+    SchoolCommunityCouncilMember,
 )
 from apps.links.models import (
     ResourceLink,
@@ -80,10 +81,13 @@ from apps.documents.models import (
     BoardMeetingVideo,
     BoardMeetingExhibit,
     BoardMeetingAgendaItem,
+    SchoolCommunityCouncilMeetingAgenda,
+    SchoolCommunityCouncilMeetingMinutes,
 )
 from apps.events.models import (
     BoardMeeting,
     DistrictCalendarEvent,
+    SchoolCommunityCouncilMeeting,
 )
 from apps.files.models import (
     File,
@@ -1257,6 +1261,160 @@ class DisclosureDocumentInline(
         return qs.filter(deleted=0)
 
 
+class SchoolCommunityCouncilMeetingAgendaInlineForm(forms.ModelForm):
+    class Meta:
+        model = SchoolCommunityCouncilMeetingAgenda
+        fields = ['title', 'pagelayout']
+
+    def __init__(self, *args, **kwargs):
+        super(
+            SchoolCommunityCouncilMeetingAgendaInlineForm,
+            self,
+        ).__init__(*args, **kwargs)
+        self.fields['pagelayout'].initial = (
+            SchoolCommunityCouncilMeetingAgenda.PAGELAYOUT
+        )
+        self.fields['pagelayout'].widget = forms.HiddenInput()
+        self.fields['title'].disabled = True
+        self.fields['title'].initial = 'Agenda'
+        if self.instance.pk:
+            pass
+
+    def has_changed(self):
+        if not self.instance.pk:
+            return True
+        else:
+            super(
+                SchoolCommunityCouncilMeetingAgendaInlineForm,
+                self
+            ).has_changed()
+
+
+class SchoolCommunityCouncilMeetingAgendaInline(
+    EditLinkToInlineObject,
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = SchoolCommunityCouncilMeetingAgenda
+    form = SchoolCommunityCouncilMeetingAgendaInlineForm
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'pagelayout',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'published',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(
+            self.model._meta.model_name + '.' + get_permission_codename(
+                'restore',
+                self.model._meta
+            )
+        ):
+            return qs
+        return qs.filter(deleted=0)
+
+
+class SchoolCommunityCouncilMeetingMinutesInlineForm(forms.ModelForm):
+    class Meta:
+        model = SchoolCommunityCouncilMeetingMinutes
+        fields = ['title', 'pagelayout']
+
+    def __init__(self, *args, **kwargs):
+        super(
+            SchoolCommunityCouncilMeetingMinutesInlineForm,
+            self,
+        ).__init__(*args, **kwargs)
+        self.fields['pagelayout'].initial = (
+            SchoolCommunityCouncilMeetingMinutes.PAGELAYOUT
+        )
+        self.fields['pagelayout'].widget = forms.HiddenInput()
+        self.fields['title'].disabled = True
+        self.fields['title'].initial = 'Minutes'
+        if self.instance.pk:
+            pass
+
+    def has_changed(self):
+        if not self.instance.pk:
+            return True
+        else:
+            super(
+                SchoolCommunityCouncilMeetingMinutesInlineForm,
+                self
+            ).has_changed()
+
+
+class SchoolCommunityCouncilMeetingMinutesInline(
+    EditLinkToInlineObject,
+    LinkToInlineObject,
+    admin.TabularInline,
+):
+    model = SchoolCommunityCouncilMeetingMinutes
+    form = SchoolCommunityCouncilMeetingMinutesInlineForm
+    fk_name = 'parent'
+    fields = [
+        'title',
+        'pagelayout',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'published',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(
+            self.model._meta.model_name + '.' + get_permission_codename(
+                'restore',
+                self.model._meta
+            )
+        ):
+            return qs
+        return qs.filter(deleted=0)
+
+
 class BoardPolicyInlineForm(forms.ModelForm):
     class Meta:
         model = BoardPolicy
@@ -2292,6 +2450,63 @@ class BoardMeetingInline(
         return qs.filter(deleted=0)
 
 
+class SchoolCommunityCouncilMeetingInlineForm(forms.ModelForm):
+    class Meta:
+        model = SchoolCommunityCouncilMeeting
+        fields = [
+            'startdate',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(SchoolCommunityCouncilMeetingInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            pass
+
+
+class SchoolCommunityCouncilMeetingInline(
+    LinkToInlineObject,
+    EditLinkToInlineObject,
+    admin.TabularInline,
+):
+    model = SchoolCommunityCouncilMeeting
+    form = SchoolCommunityCouncilMeetingInlineForm
+    fk_name = 'parent'
+    fields = [
+        'startdate',
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
+        'edit_link',
+        'copy_link',
+    ]
+    ordering = [
+        'startdate',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 50
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+
 class SuperintendentMessageInlineForm(forms.ModelForm):
     class Meta:
         model = SuperintendentMessage
@@ -2720,6 +2935,70 @@ class SchoolFacultyInline(
         'update_user',
         'update_date',
         'edit_link',
+        'copy_link',
+    ]
+    extra = 0
+    min_num = 0
+    max_num = 100
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
+
+    def get_formset(self, request, obj=None, **kwargs):
+        self.form.request = request
+        return super().get_formset(request, obj, **kwargs)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
+
+
+class SchoolCommunityCouncilMemberInlineForm(forms.ModelForm):
+    class Meta:
+        model = SchoolCommunityCouncilMember
+        fields = [
+            'first_name',
+            'last_name',
+            'role',
+            'email',
+            'phone',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(SchoolCommunityCouncilMemberInlineForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:
+            pass
+
+
+class SchoolCommunityCouncilMemberInline(
+    LinkToInlineObject,
+    # EditLinkToInlineObject,
+    SortableInlineAdminMixin,
+    admin.TabularInline,
+):
+    model = SchoolCommunityCouncilMember
+    fk_name = 'parent'
+    ordering = [
+        'inline_order',
+    ]
+    fields = [
+        'first_name',
+        'last_name',
+        'role',
+        'email',
+        'phone',
+        'update_user',
+        'update_date',
+        'published',
+        'copy_link',
+    ]
+    readonly_fields = [
+        'update_user',
+        'update_date',
         'copy_link',
     ]
     extra = 0
@@ -4126,7 +4405,108 @@ class BoardMeetingAdmin(MPTTModelAdmin,GuardedModelAdmin):
     save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
-class BoardMeetingYearAdmin(MPTTModelAdmin,GuardedModelAdmin):
+
+class SchoolCommunityCouncilMeetingAdmin(MPTTModelAdmin, GuardedModelAdmin):
+
+    inlines = [
+        SchoolCommunityCouncilMeetingAgendaInline,
+        SchoolCommunityCouncilMeetingMinutesInline
+    ]
+
+    def get_formsets_with_inlines(self, request, obj=None):
+        for inline in self.get_inline_instances(request, obj):
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(inline.model._meta.model_name + '.' + get_permission_codename('restore',inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
+            yield inline.get_formset(request, obj), inline
+
+    def get_fields(self, request, obj=None):
+        fields = [
+            'title',
+            'originaldate',
+            'startdate',
+            'cancelled',
+            ['update_user', 'update_date', ],
+            ['create_user', 'create_date', ],
+        ]
+        if request.user.is_superuser:
+            fields += [
+                'published',
+                'searchable',
+                'parent',
+            ]
+            if obj:
+                fields += ['url']
+        return fields
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = [
+            'title',
+            'originaldate',
+            'update_user',
+            'update_date',
+            'create_user',
+            'create_date',
+        ]
+        if request.user.is_superuser:
+            fields.remove('title')
+            fields.remove('originaldate')
+            if obj:
+                fields += ['url']
+        return fields
+
+    def get_list_display(self, request):
+        if request.user.has_perm('documents.restore_document'):
+            return [
+                'title',
+                'update_date',
+                'update_user',
+                'published',
+                'deleted'
+            ]
+        else:
+            return ['title', 'update_date', 'update_user', 'published']
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('documents.restore_document'):
+            return qs
+        return qs.filter(deleted=0)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        if request.user.has_perm('documents.trash_document'):
+            actions['trash_selected'] = (trash_selected,'trash_selected',trash_selected.short_description)
+        if request.user.has_perm('documents.restore_document'):
+            actions['restore_selected'] = (restore_selected,'restore_selected',restore_selected.short_description)
+        if request.user.has_perm('documents.change_document'):
+            actions['publish_selected'] = (publish_selected, 'publish_selected', publish_selected.short_description)
+            actions['unpublish_selected'] = (unpublish_selected, 'unpublish_selected', unpublish_selected.short_description)
+        return actions
+
+    def get_list_filter(self, request):
+        if request.user.has_perm('documents.restore_document'):
+            return (DeletedListFilter, 'published')
+        else:
+            return ['published', ]
+
+    has_change_permission = apps.common.functions.has_change_permission
+    has_add_permission = apps.common.functions.has_add_permission
+    has_delete_permission = apps.common.functions.has_delete_permission
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
+    response_change = apps.common.functions.response_change
+
+
+class BoardMeetingYearAdmin(MPTTModelAdmin, GuardedModelAdmin):
 
     inlines = [BoardMeetingInline,]
 
@@ -5292,6 +5672,163 @@ class DisclosureDocumentAdmin(MPTTModelAdmin, GuardedModelAdmin):
     save_model = apps.common.functions.save_model
     response_change = apps.common.functions.response_change
 
+
+class SchoolCommunityCouncilMeetingAgendaAdmin(
+    MPTTModelAdmin,
+    GuardedModelAdmin,
+):
+    inlines = [FileInline, ]
+
+    def get_formsets_with_inlines(self, request, obj=None):
+        for inline in self.get_inline_instances(request, obj):
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(
+                    inline.model._meta.model_name + '.' + get_permission_codename('restore', inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
+            yield inline.get_formset(request, obj), inline
+
+    def get_fields(self, request, obj=None):
+        fields = ['title', ['update_user', 'update_date', ], ['create_user', 'create_date', ], ]
+        if request.user.is_superuser:
+            fields += ['published', 'searchable', 'parent', ]
+            if obj:
+                fields += ['url']
+        return fields
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = ['title', 'update_user', 'update_date', 'create_user', 'create_date', ]
+        if request.user.is_superuser:
+            fields.remove('title')
+            if obj:
+                fields += ['url']
+        return fields
+
+    def get_list_display(self, request):
+        if request.user.has_perm('documents.restore_schoolcommunitycouncilmeetingagenda'):
+            return ['title', 'update_date', 'update_user', 'published', 'deleted']
+        else:
+            return ['title', 'update_date', 'update_user', 'published']
+
+    # ordering = ('url',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('documents.restore_schoolcommunitycouncilmeetingagenda'):
+            return qs
+        return qs.filter(deleted=0)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        if request.user.has_perm('documents.trash_schoolcommunitycouncilmeetingagenda'):
+            actions['trash_selected'] = (trash_selected, 'trash_selected', trash_selected.short_description)
+        if request.user.has_perm('documents.restore_schoolcommunitycouncilmeetingagenda'):
+            actions['restore_selected'] = (restore_selected, 'restore_selected', restore_selected.short_description)
+        if request.user.has_perm('documents.change_schoolcommunitycouncilmeetingagenda'):
+            actions['publish_selected'] = (publish_selected, 'publish_selected', publish_selected.short_description)
+            actions['unpublish_selected'] = (
+            unpublish_selected, 'unpublish_selected', unpublish_selected.short_description)
+        return actions
+
+    def get_list_filter(self, request):
+        if request.user.has_perm('documents.restore_schoolcommunitycouncilmeetingagenda'):
+            return (DeletedListFilter, 'published')
+        else:
+            return ['published', ]
+
+    has_change_permission = apps.common.functions.has_change_permission
+    has_add_permission = apps.common.functions.has_add_permission
+    has_delete_permission = apps.common.functions.has_delete_permission
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
+    response_change = apps.common.functions.response_change
+
+
+class SchoolCommunityCouncilMeetingMinutesAdmin(
+    MPTTModelAdmin,
+    GuardedModelAdmin,
+):
+    inlines = [FileInline, ]
+
+    def get_formsets_with_inlines(self, request, obj=None):
+        for inline in self.get_inline_instances(request, obj):
+            # Remove delete fields is not superuser
+            if request.user.is_superuser or request.user.has_perm(
+                    inline.model._meta.model_name + '.' + get_permission_codename('restore', inline.model._meta)):
+                if not 'deleted' in inline.fields:
+                    inline.fields.append('deleted')
+            else:
+                while 'deleted' in inline.fields:
+                    inline.fields.remove('deleted')
+            yield inline.get_formset(request, obj), inline
+
+    def get_fields(self, request, obj=None):
+        fields = ['title', ['update_user', 'update_date', ], ['create_user', 'create_date', ], ]
+        if request.user.is_superuser:
+            fields += ['published', 'searchable', 'parent', ]
+            if obj:
+                fields += ['url']
+        return fields
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = ['title', 'update_user', 'update_date', 'create_user', 'create_date', ]
+        if request.user.is_superuser:
+            fields.remove('title')
+            if obj:
+                fields += ['url']
+        return fields
+
+    def get_list_display(self, request):
+        if request.user.has_perm('documents.restore_schoolcommunitycouncilmeetingminutes'):
+            return ['title', 'update_date', 'update_user', 'published', 'deleted']
+        else:
+            return ['title', 'update_date', 'update_user', 'published']
+
+    # ordering = ('url',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm('documents.restore_schoolcommunitycouncilmeetingminutes'):
+            return qs
+        return qs.filter(deleted=0)
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        if request.user.has_perm('documents.trash_schoolcommunitycouncilmeetingminutes'):
+            actions['trash_selected'] = (trash_selected, 'trash_selected', trash_selected.short_description)
+        if request.user.has_perm('documents.restore_schoolcommunitycouncilmeetingminutes'):
+            actions['restore_selected'] = (restore_selected, 'restore_selected', restore_selected.short_description)
+        if request.user.has_perm('documents.change_schoolcommunitycouncilmeetingminutes'):
+            actions['publish_selected'] = (publish_selected, 'publish_selected', publish_selected.short_description)
+            actions['unpublish_selected'] = (
+            unpublish_selected, 'unpublish_selected', unpublish_selected.short_description)
+        return actions
+
+    def get_list_filter(self, request):
+        if request.user.has_perm('documents.restore_schoolcommunitycouncilmeetingminutes'):
+            return (DeletedListFilter, 'published')
+        else:
+            return ['published', ]
+
+    has_change_permission = apps.common.functions.has_change_permission
+    has_add_permission = apps.common.functions.has_add_permission
+    has_delete_permission = apps.common.functions.has_delete_permission
+    save_formset = apps.common.functions.save_formset
+    save_model = apps.common.functions.save_model
+    response_change = apps.common.functions.response_change
+
+
 admin.site.register(Page, PageAdmin)
 admin.site.register(School, SchoolAdmin)
 admin.site.register(Department, DepartmentAdmin)
@@ -5315,6 +5852,7 @@ admin.site.register(SubPage, SubPageAdmin)
 admin.site.register(StudentBoardMember, StudentBoardMemberAdmin)
 admin.site.register(BoardSubPage, BoardSubPageAdmin)
 admin.site.register(BoardMeeting, BoardMeetingAdmin)
+admin.site.register(SchoolCommunityCouncilMeeting, SchoolCommunityCouncilMeetingAdmin)
 admin.site.register(BoardMeetingYear, BoardMeetingYearAdmin)
 admin.site.register(FAQ, FAQAdmin)
 admin.site.register(DistrictCalendarYear, DistrictCalendarYearAdmin)
@@ -5324,3 +5862,5 @@ admin.site.register(PhotoGallery, PhotoGalleryAdmin)
 admin.site.register(Announcement, AnnouncementAdmin)
 admin.site.register(SchoolFaculty, SchoolFacultyAdmin)
 admin.site.register(DisclosureDocument, DisclosureDocumentAdmin)
+admin.site.register(SchoolCommunityCouncilMeetingAgenda, SchoolCommunityCouncilMeetingAgendaAdmin)
+admin.site.register(SchoolCommunityCouncilMeetingMinutes, SchoolCommunityCouncilMeetingMinutesAdmin)

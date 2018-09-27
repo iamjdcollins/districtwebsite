@@ -1,0 +1,87 @@
+{% load static mptt_tags relink %}
+{% if page.body != "" %}
+<div class="body">
+	{{ page.body|safe|relink }}
+</div>
+{% endif %}
+{% if page.directoryentries_schoolcommunitycouncilmember_node.all %}
+<h2>Members</h2>
+<table class="pure-table pure-table-horizontal grouped-table stretched-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Contact</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for member in page.directoryentries_schoolcommunitycouncilmember_node.all %}
+    <tr>
+      <td>{{ member.first_name }} {{ member.last_name }}</td>
+      <td>{{ member.role }}</td>
+      <td>
+        {% if member.email %}
+        {{ member.email }}<br>
+        {% endif %}
+        {{ member.phone }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% if page.events_schoolcommunitycouncilmeeting_node.all %}
+<h2>Meetings</h2>
+<table class="pure-table pure-table-horizontal grouped-table stretched-table">
+	<thead>
+		<tr>
+			<th>Meeting Date</th>
+			<th style="width: 0px;">Agenda</th>
+			<th style="width: 0px;">Minutes</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for meeting in page.events_schoolcommunitycouncilmeeting_node.all %}
+		<tr>
+			<td>{{ meeting.startdate|date:"M. d, Y" }}</td>
+			<td style="text-align: center; font-size: 24px;">
+        {% for document in meeting.documents_schoolcommunitycouncilmeetingagenda_node.all %}
+        <a href="{{ document.url }}" class="{% if document.modal_ajax %} modal-ajax{% endif %}" {% if document.target_blank %}target="_blank"{% endif %}>
+          {% if document.modal_ajax %}
+          <span class="sr-only">Select Language for {{ document.title }}</span>
+          <span class="no-sr notranslate md-document" aria-hidden="True"></span>
+          {% else %}
+          <span class="sr-only">Open Document {{ document.title }}</span>
+          <span class="no-sr notranslate md-document" aria-hidden="True"></span>
+          {% endif %}
+        </a>
+        {% empty %}
+        <a href="#" title="Agenda not available" disabled>
+          <span class="sr-only">Agenda not available</span>
+          <span class="no-sr notranslate md-document" aria-hidden="True"></span>
+        </a>
+        {% endfor %}
+			</td>
+			<td style="text-align: center; font-size: 24px;">
+        {% for document in meeting.documents_schoolcommunitycouncilmeetingminutes_node.all %}
+        <a href="{{ document.url }}" class="{% if document.modal_ajax %} modal-ajax{% endif %}" {% if document.target_blank %}target="_blank"{% endif %}>
+          {% if document.modal_ajax %}
+          <span class="sr-only">Select Language for {{ document.title }}</span>
+          <span class="no-sr notranslate md-document" aria-hidden="True"></span>
+          {% else %}
+          <span class="sr-only">Open Document {{ document.title }}</span>
+          <span class="no-sr notranslate md-document" aria-hidden="True"></span>
+          {% endif %}
+        </a>
+        {% empty %}
+        <a href="#" title="Agenda not available" disabled>
+          <span class="sr-only">Agenda not available</span>
+          <span class="no-sr notranslate md-document" aria-hidden="True"></span>
+        </a>
+        {% endfor %}  
+      </td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}

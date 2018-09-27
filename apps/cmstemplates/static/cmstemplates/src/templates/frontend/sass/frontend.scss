@@ -40,6 +40,10 @@
   list-style: none;
   border: solid 1px #dadada;
 }
+a[disabled], a[disabled]:hover {
+   pointer-events: none;
+   color: #999;
+}
 html ul.dropdown-content * {
   color: black !important;
 }
