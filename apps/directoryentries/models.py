@@ -583,7 +583,6 @@ class SchoolFaculty(DirectoryEntry):
         )[0].pk
     )
 
-
     title = models.CharField(
         max_length=200,
         help_text='',
@@ -655,6 +654,102 @@ class SchoolFaculty(DirectoryEntry):
         return 'School Faculty: {0} {1}'.format(
             self.employee.first_name,
             self.employee.last_name,
+        )
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class SchoolCommunityCouncilMember(DirectoryEntry):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = ''
+    HAS_PERMISSIONS = False
+    PAGELAYOUT = '{0}'.format(
+        PageLayout.objects.get_or_create(
+            namespace='school-community-council-member.html',
+            defaults={'title': 'School Community Council Member'}
+        )[0].pk
+    )
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+    )
+    first_name = models.CharField(
+        null=True,
+        blank=False,
+        max_length=100,
+        verbose_name='First Name',
+        help_text='',
+    )
+    last_name = models.CharField(
+        null=True,
+        blank=False,
+        max_length=100,
+        verbose_name='Last Name',
+        help_text='',
+    )
+    role = models.CharField(
+        null=True,
+        blank=True,
+        max_length=100,
+        verbose_name='Role',
+        help_text='',
+    )
+    email = models.EmailField(
+        null=True,
+        blank=True,
+        max_length=254,
+        verbose_name='Email Address',
+    )
+    phone = models.CharField(
+        null=True,
+        blank=True,
+        max_length=11,
+        verbose_name='Phone Number',
+        help_text='',
+    )
+
+    related_node = models.ForeignKey(
+        Node,
+        null=True,
+        blank=True,
+        related_name='directoryentries_schoolcommunitycouncilmember_node',
+        editable=False,
+        on_delete=models.CASCADE,
+    )
+
+    schoolcommunitycouncilmember_directoryentry_node = models.OneToOneField(
+        DirectoryEntry,
+        db_column='schoolcommunitycouncilmember_directoryentry_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'directoryenties_schoolcommunitycouncilmember'
+        ordering = [
+            'inline_order',
+        ]
+        get_latest_by = 'create_date'
+        verbose_name = 'School Community Council Member'
+        verbose_name_plural = 'School Community Council Members'
+        default_manager_name = 'base_manager'
+
+    def force_title(self):
+        return '{0} {1}'.format(
+            self.first_name,
+            self.last_name,
         )
 
     save = commonfunctions.modelsave
