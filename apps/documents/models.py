@@ -697,3 +697,183 @@ class BoardMeetingAgendaItem(BaseDocument):
 
     save = commonfunctions.modelsave
     delete = commonfunctions.modeltrash
+
+
+class SchoolCommunityCouncilMeetingAgenda(BaseDocument):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/scc-agenda/'
+    HAS_PERMISSIONS = False
+    PAGELAYOUT = '{0}'.format(
+        PageLayout.objects.get_or_create(
+            namespace='school-community-council-meeting-agenda.html',
+            defaults={'title': 'School Community Council Meeting Agenda'},
+        )[0].pk
+    )
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+        verbose_name='Title',
+    )
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='documents_schoolcommunitycouncilmeetingagenda_node',
+        editable=False,
+        on_delete=models.CASCADE,
+    )
+
+    schoolcommunitycouncilmeetingagenda_document_node = models.OneToOneField(
+        BaseDocument,
+        db_column='sccagenda_schoolcommunitycouncilmeetingagenda_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'documents_schoolcommunitycouncilmeetingagenda'
+        ordering = [
+            'inline_order',
+        ]
+        get_latest_by = 'update_date'
+        permissions = (
+            (
+                'trash_schoolcommunitycouncilmeetingagenda',
+                'Can soft delete scc agenda'
+            ),
+            (
+                'restore_schoolcommunitycouncilmeetingagenda',
+                'Can restore scc agenda'
+            ),
+        )
+        verbose_name = 'School Community Council Meeting Agenda'
+        verbose_name_plural = 'School Community Council Meeting Agendas'
+        default_manager_name = 'base_manager'
+
+    def __str__(self):
+        return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
+
+    def has_files(self):
+        doc_len = self.files_file_node.filter(published=1, deleted=0).count()
+        if doc_len > 1:
+            return True
+        return False
+
+    def modal_ajax(self):
+        doc_len = self.files_file_node.filter(published=1, deleted=0).count()
+        if doc_len > 1:
+            return True
+        return False
+
+    def target_blank(self):
+        doc_len = self.files_file_node.filter(published=1, deleted=0).count()
+        if doc_len > 1:
+            return False
+        return True
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
+
+
+class SchoolCommunityCouncilMeetingMinutes(BaseDocument):
+
+    PARENT_TYPE = ''
+    PARENT_URL = ''
+    URL_PREFIX = '/scc-minutes/'
+    HAS_PERMISSIONS = False
+    PAGELAYOUT = '{0}'.format(
+        PageLayout.objects.get_or_create(
+            namespace='school-community-council-meeting-minutes.html',
+            defaults={'title': 'School Community Council Meeting Minutes'},
+        )[0].pk
+    )
+
+    title = models.CharField(
+        max_length=200,
+        help_text='',
+        verbose_name='Title',
+    )
+    related_node = models.ForeignKey(
+        Node,
+        blank=True,
+        null=True,
+        related_name='documents_schoolcommunitycouncilmeetingminutes_node',
+        editable=False,
+        on_delete=models.CASCADE,
+    )
+
+    schoolcommunitycouncilmeetingminutes_document_node = models.OneToOneField(
+        BaseDocument,
+        db_column='sccMinutes_schoolcommunitycouncilmeetingminutes_node',
+        on_delete=models.CASCADE,
+        parent_link=True,
+        editable=False,
+    )
+
+    inline_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
+
+    class Meta:
+        db_table = 'documents_schoolcommunitycouncilmeetingminutes'
+        ordering = [
+            'inline_order',
+        ]
+        get_latest_by = 'update_date'
+        permissions = (
+            (
+                'trash_schoolcommunitycouncilmeetingminutes',
+                'Can soft delete scc minutes'
+            ),
+            (
+                'restore_schoolcommunitycouncilmeetingminutes',
+                'Can restore scc minutes'
+            ),
+        )
+        verbose_name = 'School Community Council Meeting Minutes'
+        verbose_name_plural = 'School Community Council Meeting Minutes'
+        default_manager_name = 'base_manager'
+
+    def __str__(self):
+        return self.title
+
+    def force_title(self):
+        return self.title if self.title else ''
+
+    def has_files(self):
+        doc_len = self.files_file_node.filter(published=1, deleted=0).count()
+        if doc_len > 1:
+            return True
+        return False
+
+    def modal_ajax(self):
+        doc_len = self.files_file_node.filter(published=1, deleted=0).count()
+        if doc_len > 1:
+            return True
+        return False
+
+    def target_blank(self):
+        doc_len = self.files_file_node.filter(published=1, deleted=0).count()
+        if doc_len > 1:
+            return False
+        return True
+
+    save = commonfunctions.modelsave
+    delete = commonfunctions.modeltrash
