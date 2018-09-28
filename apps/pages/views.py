@@ -25,6 +25,7 @@ from apps.directoryentries.models import (
     SchoolAdministration,
     SchoolStaff,
     SchoolFaculty,
+    SchoolCommunityCouncilMember,
 )
 from apps.links.models import ResourceLink, ActionButton, ClassWebsite
 from apps.documents.models import (
@@ -788,6 +789,23 @@ def prefetch_disclosuredocuments_detail(qs):
             queryset=prefetchqs,
         )
     )
+
+
+def prefetch_schoolcommunitycouncilmembers_detail(qs):
+    prefetchqs = (
+        SchoolCommunityCouncilMember
+        .objects
+        .filter(deleted=0)
+        .filter(published=1)
+        .order_by('inline_order')
+    )
+    qs = qs.prefetch_related(
+        Prefetch(
+            'directoryentries_schoolcommunitycouncilmember_node',
+            queryset=prefetchqs,
+        )
+    )
+    return qs
 
 
 def prefetch_schoolcommunitycouncilmeetings_detail(qs):
@@ -2853,6 +2871,7 @@ def node_lookup(request):
         context['page'] = prefetch_schoolfaculty_detail(context['page'])
         context['page'] = prefetch_subjectgradelevel_detail(context['page'])
         context['page'] = prefetch_schoolcommunitycouncilmeetings_detail(context['page'])
+        context['page'] = prefetch_schoolcommunitycouncilmembers_detail(context['page'])
         # Add additional context here
         context = add_additional_context(request, context, node)
         # Change Queryset into object

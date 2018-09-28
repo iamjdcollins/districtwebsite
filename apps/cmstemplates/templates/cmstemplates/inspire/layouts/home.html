@@ -16,7 +16,7 @@
 {% block main-content %}
 <div class="col pure-u-md-2-3 pure-u-1">
 	<h1 class="hide">{{ page.title }}</h1>
-	<h2>Annoucements</h2>
+	<h2 class="hidden">Annoucements</h2>
 	{% for annoucement in page.pages_announcement_node.all %}
 	<h3>{{ annoucement.title }}</h3>
 	<div class="announcement-body">
@@ -25,5 +25,14 @@
 	{% empty %}
 	<p>We do not have any annoucements at this time. Please check back soon.</p>
 	{% endfor %}
+</div>
+<div class="col pure-u-md-1-3 pure-u-1">
+	{% if page.links_actionbutton_node.all %}
+	<p>
+	{% for button in page.links_actionbutton_node.all %}
+	<a class="pure-button pure-button-primary contact-button" href="{{ button.link_url }}">{{ button.title }}</a>
+	{% endfor %}
+	</p>
+	{% endif %}
 </div>
 {% endblock %}

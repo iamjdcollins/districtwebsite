@@ -23,7 +23,9 @@
         {% if member.email %}
         {{ member.email }}<br>
         {% endif %}
+        {% if member.phone %}
         {{ member.phone }}
+        {% endif %}
       </td>
     </tr>
     {% endfor %}
