@@ -1,0 +1,14 @@
+{% extends 'cmstemplates/innovate/layouts/snavleft-contentright.html' %}
+{% load static mptt_tags relink %}
+
+{% block title %}
+  {{ page.title }}
+{% endblock %}
+
+{% block content %}
+  {{ block.super }}
+{% endblock %}
+
+{% block main-content-right %}
+{% include "cmstemplates/global/blocks/school-community-council-scc.html" %}
+{% endblock %}

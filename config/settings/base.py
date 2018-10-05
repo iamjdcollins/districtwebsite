@@ -21,14 +21,16 @@ ADMINS = [
     ('Jordan Collins', 'jordan.collins@slcschools.org'),
 ]
 
+
 def localaddresses():
-    import netifaces
-    ifaces = netifaces.interfaces()
-    addrs = []
-    for iface in netifaces.interfaces():
-        for addr in netifaces.ifaddresses(iface)[netifaces.AF_INET]:
-            addrs.append(addr['addr'])
-    return addrs
+  import netifaces
+  ifaces = netifaces.interfaces()
+  addrs = []
+  for iface in netifaces.interfaces():
+    for addr in netifaces.ifaddresses(iface)[netifaces.AF_INET]:
+      addrs.append(addr['addr'])
+  return addrs
+
 
 LOCAL_ADDRESSES = localaddresses()
 
@@ -143,10 +145,10 @@ TEMPLATES = [
                 'apps.objects.processors.is_globaladmin',
             ],
             'loaders': [
-                 ('django.template.loaders.cached.Loader', [
-                     'django.template.loaders.filesystem.Loader',
-                     'django.template.loaders.app_directories.Loader',
-                 ]),
+                ('django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ]),
             ],
         },
     },
@@ -161,16 +163,16 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 DATABASES = {
     'default': {
-      'ENGINE': 'django.db.backends.postgresql',
-      'NAME': os.environ['WWW_DB_NAME'],
-      'USER': os.environ['WWW_DB_USER'],
-      'PASSWORD': os.environ['WWW_DB_PASSWORD'],
-      'HOST': os.environ['WWW_DB_HOST'],
-      'PORT': os.environ['WWW_DB_PORT'],
-      'CONN_MAX_AGE': 600,
-      'OPTIONS': {
-          'connect_timeout': 0
-      },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['WWW_DB_NAME'],
+        'USER': os.environ['WWW_DB_USER'],
+        'PASSWORD': os.environ['WWW_DB_PASSWORD'],
+        'HOST': os.environ['WWW_DB_HOST'],
+        'PORT': os.environ['WWW_DB_PORT'],
+        'CONN_MAX_AGE': 600,
+        'OPTIONS': {
+            'connect_timeout': 0
+        },
     },
 }
 
@@ -233,7 +235,7 @@ SLCSD_LDAP_USER = os.environ['SLCSD_LDAP_USER']
 SLCSD_LDAP_PASSWORD = os.environ['SLCSD_LDAP_PASSWORD']
 
 
-#DEFAULT_CONFIG = {
+# DEFAULT_CONFIG = {
 #    'skin': 'moono-lisa',
 #    'toolbar_Basic': [
 #        ['Source', '-', 'Bold', 'Italic']
@@ -296,10 +298,10 @@ MULTISITE_FALLBACK = 'apps.common.functions.multisite_fallback_view'
 
 
 class ImagekitCacheFileSystemStorage(FileSystemStorage):
-        location = DATA_DIR
-        base_url = '/'
-        file_permissions_mode = 0o664
-        directory_permissions_mode = 0o775
+  location = DATA_DIR
+  base_url = '/'
+  file_permissions_mode = 0o664
+  directory_permissions_mode = 0o775
 
 
 # Image Kit Settings
@@ -316,59 +318,59 @@ IMAGEKIT_CACHEFILE_DIR = 'cache'
 
 CMSTEMPLATES = {
     'css': {
-      'frameworks': {
-          'materialize': [
-              'cmstemplates/src/frameworks/materialize/sass/materialize.scss',
-          ],
-          'purecss': [
-              'cmstemplates/src/frameworks/purecss/pure-min.css',
-          ],
-      },
-      'fonts': {
-          'md': [
-              'cmstemplates/src/fonts/md/md.css',
-          ],
-      },
-      'templates': {
-          'global': [
-              'cmstemplates/src/templates/global/sass/global.scss',
-          ],
-          'backend': [
-              'cmstemplates/src/templates/backend/sass/backend.scss',
-          ],
-          'frontend': [
-              'cmstemplates/src/templates/frontend/sass/frontend.scss',
-          ],
-          'dashboard': [
-              'cmstemplates/src/templates/dashboard/sass/dashboard.scss',
-          ],
-          'material': [
-              'cmstemplates/src/templates/material/sass/material.scss',
-          ],
-          'innovate': [
-              'cmstemplates/src/templates/innovate/sass/innovate.scss',
-          ],
-          'inspire': [
-              'cmstemplates/src/templates/inspire/sass/inspire.scss',
-          ],
-      },
-      'themes': {
-          'dashboard-standard': [
-              'cmstemplates/src/themes/dashboard-standard/sass/dashboard-standard.scss',
-          ],
-          'material-standard': [
-              'cmstemplates/src/themes/material-standard/sass/material-standard.scss',
-          ],
-          'innovate-standard': [
-              'cmstemplates/src/themes/innovate-standard/sass/innovate-standard.scss',
-          ],
-          'inspire-standard': [
-              'cmstemplates/src/themes/inspire-standard/sass/inspire-standard.scss',
-          ],
-      },
-      'modaal043': [
-          'cmstemplates/src/modaal043/css/modaal.min.css',
-      ],
+        'frameworks': {
+            'materialize': [
+                'cmstemplates/src/frameworks/materialize/sass/materialize.scss',
+            ],
+            'purecss': [
+                'cmstemplates/src/frameworks/purecss/pure-min.css',
+            ],
+        },
+        'fonts': {
+            'md': [
+                'cmstemplates/src/fonts/md/md.css',
+            ],
+        },
+        'templates': {
+            'global': [
+                'cmstemplates/src/templates/global/sass/global.scss',
+            ],
+            'backend': [
+                'cmstemplates/src/templates/backend/sass/backend.scss',
+            ],
+            'frontend': [
+                'cmstemplates/src/templates/frontend/sass/frontend.scss',
+            ],
+            'dashboard': [
+                'cmstemplates/src/templates/dashboard/sass/dashboard.scss',
+            ],
+            'material': [
+                'cmstemplates/src/templates/material/sass/material.scss',
+            ],
+            'innovate': [
+                'cmstemplates/src/templates/innovate/sass/innovate.scss',
+            ],
+            'inspire': [
+                'cmstemplates/src/templates/inspire/sass/inspire.scss',
+            ],
+        },
+        'themes': {
+            'dashboard-standard': [
+                'cmstemplates/src/themes/dashboard-standard/sass/dashboard-standard.scss',
+            ],
+            'material-standard': [
+                'cmstemplates/src/themes/material-standard/sass/material-standard.scss',
+            ],
+            'innovate-standard': [
+                'cmstemplates/src/themes/innovate-standard/sass/innovate-standard.scss',
+            ],
+            'inspire-standard': [
+                'cmstemplates/src/themes/inspire-standard/sass/inspire-standard.scss',
+            ],
+        },
+        'modaal043': [
+            'cmstemplates/src/modaal043/css/modaal.min.css',
+        ],
     },
     'javascript': {
         'jquery211': [
@@ -418,16 +420,16 @@ PIPELINE = {
             'source_filenames': CMSTEMPLATES['css']['frameworks']['materialize'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['backend'] + CMSTEMPLATES['css']['templates']['dashboard'] + CMSTEMPLATES['css']['themes']['dashboard-standard'],
             'output_filename': 'cmstemplates/build/dashboard-standard/dashboard-standard.min.css',
         },
-        'medialibrary':{
-          'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'],
-          'output_filename': 'cmstemplates/build/medialibrary/medialibrary.min.css',
+        'medialibrary': {
+            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'],
+            'output_filename': 'cmstemplates/build/medialibrary/medialibrary.min.css',
         },
         'material-standard': {
-            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['material'] + CMSTEMPLATES['css']['themes']['material-standard'],
+            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['modaal043'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['material'] + CMSTEMPLATES['css']['themes']['material-standard'],
             'output_filename': 'cmstemplates/build/material-standard/material-standard.min.css',
         },
         'innovate-standard': {
-            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['innovate'] + CMSTEMPLATES['css']['themes']['innovate-standard'],
+            'source_filenames': CMSTEMPLATES['css']['frameworks']['purecss'] + CMSTEMPLATES['css']['fonts']['md'] + CMSTEMPLATES['css']['modaal043'] + CMSTEMPLATES['css']['templates']['global'] + CMSTEMPLATES['css']['templates']['frontend'] + CMSTEMPLATES['css']['templates']['innovate'] + CMSTEMPLATES['css']['themes']['innovate-standard'],
             'output_filename': 'cmstemplates/build/innovate-standard/innovate-standard.min.css',
         },
         'inspire-standard': {
@@ -449,7 +451,7 @@ PIPELINE = {
             'output_filename': 'cmstemplates/build/dashboard-standard/dashboard-standard.min.js',
         },
         'material-standard': {
-            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['global'] + CMSTEMPLATES['javascript']['frontend'] + CMSTEMPLATES['javascript']['material'],
+            'source_filenames': CMSTEMPLATES['javascript']['jquery211'] + CMSTEMPLATES['javascript']['modaal043'] + CMSTEMPLATES['javascript']['global'] + CMSTEMPLATES['javascript']['frontend'] + CMSTEMPLATES['javascript']['material'],
             'output_filename': 'cmstemplates/build/material-standard/material-standard.min.js',
         },
         'innovate-standard': {

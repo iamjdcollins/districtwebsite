@@ -14,6 +14,9 @@
   background: transparent;
   border-radius: 0px;
 }
+.pure-button.stretch{
+  width: 100%;
+}
 .pure-button.narrow {
   padding-left: 2px;
   padding-right: 2px;
@@ -464,4 +467,11 @@ table.directory-table tr td.narrow-cell{
     margin: 0px auto;
     background: transparent;
     padding: 0px 0px 20px 0px;
+}
+.inlineimage.fullcenter .inlineimage-img {
+  display: block;
+  margin: auto;
+}
+inlineimage.fullstretch .inlineimage-img {
+  width: 100% !important;
 }

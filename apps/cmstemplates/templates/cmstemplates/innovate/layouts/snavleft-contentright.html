@@ -1,9 +1,16 @@
 {% extends 'cmstemplates/innovate/base.html' %}
+{% load admin_urls %}
 
 {% block main-content %}
 <div class="col pure-u-lg-1-4 pure-u-md-1-3 pure-u-1">
 	{% block main-content-left %}
 	{% if in_this_section %}
+    {%if SITEADMIN and section.pk %}
+    <a id="editpagemodaal" href="{% url sectionopts|admin_urlname:'change' section.pk %}" class="pure-button pure-button-primary stretch editlink">
+      <span class="sr-only">Edit Section Pages</span>
+      <span class="md-pencil no-sr" aria-hidden="true"> Edit Section Pages</span>
+    </a>
+    {% endif %}
 	<div class="section-menu">
       <ul class="nav nav-list">
         <li class="nav-header">In This Section</li>

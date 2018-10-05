@@ -1,5 +1,5 @@
 {% load static mptt_tags relink %}
-{% if page.body != "" %}
+{% if page.body %}
 <div class="body">
 	{{ page.body|safe|relink }}
 </div>
