@@ -34,6 +34,11 @@
         <span class="material-icons tiny black-text">&#xE55B;</span> School Boundary Map 
       </a><br>
       {% endif %}
+      {% if school.openenrollmentstatus.title == "Open" %}
+      <span class="tag green white-text" style="display: inline-block; padding: 5px;">Open Enrollment</span>
+      {% elif school.openenrollmentstatus.title == "Closed" %}
+      <span class="tag red white-text" style="display: inline-block; padding: 5px;">Closed Enrollment</span>
+      {% endif %}
     </div>
     <div class="card-reveal">
       <span class="card-title grey-text text-darken-4">Learning Options<span class="material-icons right clickthrough" aria-hidden="True">&#xE5CD;</span></span>
