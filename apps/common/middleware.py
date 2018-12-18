@@ -1,5 +1,6 @@
 import os
 from django.conf import settings
+from django.views.decorators.cache import patch_cache_control
 
 
 class DynamicDataDir(object):
@@ -14,3 +15,19 @@ class DynamicDataDir(object):
         response = self.get_response(request)
 
         return response
+
+
+class UserCacheControl(object):
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        if request.user.is_anonymous:
+            patch_cache_control(response, public=True)
+        else:
+            patch_cache_control(response, private=True, no_cache=True)
+            # patch_cache_control(response, no-cache=True)
+        return response
+
