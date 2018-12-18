@@ -42,6 +42,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o775
 FILE_UPLOAD_PERMISSIONS = 0o664
+FILE_UPLOAD_TEMP_DIR='/srv/nginx/tmp/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -110,8 +111,11 @@ INSTALLED_APPS = [
     'apps.contactmessages',
 ]
 
+CACHE_MIDDLEWARE_SECONDS = 0
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -121,6 +125,7 @@ MIDDLEWARE = [
     'multisite.middleware.DynamicSiteMiddleware',
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
     # 'apps.common.middleware.DynamicDataDir',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -169,7 +174,7 @@ DATABASES = {
         'PASSWORD': os.environ['WWW_DB_PASSWORD'],
         'HOST': os.environ['WWW_DB_HOST'],
         'PORT': os.environ['WWW_DB_PORT'],
-        'CONN_MAX_AGE': 600,
+        'CONN_MAX_AGE': 20,
         'OPTIONS': {
             'connect_timeout': 0
         },
