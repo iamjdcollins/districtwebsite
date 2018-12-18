@@ -202,7 +202,7 @@ def redirect_request(request):
                 meeting.delete() 
             year = BoardMeetingYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
         return redirect(year.url)
-    if request.path == '/calendars/':
+    if request.path == '/calendars/' and request.site.domain == 'www.slcschools.org':
         try:
             year = DistrictCalendarYear.objects.get(title=currentyear['currentyear']['long'], site=request.site)
         except DistrictCalendarYear.DoesNotExist:
