@@ -16,7 +16,7 @@
     	{% for person in page.directoryentries_schooladministration_node.all %}
     	<tr class="directory-entry">
     		{% if person.employee.images_profilepicture_node.first %}
-	    	<td class="narrow-cell"><img class="schooladministration-picture" src="{% static "www_slcschools_org/images/defaults/profilepicture.jpg" %}" alt="No Profile Picture"></td>
+	    	<td class="narrow-cell"><img class="schooladministration-picture" src="https://www.slcschools.org/{{ person.employee.images_profilepicture_node.first.url }}" alt="{{ person.employee.images_profilepicture_node.first.alttext }}"></td>
 	    	{% else %}
 	    	<td class="narrow-cell"><img class="schooladministration-picture" src="{% static "www_slcschools_org/images/defaults/profilepicture.jpg" %}" alt="No Profile Picture"></td>
 	    	{% endif %}
@@ -44,7 +44,7 @@
 		{% for person in page.directoryentries_schoolstaff_node.all %}
 	    <tr class="directory-entry">
 	    	{% if person.employee.images_profilepicture_node.first %}
-	    	<td class="narrow-cell"><img class="schoolstaff-picture" src="{% static "www_slcschools_org/images/defaults/profilepicture.jpg" %}" alt="No Profile Picture"></td>
+	    	<td class="narrow-cell"><img class="schoolstaff-picture" src="https://www.slcschools.org/{{ person.employee.images_profilepicture_node.first.url }}" alt="{{ person.employee.images_profilepicture_node.first.alttext }}"></td>
 	    	{% else %}
 	    	<td class="narrow-cell"><img class="schoolstaff-picture" src="{% static "www_slcschools_org/images/defaults/profilepicture.jpg" %}" alt="No Profile Picture"></td>
 	    	{% endif %}
