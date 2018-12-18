@@ -3,7 +3,7 @@ import mptt
 import apps.common.functions as commonfunctions
 
 def breadcrumb(request):
-    breadcrumb = Node.objects.filter(url=request.path).get_ancestors(include_self=True)
+    breadcrumb = Node.objects.filter(url=request.path, site=request.site).get_ancestors(include_self=True)
     return {'BREADCRUMB': breadcrumb}
 
 def mainmenu(request):
