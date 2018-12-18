@@ -11,7 +11,7 @@
     <div class="col pure-u-1 pure-u-lg-2-3"> 
       <a href="/" class="logo">
         <!--Update Dynamic-->
-        <img src="https://innovations.slcschools.org/_assets/img/Innovations-Logo.png" alt="{{ request.site.dashboard_general_site.title }} Logo" width="253" height="75">
+        <img src="{% static "www_slcschools_org/images/innovations-logo.png" %}" alt="{{ request.site.dashboard_general_site.title }} Logo" width="253" height="75">
       </a>
       <!-- <div class="slogan">Responsive HTML Theme</div> -->
     </div>
@@ -71,7 +71,8 @@
           {% endfor %}
           </li>
         </ul>
-        <a href="/search/" class="right alwayslinked"><span class="md-search"></span><span class="hidden">Search</span></a>
+        <a href="https://slcschools.instructure.com/" target="_blank" class="pure-button pure-button-primary right">Login</a>
+        <!--<a href="/search/" class="right alwayslinked"><span class="md-search"></span><span class="hidden">Search</span></a>-->
       </div>
     </div>
   </div>
