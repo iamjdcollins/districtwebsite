@@ -192,6 +192,8 @@
             {{ request.site.dashboard_general_site.nd_statement|safe|relink }}
             <h2>Americans with Disabilities Act (ADA) Statement</h2>
             {{ request.site.dashboard_general_site.ada_statement|safe|relink }}
+            <h2>Translation Services</h2>
+            <p>If you need help understanding this information in your language, please contact the school office for free language assistance.</p>
           </div>
           <div class="col pure-u-md-1-3 pure-u-1">
             <h2>Contact</h2>
@@ -243,6 +245,10 @@
             {% if request.site.dashboard_general_site.sitetype.title == 'School Website' %}
             <h2>SafeUT CrisisLine</h2>
             <a href="https://safeut.med.utah.edu/" target="_blank"><img class="responsive" src="https://drupal.slcschools.org/sites/all/themes/slcschools/img/safeutsendatip.png" alt="SafeUT Send a Tip"></a>
+            {% block peachjar %}
+            <h2>Peachjar</h2>
+            <a href="https://www.peachjar.com/" target="_blank"><img src="https://drupal.slcschools.org/sites/all/themes/slcschools/img/peachjar.png" alt="Peach Jar"></a>
+            {% endblock %}
             {% endif %}
           </div>
         </div>
