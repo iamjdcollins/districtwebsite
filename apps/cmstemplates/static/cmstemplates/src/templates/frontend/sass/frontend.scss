@@ -468,10 +468,32 @@ table.directory-table tr td.narrow-cell{
     background: transparent;
     padding: 0px 0px 20px 0px;
 }
-.inlineimage.fullcenter .inlineimage-img {
+.inlineimage{
+  position: relative;
+}
+.inlineimage.fullcenter .inlineimage-img{
   display: block;
   margin: auto;
 }
-inlineimage.fullstretch .inlineimage-img {
+.inlineimage.fullstretch .inlineimage-img{
   width: 100% !important;
+}
+.inlineimage.padleft{
+  padding-left: 20px;
+}
+.inlineimage.padright{
+  padding-right: 20px;
+}
+.inlineimage.padtop{
+  padding-top: 20px;
+}
+.inlineimage.padbottom{
+  padding-bottom: 20px;
+}
+.inlineimage a.active{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
 }
