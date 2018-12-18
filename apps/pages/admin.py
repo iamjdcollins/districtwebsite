@@ -131,10 +131,21 @@ class ProfilePictureInline(
     extra = 0
     min_num = 1
     max_num = 1
+    has_add_permission = apps.common.functions.has_add_permission_inline
+    has_change_permission = apps.common.functions.has_change_permission_inline
+    has_delete_permission = apps.common.functions.has_delete_permission_inline
 
     def get_formset(self, request, obj=None, **kwargs):
         self.form.request = request
         return super().get_formset(request, obj, **kwargs)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        if request.user.has_perm(self.model._meta.model_name + '.' + get_permission_codename('restore', self.model._meta)):
+            return qs
+        return qs.filter(deleted=0)
 
 
 class ThumbnailInline(
@@ -1126,7 +1137,7 @@ class ActionButtonInline(
     ]
     extra = 0
     min_num = 0
-    max_num = 4
+    max_num = 8
     has_add_permission = apps.common.functions.has_add_permission_inline
     has_change_permission = apps.common.functions.has_change_permission_inline
     has_delete_permission = apps.common.functions.has_delete_permission_inline
@@ -5864,3 +5875,5 @@ admin.site.register(SchoolFaculty, SchoolFacultyAdmin)
 admin.site.register(DisclosureDocument, DisclosureDocumentAdmin)
 admin.site.register(SchoolCommunityCouncilMeetingAgenda, SchoolCommunityCouncilMeetingAgendaAdmin)
 admin.site.register(SchoolCommunityCouncilMeetingMinutes, SchoolCommunityCouncilMeetingMinutesAdmin)
+admin.site.register(ProfilePicture)
+
