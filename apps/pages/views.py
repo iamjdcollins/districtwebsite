@@ -1,5 +1,6 @@
 import json
 import urllib.request
+from urllib.error import URLError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.http import HttpResponse, Http404
@@ -63,7 +64,10 @@ def updates_school_reg_dates():
         13: 'New Students',
         21: 'Returning Students',
     }
-    response = urllib.request.urlopen('https://apex.slcschools.org/apex/slcsd-apps/regcalendars/')
+    try:
+        response = urllib.request.urlopen('https://apex.slcschools.org/apex/slcsd-apps/regcalendars/')
+    except URLError:
+        return
     jsonalldates = response.read()
     alldates = json.loads(jsonalldates.decode("utf-8"))
     groupeddates = {}
