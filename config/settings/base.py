@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import json
+from django.core.exceptions import ImproperlyConfigured
 from django.core.files.storage import FileSystemStorage
 from multisite import SiteID
 
@@ -37,8 +39,40 @@ LOCAL_ADDRESSES = localaddresses()
 ALLOWED_HOSTS = [] + LOCAL_ADDRESSES
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
 
+# Load Secrets
+def load_secrets(file=os.path.join(BASE_DIR, '.secrets.json')):
+    try:
+        with open(file) as f:
+            secrets = json.loads(f.read())
+            return secrets
+    except FileNotFoundError:
+        raise ImproperlyConfigured(
+            'Secrets file not found. Please create the secrets file or correct'
+            ' the configuration.'
+        )
+
+
+secrets = load_secrets()
+
+
+# Get a secret
+def get_secret(key, secrets=secrets or load_secrets()):
+    try:
+        val = secrets[key]
+        if val == 'True':
+            val = True
+        elif val == 'False':
+            val = False
+        return val
+    except KeyError:
+        error_msg = (
+            "ImproperlyConfigured: Set {0} environment variable"
+        ).format(key)
+        raise ImproperlyConfigured(error_msg)
 
 FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o775
 FILE_UPLOAD_PERMISSIONS = 0o664
@@ -48,7 +82,7 @@ FILE_UPLOAD_TEMP_DIR='/srv/nginx/tmp/'
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['WWW_SECRET_KEY']
+SECRET_KEY = get_secret('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -168,12 +202,12 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['WWW_DB_NAME'],
-        'USER': os.environ['WWW_DB_USER'],
-        'PASSWORD': os.environ['WWW_DB_PASSWORD'],
-        'HOST': os.environ['WWW_DB_HOST'],
-        'PORT': os.environ['WWW_DB_PORT'],
+        'ENGINE': get_secret('DEFAULT_DATABASE_ENGINE'),
+        'NAME': get_secret('DEFAULT_DATABASE_NAME'),
+        'USER': get_secret('DEFAULT_DATABASE_USER'),
+        'PASSWORD': get_secret('DEFAULT_DATABASE_PASSWORD'),
+        'HOST': get_secret('DEFAULT_DATABASE_HOST'),
+        'PORT': get_secret('DEFAULT_DATABASE_PORT'),
         'CONN_MAX_AGE': 20,
         'OPTIONS': {
             'connect_timeout': 0
@@ -236,8 +270,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
 STATIC_ROOT = os.path.join(DATA_DIR, 'static')
 
-SLCSD_LDAP_USER = os.environ['SLCSD_LDAP_USER']
-SLCSD_LDAP_PASSWORD = os.environ['SLCSD_LDAP_PASSWORD']
+SLCSD_LDAP_USER = get_secret('SLCSD_LDAP_USER')
+SLCSD_LDAP_PASSWORD = get_secret('SLCSD_LDAP_PASSWORD')
 
 
 # DEFAULT_CONFIG = {

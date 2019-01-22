@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+import glob
+import multiprocessing
 import os
-import sys
 import json
 
 from django.core.exceptions import ImproperlyConfigured
@@ -41,24 +41,28 @@ def get_secret(key, secrets=secrets or load_secrets()):
         raise ImproperlyConfigured(error_msg)
 
 
-if __name__ == "__main__":
-    os.environ.setdefault(
-        'DJANGO_SETTINGS_MODULE',
-        get_secret('DJANGO_SETTINGS_MODULE')
-    )
-    try:
-        from django.core.management import execute_from_command_line
-    except ImportError:
-        # The above import may fail for some other reason. Ensure that the
-        # issue is really that Django is missing to avoid masking other
-        # exceptions on Python 2.
-        try:
-            import django
-        except ImportError:
-            raise ImportError(
-                "Couldn't import Django. Are you sure it's installed and "
-                "available on your PYTHONPATH environment variable? Did you "
-                "forget to activate a virtual environment?"
-            )
-        raise
-    execute_from_command_line(sys.argv)
+def watch_extra_files():
+    files = set()
+    patterns = [
+        {'path': '**/*.html', 'recursive': True, },
+        {'path': '**/*.py', 'recursive': True, },
+    ]
+    for pattern in patterns:
+        files = files.union(glob.glob(pattern['path'], recursive=pattern[
+            'recursive']))
+    return files
+
+proc_name = 'districtwebsites'
+pidfile = '/var/run/gunicorn/www_slcschools_org.pid'
+worker_tmp_dir = '/srv/gunicorn/www_slcschools_org'
+bind = 'unix:/var/run/gunicorn/www_slcschools_org.sock'
+workers = multiprocessing.cpu_count() * 3 + 1
+worker_class = 'static'
+timeout = 3600
+raw_env = [
+    'DJANGO_SETTINGS_MODULE={0}'.format(get_secret('DJANGO_SETTINGS_MODULE')),
+]
+reload = get_secret('GUNICORN_RELOAD')
+if reload:
+    reload_extra_files = watch_extra_files()
+
