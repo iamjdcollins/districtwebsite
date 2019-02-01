@@ -259,11 +259,21 @@ STATICFILES_FINDERS = (
 )
 
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'unix:/var/run/memcached/memcached.sock',
-    },
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": [
+            "redis://127.0.0.1:6379?db=0",
+            "unix:///var/run/redis/redis.sock?db=0",
+        ],
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": get_secret('REDIS_PASSWORD'),
+            "SLAVE_READ_ONLY": True,
+        }
+    }
 }
+DJANGO_REDIS_IGNORE_EXCEPTIONS = True
+DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
 
 DATA_DIR = '/srv/nginx/websites.slcschools.org'
 MEDIA_URL = '/media/'
