@@ -46,7 +46,7 @@ def servername(request):
         hostname,
         failed,
     ), status=status)
-    response['Cache-Control'] = 'no-cache max-age=0 must-revalidate'
+    response['Cache-Control'] = 'no-cache, max-age=0, must-revalidate'
     return response
 
 
