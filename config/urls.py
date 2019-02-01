@@ -8,6 +8,7 @@ from apps.common.classes import CustomSearchView, CustomSearchForm
 from haystack.views import SearchView
 from django.http import HttpResponse
 from socket import gethostname
+import os
 
 app_name = 'config'
 urlpatterns = [
@@ -16,13 +17,37 @@ url(r'^accounts/login/$', apps.thirdparty.django_saml2_auth.django_saml2_auth.vi
 url(r'^accounts/logout/$', logout,{'next_page': 'https://adfs.slcschools.org/adfs/ls/?wa=wsignout1.0&wreply=https://www.slcschools.org/'})
 ]
 
-# Server Name
+# Check system health
+def check_health():
+    hostname = gethostname()
+    failed = []
+    if not os.path.isfile('/srv/lb'):
+        failed.append('/srv/lb file is missing')
+    critical_services = [
+        'nginx',
+        'varnish',
+        'redis',
+        'gunicorn_www_slcschools_org',
+        'php-fpm',
+    ]
+    for service in critical_services:
+        status = os.system('/usr/bin/systemctl is-active {} --quiet'.format(service))
+        if status:
+            failed.append('{0} service has status {1}'.format(service, status))
+    if failed:
+        return 503, 'Offline', hostname, '<br>'.join(failed)
+    return 200, 'Online', hostname, '<br>'.join(failed)
 
-
+# Server Name and Status
 def servername(request):
-    return HttpResponse('Server Online: {0}'.format(
-        gethostname()
-    ))
+    status, state, hostname, failed = check_health()
+    response = HttpResponse('Server {0}: {1}<br><br>{2}'.format(
+        state,
+        hostname,
+        failed,
+    ), status=status)
+    response['Cache-Control'] = 'no-cache max-age=0 must-revalidate'
+    return response
 
 
 urlpatterns += [
