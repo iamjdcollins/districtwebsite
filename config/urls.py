@@ -29,6 +29,7 @@ def check_health():
         'redis',
         'gunicorn_www_slcschools_org',
         'php-fpm',
+        'haproxy',
     ]
     for service in critical_services:
         status = os.system('/usr/bin/systemctl is-active {} --quiet'.format(service))
