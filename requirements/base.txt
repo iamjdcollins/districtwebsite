@@ -1,6 +1,7 @@
 # Django==1.11.6
 Django==2.0.0
 gunicorn==19.7.1
+django-redis==4.10.0
 pyasn1==0.3.7
 ldap3==2.3
 psycopg2==2.7.3.2
