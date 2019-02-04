@@ -336,8 +336,8 @@ CKEDITOR_CONFIGS = {
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8983/solr/www_slcschools_org',
-        'ADMIN_URL': 'http://127.0.0.1:8983/solr/admin/cores',
+        'URL': 'http://10.127.72.105:8983/solr/www_slcschools_org',
+        'ADMIN_URL': 'http://10.127.72.105:8983/solr/admin/cores',
     },
 }
 
