@@ -269,6 +269,9 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "PASSWORD": get_secret('REDIS_PASSWORD'),
             "SLAVE_READ_ONLY": True,
+            "CONNECTION_POOL_KWARGS": {
+                'retry_on_timeout': True,
+            },
         }
     }
 }
