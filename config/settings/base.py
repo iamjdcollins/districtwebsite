@@ -278,7 +278,7 @@ CACHES = {
 DJANGO_REDIS_IGNORE_EXCEPTIONS = True
 DJANGO_REDIS_LOG_IGNORED_EXCEPTIONS = True
 
-DATA_DIR = '/srv/nginx/websites.slcschools.org'
+DATA_DIR = '/srv/nginx/django/websites.slcschools.org'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
 STATIC_ROOT = os.path.join(DATA_DIR, 'static')
