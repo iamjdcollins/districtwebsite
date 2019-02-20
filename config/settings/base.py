@@ -76,7 +76,7 @@ def get_secret(key, secrets=secrets or load_secrets()):
 
 FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o775
 FILE_UPLOAD_PERMISSIONS = 0o664
-FILE_UPLOAD_TEMP_DIR='/srv/nginx/tmp/'
+FILE_UPLOAD_TEMP_DIR='/srv/nginx/django/websites.slcschools.org/tmp/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
